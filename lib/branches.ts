@@ -7,10 +7,10 @@ export interface Branch {
   lng: number;
   hours: string;
   images: string[];
+  instagram: string;
+  handle: string;
 }
 
-// Coordinates as given by the store. mapsEmbedUrl works with no API key
-// (Google's plain "output=embed" query form)
 export const BRANCHES: Branch[] = [
   {
     id: "purwokerto",
@@ -20,6 +20,8 @@ export const BRANCHES: Branch[] = [
     lat: -7.392899320708557,
     lng: 109.24966692636308,
     hours: "Buka 09:00 - 21:00 WIB",
+    instagram: "https://www.instagram.com/iseeyou.glasses/",
+    handle: "@iseeyou.glasses",
     images: [
       "/lokasi/purwokerto/IMG_1543.JPG",
       "/lokasi/purwokerto/IMG_1544.JPG",
@@ -34,6 +36,8 @@ export const BRANCHES: Branch[] = [
     lat: -7.364198400005904,
     lng: 109.90066929262443,
     hours: "Buka 09:00 - 18:00 WIB",
+    instagram: "https://www.instagram.com/iseeyou.wonosobo/",
+    handle: "@iseeyou.wonosobo",
     images: [
       "/lokasi/wonosobo/IMG_4474.jpg",
       "/lokasi/wonosobo/IMG_4475.jpg",
@@ -48,6 +52,8 @@ export const BRANCHES: Branch[] = [
     lat: -7.7025949439074815,
     lng: 109.0162702336721,
     hours: "Buka 09:00 - 21:00 WIB",
+    instagram: "https://www.instagram.com/iseeyou.cilacap/",
+    handle: "@iseeyou.cilacap",
     images: [
       "/lokasi/cilacap/IMG_6716.jpg",
       "/lokasi/cilacap/IMG_7453.jpg",
@@ -62,6 +68,8 @@ export const BRANCHES: Branch[] = [
     lat: -7.388426037302636,
     lng: 109.36448728949104,
     hours: "Buka 09:00 - 21:00 WIB",
+    instagram: "https://www.instagram.com/iseeyou.purbalingga/",
+    handle: "@iseeyou.purbalingga",
     images: [
       "/lokasi/purbalingga/IMG_8525.jpg",
       "/lokasi/purbalingga/IMG_8526.jpg",
@@ -79,14 +87,18 @@ export function mapsDirectionsUrl(branch: Branch) {
 }
 
 export const CS_WHATSAPP_NUMBER = "628214601328";
+export const KONSULTASI_WA_NUMBER = "6289618311845";
+export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
+export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=ShopBySearch&searchKeyword=iseeyou.id";
 
-// Matches the store's requested wording as closely as possible while
-// staying natural inside an actual WhatsApp chat (the "kirim ke no..."
-// clause from the brief doesn't apply here since the reply just lands in
-// this same chat thread automatically).
 export function csWhatsappUrl(glassesName?: string) {
   const message = glassesName
     ? `Halo kak, saya tertarik dengan frame "${glassesName}" ini. Boleh tau apakah masih tersedia atau tidak? Soalnya cocok banget di aku.`
     : `Halo kak, saya mau tanya-tanya soal kacamata di Optik I See You.`;
   return `https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+export function konsultasiWhatsappUrl() {
+  const message = `Halo Optik I See You, saya mau Konsultasi Gratis mengenai periksa mata & rekomendasi kacamata/lensa.`;
+  return `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(message)}`;
 }

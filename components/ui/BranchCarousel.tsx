@@ -169,6 +169,31 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
               </div>
             </div>
 
+            {/* Instagram Cabang */}
+            <div className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-amber-400 via-rose-500 to-purple-600 text-white shadow-sm">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Instagram Cabang</p>
+                  <p className="mt-0.5 text-xs font-bold text-isy-green-deep">{branch.handle}</p>
+                </div>
+              </div>
+              <a
+                href={branch.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-rose-200 bg-rose-50 px-3.5 py-1.5 text-xs font-black text-rose-600 hover:bg-rose-100 transition-all active:scale-95 shadow-sm"
+              >
+                Buka IG
+              </a>
+            </div>
+
             {/* Coordinates */}
             <div className="flex items-center gap-3 p-4">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm text-isy-ink/50">
