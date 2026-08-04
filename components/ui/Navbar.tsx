@@ -1,11 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { href: "/", label: "Beranda" },
@@ -16,8 +31,14 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-isy-line/60 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
+    <header
+      className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        scrolled
+          ? "border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-lg shadow-isy-green-deep/5 py-2.5"
+          : "border-b border-isy-line/60 bg-white/90 backdrop-blur-md py-3.5"
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <Image
@@ -31,7 +52,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1.5">
+        <nav className="hidden md:flex items-center gap-1.5 rounded-full p-1 transition-all">
           {navLinks.map((link) => {
             const isActive =
               link.href === "/"
@@ -42,10 +63,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
+                className={`rounded-full px-4 py-2 text-xs font-bold transition-all duration-200 ${
                   isActive
-                    ? "bg-isy-green-deep text-white shadow-sm"
-                    : "text-isy-ink/70 hover:bg-isy-mist hover:text-isy-green-deep"
+                    ? "bg-isy-green-deep text-white shadow-md shadow-isy-green-deep/20 scale-[1.02]"
+                    : "text-isy-ink/80 hover:bg-isy-mist hover:text-isy-green-deep hover:scale-105 active:scale-95"
                 }`}
               >
                 {link.label}
@@ -58,8 +79,9 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/photobooth?mode=ar"
-            className="group inline-flex items-center gap-2 rounded-full bg-isy-green-bright px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-md transition-all hover:bg-isy-green-deep active:scale-95"
+            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-isy-green-bright to-isy-green-deep px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 transition-all hover:shadow-xl hover:scale-105 active:scale-95"
           >
+            <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             <svg
               width="14"
               height="14"
@@ -79,7 +101,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Sub-Navigation Bar */}
-      <div className="flex md:hidden items-center justify-around border-t border-isy-line bg-isy-mist/50 px-2 py-2 overflow-x-auto text-[11px] font-bold">
+      <div className="flex md:hidden items-center justify-around border-t border-isy-line bg-white/80 backdrop-blur-md px-2 py-2 overflow-x-auto text-[11px] font-bold">
         {navLinks.map((link) => (
           <Link
             key={link.href}

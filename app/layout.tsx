@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import CustomCursor from "@/components/ui/CustomCursor";
 import "./globals.css";
 
 /**
@@ -48,7 +49,10 @@ export default function RootLayout({
  rel="stylesheet"
  />
  </head>
- <body className="overscroll-none bg-white font-sans antialiased">{children}</body>
+ <body className="overscroll-none bg-white font-sans antialiased">
+ <CustomCursor />
+ {children}
+ </body>
  </html>
  );
 }

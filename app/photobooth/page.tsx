@@ -28,6 +28,7 @@ import { csWhatsappUrl } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound } from "@/lib/soundEffects";
+import { downloadOrShareImage } from "@/lib/saveImage";
 import manifestRaw from "@/public/glasses/manifest.json";
 
 type BoothPhase =
@@ -215,27 +216,21 @@ function QRBox({ phase, uploadedUrl, onOpenGiantQR, onDownload }: {
 function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
   compositeUrl: string; gifUrl: string | null; onClose: () => void; onToast: (m: string) => void;
 }) {
-  const downloadStrip = () => {
-    const a = document.createElement("a");
-    a.href = compositeUrl;
-    a.download = `iseeyou-strip-${Date.now()}.jpg`;
-    a.click();
-    onToast("Foto strip berhasil diunduh! ");
+  const downloadStrip = async () => {
+    await downloadOrShareImage(compositeUrl, `iseeyou-strip-${Date.now()}.jpg`, "Optik I See You — Photo");
+    onToast("Foto berhasil tersimpan / dibagikan! ");
   };
-  const downloadGif = () => {
+  const downloadGif = async () => {
     if (!gifUrl) return;
-    const a = document.createElement("a");
-    a.href = gifUrl;
-    a.download = `iseeyou-animasi-${Date.now()}.gif`;
-    a.click();
-    onToast("GIF animasi berhasil diunduh! ");
+    await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
+    onToast("GIF berhasil tersimpan / dibagikan! ");
   };
-  const shareWA = () => {
-    downloadStrip();
+  const shareWA = async () => {
+    await downloadOrShareImage(compositeUrl, `iseeyou-strip-${Date.now()}.jpg`, "Optik I See You");
     setTimeout(() => window.open("https://wa.me/?text=" + encodeURIComponent("Coba kacamata di @iseeyou.glasses AR Photobooth! "), "_blank"), 600);
   };
-  const shareIG = () => {
-    downloadStrip();
+  const shareIG = async () => {
+    await downloadOrShareImage(compositeUrl, `iseeyou-strip-${Date.now()}.jpg`, "Optik I See You");
     setTimeout(() => { window.open("https://www.instagram.com/iseeyou.glasses/", "_blank"); onToast("Foto diunduh! Share ke Instagram Story "); }, 600);
   };
 
@@ -603,23 +598,25 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  }
  };
 
- const downloadStrip = useCallback(() => {
- if (!compositeUrl) return;
- const a = document.createElement("a");
- a.href = compositeUrl;
- a.download = `iseeyou-foto-${Date.now()}.jpg`;
- a.click();
- showToast("Foto berhasil tersimpan! 📸");
- }, [compositeUrl, showToast]);
+  const downloadStrip = useCallback(async () => {
+    if (!compositeUrl) return;
+    const res = await downloadOrShareImage(compositeUrl, `iseeyou-foto-${Date.now()}.jpg`, "Optik I See You — Photo");
+    if (res.method === "share") {
+      showToast("Berhasil dibagikan / tersimpan ke Galeri! 📸");
+    } else {
+      showToast("Foto berhasil tersimpan! 📸");
+    }
+  }, [compositeUrl, showToast]);
 
- const downloadGif = useCallback(() => {
- if (!gifUrl) return;
- const a = document.createElement("a");
- a.href = gifUrl;
- a.download = `iseeyou-animasi-${Date.now()}.gif`;
- a.click();
- showToast("GIF animasi berhasil tersimpan! 🎬");
- }, [gifUrl, showToast]);
+  const downloadGif = useCallback(async () => {
+    if (!gifUrl) return;
+    const res = await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
+    if (res.method === "share") {
+      showToast("GIF berhasil dibagikan / tersimpan! 🎬");
+    } else {
+      showToast("GIF animasi berhasil tersimpan! 🎬");
+    }
+  }, [gifUrl, showToast]);
 
  const resetSession = useCallback(() => {
  setPhotos([]);
