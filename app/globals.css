@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Font variables (set by Google Fonts link in layout.tsx) ───────────── */
+:root {
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-playfair: "Playfair Display", Georgia, serif;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-inter);
+  /* kiosk: no pull-to-refresh / rubber-band on tablet browsers */
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* Disable tap highlight on buttons / links */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* ── Shutter flash ─────────────────────────────────────────────────────────
+   Brief white flash overlaid on the camera when a photo is taken.
+   Applied by toggling the class on a cover <div> via JS.                  */
+@keyframes shutter-flash {
+  0%   { opacity: 0; }
+  15%  { opacity: 0.9; }
+  70%  { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.shutter-flash {
+  animation: shutter-flash 0.32s ease-in-out forwards;
+}
+
+/* ── Thin custom scrollbar (tablet result/picker views) ──────────────────── */
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #E3ECE6; border-radius: 2px; }
+
+/* ── AR face-scan sweeping line animation ─────────────────────────────────── */
+@keyframes scanline {
+  0%   { top: 10%; opacity: 0.8; }
+  50%  { opacity: 1; }
+  100% { top: 90%; opacity: 0.8; }
+}
+

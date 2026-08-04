@@ -1,0 +1,56 @@
+[
+  {
+    "id": "none",
+    "name": "Tanpa Kacamata",
+    "file": "",
+    "fitWidthRatio": 0,
+    "style": "Normal",
+    "recommendedFor": [],
+    "color": "#94a3b8"
+  },
+  {
+    "id": "square-black",
+    "name": "Metro Square",
+    "file": "square-black.png",
+    "fitWidthRatio": 1.42,
+    "style": "Square",
+    "recommendedFor": ["Round", "Oval", "Diamond"],
+    "color": "#1a1a1a"
+  },
+  {
+    "id": "cateye-tortoise",
+    "name": "Cat-Eye Tortoise",
+    "file": "cateye-tortoise.png",
+    "fitWidthRatio": 1.45,
+    "style": "Cat-Eye",
+    "recommendedFor": ["Heart", "Oval", "Round"],
+    "color": "#8B4513"
+  },
+  {
+    "id": "round-gold",
+    "name": "Round Gold Wire",
+    "file": "round-gold.png",
+    "fitWidthRatio": 1.4,
+    "style": "Round",
+    "recommendedFor": ["Square", "Heart", "Diamond"],
+    "color": "#D4AF37"
+  },
+  {
+    "id": "aviator-silver",
+    "name": "Aviator Silver",
+    "file": "aviator-silver.png",
+    "fitWidthRatio": 1.5,
+    "style": "Aviator",
+    "recommendedFor": ["Oval", "Square", "Oblong"],
+    "color": "#C0C0C0"
+  },
+  {
+    "id": "clear-antirad",
+    "name": "Clear Anti-Rad",
+    "file": "clear-antirad.png",
+    "fitWidthRatio": 1.42,
+    "style": "Transparan",
+    "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
+    "color": "#E8F4FD"
+  }
+]
