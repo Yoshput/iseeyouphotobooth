@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Rounded Square Background in ISY Emerald Green -->
+  <rect width="64" height="64" rx="18" fill="#116B3C"/>
+  <rect x="2" y="2" width="60" height="60" rx="16" stroke="#2FA84F" stroke-width="2" stroke-opacity="0.5"/>
+  
+  <!-- Glasses Frame Outline -->
+  <!-- Left Lens -->
+  <circle cx="21" cy="33" r="11" fill="#FFFFFF" fill-opacity="0.15" stroke="#FFFFFF" stroke-width="3.5"/>
+  <circle cx="21" cy="33" r="5" fill="#2FA84F"/>
+  <circle cx="19" cy="31" r="2" fill="#FFFFFF"/>
+
+  <!-- Right Lens -->
+  <circle cx="43" cy="33" r="11" fill="#FFFFFF" fill-opacity="0.15" stroke="#FFFFFF" stroke-width="3.5"/>
+  <circle cx="43" cy="33" r="5" fill="#2FA84F"/>
+  <circle cx="41" cy="31" r="2" fill="#FFFFFF"/>
+
+  <!-- Bridge between lenses -->
+  <path d="M32 30C33.5 28 34.5 28 36 30" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Frame Arms Outer Wing -->
+  <path d="M7 31C9 30 10 31 10 32" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M57 31C55 30 54 31 54 32" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Sparkle Glow Accent -->
+  <path d="M47 16L48.5 20.5L53 22L48.5 23.5L47 28L45.5 23.5L41 22L45.5 20.5L47 16Z" fill="#FACC15"/>
+</svg>
