@@ -2,12 +2,12 @@ export interface CatalogItem {
   id: string;
   name: string;
   collection: string;
-  image: string;
+  images: string[];        // All product images (slideshow)
   specsImage?: string;
   style: string;
   recommendedFor: string[];
   description: string;
-  glassesId?: string; // Maps to AR glasses manifest entry if available
+  glassesId?: string;
 }
 
 export interface CatalogCollection {
@@ -15,7 +15,7 @@ export interface CatalogCollection {
   title: string;
   badge: string;
   description: string;
-  coverImage: string;
+  images: string[];        // All images for slideshow in collection banner
   items: CatalogItem[];
 }
 
@@ -25,28 +25,38 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     title: "Cat Eye Edition",
     badge: "Trending Collection",
     description: "Desain cat-eye ikonis yang memberikan kesan elegan, bold, dan menawan.",
-    coverImage: "/katalog/Cat Eye Edition/1.png",
+    images: [
+      "/katalog/Cat Eye Edition/1.png",
+      "/katalog/Cat Eye Edition/2.png",
+      "/katalog/Cat Eye Edition/Product Specs.png",
+    ],
     items: [
       {
         id: "cateye-1",
-        name: "Cat Eye Signature — Gloss Black",
+        name: "Cat Eye Edition — Model 1",
         collection: "Cat Eye Edition",
-        image: "/katalog/Cat Eye Edition/1.png",
+        images: [
+          "/katalog/Cat Eye Edition/1.png",
+          "/katalog/Cat Eye Edition/Product Specs.png",
+        ],
         specsImage: "/katalog/Cat Eye Edition/Product Specs.png",
         style: "Cat-Eye",
         recommendedFor: ["Heart", "Oval", "Round"],
-        description: "Frame cat-eye elegan dengan sudut tegas dan finishing gloss premium.",
+        description: "Frame cat-eye elegan dengan sudut tegas dan finishing premium.",
         glassesId: "cateye-tortoise",
       },
       {
         id: "cateye-2",
-        name: "Cat Eye Velvet — Amber Tortoise",
+        name: "Cat Eye Edition — Model 2",
         collection: "Cat Eye Edition",
-        image: "/katalog/Cat Eye Edition/2.png",
+        images: [
+          "/katalog/Cat Eye Edition/2.png",
+          "/katalog/Cat Eye Edition/Product Specs.png",
+        ],
         specsImage: "/katalog/Cat Eye Edition/Product Specs.png",
         style: "Cat-Eye",
         recommendedFor: ["Heart", "Oval", "Diamond"],
-        description: "Warna tortoise eksklusif dengan gagang titanium yang sangat ringan.",
+        description: "Warna eksklusif dengan gagang titanium yang sangat ringan.",
         glassesId: "cateye-tortoise",
       },
     ],
@@ -56,13 +66,16 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     title: "New Collection",
     badge: "Rilisan Terbaru",
     description: "Koleksi kacamata kekinian dengan material ringan dan anti-radiasi.",
-    coverImage: "/katalog/New Collection/1.png",
+    images: [
+      "/katalog/New Collection/1.png",
+      "/katalog/New Collection/2.png",
+    ],
     items: [
       {
         id: "new-1",
-        name: "Metro Square Pro — Matte Black",
+        name: "New Collection — Model 1",
         collection: "New Collection",
-        image: "/katalog/New Collection/1.png",
+        images: ["/katalog/New Collection/1.png"],
         style: "Square",
         recommendedFor: ["Round", "Oval", "Diamond"],
         description: "Desain persegi kontemporer dengan sudut halus, cocok untuk aktivitas harian.",
@@ -70,12 +83,53 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "new-2",
-        name: "Aero Wire — Champagne Gold",
+        name: "New Collection — Model 2",
         collection: "New Collection",
-        image: "/katalog/New Collection/2.png",
+        images: ["/katalog/New Collection/2.png"],
         style: "Round Wire",
         recommendedFor: ["Square", "Heart", "Diamond"],
         description: "Frame kawat bulat yang halus dan ringan, memberikan kesan retro modern.",
+        glassesId: "round-gold",
+      },
+    ],
+  },
+  {
+    id: "titanium-edition",
+    title: "Titanium Edition",
+    badge: "Premium Series",
+    description: "Material titanium ultra-ringan berkualitas tinggi. Tahan lama, presisi, dan eksklusif.",
+    images: [
+      "/katalog/Titanium Edition/1.png",
+      "/katalog/Titanium Edition/2.png",
+      "/katalog/Titanium Edition/Product Specs.png",
+    ],
+    items: [
+      {
+        id: "titanium-1",
+        name: "Titanium Edition — Model 1",
+        collection: "Titanium Edition",
+        images: [
+          "/katalog/Titanium Edition/1.png",
+          "/katalog/Titanium Edition/Product Specs.png",
+        ],
+        specsImage: "/katalog/Titanium Edition/Product Specs.png",
+        style: "Titanium",
+        recommendedFor: ["Oval", "Square", "Heart"],
+        description: "Frame titanium premium ultra-ringan dengan ketahanan tinggi dan presisi maksimal.",
+        glassesId: "square-black",
+      },
+      {
+        id: "titanium-2",
+        name: "Titanium Edition — Model 2",
+        collection: "Titanium Edition",
+        images: [
+          "/katalog/Titanium Edition/2.png",
+          "/katalog/Titanium Edition/Product Specs.png",
+        ],
+        specsImage: "/katalog/Titanium Edition/Product Specs.png",
+        style: "Titanium",
+        recommendedFor: ["Oval", "Round", "Diamond"],
+        description: "Desain minimalis titanium modern, cocok untuk penggunaan profesional harian.",
         glassesId: "round-gold",
       },
     ],

@@ -171,7 +171,7 @@ export default function LandingPage() {
                 <h3 className="font-serif text-2xl font-black text-isy-green-deep">{col.title}</h3>
                 <p className="mt-1 text-xs text-isy-ink/60">{col.description}</p>
                 <div className="mt-4 relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-white border border-isy-line">
-                  <Image src={col.coverImage} alt={col.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src={col.images[0]} alt={col.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
               </div>
             ))}
