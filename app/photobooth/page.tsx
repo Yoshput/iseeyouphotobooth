@@ -21,13 +21,13 @@ import FaceTracker, { type FaceTrackerHandle } from "@/components/ar/FaceTracker
 import Countdown from "@/components/ui/Countdown";
 import FramePicker from "@/components/ui/FramePicker";
 import { FRAME_LAYOUTS, type FrameLayout } from "@/lib/frameLayouts";
-import { compositeFrame, FRAME_THEMES, type FrameTheme } from "@/lib/frameCompositor";
+import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, type FrameTheme } from "@/lib/frameCompositor";
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult } from "@/lib/faceShape";
 import { csWhatsappUrl } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
-import { playShutterSound } from "@/lib/soundEffects";
+import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
 import { downloadOrShareImage } from "@/lib/saveImage";
 import manifestRaw from "@/public/glasses/manifest.json";
 
@@ -259,16 +259,15 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
     </div>
   );
 }
-// ── TryOnResult: Clean single-photo result for AR Try-On mode ──────────────
-// Per spec: NO photobooth strip border, NO brand watermark, NO multi-slot.
-// Primary CTA = WhatsApp CS to check stock.
+// ── TryOnResult: Branded single-photo result for AR Try-On mode ──────────────
 function TryOnResult({
-  photoUrl, arGlassesName, onRetake, onDownload, onOpenShareModal,
+  photoUrl, compositeUrl, arGlassesName, onRetake, onDownload, onOpenShareModal,
 }: {
-  photoUrl: string; arGlassesName?: string;
+  photoUrl: string; compositeUrl?: string | null; arGlassesName?: string;
   onRetake: () => void; onDownload: () => void; onOpenShareModal: () => void;
 }) {
   const router = useRouter();
+  const displayUrl = compositeUrl || photoUrl;
   return (
     <div className="flex flex-col gap-4 px-4 py-4">
       {/* Header */}
@@ -278,20 +277,14 @@ function TryOnResult({
           <span className="text-xs font-black uppercase tracking-widest text-isy-green-bright">Hasil Try On 🕶️</span>
         </div>
         <span className="rounded-full bg-isy-mist border border-isy-line px-3 py-1 text-[10px] font-extrabold text-isy-green-deep">
-          Clean Photo
+          Framed Photo
         </span>
       </div>
 
-      {/* Clean photo — no photobooth strip frame or brand watermark */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-isy-green-bright/30 shadow-xl max-h-[360px] flex items-center justify-center bg-black">
+      {/* Photo with Watermark Frame */}
+      <div className="relative overflow-hidden rounded-3xl border-2 border-isy-green-bright/30 shadow-xl max-h-[380px] flex items-center justify-center bg-white">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={photoUrl} alt="Hasil Try On Kacamata" className="h-full max-h-[360px] w-full object-contain" />
-        {arGlassesName && (
-          <div className="absolute bottom-3 left-3 right-3 rounded-xl bg-black/60 backdrop-blur-md px-4 py-2 text-white flex items-center justify-between">
-            <span className="text-xs font-extrabold">Model: {arGlassesName}</span>
-            <span className="text-[10px] text-isy-green-bright font-bold">✨ Live Try-On</span>
-          </div>
-        )}
+        <img src={displayUrl} alt="Hasil Try On Kacamata" className="h-full max-h-[380px] w-full object-contain" />
       </div>
 
       {/* Primary CTA: WhatsApp CS */}
@@ -368,11 +361,12 @@ function StripPreview({
     );
   }
 
-  // AR Try-On clean result — no strip frame, no watermark
+  // AR Try-On framed result — with Try On watermark frame
   if (phase === "result" && isArMode && photos[0]) {
     return (
       <TryOnResult
         photoUrl={photos[0]}
+        compositeUrl={compositeUrl}
         arGlassesName={arGlassesName}
         onRetake={onRetake}
         onDownload={onDownloadStrip}
@@ -547,6 +541,7 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  const [uploadPhase, setUploadPhase] = useState<UploadPhase>("idle");
  const [isScanning, setIsScanning] = useState(false);
  const [scanComplete, setScanComplete] = useState(false);
+ const [soundEnabled, setSoundEnabled] = useState(true);
 
  const glasses = manifest[glassesIndex];
  const faceTrackerRef = useRef<FaceTrackerHandle>(null);
@@ -669,8 +664,8 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  return;
  }
 
- // Play Shutter Audio Effect! 
- playShutterSound();
+ // Play Shutter Audio Effect! 📸
+ playShutterSound(soundEnabled);
 
  if (flashRef.current) {
  gsap.fromTo(flashRef.current, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.out" });
@@ -705,12 +700,13 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  }
  }, [currentSlot, layout.numPhotos, singleSlotRetake]);
 
- const handleStartSession = useCallback(() => {
- if (phase !== "ready") return;
- resetSession();
- setCurrentSlot(0);
- setPhase("countdown");
- }, [phase, resetSession]);
+  const handleStartSession = useCallback(() => {
+    if (phase !== "ready") return;
+    unlockAudio();
+    resetSession();
+    setCurrentSlot(0);
+    setPhase("countdown");
+  }, [phase, resetSession]);
 
  const handleSelectTheme = useCallback((newThemeId: string) => {
  setThemeId(newThemeId);
@@ -738,34 +734,48 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  }
  }, [layout, photos, themeId]);
 
- // Composite strip & generate animated GIF when photos are ready
- useEffect(() => {
- if (phase !== "compositing") return;
- let cancelled = false;
+  // Composite strip & generate animated GIF when photos are ready
+  useEffect(() => {
+    if (phase !== "compositing") return;
+    let cancelled = false;
 
- compositeFrame(layout, photos, themeId, colorFilterId).then((url) => {
- if (!cancelled) {
- setCompositeUrl(url);
- setPhase("result");
+    if (arEnabled && photos[0]) {
+      compositeArTryOnFrame(photos[0], glasses?.name).then((url) => {
+        if (!cancelled) {
+          setCompositeUrl(url);
+          setPhase("result");
+          confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ["#116B3C", "#2FA84F", "#86EFAC"],
+          });
+        }
+      });
+      return () => { cancelled = true; };
+    }
 
- // Celebration Confetti! 
- confetti({
- particleCount: 90,
- spread: 75,
- origin: { y: 0.6 },
- colors: ["#116B3C", "#2FA84F", "#86EFAC", "#FFD700"],
- });
- }
- });
+    compositeFrame(layout, photos, themeId, colorFilterId).then((url) => {
+      if (!cancelled) {
+        setCompositeUrl(url);
+        setPhase("result");
+        confetti({
+          particleCount: 90,
+          spread: 75,
+          origin: { y: 0.6 },
+          colors: ["#116B3C", "#2FA84F", "#86EFAC", "#FFD700"],
+        });
+      }
+    });
 
- createAnimatedGif(photos, themeId, colorFilterId).then((gif) => {
- if (!cancelled) {
- setGifUrl(gif);
- }
- }).catch((err) => console.warn("GIF generation error:", err));
+    createAnimatedGif(photos, themeId, colorFilterId).then((gif) => {
+      if (!cancelled) {
+        setGifUrl(gif);
+      }
+    }).catch((err) => console.warn("GIF generation error:", err));
 
- return () => { cancelled = true; };
- }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => { cancelled = true; };
+  }, [phase]);
 
  // Auto-upload both Photo Strip and Animated GIF to Cloudinary/ImgBB for QR code
  useEffect(() => {
@@ -874,7 +884,7 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  <div ref={flashRef} className="pointer-events-none absolute inset-0 bg-white" style={{ opacity: 0 }} aria-hidden />
 
  {phase === "countdown" && (
- <Countdown from={timerSec} duration={1} onComplete={handleCountdownComplete} />
+    <Countdown from={timerSec} duration={1} soundEnabled={soundEnabled} onComplete={handleCountdownComplete} />
  )}
 
  {phase === "between" && (
@@ -943,7 +953,7 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  </div>
 
  <div className="flex items-center justify-between gap-2 flex-wrap">
- <div className="flex gap-2">
+ <div className="flex items-center gap-1.5 flex-wrap">
  <button
  onClick={() => setBeautyMode((v) => !v)}
  className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
@@ -957,6 +967,17 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
  >
  Lipstik
+ </button>
+ <button
+   onClick={() => setSoundEnabled((v) => !v)}
+   className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 ${
+     soundEnabled
+       ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
+       : "bg-gray-100 text-gray-400 border border-gray-200"
+   }`}
+   title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+ >
+   {soundEnabled ? "🔊 Suara ON" : "🔇 Mute"}
  </button>
  </div>
  <TimerChips

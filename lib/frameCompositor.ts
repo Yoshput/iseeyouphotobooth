@@ -1,5 +1,5 @@
 /**
- * frameCompositor.ts · Branded photo strip renderer with customizable Frame Themes & Color Filters
+ * frameCompositor.ts · Branded photo strip renderer & AR Try-On framed compositor
  */
 
 import type { FrameLayout, PhotoSlot } from "./frameLayouts";
@@ -116,7 +116,6 @@ function drawCoverImage(
   const dx = slot.x + (slot.w - dw) / 2;
   const dy = slot.y + (slot.h - dh) / 2;
 
-  // Apply photo filter
   const filter = COLOR_FILTERS.find((f) => f.id === colorFilterId) || COLOR_FILTERS[0];
   ctx.filter = filter.cssFilter;
   ctx.drawImage(img, dx, dy, dw, dh);
@@ -128,7 +127,6 @@ function drawCoverImage(
 
   ctx.restore();
 
-  // Inner shadow
   ctx.save();
   ctx.beginPath();
   ctx.roundRect(slot.x, slot.y, slot.w, slot.h, radius);
@@ -141,7 +139,6 @@ function drawCoverImage(
   ctx.fill();
   ctx.restore();
 
-  // Border
   ctx.save();
   ctx.beginPath();
   ctx.roundRect(slot.x, slot.y, slot.w, slot.h, radius);
@@ -192,7 +189,7 @@ export async function compositeFrame(
   canvas.height = height;
   const ctx = canvas.getContext("2d")!;
 
-  // ── Background ──────────────────────────────────────────────────────────────
+  // Background
   const bg = ctx.createLinearGradient(0, 0, 0, height);
   bg.addColorStop(0, theme.bgColor);
   bg.addColorStop(1, theme.bgGradEnd);
@@ -213,13 +210,13 @@ export async function compositeFrame(
   ctx.globalAlpha = 1;
   ctx.restore();
 
-  // ── Top accent bar ──────────────────────────────────────────────────────────
+  // Top accent bar
   ctx.fillStyle = theme.topBarColor;
   ctx.fillRect(0, 0, width, 10);
   ctx.fillStyle = theme.accentBarColor;
   ctx.fillRect(0, 10, width, 4);
 
-  // ── Header area ─────────────────────────────────────────────────────────────
+  // Header area
   const HEADER_H = 148;
   try {
     const logo = await loadImage(logoSrc);
@@ -261,7 +258,7 @@ export async function compositeFrame(
   ctx.stroke();
   ctx.restore();
 
-  // ── Photo slots ──────────────────────────────────────────────────────────────
+  // Photo slots
   for (let i = 0; i < layout.slots.length; i++) {
     const slot = layout.slots[i];
     if (photos[i]) {
@@ -276,7 +273,7 @@ export async function compositeFrame(
     }
   }
 
-  // ── Footer divider ───────────────────────────────────────────────────────────
+  // Footer divider
   const FOOTER_Y = height - 148;
   ctx.save();
   const fDivGrad = ctx.createLinearGradient(0, FOOTER_Y, width, FOOTER_Y);
@@ -291,7 +288,7 @@ export async function compositeFrame(
   ctx.stroke();
   ctx.restore();
 
-  // ── Footer text ─────────────────────────────────────────────────────────────
+  // Footer text
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   const footerCenterY = FOOTER_Y + (height - 14 - FOOTER_Y) / 2;
@@ -310,11 +307,127 @@ export async function compositeFrame(
   ctx.fillText("Optik I See You · Purwokerto", width / 2, footerCenterY + 48);
   ctx.globalAlpha = 1;
 
-  // ── Bottom accent bars ───────────────────────────────────────────────────────
+  // Bottom accent bars
   ctx.fillStyle = theme.accentBarColor;
   ctx.fillRect(0, height - 14, width, 4);
   ctx.fillStyle = theme.topBarColor;
   ctx.fillRect(0, height - 10, width, 10);
 
   return canvas.toDataURL("image/jpeg", 0.93);
+}
+
+/**
+ * Composites a branded AR Try-On frame photo:
+ * - Header: "Try On — Optik I See You"
+ * - Tagline: "for every you" (DM Serif Display style)
+ * - Optional glasses model badge
+ * - Footer: "@iseeyou.glasses · Optik I See You"
+ */
+export async function compositeArTryOnFrame(
+  photoUrl: string,
+  arGlassesName?: string,
+  logoSrc = "/logo.png"
+): Promise<string> {
+  const canvas = document.createElement("canvas");
+  const img = await loadImage(photoUrl);
+
+  const padding = 36;
+  const headerHeight = 130;
+  const footerHeight = 90;
+
+  const width = img.width + padding * 2;
+  const height = img.height + headerHeight + footerHeight + padding;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d")!;
+
+  // White gradient background
+  const bg = ctx.createLinearGradient(0, 0, 0, height);
+  bg.addColorStop(0, "#FFFFFF");
+  bg.addColorStop(1, "#F4F9F5");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, width, height);
+
+  // Top accent bars
+  ctx.fillStyle = "#116B3C";
+  ctx.fillRect(0, 0, width, 8);
+  ctx.fillStyle = "#2FA84F";
+  ctx.fillRect(0, 8, width, 4);
+
+  // Draw Logo & "Try On — Optik I See You" Header
+  try {
+    const logo = await loadImage(logoSrc);
+    const maxH = 54;
+    const scale = maxH / logo.height;
+    const lw = logo.width * scale;
+    ctx.drawImage(logo, padding, 24, lw, maxH);
+  } catch (err) {
+    ctx.fillStyle = "#116B3C";
+    ctx.font = "bold 28px Georgia, serif";
+    ctx.fillText("OPTIK I SEE YOU", padding, 55);
+  }
+
+  // Draw "Try On" Badge
+  ctx.save();
+  ctx.fillStyle = "#116B3C";
+  ctx.font = "bold 22px 'Inter', sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillText("Try On — Optik I See You", width - padding, 48);
+
+  // Draw "for every you" Slogan in DM Serif style
+  ctx.fillStyle = "#000000";
+  ctx.font = "24px 'DM Serif Display', Georgia, serif";
+  ctx.fillText("for every you", width - padding, 82);
+  ctx.restore();
+
+  // Draw Main Photo
+  const photoY = headerHeight;
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(padding, photoY, img.width, img.height, 20);
+  ctx.clip();
+  ctx.drawImage(img, padding, photoY, img.width, img.height);
+  ctx.restore();
+
+  // Photo border
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(padding, photoY, img.width, img.height, 20);
+  ctx.strokeStyle = "rgba(17, 107, 60, 0.25)";
+  ctx.lineWidth = 4;
+  ctx.stroke();
+  ctx.restore();
+
+  // Optional Glasses Model Overlay Badge on Photo
+  if (arGlassesName) {
+    ctx.save();
+    const badgeY = photoY + img.height - 54;
+    const badgeX = padding + 16;
+    ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
+    ctx.beginPath();
+    ctx.roundRect(badgeX, badgeY, 260, 38, 12);
+    ctx.fill();
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 15px 'Inter', sans-serif";
+    ctx.fillText(`Model: ${arGlassesName}`, badgeX + 16, badgeY + 24);
+    ctx.restore();
+  }
+
+  // Footer
+  const footerY = photoY + img.height + 36;
+  ctx.save();
+  ctx.fillStyle = "#116B3C";
+  ctx.font = "bold 18px 'Inter', sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("@iseeyou.glasses · Optik I See You Purwokerto", width / 2, footerY);
+  ctx.restore();
+
+  // Bottom accent bar
+  ctx.fillStyle = "#116B3C";
+  ctx.fillRect(0, height - 8, width, 8);
+
+  return canvas.toDataURL("image/jpeg", 0.95);
 }

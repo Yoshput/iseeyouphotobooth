@@ -6,6 +6,7 @@
 :root {
   --font-inter: "Inter", system-ui, sans-serif;
   --font-playfair: "Playfair Display", Georgia, serif;
+  --font-dm-serif: "DM Serif Display", Georgia, serif;
 }
 
 html,

@@ -17,11 +17,6 @@ export const metadata: Metadata = {
  title: "I See You — AR Photobooth",
  description:
  "Coba kacamata langsung dari kamera, tanpa ribet. Gratis di Optik I See You Purwokerto.",
- icons: {
-   icon: "/icon.svg",
-   shortcut: "/icon.svg",
-   apple: "/icon.svg",
- },
  openGraph: {
  title: "I See You AR Photobooth",
  description: "Pilih kacamata favoritmu dan foto bareng! ",
@@ -35,7 +30,7 @@ export const viewport: Viewport = {
  maximumScale: 1,
  userScalable: false,
  viewportFit: "cover",
- themeColor: "#116B3C",
+ themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -46,13 +41,11 @@ export default function RootLayout({
  return (
  <html lang="id">
  <head>
- <link rel="icon" type="image/svg+xml" href="/icon.svg" />
- <link rel="apple-touch-icon" href="/icon.svg" />
  {/* Google Fonts via standard CSS link — works in static export */}
  <link rel="preconnect" href="https://fonts.googleapis.com" />
  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
  <link
- href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+ href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
  rel="stylesheet"
  />
  </head>

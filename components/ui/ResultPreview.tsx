@@ -17,6 +17,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import type { FrameLayout } from "@/lib/frameLayouts";
 import { csWhatsappUrl } from "@/lib/branches";
+import { downloadOrShareImage } from "@/lib/saveImage";
 
 interface Props {
  compositeDataUrl: string;
@@ -105,45 +106,41 @@ export default function ResultPreview({ compositeDataUrl, layout, onRetake, onCh
  setTimeout(() => setToast(null), 3200);
  };
 
- // ── Download ───────────────────────────────────────────────────────────────
- const download = () => {
- const a = document.createElement("a");
- a.href = compositeDataUrl;
- a.download = `iseeyou-photobooth-${Date.now()}.jpg`;
- a.click();
- showToast("Foto tersimpan! ");
+ // ── Download / Save — cross-platform (iOS Share Sheet / Android / Desktop) ──
+ const filename = `iseeyou-photobooth-${Date.now()}.jpg`;
+
+ const download = async () => {
+   showToast("Menyimpan foto...");
+   const result = await downloadOrShareImage(compositeDataUrl, filename, "Optik I See You — Photobooth");
+   if (result.method === "share") {
+     showToast("Foto siap disimpan! ");
+   } else if (result.method === "download") {
+     showToast("Foto tersimpan! ");
+   } else {
+     // preview fallback — guide user to long-press save on iOS
+     showToast("Tekan & tahan foto, lalu pilih 'Simpan' ");
+   }
  };
 
- // ── Share (Web Share API fallback) ──────────────────────────────────────
+ // ── Share ──────────────────────────────────────────────────────────────
  const shareText =
- "Coba kacamata di @iseeyou.glasses AR Photobooth! \n" +
- "Kunjungi: https://www.instagram.com/iseeyou.glasses/";
+   "Coba kacamata di @iseeyou.glasses AR Photobooth! \n" +
+   "Kunjungi: https://www.instagram.com/iseeyou.glasses/";
 
  const share = async (platform: "whatsapp" | "instagram" | "general") => {
- // Prefer native share sheet with file (works on Android/iOS/tablet)
- if (typeof navigator.canShare === "function") {
- try {
- const blob = await (await fetch(compositeDataUrl)).blob();
- const file = new File([blob], "iseeyou-photobooth.jpg", { type: "image/jpeg" });
- if (navigator.canShare({ files: [file] })) {
- await navigator.share({ files: [file], title: "I See You AR Photobooth", text: shareText });
- return;
- }
- } catch (e) {
- if ((e as Error).name === "AbortError") return;
- }
- }
+   // Always try native share sheet first (iOS & Android)
+   const result = await downloadOrShareImage(compositeDataUrl, filename, "I See You AR Photobooth");
+   if (result.method === "share") return; // native share handled it
 
- // Fallback: download first, then open platform URL
- download();
- if (platform === "whatsapp") {
- setTimeout(() => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank"), 800);
- } else if (platform === "instagram") {
- setTimeout(() => window.open("https://www.instagram.com/iseeyou.glasses/", "_blank"), 800);
- showToast("Foto diunduh — buka Instagram & share dari galeri! ");
- } else {
- showToast("Foto diunduh! Sekarang bisa dibagikan ");
- }
+   // Desktop / browser fallback
+   if (platform === "whatsapp") {
+     window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
+   } else if (platform === "instagram") {
+     window.open("https://www.instagram.com/iseeyou.glasses/", "_blank");
+     showToast("Foto diunduh — buka Instagram & share dari galeri! ");
+   } else {
+     showToast("Foto diunduh! Sekarang bisa dibagikan ");
+   }
  };
 
  return (
