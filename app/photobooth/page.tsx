@@ -23,7 +23,7 @@ import FramePicker from "@/components/ui/FramePicker";
 import { FRAME_LAYOUTS, type FrameLayout } from "@/lib/frameLayouts";
 import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, type FrameTheme } from "@/lib/frameCompositor";
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
-import { detectFaceShape, SHAPE_META, type FaceShapeResult } from "@/lib/faceShape";
+import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
 import { csWhatsappUrl } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
@@ -47,6 +47,7 @@ interface GlassesMeta {
  id: string; name: string; file: string;
  fitWidthRatio: number; style: string;
  recommendedFor: string[]; color: string;
+ lensType?: string;
 }
 
 const manifest = manifestRaw as GlassesMeta[];
@@ -576,22 +577,45 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  const showShutter = phase === "ready";
  const rightActive = phase !== "frame-select";
 
- const showToast = useCallback((msg: string) => {
+const showToast = useCallback((msg: string) => {
  setToast(msg);
  setTimeout(() => setToast(null), 3000);
  }, []);
 
- const handleFaceCountChange = (c: number) => {
- const detected = c > 0;
- setFaceDetected(detected);
- if (arEnabled && detected && !scanComplete && !isScanning) {
- setIsScanning(true);
- setTimeout(() => {
- setIsScanning(false);
- setScanComplete(true);
- }, 2500);
- }
- };
+  const lastShapeRef = useRef<string | null>(null);
+
+  const selectRandomMatchingGlassesForShape = useCallback((shape: FaceShape) => {
+    const candidateIndices = manifest
+      .map((g, i) => ({ g, i }))
+      .filter(({ g }) => {
+        const isOpen = !g.lensType || g.lensType === "open";
+        return isOpen && Array.isArray(g.recommendedFor) && g.recommendedFor.includes(shape);
+      })
+      .map(({ i }) => i);
+
+    if (candidateIndices.length > 0) {
+      const randomIdx = candidateIndices[Math.floor(Math.random() * candidateIndices.length)];
+      setGlassesIndex(randomIdx);
+    } else {
+      const openIdx = manifest.findIndex((g) => (!g.lensType || g.lensType === "open") && g.id !== "none");
+      if (openIdx >= 0) setGlassesIndex(openIdx);
+    }
+  }, []);
+
+  const handleFaceCountChange = (c: number) => {
+    const detected = c > 0;
+    setFaceDetected(detected);
+    if (arEnabled && detected && !scanComplete && !isScanning) {
+      setIsScanning(true);
+    }
+  };
+
+  const handleReScan = useCallback(() => {
+    if (!arEnabled) return;
+    lastShapeRef.current = null;
+    setScanComplete(false);
+    setIsScanning(true);
+  }, [arEnabled]);
 
   const downloadStrip = useCallback(async () => {
     if (!compositeUrl) return;
@@ -614,6 +638,8 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
   }, [gifUrl, showToast]);
 
  const resetSession = useCallback(() => {
+ setScanComplete(false);
+ setIsScanning(false);
  setPhotos([]);
  setCurrentSlot(0);
  setSingleSlotRetake(null);
@@ -621,7 +647,6 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  setGifUrl(null);
  setUploadedUrl(null);
  setUploadPhase("idle");
- setScanComplete(false);
  }, []);
 
  const handleLayoutSelect = useCallback((chosen: FrameLayout) => {
@@ -634,9 +659,13 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  resetSession();
  if (arEnabled) {
  setLayout(FRAME_LAYOUTS[0]);
+ // Jika wajah sudah terdeteksi, langsung re-enable tombol tanpa scanning lagi
+ if (faceDetected) {
+ setScanComplete(true);
+ }
  }
  setPhase("ready");
- }, [resetSession, arEnabled]);
+ }, [resetSession, arEnabled, faceDetected]);
 
  // SELECTIVE RETAKE: Reshoot only one specific photo slot!
  const handleRetakeSingleSlot = useCallback((slotIdx: number) => {
@@ -832,54 +861,31 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
 
  <div className="relative h-full w-full overflow-hidden">
  <FaceTracker
- ref={faceTrackerRef}
- glassesSrc={arEnabled && glasses.file ? `/glasses/${glasses.file}` : ""}
- fitWidthRatio={glasses.fitWidthRatio}
- numFaces={layout.numPhotos}
- beautyMode={beautyMode}
- lipstickMode={lipstickMode}
- onFaceCountChange={handleFaceCountChange}
- onLandmarksChange={(lm) => {
- if (!arEnabled || !aiMode || !lm) return;
- const r = detectFaceShape(lm);
- if (r.confidence > 0.3) {
- setFaceResult(r);
- const idx = manifest.findIndex((g) => g.id === r.recommendedGlassesId);
- if (idx >= 0) setGlassesIndex(idx);
- }
- }}
- />
-
-  {/* 2.5-second AR Face Scanning Animation Overlay */}
-  {isScanning && (
-  <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center">
-  {/* Dark overlay */}
-  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-  {/* Scan frame */}
-  <div className="relative z-10 flex flex-col items-center gap-4">
-  <div className="relative h-48 w-36">
-  {/* Corner brackets */}
-  <div className="absolute top-0 left-0 h-8 w-8 border-t-4 border-l-4 border-isy-green-bright rounded-tl-lg" />
-  <div className="absolute top-0 right-0 h-8 w-8 border-t-4 border-r-4 border-isy-green-bright rounded-tr-lg" />
-  <div className="absolute bottom-0 left-0 h-8 w-8 border-b-4 border-l-4 border-isy-green-bright rounded-bl-lg" />
-  <div className="absolute bottom-0 right-0 h-8 w-8 border-b-4 border-r-4 border-isy-green-bright rounded-br-lg" />
-  {/* Horizontal scan line animation */}
-  <div
-  className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-isy-green-bright to-transparent shadow-[0_0_12px_2px_rgba(47,168,79,0.8)]"
-  style={{ animation: "scanline 1.2s ease-in-out infinite alternate" }}
+  ref={faceTrackerRef}
+  glassesSrc={arEnabled && glasses.file ? `/glasses/${glasses.file}` : ""}
+  fitWidthRatio={glasses.fitWidthRatio}
+  numFaces={layout.numPhotos}
+  beautyMode={beautyMode}
+  lipstickMode={lipstickMode}
+  scanIntro={isScanning}
+  faceResult={faceResult}
+  onScanIntroComplete={() => {
+    setIsScanning(false);
+    setScanComplete(true);
+  }}
+  onFaceCountChange={handleFaceCountChange}
+  onLandmarksChange={(lm) => {
+  if (!arEnabled || !aiMode || !lm) return;
+  const r = detectFaceShape(lm);
+  if (r.confidence > 0.3) {
+  setFaceResult(r);
+  if (lastShapeRef.current !== r.shape) {
+    lastShapeRef.current = r.shape;
+    selectRandomMatchingGlassesForShape(r.shape);
+  }
+  }
+  }}
   />
-  </div>
-  <div className="flex flex-col items-center gap-1.5">
-  <p className="text-sm font-black text-white tracking-wide">Scanning Bentuk Wajah…</p>
-  <div className="flex gap-1.5">
-  {[0, 1, 2].map((i) => (
-  <div key={i} className="h-1.5 w-1.5 animate-bounce rounded-full bg-isy-green-bright" style={{ animationDelay: `${i * 0.2}s` }} />
-  ))}
-  </div>
-  </div>
-  </div>
-  </div>
-  )}
 
  <div ref={flashRef} className="pointer-events-none absolute inset-0 bg-white" style={{ opacity: 0 }} aria-hidden />
 
@@ -939,13 +945,23 @@ const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
  {shooting && (
  <div className="flex shrink-0 flex-col gap-3 border-b border-isy-line px-4 py-3">
 
- <div className="flex items-center justify-between">
- {arEnabled && (
- <div className="flex items-center gap-2">
- <AIModeToggle on={aiMode} onToggle={() => setAiMode((v) => !v)} />
- {aiMode && <FaceHUD result={faceResult} />}
- </div>
- )}
+  <div className="flex items-center justify-between flex-wrap gap-2">
+  {arEnabled && (
+  <div className="flex items-center gap-2 flex-wrap">
+  <AIModeToggle on={aiMode} onToggle={() => setAiMode((v) => !v)} />
+  {aiMode && <FaceHUD result={faceResult} />}
+  <button
+    onClick={handleReScan}
+    title="Scan Ulang Wajah"
+    className="flex items-center gap-1 rounded-full border border-isy-line bg-isy-mist/70 px-2.5 py-1 text-[10px] font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white hover:text-isy-green-bright transition-all active:scale-95 shadow-2xs"
+  >
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+    </svg>
+    Scan Ulang
+  </button>
+  </div>
+  )}
  <div className={`flex items-center gap-1 text-[10px] font-bold ${faceDetected ? "text-isy-green-bright" : "text-isy-ink/30"}`}>
  <span className={`h-1.5 w-1.5 rounded-full ${faceDetected ? "animate-pulse bg-isy-green-bright" : "bg-isy-ink/20"}`} />
  {faceDetected ? "Terdeteksi" : "Tidak ada wajah"}

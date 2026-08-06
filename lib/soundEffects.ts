@@ -147,60 +147,54 @@ export function playShutterSound(enabled: boolean = true) {
 }
 
 /**
- * Speaks countdown number ("3, 2, 1") using female voice + audio tone
+ * Plays countdown sound using pure AudioContext tones.
+ * Supports all timer values 1–10. No SpeechSynthesis (unreliable on tablets).
+ * - Final second (1): bright high-pitched double beep
+ * - Last 3 seconds (2-3): medium-high beep
+ * - Earlier seconds (4+): soft medium beep
  */
 export function speakCountdownNumber(num: number, enabled: boolean = true) {
   if (!enabled) return;
 
-  // 1. Play audio tick beep tone
   try {
     const ctx = getAudioContext();
-    if (ctx) {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(num === 1 ? 920 : 680, now);
-      gain.gain.setValueAtTime(0.35, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    if (!ctx) return;
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.12);
+    const now = ctx.currentTime;
+
+    // Tone parameters based on number
+    const isFinal = num === 1;
+    const isNearEnd = num <= 3;
+    const freq = isFinal ? 1050 : isNearEnd ? 820 : 660;
+    const gain = isFinal ? 0.5 : 0.38;
+    const duration = isFinal ? 0.18 : 0.13;
+
+    const playTone = (startTime: number) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, startTime);
+      // Slight frequency drop for natural feel
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.92, startTime + duration);
+
+      g.gain.setValueAtTime(0, startTime);
+      g.gain.linearRampToValueAtTime(gain, startTime + 0.012); // fast attack
+      g.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+      osc.connect(g);
+      g.connect(ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.02);
+    };
+
+    // Final second → double beep (bip-bip!)
+    if (isFinal) {
+      playTone(now);
+      playTone(now + 0.22);
+    } else {
+      playTone(now);
     }
   } catch (err) {
-    // Ignore synth error
-  }
-
-  // 2. Female Voice Speech Synthesis
-  if (typeof window !== "undefined" && "speechSynthesis" in window) {
-    try {
-      window.speechSynthesis.cancel();
-      const numText = num === 3 ? "Tiga" : num === 2 ? "Dua" : "Satu";
-      const utterance = new SpeechSynthesisUtterance(numText);
-      utterance.lang = "id-ID";
-      utterance.rate = 1.15;
-      utterance.pitch = 1.25; // female voice pitch
-
-      const voices = window.speechSynthesis.getVoices();
-      const femaleVoice = voices.find(
-        (v) =>
-          (v.lang.startsWith("id") || v.lang.startsWith("en")) &&
-          (v.name.includes("Female") ||
-            v.name.includes("Google") ||
-            v.name.includes("Gadis") ||
-            v.name.includes("Damayanti") ||
-            v.name.includes("Zira") ||
-            v.name.includes("Samantha"))
-      );
-      if (femaleVoice) {
-        utterance.voice = femaleVoice;
-      }
-
-      window.speechSynthesis.speak(utterance);
-    } catch (e) {
-      // Speech synthesis fallback
-    }
+    // Ignore audio error
   }
 }

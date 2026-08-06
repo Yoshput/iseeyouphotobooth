@@ -86,8 +86,8 @@ export function mapsDirectionsUrl(branch: Branch) {
   return `https://www.google.com/maps/dir/?api=1&destination=${branch.lat},${branch.lng}`;
 }
 
-export const CS_WHATSAPP_NUMBER = "628214601328";
-export const KONSULTASI_WA_NUMBER = "6289618311845";
+export const CS_WHATSAPP_NUMBER = "62895415614261";
+export const KONSULTASI_WA_NUMBER = "62895415614261";
 export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
 export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=ShopBySearch&searchKeyword=iseeyou.id";
 

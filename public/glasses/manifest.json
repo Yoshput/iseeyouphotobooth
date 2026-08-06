@@ -6,25 +6,58 @@
     "fitWidthRatio": 0,
     "style": "Normal",
     "recommendedFor": [],
-    "color": "#94a3b8"
+    "color": "#94a3b8",
+    "lensType": "open"
   },
   {
-    "id": "square-black",
-    "name": "Metro Square",
-    "file": "square-black.png",
+    "id": "aviator-frame",
+    "name": "Aviator Silver",
+    "file": "aviator-frame.png",
+    "fitWidthRatio": 1.48,
+    "style": "Aviator",
+    "recommendedFor": ["Oval", "Square", "Oblong"],
+    "color": "#C0C0C0",
+    "lensType": "open"
+  },
+  {
+    "id": "cateye-frame",
+    "name": "Cat-Eye Signature",
+    "file": "cateye-frame.png",
+    "fitWidthRatio": 1.44,
+    "style": "Cat-Eye",
+    "recommendedFor": ["Heart", "Oval", "Round"],
+    "color": "#8B4513",
+    "lensType": "open"
+  },
+  {
+    "id": "square-frame",
+    "name": "Metro Square Black",
+    "file": "square-frame.png",
     "fitWidthRatio": 1.42,
     "style": "Square",
     "recommendedFor": ["Round", "Oval", "Diamond"],
-    "color": "#1a1a1a"
+    "color": "#1a1a1a",
+    "lensType": "open"
   },
   {
-    "id": "cateye-tortoise",
-    "name": "Cat-Eye Tortoise",
-    "file": "cateye-tortoise.png",
+    "id": "oval-frame",
+    "name": "Classic Oval Frame",
+    "file": "oval-frame.png",
+    "fitWidthRatio": 1.42,
+    "style": "Oval",
+    "recommendedFor": ["Square", "Oblong", "Heart", "Diamond"],
+    "color": "#334155",
+    "lensType": "open"
+  },
+  {
+    "id": "clubmaster-frame",
+    "name": "Clubmaster Browline",
+    "file": "clubmaster-frame.png",
     "fitWidthRatio": 1.45,
-    "style": "Cat-Eye",
-    "recommendedFor": ["Heart", "Oval", "Round"],
-    "color": "#8B4513"
+    "style": "Browline",
+    "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond"],
+    "color": "#262626",
+    "lensType": "open"
   },
   {
     "id": "round-gold",
@@ -33,16 +66,8 @@
     "fitWidthRatio": 1.4,
     "style": "Round",
     "recommendedFor": ["Square", "Heart", "Diamond"],
-    "color": "#D4AF37"
-  },
-  {
-    "id": "aviator-silver",
-    "name": "Aviator Silver",
-    "file": "aviator-silver.png",
-    "fitWidthRatio": 1.5,
-    "style": "Aviator",
-    "recommendedFor": ["Oval", "Square", "Oblong"],
-    "color": "#C0C0C0"
+    "color": "#D4AF37",
+    "lensType": "open"
   },
   {
     "id": "clear-antirad",
@@ -51,6 +76,7 @@
     "fitWidthRatio": 1.42,
     "style": "Transparan",
     "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
-    "color": "#E8F4FD"
+    "color": "#E8F4FD",
+    "lensType": "open"
   }
 ]
