@@ -76,21 +76,29 @@ function AIModeToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
  );
 }
 
-function FaceHUD({ result }: { result: FaceShapeResult | null }) {
+function FaceHUD({ result, analyzing }: { result: FaceShapeResult | null; analyzing?: boolean }) {
+ if (analyzing) {
+  return (
+  <div className="flex items-center gap-1.5 text-xs text-isy-ink/50">
+  <span className="h-1.5 w-1.5 animate-ping rounded-full bg-isy-green-bright" />
+  Menganalisis…
+  </div>
+  );
+ }
  if (!result || result.confidence < 0.3) {
- return (
- <div className="flex items-center gap-1.5 text-xs text-isy-ink/40">
- <span className="h-1.5 w-1.5 rounded-full bg-isy-line" />
- Arahkan wajah ke kamera
- </div>
- );
+  return (
+  <div className="flex items-center gap-1.5 text-xs text-isy-ink/40">
+  <span className="h-1.5 w-1.5 rounded-full bg-isy-line" />
+  Arahkan wajah ke kamera
+  </div>
+  );
  }
  const meta = SHAPE_META[result.shape];
  return (
- <div className="flex flex-col gap-0.5">
- <p className="text-xs font-black text-isy-green-deep leading-none">{meta.label}</p>
- <p className="text-[10px] text-isy-ink/50 leading-none"> {meta.style}</p>
- </div>
+  <div className="flex flex-col gap-0.5">
+  <p className="text-xs font-black text-isy-green-deep leading-none">{meta.label}</p>
+  <p className="text-[10px] text-isy-ink/50 leading-none"> {meta.style}</p>
+  </div>
  );
 }
 
@@ -584,6 +592,26 @@ const showToast = useCallback((msg: string) => {
 
   const lastShapeRef = useRef<string | null>(null);
 
+  /**
+   * AI Match lock state.
+   * - streak: consecutive frames with the same classified shape.
+   * - locked: true once streak reaches AI_LOCK_FRAMES → classification freezes.
+   * - shape:  shape string being tracked in the current streak.
+   * Reset on: face disappears, user clicks Scan Ulang.
+   */
+  const AI_LOCK_FRAMES = 10;
+  const aiLockRef = useRef<{ shape: string | null; streak: number; locked: boolean }>({
+    shape: null,
+    streak: 0,
+    locked: false,
+  });
+  const [aiAnalyzing, setAiAnalyzing] = useState(false);
+
+  const resetAiLock = useCallback(() => {
+    aiLockRef.current = { shape: null, streak: 0, locked: false };
+    setAiAnalyzing(false);
+  }, []);
+
   const selectRandomMatchingGlassesForShape = useCallback((shape: FaceShape) => {
     const candidateIndices = manifest
       .map((g, i) => ({ g, i }))
@@ -608,14 +636,20 @@ const showToast = useCallback((msg: string) => {
     if (arEnabled && detected && !scanComplete && !isScanning) {
       setIsScanning(true);
     }
+    // Reset AI lock when face disappears so next appearance re-classifies
+    if (!detected) {
+      resetAiLock();
+      lastShapeRef.current = null;
+    }
   };
 
   const handleReScan = useCallback(() => {
     if (!arEnabled) return;
     lastShapeRef.current = null;
+    resetAiLock();
     setScanComplete(false);
     setIsScanning(true);
-  }, [arEnabled]);
+  }, [arEnabled, resetAiLock]);
 
   const downloadStrip = useCallback(async () => {
     if (!compositeUrl) return;
@@ -874,15 +908,39 @@ const showToast = useCallback((msg: string) => {
     setScanComplete(true);
   }}
   onFaceCountChange={handleFaceCountChange}
+  ipdScaleRef={(glasses as any).ipdScaleRef ?? 1.5}
   onLandmarksChange={(lm) => {
   if (!arEnabled || !aiMode || !lm) return;
+  // Once locked, skip re-classification until explicitly reset
+  if (aiLockRef.current.locked) return;
+
   const r = detectFaceShape(lm);
-  if (r.confidence > 0.3) {
+  if (r.confidence <= 0.3) return;
+
+  // Accumulate streak of same shape
+  const lock = aiLockRef.current;
+  if (lock.shape === r.shape) {
+    lock.streak++;
+  } else {
+    lock.shape = r.shape;
+    lock.streak = 1;
+    // Show analyzing indicator when shape changes mid-streak
+    if (!aiAnalyzing) setAiAnalyzing(true);
+  }
+
+  // Still building streak — show analyzing badge, don't commit result yet
+  if (lock.streak < AI_LOCK_FRAMES) {
+    if (!aiAnalyzing) setAiAnalyzing(true);
+    return;
+  }
+
+  // Streak reached — lock the result
+  lock.locked = true;
+  setAiAnalyzing(false);
   setFaceResult(r);
   if (lastShapeRef.current !== r.shape) {
     lastShapeRef.current = r.shape;
     selectRandomMatchingGlassesForShape(r.shape);
-  }
   }
   }}
   />
@@ -949,7 +1007,7 @@ const showToast = useCallback((msg: string) => {
   {arEnabled && (
   <div className="flex items-center gap-2 flex-wrap">
   <AIModeToggle on={aiMode} onToggle={() => setAiMode((v) => !v)} />
-  {aiMode && <FaceHUD result={faceResult} />}
+  {aiMode && <FaceHUD result={faceResult} analyzing={aiAnalyzing} />}
   <button
     onClick={handleReScan}
     title="Scan Ulang Wajah"

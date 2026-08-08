@@ -1,10 +1,26 @@
 "use client";
 
 /**
- * FaceTracker.tsx · AR layer (HD camera + glasses + scan-ring indicator + HD skin glow + FaceScanIntro)
+ * FaceTracker.tsx · AR layer
+ *
+ * Improvements over previous version:
+ *  - Passes deltaTime from useFaceTracking to GlassesRenderer for
+ *    frame-rate-independent EMA smoothing.
+ *  - Passes ipdScaleRef from glasses manifest to GlassesRenderer.
+ *  - Warm-up frames (first 20) are flagged — onLandmarksChange is skipped
+ *    during warm-up so the parent's AI classification doesn't see junk data.
+ *  - Camera init: 3-tier fallback (1080p → 720p → any), waits for
+ *    HAVE_ENOUGH_DATA before setting cameraReady, re-reads video dimensions
+ *    on orientationchange / resize (iOS landscape-in-portrait quirk).
  */
 
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { gsap } from "gsap";
 import { useFaceTracking } from "@/hooks/useFaceTracking";
 import { useElementSize } from "@/hooks/useElementSize";
@@ -21,6 +37,8 @@ export interface FaceTrackerHandle {
 interface Props {
   glassesSrc: string;
   fitWidthRatio: number;
+  /** Per-model IPD scale ref from manifest (default 1.5). */
+  ipdScaleRef?: number;
   numFaces?: number;
   className?: string;
   beautyMode?: boolean;
@@ -58,8 +76,8 @@ function triggerScanRing(
   }
 
   ring.style.left = `${cx - r}px`;
-  ring.style.top = `${cy - r}px`;
-  ring.style.width = `${r * 2}px`;
+  ring.style.top  = `${cy - r}px`;
+  ring.style.width  = `${r * 2}px`;
   ring.style.height = `${r * 2}px`;
 
   gsap.killTweensOf(ring);
@@ -81,6 +99,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
     {
       glassesSrc,
       fitWidthRatio,
+      ipdScaleRef = 1.5,
       numFaces = 1,
       className = "",
       beautyMode = false,
@@ -93,26 +112,26 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
     },
     ref
   ) {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const rendererRef = useRef<GlassesRendererHandle>(null);
+    const videoRef        = useRef<HTMLVideoElement>(null);
+    const rendererRef     = useRef<GlassesRendererHandle>(null);
     const { ref: containerRef, size } = useElementSize<HTMLDivElement>();
     const ringContainerRef = useRef<HTMLDivElement>(null);
 
-    const [videoSize, setVideoSize] = useState({ width: 1920, height: 1080 });
+    const [videoSize, setVideoSize]     = useState({ width: 1920, height: 1080 });
     const [cameraReady, setCameraReady] = useState(false);
     const [cameraError, setCameraError] = useState<string | null>(null);
     const [rawLandmarks, setRawLandmarks] = useState<Array<{ x: number; y: number; z: number }> | null>(null);
 
-    const prevFaceCountRef = useRef(0);
-    const lastRingTimeRef = useRef<Record<number, number>>({});
+    const prevFaceCountRef  = useRef(0);
+    const lastRingTimeRef   = useRef<Record<number, number>>({});
 
-    const onFaceCountChangeRef = useRef(onFaceCountChange);
+    const onFaceCountChangeRef  = useRef(onFaceCountChange);
     onFaceCountChangeRef.current = onFaceCountChange;
-    const onLandmarksChangeRef = useRef(onLandmarksChange);
+    const onLandmarksChangeRef  = useRef(onLandmarksChange);
     onLandmarksChangeRef.current = onLandmarksChange;
     const landmarkFrameRef = useRef(0);
 
-    // Suppress MediaPipe INFO logs
+    // ── Suppress noisy MediaPipe console output ───────────────────────────
     useEffect(() => {
       const orig = console.error.bind(console);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -129,30 +148,61 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         }
         orig(...args);
       };
-      return () => {
-        console.error = orig;
-      };
+      return () => { console.error = orig; };
     }, []);
 
-    // ── Ultra-HD 1080p Camera Initialization ─────────────────────────────
+    // ── Helper: read actual video dimensions & update state ───────────────
+    const readVideoDimensions = () => {
+      const v = videoRef.current;
+      if (!v) return;
+      const vw = v.videoWidth;
+      const vh = v.videoHeight;
+      if (vw > 0 && vh > 0) {
+        setVideoSize({ width: vw, height: vh });
+      }
+    };
+
+    // ── Camera initialization — 3-tier fallback ───────────────────────────
     useEffect(() => {
       let active = true;
       let stream: MediaStream | null = null;
 
+      async function waitForEnoughData(video: HTMLVideoElement, timeoutMs = 5000): Promise<boolean> {
+        if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) return true;
+        return new Promise((resolve) => {
+          const timer = setTimeout(() => {
+            video.removeEventListener("canplaythrough", onReady);
+            resolve(false); // timeout — proceed anyway
+          }, timeoutMs);
+          const onReady = () => {
+            clearTimeout(timer);
+            resolve(true);
+          };
+          video.addEventListener("canplaythrough", onReady, { once: true });
+        });
+      }
+
       async function initCamera() {
         setCameraError(null);
+        let gotStream = false;
+
+        // Tier 1: Full HD
         try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: "user",
+              width: { ideal: 1920, min: 1280 },
+              height: { ideal: 1080, min: 720 },
+              frameRate: { ideal: 30 },
+            },
+            audio: false,
+          });
+          gotStream = true;
+        } catch { /* fall through */ }
+
+        // Tier 2: HD
+        if (!gotStream) {
           try {
-            stream = await navigator.mediaDevices.getUserMedia({
-              video: {
-                facingMode: "user",
-                width: { ideal: 1920, min: 1280 },
-                height: { ideal: 1080, min: 720 },
-                frameRate: { ideal: 30 },
-              },
-              audio: false,
-            });
-          } catch {
             stream = await navigator.mediaDevices.getUserMedia({
               video: {
                 facingMode: "user",
@@ -161,25 +211,41 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
               },
               audio: false,
             });
-          }
+            gotStream = true;
+          } catch { /* fall through */ }
+        }
 
-          if (!active) {
-            stream?.getTracks().forEach((t) => t.stop());
+        // Tier 3: Any front camera (very restrictive devices / old iOS)
+        if (!gotStream) {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: "user" },
+              audio: false,
+            });
+            gotStream = true;
+          } catch (err) {
+            console.error("Camera access error:", err);
+            if (active) {
+              setCameraError(
+                "Kamera tidak dapat diakses. Mohon beri izin akses kamera di browser Anda."
+              );
+            }
             return;
           }
+        }
 
-          if (videoRef.current && stream) {
-            videoRef.current.srcObject = stream;
-            await videoRef.current.play().catch(() => {});
-            if (active) setCameraReady(true);
-          }
-        } catch (err) {
-          console.error("Camera access error:", err);
-          if (active) {
-            setCameraError(
-              "Kamera tidak dapat diakses. Mohon beri izin akses kamera di browser Anda."
-            );
-          }
+        if (!active) {
+          stream?.getTracks().forEach((t) => t.stop());
+          return;
+        }
+
+        if (videoRef.current && stream) {
+          videoRef.current.srcObject = stream;
+          await videoRef.current.play().catch(() => {});
+          // Wait for iOS to finish decoding the first frames
+          await waitForEnoughData(videoRef.current);
+          readVideoDimensions();
+          if (active) setCameraReady(true);
         }
       }
 
@@ -187,33 +253,43 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
 
       return () => {
         active = false;
-        if (stream) {
-          stream.getTracks().forEach((t) => t.stop());
-        }
+        stream?.getTracks().forEach((t) => t.stop());
         if (videoRef.current) {
           videoRef.current.srcObject = null;
         }
       };
     }, []);
 
+    // ── Re-read video size on orientation change (iOS landscape quirk) ────
+    useEffect(() => {
+      const handler = () => {
+        // Small delay: iOS fires orientationchange before video track updates
+        setTimeout(readVideoDimensions, 300);
+      };
+      window.addEventListener("orientationchange", handler);
+      window.addEventListener("resize", handler);
+      return () => {
+        window.removeEventListener("orientationchange", handler);
+        window.removeEventListener("resize", handler);
+      };
+    }, []);
+
     const handleLoadedMetadata = () => {
-      const v = videoRef.current;
-      if (v && v.videoWidth > 0) {
-        setVideoSize({ width: v.videoWidth, height: v.videoHeight });
-      }
+      readVideoDimensions();
     };
 
-    // ── Face tracking loop ──────────────────────────────────────────────
+    // ── Face tracking loop ────────────────────────────────────────────────
     useFaceTracking(
       videoRef,
-      (result) => {
+      (result, meta) => {
         if (glassesSrc) {
-          rendererRef.current?.updateFromResult(result);
+          // Pass deltaTime so GlassesRenderer uses time-based EMA
+          rendererRef.current?.updateFromResult(result, meta.deltaTime);
         }
 
         const faces = result.faceLandmarks ?? [];
-        const curr = faces.length;
-        const prev = prevFaceCountRef.current;
+        const curr  = faces.length;
+        const prev  = prevFaceCountRef.current;
 
         if (curr !== prev) {
           onFaceCountChangeRef.current?.(curr);
@@ -225,15 +301,20 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           setRawLandmarks(null);
         }
 
+        // Fire onLandmarksChange every 15 frames, but SKIP during warm-up
         landmarkFrameRef.current++;
-        if (landmarkFrameRef.current % 15 === 0 && onLandmarksChangeRef.current) {
+        if (
+          !meta.warmUp &&
+          landmarkFrameRef.current % 15 === 0 &&
+          onLandmarksChangeRef.current
+        ) {
           onLandmarksChangeRef.current(
             curr > 0 ? (faces[0] as Array<{ x: number; y: number; z: number }>) : null
           );
         }
 
         if (curr > prev && ringContainerRef.current) {
-          const video = videoRef.current;
+          const video     = videoRef.current;
           const container = containerRef.current;
           if (video && container) {
             const { width, height } = container.getBoundingClientRect();
@@ -244,25 +325,21 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
               height
             );
             for (let i = prev; i < curr; i++) {
-              const now = Date.now();
+              const now      = Date.now();
               const lastTime = lastRingTimeRef.current[i] ?? 0;
               if (now - lastTime < 2000) continue;
               lastRingTimeRef.current[i] = now;
 
-              const lm = faces[i] as NormalizedLandmark[];
-              const anchor = computeGlassesAnchor(
-                lm,
-                video.videoWidth,
-                video.videoHeight
-              );
-              const centerVid = {
+              const lm     = faces[i] as NormalizedLandmark[];
+              const anchor = computeGlassesAnchor(lm, video.videoWidth, video.videoHeight);
+              const centerVid  = {
                 x: anchor.centerNormalized.x * video.videoWidth,
                 y: anchor.centerNormalized.y * video.videoHeight,
               };
               const centerCont = videoPxToContainerPx(centerVid, t);
               const cx = width - centerCont.x;
               const cy = centerCont.y;
-              const r = anchor.eyeSpanPx * t.scale * 0.9;
+              const r  = anchor.eyeSpanPx * t.scale * 0.9;
 
               triggerScanRing(ringContainerRef.current, i, cx, cy, r);
             }
@@ -280,20 +357,19 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       { numFaces, enabled: cameraReady }
     );
 
-    // ── Exposed captureFrame (HD Crisp Capture) ──────────────────────────
+    // ── Exposed captureFrame ──────────────────────────────────────────────
     useImperativeHandle(ref, () => ({
       captureFrame() {
-        const video = videoRef.current;
+        const video     = videoRef.current;
         const container = containerRef.current;
         if (!video || !video.videoWidth || !container) return null;
 
         const { width, height } = container.getBoundingClientRect();
-
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const out = document.createElement("canvas");
-        out.width = Math.round(width * dpr);
+        out.width  = Math.round(width * dpr);
         out.height = Math.round(height * dpr);
-        const ctx = out.getContext("2d")!;
+        const ctx  = out.getContext("2d")!;
         ctx.scale(dpr, dpr);
 
         ctx.translate(width, 0);
@@ -378,6 +454,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
               videoHeight={videoSize.height}
               glassesSrc={glassesSrc}
               fitWidthRatio={fitWidthRatio}
+              ipdScaleRef={ipdScaleRef}
               maxFaces={numFaces}
             />
           </div>
