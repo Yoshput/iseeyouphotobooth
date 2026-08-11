@@ -1,7 +1,7 @@
 /**
  * lib/printing/cleanter.ts
  *
- * Cleanter Android Local Print Bridge Adapter for ESC/POS Thermal 80mm Printers (IWARE XS-80BT).
+ * Cleanter Android Local Print Bridge Adapter for ESC/POS Thermal 80mm Printers (IWARE XS-80BT / RPP02N).
  * Communicates via client-side HTTP POST to Cleanter local bridge (default http://localhost:9100/print).
  *
  * Cleanter PrintJob Request Schema:
@@ -13,7 +13,6 @@
  *   ]
  * }
  *
- * Supports Android Tablet Chrome, MacBook Safari/Chrome, and iPhone/iPad via Local / Wi-Fi IP Bridge.
  * 100% Client-Side & Static Export Compatible.
  */
 
@@ -28,6 +27,7 @@ export interface CleanterPrintOptions {
 export interface CleanterStatus {
   isAvailable: boolean;
   message: string;
+  detail?: string;
 }
 
 export type CleanterCommand =
@@ -41,10 +41,16 @@ export interface CleanterPrintJob {
   commands: CleanterCommand[];
 }
 
+export interface CleanterResult {
+  success: boolean;
+  message: string;
+  detail?: string;
+  requestPayload?: string;
+}
+
 const DEFAULT_CLEANTER_ENDPOINT = "http://localhost:9100/print";
 const DEFAULT_TIMEOUT_MS = 10000;
 
-// Track last executed jobId to prevent duplicate printing on safe retries
 let lastPrintedJobId = "";
 
 /**
@@ -80,7 +86,6 @@ export async function checkCleanterConnection(
       method: "OPTIONS",
       signal: controller.signal,
     }).catch(async () => {
-      // Fallback ping POST test if OPTIONS is blocked
       return await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,7 +99,7 @@ export async function checkCleanterConnection(
     if (response.ok || response.status === 400 || response.status === 405 || response.status === 200) {
       return {
         isAvailable: true,
-        message: "Cleanter Print Bridge siap (Terkoneksi ke IWARE XS-80BT)",
+        message: "Cleanter Print Bridge siap (Terkoneksi ke Printer)",
       };
     }
 
@@ -116,17 +121,16 @@ export async function checkCleanterConnection(
 
 /**
  * Sends photobooth receipt print job to Cleanter Android Print Bridge.
- * Uses official Cleanter JSON schema: { "commands": [ { "type": "image", ... }, { "type": "feed" }, { "type": "cut" } ] }
+ * Logs full request & response bodies to browser console for debugging.
  */
 export async function printPhotoboothReceipt(
   imageDataUrl: string,
   options: CleanterPrintOptions = {}
-): Promise<{ success: boolean; message: string }> {
+): Promise<CleanterResult> {
   const endpoint = getCleanterEndpoint(options.hostUrl);
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const autoCut = options.autoCut ?? true;
 
-  // Prevent duplicate print execution on quick accidental double-clicks
   const jobId = `${Date.now()}_${imageDataUrl.slice(-20)}`;
   if (jobId === lastPrintedJobId) {
     return {
@@ -159,6 +163,13 @@ export async function printPhotoboothReceipt(
     }
 
     const payload: CleanterPrintJob = { commands };
+    const payloadJsonStr = JSON.stringify(payload, null, 2);
+
+    // LOG FULL REQUEST TO BROWSER CONSOLE
+    console.log("==========================================");
+    console.log("🚀 [CLEANTER REQUEST POST]:", endpoint);
+    console.log("📦 [CLEANTER REQUEST BODY]:\n", payloadJsonStr);
+    console.log("==========================================");
 
     // 3. Send payload to Cleanter print bridge
     const response = await fetch(endpoint, {
@@ -172,29 +183,29 @@ export async function printPhotoboothReceipt(
 
     clearTimeout(timeoutId);
 
+    const resText = await response.text().catch(() => "");
+
+    // LOG FULL RESPONSE TO BROWSER CONSOLE
+    console.log("==========================================");
+    console.log("📥 [CLEANTER RESPONSE STATUS]:", response.status, response.statusText);
+    console.log("📄 [CLEANTER RESPONSE BODY]:\n", resText);
+    console.log("==========================================");
+
     if (response.ok || response.status === 200) {
       lastPrintedJobId = jobId;
       return {
         success: true,
-        message: "Struk foto strip berhasil dicetak ke IWARE XS-80BT!",
+        message: "Struk foto strip berhasil dicetak!",
+        detail: resText,
+        requestPayload: payloadJsonStr,
       };
     }
 
-    // Actionable Error Handling for HTTP 400 Bad Request / Cleanter rejection
-    if (response.status === 400) {
-      const errText = await response.text().catch(() => "");
-      console.error("Cleanter Bad Request 400:", errText);
-      return {
-        success: false,
-        message:
-          "Cleanter menolak format cetak (Error 400). Pastikan aplikasi Cleanter di Android sudah terhubung ke printer IWARE XS-80BT.",
-      };
-    }
-
-    const resText = await response.text().catch(() => "");
     return {
       success: false,
-      message: `Cleanter menolak cetak (${response.status}): ${resText || "Periksa koneksi Bluetooth printer."}`,
+      message: `Cleanter menolak cetak (Status HTTP ${response.status}).`,
+      detail: resText || `HTTP Status Code ${response.status}`,
+      requestPayload: payloadJsonStr,
     };
   } catch (err) {
     clearTimeout(timeoutId);
@@ -203,33 +214,29 @@ export async function printPhotoboothReceipt(
     if (isAborted) {
       return {
         success: false,
-        message:
-          "Cetak timeout. Pastikan printer IWARE XS-80BT menyala dan terhubung di app Cleanter.",
+        message: "Cetak timeout. Pastikan printer menyala dan terhubung di app Cleanter.",
+        detail: "AbortError: Request timeout setelah " + timeoutMs + "ms",
       };
     }
 
     const errMsg = err instanceof Error ? err.message : String(err);
-    if (errMsg.includes("Failed to fetch") || errMsg.includes("NetworkError")) {
-      return {
-        success: false,
-        message:
-          "Tidak dapat terhubung ke Cleanter (http://localhost:9100). Buka & jalankan app Cleanter di tablet Android kamu.",
-      };
-    }
+    console.error("❌ [CLEANTER PRINT ERROR]:", err);
 
     return {
       success: false,
       message: `Gagal mencetak: ${errMsg}`,
+      detail: errMsg,
     };
   }
 }
 
 /**
- * Sends a lightweight Test Print receipt to verify IWARE XS-80BT functionality before an event.
+ * Sends a lightweight Test Print receipt to verify functionality before an event.
+ * Logs full request & response bodies to browser console.
  */
 export async function printTestReceipt(
   options: CleanterPrintOptions = {}
-): Promise<{ success: boolean; message: string }> {
+): Promise<CleanterResult> {
   const endpoint = getCleanterEndpoint(options.hostUrl);
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 6000);
@@ -250,7 +257,7 @@ export async function printTestReceipt(
         {
           type: "text",
           value:
-            "Printer : IWARE XS-80BT (80mm)\n" +
+            "Printer : IWARE XS-80BT / RPP02N\n" +
             "Status  : CLEANTER BRIDGE READY\n" +
             "Waktu   : " +
             dateStr +
@@ -266,6 +273,13 @@ export async function printTestReceipt(
       ],
     };
 
+    const payloadJsonStr = JSON.stringify(payload, null, 2);
+
+    console.log("==========================================");
+    console.log("🚀 [CLEANTER TEST PRINT REQUEST]:", endpoint);
+    console.log("📦 [CLEANTER TEST PRINT BODY]:\n", payloadJsonStr);
+    console.log("==========================================");
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -275,30 +289,35 @@ export async function printTestReceipt(
 
     clearTimeout(timeoutId);
 
+    const resText = await response.text().catch(() => "");
+
+    console.log("==========================================");
+    console.log("📥 [CLEANTER TEST PRINT RESPONSE STATUS]:", response.status);
+    console.log("📄 [CLEANTER TEST PRINT RESPONSE BODY]:\n", resText);
+    console.log("==========================================");
+
     if (response.ok || response.status === 200) {
       return {
         success: true,
-        message: "Tes print berhasil! Printer IWARE XS-80BT siap digunakan.",
-      };
-    }
-
-    if (response.status === 400) {
-      return {
-        success: false,
-        message: "Cleanter menolak format tes print (400). Pastikan printer IWARE XS-80BT terhubung di app Cleanter.",
+        message: "Tes print berhasil! Printer siap digunakan.",
+        detail: resText,
+        requestPayload: payloadJsonStr,
       };
     }
 
     return {
       success: false,
-      message: "Gagal tes print. Pastikan printer terhubung di app Cleanter.",
+      message: `Cleanter menolak tes print (HTTP ${response.status}).`,
+      detail: resText || `HTTP Status ${response.status}`,
+      requestPayload: payloadJsonStr,
     };
   } catch (err) {
     clearTimeout(timeoutId);
+    const errMsg = err instanceof Error ? err.message : String(err);
     return {
       success: false,
-      message:
-        "Cleanter bridge tidak terdeteksi. Buka app Cleanter di tablet Android.",
+      message: "Cleanter bridge tidak terdeteksi.",
+      detail: errMsg,
     };
   }
 }

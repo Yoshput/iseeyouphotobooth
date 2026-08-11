@@ -45,6 +45,7 @@ export default function ThermalPrintModal({
     "idle" | "connecting" | "processing" | "printing" | "success" | "error"
   >("idle");
   const [statusMessage, setStatusMessage] = useState<string>("");
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -68,6 +69,7 @@ export default function ThermalPrintModal({
 
   const handleRefreshCleanter = async () => {
     setIsCheckingCleanter(true);
+    setErrorDetail(null);
     const status = await checkCleanterConnection(cleanterHost);
     setCleanterStatus(status);
     setIsCheckingCleanter(false);
@@ -85,20 +87,22 @@ export default function ThermalPrintModal({
   const handlePrintCleanter = async () => {
     setPrintStatus("processing");
     setStatusMessage("Memproses dither 1-bit ESC/POS (80mm)...");
+    setErrorDetail(null);
 
     try {
       setPrintStatus("printing");
-      setStatusMessage("Mengirim payload cetak ke Cleanter Bridge (IWARE XS-80BT)...");
+      setStatusMessage("Mengirim payload cetak ke Cleanter Bridge (IWARE / RPP02N)...");
 
       const result = await printPhotoboothReceipt(imageDataUrl, {
         hostUrl: cleanterHost,
-        timeoutMs: 8000,
+        timeoutMs: 10000,
         autoCut: true,
       });
 
       if (result.success) {
         setPrintStatus("success");
         setStatusMessage(result.message);
+        setErrorDetail(null);
         setTimeout(() => {
           onClose();
           setPrintStatus("idle");
@@ -106,32 +110,38 @@ export default function ThermalPrintModal({
       } else {
         setPrintStatus("error");
         setStatusMessage(result.message);
+        setErrorDetail(result.detail || null);
       }
     } catch (err) {
       setPrintStatus("error");
-      setStatusMessage(
-        err instanceof Error ? err.message : "Terjadi kesalahan saat mencetak"
-      );
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage("Terjadi kesalahan saat mencetak");
+      setErrorDetail(msg);
     }
   };
 
   const handleTestPrintCleanter = async () => {
     setPrintStatus("processing");
-    setStatusMessage("Mengirim struk tes ke printer IWARE XS-80BT...");
+    setStatusMessage("Mengirim struk tes ke printer...");
+    setErrorDetail(null);
 
     try {
       const result = await printTestReceipt({ hostUrl: cleanterHost });
       if (result.success) {
         setPrintStatus("success");
         setStatusMessage(result.message);
+        setErrorDetail(null);
         setTimeout(() => setPrintStatus("idle"), 3000);
       } else {
         setPrintStatus("error");
         setStatusMessage(result.message);
+        setErrorDetail(result.detail || null);
       }
     } catch (err) {
       setPrintStatus("error");
+      const msg = err instanceof Error ? err.message : String(err);
       setStatusMessage("Cleanter bridge tidak merespon.");
+      setErrorDetail(msg);
     }
   };
 
@@ -154,6 +164,7 @@ export default function ThermalPrintModal({
     if (!selectedQzPrinter) return;
     setPrintStatus("processing");
     setStatusMessage("Memproses cetak via QZ Tray Desktop...");
+    setErrorDetail(null);
 
     try {
       setPrintStatus("printing");
@@ -161,6 +172,7 @@ export default function ThermalPrintModal({
       if (result.success) {
         setPrintStatus("success");
         setStatusMessage(result.message);
+        setErrorDetail(null);
         setTimeout(() => {
           onClose();
           setPrintStatus("idle");
@@ -171,13 +183,15 @@ export default function ThermalPrintModal({
       }
     } catch (err) {
       setPrintStatus("error");
-      setStatusMessage(err instanceof Error ? err.message : "Gagal cetak QZ Tray");
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage("Gagal cetak QZ Tray");
+      setErrorDetail(msg);
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white p-6 shadow-2xl space-y-5 border border-isy-line">
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl space-y-5 border border-isy-line">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-isy-line pb-4">
           <div className="flex items-center gap-2.5">
@@ -189,7 +203,7 @@ export default function ThermalPrintModal({
                 Cetak Struk Thermal 80mm
               </h3>
               <p className="text-[11px] font-semibold text-isy-ink/60">
-                IWARE XS-80BT · ESC/POS Auto Cutter
+                IWARE XS-80BT / RPP02N · ESC/POS Auto Cutter
               </p>
             </div>
           </div>
@@ -229,7 +243,7 @@ export default function ThermalPrintModal({
           </button>
         </div>
 
-        {/* CLEANTER MODE PANEL (Primary Event Operational Mode) */}
+        {/* CLEANTER MODE PANEL */}
         {printMode === "cleanter" && (
           <div className="space-y-4">
             {/* Status Card */}
@@ -272,12 +286,12 @@ export default function ThermalPrintModal({
                 <div className="pt-1 text-[10.5px] text-amber-800/90 font-medium space-y-1 border-t border-amber-200/60 mt-2">
                   <p>💡 <strong>Petunjuk Operator Event:</strong></p>
                   <p>1. Buka aplikasi <strong>Cleanter</strong> di Tablet Android.</p>
-                  <p>2. Pastikan printer <strong>IWARE XS-80BT</strong> terhubung di app Cleanter.</p>
+                  <p>2. Pastikan printer <strong>RPP02N / IWARE</strong> terhubung di app Cleanter.</p>
                 </div>
               )}
             </div>
 
-            {/* Optional Wi-Fi Host IP Input for Cross-Device Printing (iPhone/MacBook) */}
+            {/* Optional Wi-Fi Host IP Input */}
             <div className="space-y-1">
               <details className="group">
                 <summary className="text-[11px] font-bold text-isy-ink/60 cursor-pointer hover:text-isy-green-deep select-none">
@@ -297,7 +311,7 @@ export default function ThermalPrintModal({
           </div>
         )}
 
-        {/* QZ TRAY PC MODE PANEL (Optional Fallback) */}
+        {/* QZ TRAY PC MODE PANEL */}
         {printMode === "qz" && (
           <div className="space-y-3">
             <label className="text-xs font-bold text-isy-green-deep flex items-center justify-between">
@@ -332,23 +346,35 @@ export default function ThermalPrintModal({
           </div>
         )}
 
-        {/* Real-time Action Status Message Box */}
+        {/* Action Status Message Box */}
         {statusMessage && (
-          <div
-            className={`rounded-2xl p-3 text-xs font-semibold flex items-center gap-3 ${
-              printStatus === "success"
-                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                : printStatus === "error"
-                ? "bg-red-50 text-red-700 border border-red-200"
-                : "bg-isy-mist text-isy-ink/80 border border-isy-line"
-            }`}
-          >
-            {(printStatus === "processing" || printStatus === "printing") && (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-isy-green-bright border-t-transparent shrink-0" />
+          <div className="space-y-2">
+            <div
+              className={`rounded-2xl p-3.5 text-xs font-semibold flex items-center gap-3 ${
+                printStatus === "success"
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                  : printStatus === "error"
+                  ? "bg-red-50 text-red-700 border border-red-200"
+                  : "bg-isy-mist text-isy-ink/80 border border-isy-line"
+              }`}
+            >
+              {(printStatus === "processing" || printStatus === "printing") && (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-isy-green-bright border-t-transparent shrink-0" />
+              )}
+              {printStatus === "success" && <span className="text-base">✅</span>}
+              {printStatus === "error" && <span className="text-base">❌</span>}
+              <span className="leading-relaxed">{statusMessage}</span>
+            </div>
+
+            {/* RAW DEBUGGING ERROR DETAIL BOX */}
+            {errorDetail && (
+              <div className="rounded-2xl border border-red-200 bg-red-950 p-3 text-[10.5px] font-mono text-red-200 space-y-1 overflow-hidden">
+                <p className="font-bold text-red-400">🔍 Detail Respons Teknis Cleanter (Debug):</p>
+                <div className="max-h-36 overflow-y-auto whitespace-pre-wrap break-all rounded-lg bg-black/50 p-2 text-[10px] leading-relaxed">
+                  {errorDetail}
+                </div>
+              </div>
             )}
-            {printStatus === "success" && <span className="text-base">✅</span>}
-            {printStatus === "error" && <span className="text-base">❌</span>}
-            <span className="leading-relaxed">{statusMessage}</span>
           </div>
         )}
 
