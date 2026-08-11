@@ -1,18 +1,16 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
-import Image from "next/image";
+import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/ui/Navbar";
-import ContactCSModal from "@/components/ui/ContactCSModal";
-import SoftlensDetailModal from "@/components/katalog/SoftlensDetailModal";
+import SoftlensCartDrawer from "@/components/katalog/SoftlensCartDrawer";
 import CatalogConfetti from "@/components/katalog/CatalogConfetti";
 import {
   SOFTLENS_PRODUCTS,
   SOFTLENS_FAQ,
   SOFTLENS_CATEGORIES,
   SOFTLENS_CS_WA_URL,
-  SOFTLENS_CS_NUMBER,
   type SoftlensProduct,
+  type CartItem,
 } from "@/lib/softlens";
 
 // --- Color swatch gradient map ---
@@ -25,27 +23,24 @@ const COLOR_SWATCHES: Record<string, string> = {
   accessory: "linear-gradient(135deg, #116B3C 0%, #2FA84F 100%)",
 };
 
-// --- Product Card ---
+// --- Ultra Minimalist & Elegant Product Card Component ---
 function SoftlensCard({
   product,
-  onOpenDetail,
-  onTanyaStok,
+  onAddToCart,
 }: {
   product: SoftlensProduct;
-  onOpenDetail: (product: SoftlensProduct) => void;
-  onTanyaStok: (product: SoftlensProduct) => void;
+  onAddToCart: (product: SoftlensProduct) => void;
 }) {
   const swatchGradient = COLOR_SWATCHES[product.colorFamily] ?? COLOR_SWATCHES.brown;
-  const displaySpecs = product.specs.slice(0, 3);
 
   return (
     <div
-      onClick={() => onOpenDetail(product)}
+      onClick={() => onAddToCart(product)}
       className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-isy-line bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-isy-green-bright/40 hover:shadow-xl cursor-pointer"
     >
       <div>
         {/* Color Swatch Visual / Accessory Icon */}
-        <div className="relative mb-4 flex items-center justify-center py-2">
+        <div className="relative mb-5 flex items-center justify-center py-2">
           <div
             className="h-28 w-28 rounded-full shadow-lg ring-4 ring-white transition-transform duration-300 group-hover:scale-105 flex items-center justify-center relative overflow-hidden"
             style={{ background: swatchGradient }}
@@ -62,259 +57,206 @@ function SoftlensCard({
           </span>
         </div>
 
-        {/* Name & Category */}
-        <div className="space-y-1.5">
-          <h3 className="font-serif text-lg font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
+        {/* Brand Name Only (Clean & Elegant) */}
+        <div className="text-center space-y-1">
+          <h3 className="font-serif text-xl font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
             {product.name}
           </h3>
-          <p className="text-xs text-isy-ink/60 leading-relaxed line-clamp-2">{product.description}</p>
-        </div>
-
-        {/* Spec Tags */}
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {displaySpecs.map((spec) => (
-            <span
-              key={spec}
-              className="rounded-md bg-isy-mist px-2 py-0.5 text-[9.5px] font-extrabold text-isy-green-deep border border-isy-line"
-            >
-              ✦ {spec}
+          <div className="flex items-baseline justify-center gap-1">
+            <span className="font-serif text-lg font-black text-isy-green-bright">
+              {product.priceFormatted}
             </span>
-          ))}
+            <span className="text-[10px] font-semibold text-isy-ink/40">
+              {product.isAccessory ? "/ pcs" : "/ pasang"}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* CTA Buttons */}
-      <div className="mt-5 grid grid-cols-2 gap-2 pt-4 border-t border-isy-line">
+      {/* Single Clean CTA Button */}
+      <div className="mt-5 pt-4 border-t border-isy-line">
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onOpenDetail(product);
+            onAddToCart(product);
           }}
-          className="flex items-center justify-center gap-1 rounded-xl border border-isy-line bg-isy-mist py-2.5 text-xs font-bold text-isy-green-deep transition-all hover:bg-isy-line active:scale-95"
+          className="w-full flex items-center justify-center gap-2 rounded-xl bg-isy-green-bright py-3 text-xs font-extrabold uppercase tracking-wider text-white shadow-md transition-all hover:bg-isy-green-deep active:scale-95"
         >
-          Specs &amp; Detail
-        </button>
-
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onTanyaStok(product);
-          }}
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-isy-green-deep py-2.5 text-xs font-bold text-white shadow transition-all hover:bg-isy-green-bright active:scale-95"
-        >
-          <Image
-            src="/logo/Logo-Whatsapp.png"
-            alt="WhatsApp"
-            width={15}
-            height={15}
-            className="h-3.5 w-3.5 object-contain"
-          />
-          Tanya WA
+          <span>+ Tambah ke Keranjang</span>
         </button>
       </div>
     </div>
   );
 }
 
-// --- Main Page ---
-export default function SoftlensPage() {
+export default function SoftlensCatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeDetailProduct, setActiveDetailProduct] = useState<SoftlensProduct | null>(null);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
-  // Contact CS Modal state
-  const [csModalOpen, setCsModalOpen] = useState(false);
-  const [csModalProduct, setCsModalProduct] = useState<SoftlensProduct | null>(null);
+  // Cart State (Persisted in localStorage for convenience)
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const handleTanyaStok = (product: SoftlensProduct) => {
-    setCsModalProduct(product);
-    setCsModalOpen(true);
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("isy_softlens_cart");
+      if (saved) setCartItems(JSON.parse(saved));
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("isy_softlens_cart", JSON.stringify(cartItems));
+    } catch {
+      // Ignore
+    }
+  }, [cartItems]);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const quickSearchTags = [
-    "Minus Tinggi",
-    "Silinder",
-    "Aksoris",
-    "Oksi",
-    "Tetes Mata",
-    "Natural",
-    "Premium",
-  ];
+  const handleAddToCart = (product: SoftlensProduct) => {
+    setCartItems((prev) => {
+      const existingIndex = prev.findIndex((item) => item.product.id === product.id);
+      if (existingIndex > -1) {
+        const updated = [...prev];
+        updated[existingIndex].quantity += 1;
+        return updated;
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+    showToast(`🛒 "${product.name}" ditambahkan ke keranjang!`);
+  };
+
+  const handleUpdateQuantity = (productId: string, delta: number) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) => {
+          if (item.product.id === productId) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        })
+        .filter(Boolean) as CartItem[]
+    );
+  };
+
+  const handleRemoveItem = (productId: string) => {
+    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
+  const totalCartItems = useMemo(
+    () => cartItems.reduce((acc, item) => acc + item.quantity, 0),
+    [cartItems]
+  );
 
   const filteredProducts = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    return SOFTLENS_PRODUCTS.filter((p) => {
-      const matchCat = selectedCategory === "all" || p.category === selectedCategory;
-      if (!matchCat) return false;
-      if (!q) return true;
-      return (
-        p.name.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.specs.some((s) => s.toLowerCase().includes(q))
-      );
-    });
-  }, [selectedCategory, searchQuery]);
+    if (selectedCategory === "all") return SOFTLENS_PRODUCTS;
+    return SOFTLENS_PRODUCTS.filter((p) => p.category === selectedCategory);
+  }, [selectedCategory]);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-x-hidden" style={{ background: "linear-gradient(160deg, #fff9f7 0%, #fdf4f0 40%, #f8f4ff 100%)" }}>
-      <Navbar />
+    <div className="min-h-dvh bg-gradient-to-b from-white via-isy-mist/30 to-white text-isy-ink relative overflow-hidden">
+      {/* Dynamic Confetti Effect on load */}
       <CatalogConfetti />
 
-      {/* ── Hero Section ── */}
-      <section className="relative overflow-hidden border-b border-isy-line/60 bg-white/80 px-6 py-12 text-center backdrop-blur-sm">
-        {/* Soft decorative blobs */}
-        <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-rose-100/40 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-amber-100/30 blur-3xl" />
+      <Navbar />
 
-        <div className="relative z-10 mx-auto max-w-2xl space-y-4">
-          {/* IG Badge */}
-          <a
-            href="https://www.instagram.com/iseeyou.soflens/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-rose-500 transition-all hover:bg-rose-100 active:scale-95 shadow-sm"
-          >
-            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-            </svg>
-            @iseeyou.soflens
-          </a>
+      <main className="mx-auto max-w-6xl px-6 pt-28 pb-24 space-y-16">
+        {/* --- HERO SECTION --- */}
+        <section className="text-center space-y-4 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/20 bg-isy-green-bright/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-isy-green-bright shadow-sm">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
+            I See You Soflens · @iseeyou.soflens
+          </div>
 
-          <h1 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl">
-            Katalog Softlens &amp; Aksesoris
+          <h1 className="font-serif text-4xl font-black text-isy-green-deep sm:text-6xl leading-tight">
+            Katalog Softlens <br />
+            <span className="text-isy-green-bright">Cantik &amp; Nyaman Seharian</span>
           </h1>
 
-          <p className="mx-auto max-w-md text-xs font-medium text-isy-ink/60 sm:text-sm leading-relaxed">
-            15 Varian Softlens Warna Premium + Cairan Oksi &amp; Tetes Mata. Tersedia ukuran minus tinggi &amp; silinder.
+          <p className="text-xs sm:text-sm font-medium text-isy-ink/65 leading-relaxed max-w-2xl mx-auto">
+            15 varian warna natural &amp; K-Beauty premium, plus aksesoris cairan Oksi dan tetes mata pelembab. Pesan mudah via Keranjang &amp; WhatsApp CS Optik I See You.
           </p>
 
-          {/* Quick info pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            {["Minus Tinggi ✓", "Silinder ✓", "Cairan Oksi ✓", "Tetes Mata ✓", "Ready Stok"].map((info) => (
-              <span
-                key={info}
-                className="rounded-full bg-isy-green-bright/10 px-3 py-1 text-[10px] font-bold text-isy-green-deep border border-isy-green-bright/20"
-              >
-                {info}
-              </span>
-            ))}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://www.instagram.com/iseeyou.soflens/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-isy-line bg-white px-4 py-2 text-xs font-bold text-isy-green-deep shadow-sm hover:border-isy-green-bright transition-all"
+            >
+              <span>📷 Follow Instagram @iseeyou.soflens</span>
+            </a>
+
+            <button
+              onClick={() => setIsCartDrawerOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full bg-isy-green-bright px-5 py-2 text-xs font-extrabold text-white shadow-md hover:bg-isy-green-deep transition-all"
+            >
+              <span>🛒 Keranjang ({totalCartItems})</span>
+            </button>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Search & Sticky Filter Navigation ── */}
-      <section className="sticky top-[64px] z-30 w-full border-b border-isy-line bg-white/90 backdrop-blur-md px-6 py-4 shadow-sm">
-        <div className="mx-auto max-w-5xl space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            {/* Search Input */}
-            <div className="relative w-full sm:w-72">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari softlens, oksi, tetes..."
-                className="w-full rounded-2xl border border-isy-line bg-isy-mist/60 px-4 py-2.5 pl-10 text-xs font-medium text-isy-green-deep placeholder:text-isy-ink/40 outline-none transition-all focus:border-isy-green-bright focus:bg-white focus:ring-2 focus:ring-isy-green-bright/20"
-              />
-              <svg
-                className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-isy-ink/40"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-isy-ink/40 hover:text-isy-ink"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
+        {/* --- CATEGORY FILTER PILLS --- */}
+        <section className="flex flex-wrap items-center justify-center gap-2.5">
+          {SOFTLENS_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`rounded-full px-5 py-2.5 text-xs font-extrabold transition-all duration-300 ${
+                selectedCategory === cat.id
+                  ? "bg-isy-green-deep text-white shadow-md scale-105"
+                  : "bg-white text-isy-ink/75 border border-isy-line hover:border-isy-green-bright/40"
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </section>
 
-            {/* Category Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
-              {SOFTLENS_CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`shrink-0 rounded-2xl px-4 py-2 text-xs font-extrabold transition-all ${
-                    selectedCategory === cat.id
-                      ? "bg-isy-green-deep text-white shadow-md"
-                      : "bg-isy-mist/70 text-isy-ink/65 hover:bg-isy-line hover:text-isy-green-deep"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
+        {/* --- PRODUCTS GRID --- */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="font-serif text-xl sm:text-2xl font-black text-isy-green-deep">
+              {selectedCategory === "all" ? "Semua Koleksi Softlens &amp; Aksesoris" : selectedCategory}
+            </h2>
+            <span className="text-xs font-bold text-isy-ink/50">
+              {filteredProducts.length} Produk Tersedia
+            </span>
           </div>
 
-          {/* Quick Search Tag Pills */}
-          <div className="flex flex-wrap items-center gap-1.5 pt-1">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Quick Filter:</span>
-            {quickSearchTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => {
-                  setSearchQuery(tag);
-                  setSelectedCategory("all");
-                }}
-                className="rounded-full border border-isy-line bg-white px-2.5 py-0.5 text-[10px] font-bold text-isy-green-deep transition-all hover:border-isy-green-bright hover:bg-isy-green-bright/10 active:scale-95"
-              >
-                #{tag}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Main Product Grid Section ── */}
-      <section className="mx-auto max-w-5xl px-6 py-12">
-        {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((product) => (
               <SoftlensCard
                 key={product.id}
                 product={product}
-                onOpenDetail={(p) => setActiveDetailProduct(p)}
-                onTanyaStok={handleTanyaStok}
+                onAddToCart={handleAddToCart}
               />
             ))}
           </div>
-        ) : (
-          <div className="rounded-3xl border border-isy-line bg-white p-12 text-center shadow-sm space-y-3">
-            <p className="text-3xl">🔍</p>
-            <h3 className="font-serif text-lg font-black text-isy-green-deep">Produk Tidak Ditemukan</h3>
-            <p className="text-xs text-isy-ink/60">Coba kata kunci lain atau pilih kategori Semua Produk.</p>
-            <button
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("all");
-              }}
-              className="rounded-xl bg-isy-green-deep px-5 py-2 text-xs font-bold text-white hover:bg-isy-green-bright transition-colors"
-            >
-              Reset Filter
-            </button>
-          </div>
-        )}
-      </section>
+        </section>
 
-      {/* ── FAQ & Edukasi Section ── */}
-      <section className="border-t border-isy-line bg-white px-6 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-10 text-center space-y-2">
-            <span className="inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-extrabold uppercase tracking-widest text-isy-green-bright border border-isy-green-bright/20">
-              Panduan &amp; Edukasi
+        {/* --- FAQ & EDUKASI SECTION --- */}
+        <section className="rounded-3xl border border-isy-line bg-gradient-to-br from-isy-mist/40 via-white to-isy-mist/40 p-8 sm:p-12 space-y-8 shadow-sm">
+          <div className="text-center space-y-2 max-w-xl mx-auto">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-isy-green-bright">
+              Edukasi &amp; Panduan Soflens
             </span>
-            <h2 className="font-serif text-3xl font-black text-isy-green-deep">
-              Tips Penggunaan &amp; Perawatan Softlens
+            <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
+              Seputar Perawatan &amp; Resep Soflens
             </h2>
-            <p className="text-xs text-isy-ink/60 max-w-md mx-auto">
-              Perhatikan cara pakai, sterilisasi dengan Cairan Oksi, dan tetes mata agar mata tetap sehat dan nyaman.
+            <p className="text-xs text-isy-ink/65">
+              Pertanyaan umum mengenai softlens minus tinggi, silinder, cara cuci, dan aksesoris cairan.
             </p>
           </div>
 
@@ -322,67 +264,95 @@ export default function SoftlensPage() {
             {SOFTLENS_FAQ.map((faq) => (
               <div
                 key={faq.id}
-                className="flex flex-col justify-between rounded-2xl border border-isy-line bg-isy-mist/50 p-5 transition-all hover:border-isy-green-bright/40 hover:bg-white hover:shadow-md"
+                className="rounded-2xl border border-isy-line/80 bg-white p-5 space-y-2 shadow-sm transition-all hover:border-isy-green-bright/40 hover:shadow-md"
               >
-                <div className="space-y-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-xl shadow-sm border border-isy-line">
-                    {faq.icon}
-                  </div>
-                  <h3 className="font-serif text-base font-black text-isy-green-deep">{faq.title}</h3>
-                  <p className="text-xs text-isy-ink/60 leading-relaxed">{faq.desc}</p>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-2xl">{faq.icon}</span>
+                  <h3 className="font-serif text-sm font-black text-isy-green-deep">
+                    {faq.title}
+                  </h3>
                 </div>
+                <p className="text-xs text-isy-ink/65 leading-relaxed">{faq.desc}</p>
               </div>
             ))}
           </div>
+        </section>
+
+        {/* --- BOTTOM CTA BANNER --- */}
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-isy-green-deep via-[#0d542e] to-isy-green-bright p-8 sm:p-12 text-center text-white shadow-xl space-y-6">
+          <div className="relative z-10 max-w-2xl mx-auto space-y-3">
+            <span className="inline-block rounded-full bg-white/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm border border-white/20">
+              Konsultasi &amp; Order
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-black">
+              Butuh Ukuran Minus Khusus / Silinder?
+            </h2>
+            <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
+              Tim CS Optik I See You siap membantu memeriksa resep mata kamu dan merekomendasikan varian softlens terbaik.
+            </p>
+            <div className="pt-3">
+              <a
+                href={SOFTLENS_CS_WA_URL()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-white px-8 py-4 text-xs font-black uppercase tracking-widest text-isy-green-deep shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                <span>Chat CS WhatsApp Softlens</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* --- FLOATING CART BUTTON (Fixed Bottom-Right) --- */}
+      <button
+        onClick={() => setIsCartDrawerOpen(true)}
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-3 rounded-full bg-isy-green-deep px-5 py-3.5 text-white shadow-2xl shadow-isy-green-deep/50 border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 group"
+        aria-label="Buka Keranjang Belanja Softlens"
+      >
+        <div className="relative">
+          <span className="text-xl">🛒</span>
+          {totalCartItems > 0 && (
+            <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-isy-green-bright text-[10px] font-black text-white shadow-md animate-pulse">
+              {totalCartItems}
+            </span>
+          )}
         </div>
-      </section>
+        <span className="text-xs font-extrabold uppercase tracking-wider hidden sm:inline-block">
+          Keranjang ({totalCartItems})
+        </span>
+      </button>
 
-      {/* ── CTA Banner ── */}
-      <section className="bg-isy-green-deep text-white px-6 py-14 text-center relative overflow-hidden">
-        <div className="relative z-10 mx-auto max-w-xl space-y-4">
-          <h2 className="font-serif text-2xl font-black sm:text-4xl">
-            Butuh Konsultasi Ukuran &amp; Pemesanan?
-          </h2>
-          <p className="text-xs text-white/80 leading-relaxed">
-            Tim CS Optik I See You siap membantu rekomendasi warna, ukuran minus/silinder, dan pengiriman paket softlens aman ke lokasi kamu.
-          </p>
-
-          <div className="pt-2">
-            <button
-              onClick={() => {
-                setCsModalProduct(null);
-                setCsModalOpen(true);
-              }}
-              className="inline-flex items-center gap-2 rounded-2xl bg-isy-green-bright px-8 py-4 text-xs font-black uppercase tracking-wider text-white shadow-xl shadow-isy-green-bright/30 transition-all hover:scale-105 active:scale-95"
-            >
-              <Image
-                src="/logo/Logo-Whatsapp.png"
-                alt="WA"
-                width={18}
-                height={18}
-                className="h-4.5 w-4.5 object-contain"
-              />
-              <span>Chat CS Softlens via WhatsApp</span>
-            </button>
+      {/* --- TOAST NOTIFICATION --- */}
+      {toastMessage && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="rounded-full bg-isy-green-deep px-6 py-3 text-xs font-bold text-white shadow-2xl border border-isy-green-bright/30 backdrop-blur-md">
+            {toastMessage}
           </div>
         </div>
-      </section>
+      )}
 
-      {/* Detail & Specs Modal */}
-      <SoftlensDetailModal
-        product={activeDetailProduct}
-        onClose={() => setActiveDetailProduct(null)}
-        onTanyaStok={handleTanyaStok}
+      {/* --- CART DRAWER --- */}
+      <SoftlensCartDrawer
+        isOpen={isCartDrawerOpen}
+        onClose={() => setIsCartDrawerOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+        onClearCart={handleClearCart}
       />
-
-      {/* Contact CS Modal */}
-      <ContactCSModal
-        isOpen={csModalOpen}
-        onClose={() => setCsModalOpen(false)}
-        waUrl={SOFTLENS_CS_WA_URL(csModalProduct?.name)}
-        productName={csModalProduct?.name}
-        csName="CS Softlens I See You"
-      />
-    </main>
+    </div>
   );
 }

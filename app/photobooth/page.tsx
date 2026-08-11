@@ -29,6 +29,8 @@ import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
+import ContactCSModal from "@/components/ui/ContactCSModal";
+import ThermalPrintModal from "@/components/ui/ThermalPrintModal";
 import { downloadOrShareImage } from "@/lib/saveImage";
 import manifestRaw from "@/public/glasses/manifest.json";
 
@@ -397,7 +399,7 @@ function StripPreview({
   phase, photoCount, selectedTheme, selectedFilter,
   onSelectTheme, onSelectFilter, onOpenGiantQR,
   onDownloadStrip, onDownloadGif, onRetake, onChangeLayout, onOpenShareModal,
-  onRetakeSingleSlot, onRetryUpload, arGlassesName, isArMode = false,
+  onOpenThermalPrint, onRetakeSingleSlot, onRetryUpload, arGlassesName, isArMode = false,
 }: {
   layout: FrameLayout; photos: string[]; compositeUrl: string | null;
   gifUrl: string | null; uploadedUrl: string | null; qrCodeDataUrl?: string | null; uploadError?: string | null; uploadPhase: UploadPhase;
@@ -406,6 +408,7 @@ function StripPreview({
   onOpenGiantQR: () => void;
   onDownloadStrip: () => void; onDownloadGif: () => void;
   onRetake: () => void; onChangeLayout: () => void; onOpenShareModal: () => void;
+  onOpenThermalPrint: () => void;
   onRetakeSingleSlot: (slotIdx: number) => void;
   onRetryUpload?: () => void;
   arGlassesName?: string; isArMode?: boolean;
@@ -511,18 +514,23 @@ function StripPreview({
           onRetry={onRetryUpload}
         />
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {activeTab === "strip" ? (
-            <button onClick={onDownloadStrip} className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-isy-green-bright py-3 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-deep active:scale-[0.97]">
+            <button onClick={onDownloadStrip} className="group relative flex items-center justify-center gap-1.5 overflow-hidden rounded-xl bg-isy-green-bright py-3 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-deep active:scale-[0.97]">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round"><path d="M12 3v13" /><path d="M7 11l5 5 5-5" /><path d="M4 20h16" /></svg>
-              Simpan Foto
+              Simpan
             </button>
           ) : (
-            <button onClick={onDownloadGif} disabled={!gifUrl} className="flex items-center justify-center gap-2 rounded-xl bg-isy-green-bright py-3 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-deep active:scale-[0.97] disabled:opacity-50">
-              Simpan GIF
+            <button onClick={onDownloadGif} disabled={!gifUrl} className="flex items-center justify-center gap-1.5 rounded-xl bg-isy-green-bright py-3 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-deep active:scale-[0.97] disabled:opacity-50">
+              GIF
             </button>
           )}
-          <button onClick={onOpenShareModal} className="flex items-center justify-center gap-2 rounded-xl border border-isy-green-bright bg-white py-3 text-xs font-bold text-isy-green-deep shadow-sm hover:bg-isy-mist active:scale-[0.97]">
+
+          <button onClick={onOpenThermalPrint} className="flex items-center justify-center gap-1.5 rounded-xl bg-isy-green-deep py-3 text-xs font-extrabold uppercase tracking-wider text-white shadow-md hover:bg-isy-green-bright active:scale-[0.97]">
+            Cetak 🖨️
+          </button>
+
+          <button onClick={onOpenShareModal} className="flex items-center justify-center gap-1.5 rounded-xl border border-isy-green-bright bg-white py-3 text-xs font-bold text-isy-green-deep shadow-sm hover:bg-isy-mist active:scale-[0.97]">
             Bagikan
           </button>
         </div>
@@ -613,8 +621,9 @@ export default function PhotoboothPage() {
  const [faceResult, setFaceResult] = useState<FaceShapeResult | null>(null);
  const [faceDetected, setFaceDetected] = useState(false);
  const [toast, setToast] = useState<string | null>(null);
- const [shareModalOpen, setShareModalOpen] = useState(false);
-const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
+  const [thermalPrintModalOpen, setThermalPrintModalOpen] = useState(false);
  const [timerSec, setTimerSec] = useState<TimerSec>(3);
  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
  const [uploadPhase, setUploadPhase] = useState<UploadPhase>("idle");
@@ -1222,6 +1231,7 @@ const showToast = useCallback((msg: string) => {
             onRetake={handleRetake}
             onChangeLayout={handleChangeLayout}
             onOpenShareModal={() => setShareModalOpen(true)}
+            onOpenThermalPrint={() => setThermalPrintModalOpen(true)}
             onRetakeSingleSlot={handleRetakeSingleSlot}
             onRetryUpload={doUpload}
             arGlassesName={arEnabled ? glasses?.name : undefined}
@@ -1251,6 +1261,13 @@ const showToast = useCallback((msg: string) => {
           uploadedUrl={uploadedUrl}
           qrCodeDataUrl={qrCodeDataUrl}
           onClose={() => setGiantQRModalOpen(false)}
+        />
+      )}
+      {thermalPrintModalOpen && (
+        <ThermalPrintModal
+          isOpen={thermalPrintModalOpen}
+          onClose={() => setThermalPrintModalOpen(false)}
+          imageDataUrl={compositeUrl || photos[0]}
         />
       )}
  {toast && (

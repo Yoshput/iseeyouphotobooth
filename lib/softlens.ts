@@ -18,11 +18,17 @@ export interface SoftlensProduct {
   colorFamily: "brown" | "grey" | "hazel" | "natural" | "colorful" | "accessory";
   specs: string[];
   description: string;
-  price?: string;
+  price: number;
+  priceFormatted: string;
   diameter?: string;
   waterContent?: string;
   usageDuration?: string;
   isAccessory?: boolean;
+}
+
+export interface CartItem {
+  product: SoftlensProduct;
+  quantity: number;
 }
 
 export const SOFTLENS_SPECS = [
@@ -42,6 +48,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["Anti Blue Light", "All Day Comfort", "UV Protection"],
     description: "Warna coklat alami yang mempercantik iris mata. Cocok untuk daily look sekolah, kuliah, maupun kerja.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.2 mm",
     waterContent: "48%",
     usageDuration: "6 Bulan",
@@ -53,6 +61,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "grey",
     specs: ["Smooth Surface", "All Day Comfort", "For Sensitive Eyes"],
     description: "Abu-abu segar dengan efek glossy dan ring tipis. Memberikan kesan mata berbinar dan ekspresif.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.5 mm",
     waterContent: "55%",
     usageDuration: "6 Bulan",
@@ -64,6 +74,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "grey",
     specs: ["Anti Blue Light", "Smooth Surface", "UV Protection"],
     description: "Abu-abu lembut dengan corak bermotif kelopak bunga. Anggun, feminin, dan elegan.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.2 mm",
     waterContent: "48%",
     usageDuration: "6 Bulan",
@@ -75,6 +87,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["All Day Comfort", "For Sensitive Eyes", "Anti Blue Light"],
     description: "Coklat warm hazel dengan sentuhan kemerahan subtle. Tampilan mata manis alami tanpa berlebihan.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.0 mm",
     waterContent: "45%",
     usageDuration: "6 Bulan",
@@ -86,6 +100,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["Smooth Surface", "All Day Comfort", "UV Protection"],
     description: "Coklat muda terang transparan. Memberikan efek mata baby eyes yang lembut dan berbinar.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.5 mm",
     waterContent: "50%",
     usageDuration: "6 Bulan",
@@ -97,6 +113,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "grey",
     specs: ["Anti Blue Light", "All Day Comfort", "For Sensitive Eyes"],
     description: "Abu-abu muda bening natural. Tampak berkilau indah di bawah pencahayaan apa saja.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.5 mm",
     waterContent: "50%",
     usageDuration: "6 Bulan",
@@ -108,6 +126,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["Anti Blue Light", "Smooth Surface", "All Day Comfort", "UV Protection"],
     description: "Koleksi premium warna coklat rich ala K-Beauty idol. Sangat nyaman untuk mata sensitif seharian.",
+    price: 95000,
+    priceFormatted: "Rp 95.000",
     diameter: "14.2 mm",
     waterContent: "55%",
     usageDuration: "6 Bulan",
@@ -119,6 +139,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "hazel",
     specs: ["Smooth Surface", "All Day Comfort", "UV Protection"],
     description: "Kombinasi warna amber madu dan hazel berkilau. Mewah, eksotis, dan memikat perhatian.",
+    price: 95000,
+    priceFormatted: "Rp 95.000",
     diameter: "14.5 mm",
     waterContent: "48%",
     usageDuration: "6 Bulan",
@@ -130,6 +152,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["Anti Blue Light", "All Day Comfort", "For Sensitive Eyes"],
     description: "Coklat dark chocolate pekat alami. Memperjelas lingkaran iris mata secara sempurna.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.0 mm",
     waterContent: "45%",
     usageDuration: "6 Bulan",
@@ -141,6 +165,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "grey",
     specs: ["Anti Blue Light", "Smooth Surface", "For Sensitive Eyes"],
     description: "Abu-abu gradasi beludru tanpa limbal ring keras. Memberikan kesan misterius dan modern.",
+    price: 95000,
+    priceFormatted: "Rp 95.000",
     diameter: "14.2 mm",
     waterContent: "55%",
     usageDuration: "6 Bulan",
@@ -152,6 +178,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "colorful",
     specs: ["Smooth Surface", "All Day Comfort", "UV Protection"],
     description: "Warna hijau olive lembut dengan sentuhan emas. Unik, stylish, dan estetik.",
+    price: 95000,
+    priceFormatted: "Rp 95.000",
     diameter: "14.2 mm",
     waterContent: "50%",
     usageDuration: "6 Bulan",
@@ -163,6 +191,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "natural",
     specs: ["All Day Comfort", "For Sensitive Eyes", "UV Protection"],
     description: "Hitam bening natural yang memberikan efek mata lebih besar (dolly eyes) secara elegan.",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.8 mm",
     waterContent: "48%",
     usageDuration: "6 Bulan",
@@ -174,6 +204,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "colorful",
     specs: ["Smooth Surface", "Anti Blue Light", "UV Protection"],
     description: "Biru kristal muda bening transparan. Sangat cocok untuk acara foto makeup & photoshoot.",
+    price: 95000,
+    priceFormatted: "Rp 95.000",
     diameter: "14.2 mm",
     waterContent: "55%",
     usageDuration: "6 Bulan",
@@ -185,6 +217,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["All Day Comfort", "Smooth Surface", "For Sensitive Eyes"],
     description: "Coklat kemerahan dengan sentuhan shimmer hangat. Memberikan kesan mata bersinar manis.",
+    price: 95000,
+    priceFormatted: "Rp 95.000",
     diameter: "14.2 mm",
     waterContent: "50%",
     usageDuration: "6 Bulan",
@@ -196,6 +230,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "brown",
     specs: ["Anti Blue Light", "All Day Comfort", "UV Protection"],
     description: "Caramel bening transparan nude. Sangat pas untuk yang menyukai gaya tanpa makeup (no-makeup look).",
+    price: 85000,
+    priceFormatted: "Rp 85.000",
     diameter: "14.0 mm",
     waterContent: "48%",
     usageDuration: "6 Bulan",
@@ -209,6 +245,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "accessory",
     specs: ["Multi-Purpose", "Anti-Bakteri", "Disinfecting"],
     description: "Cairan pembersih dan perendam softlens khusus dengan kandungan anti-bakteri & penyeimbang pH. Menjaga kelembaban lensa seharian.",
+    price: 35000,
+    priceFormatted: "Rp 35.000",
     isAccessory: true,
   },
   {
@@ -218,6 +256,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "accessory",
     specs: ["Moisturizing", "Anti-Dryness", "Safe for Lenses"],
     description: "Tetes mata khusus pengguna softlens untuk melembabkan mata kering dan meredakan iritasi saat beraktivitas di ruangan AC atau outdoor.",
+    price: 25000,
+    priceFormatted: "Rp 25.000",
     isAccessory: true,
   },
   {
@@ -227,6 +267,8 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = [
     colorFamily: "accessory",
     specs: ["Portable Case", "Hygiene Silicone", "Travel Friendly"],
     description: "Set wadah softlens portable lengkap dengan penjepit silikon higienis, cermin kecil, dan alat pemasang lensa tanpa sentuhan tangan.",
+    price: 20000,
+    priceFormatted: "Rp 20.000",
     isAccessory: true,
   },
 ];
@@ -242,7 +284,7 @@ export const SOFTLENS_FAQ = [
     id: "silinder",
     icon: "🔄",
     title: "Silinder (Astigmatism)",
-    desc: "Tersedia pemesanan softlens khusus silinder/astigmatism denganAxis presisi tinggi.",
+    desc: "Tersedia pemesanan softlens khusus silinder/astigmatism dengan Axis presisi tinggi.",
   },
   {
     id: "cara-pakai",
