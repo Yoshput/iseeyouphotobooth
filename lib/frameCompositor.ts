@@ -74,6 +74,22 @@ export const FRAME_THEMES: FrameTheme[] = [
     supportedLayoutIds: ["solo", "duo_vert"],
   },
   {
+    id: "frame-koran-custom",
+    name: "Frame Koran I See You",
+    badge: "Edisi Khusus · 3 Foto",
+    description: "Frame Koran Klasik 'Optik i see you ?' edisi khusus dengan space foto transparan di bagian tengah & bawah.",
+    bgColor: "#F9F8F6",
+    bgGradEnd: "#F2F0EB",
+    topBarColor: "#116B3C",
+    accentBarColor: "#116B3C",
+    textColor: "#1A1A1A",
+    igColor: "#116B3C",
+    slotBg: "#FFFFFF",
+    slotBorder: "#1A1A1A",
+    dotColor: "#D0CCC4",
+    supportedPhotoCounts: [1, 2, 3, 4, 6],
+  },
+  {
     id: "emerald-luxury",
     name: "Emerald Luxury",
     description: "Tampilan deep green mewah dengan aksen emas yang anggun.",
@@ -548,6 +564,53 @@ async function drawNewspaperEditorialFrame(
   ctx.fillRect(16, height - 22, width - 32, 6);
 }
 
+/**
+ * Custom renderer for "Frame Koran Optik I See You" (Frame Koran.png overlay)
+ */
+async function drawFrameKoranCustomOverlay(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  layout: FrameLayout,
+  photos: string[],
+  colorFilterId: string
+) {
+  // 1. Base Vintage Newsprint Background Tone (#F8F7F3)
+  ctx.fillStyle = "#F8F7F3";
+  ctx.fillRect(0, 0, width, height);
+
+  // 2. 3 Photo Slot Bounds scaled to 1200x1800 or layout canvas
+  // Original Frame Koran dimensions: 1333 x 2000 px
+  const koranSlots: PhotoSlot[] = [
+    { x: Math.round((20 / 1333) * width), y: Math.round((655 / 2000) * height), w: Math.round((1293 / 1333) * width), h: Math.round((548 / 2000) * height) },
+    { x: Math.round((504 / 1333) * width), y: Math.round((1297 / 2000) * height), w: Math.round((324 / 1333) * width), h: Math.round((233 / 2000) * height) },
+    { x: Math.round((37 / 1333) * width), y: Math.round((1541 / 2000) * height), w: Math.round((411 / 1333) * width), h: Math.round((391 / 2000) * height) },
+  ];
+
+  // Draw user photos in the transparent cutouts underneath
+  for (let i = 0; i < koranSlots.length; i++) {
+    const slot = koranSlots[i];
+    if (photos[i]) {
+      try {
+        const img = await loadImage(photos[i]);
+        drawCoverImage(ctx, img, slot, colorFilterId || "normal", 0);
+      } catch {
+        drawEmptySlot(ctx, slot, i, FRAME_THEMES[0], 0);
+      }
+    } else {
+      drawEmptySlot(ctx, slot, i, FRAME_THEMES[0], 0);
+    }
+  }
+
+  // 3. Composite transparent PNG Frame Koran overlay on top
+  try {
+    const overlayImg = await loadImage("/frame photobooth/Frame Koran.png");
+    ctx.drawImage(overlayImg, 0, 0, width, height);
+  } catch (err) {
+    console.warn("Failed to load Frame Koran.png overlay:", err);
+  }
+}
+
 export async function compositeFrame(
   layout: FrameLayout,
   photos: string[],
@@ -572,6 +635,12 @@ export async function compositeFrame(
   // Custom theme branch: News Paper Editorial
   if (themeId === "newspaper-editorial") {
     await drawNewspaperEditorialFrame(ctx, width, height, layout, photos, colorFilterId, logoSrc);
+    return canvas.toDataURL("image/jpeg", 0.93);
+  }
+
+  // Custom theme branch: Frame Koran Custom PNG Overlay
+  if (themeId === "frame-koran-custom") {
+    await drawFrameKoranCustomOverlay(ctx, width, height, layout, photos, colorFilterId);
     return canvas.toDataURL("image/jpeg", 0.93);
   }
 
