@@ -6,6 +6,10 @@ import {
   fetchQZPrinters,
   printPhotoStripQZ,
 } from "@/lib/qzPrint";
+import {
+  isWebBluetoothSupported,
+  printPhotoStripWebBluetooth,
+} from "@/lib/webBluetoothPrint";
 
 interface ThermalPrintModalProps {
   isOpen: boolean;
@@ -21,6 +25,7 @@ export default function ThermalPrintModal({
   const [printers, setPrinters] = useState<string[]>([]);
   const [selectedPrinter, setSelectedPrinter] = useState<string>("");
   const [loadingPrinters, setLoadingPrinters] = useState<boolean>(false);
+  const [hasWebBluetooth, setHasWebBluetooth] = useState<boolean>(false);
   const [printStatus, setPrintStatus] = useState<
     "idle" | "connecting" | "processing" | "printing" | "success" | "error"
   >("idle");
@@ -28,6 +33,9 @@ export default function ThermalPrintModal({
 
   useEffect(() => {
     if (!isOpen) return;
+
+    // Check if Web Bluetooth API is supported (Android Chrome / Tablet)
+    isWebBluetoothSupported().then(setHasWebBluetooth);
 
     // Load saved printer preference
     try {
@@ -100,7 +108,7 @@ export default function ThermalPrintModal({
     }
   };
 
-  const handlePrint = async () => {
+  const handlePrintQZ = async () => {
     if (!selectedPrinter) {
       setPrintStatus("error");
       setStatusMessage("Pilih printer thermal terlebih dahulu.");
@@ -135,6 +143,33 @@ export default function ThermalPrintModal({
     }
   };
 
+  const handlePrintDirectBluetooth = async () => {
+    setPrintStatus("processing");
+    setStatusMessage("Memindai & menghubungkan ke Bluetooth RPP02N...");
+
+    try {
+      setPrintStatus("printing");
+      const result = await printPhotoStripWebBluetooth(imageDataUrl);
+
+      if (result.success) {
+        setPrintStatus("success");
+        setStatusMessage(result.message);
+        setTimeout(() => {
+          onClose();
+          setPrintStatus("idle");
+        }, 2500);
+      } else {
+        setPrintStatus("error");
+        setStatusMessage(result.message);
+      }
+    } catch (err) {
+      setPrintStatus("error");
+      setStatusMessage(
+        err instanceof Error ? err.message : "Gagal Bluetooth Tablet"
+      );
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white p-6 shadow-2xl space-y-5 border border-isy-line">
@@ -149,7 +184,7 @@ export default function ThermalPrintModal({
                 Cetak Struk Thermal 80mm
               </h3>
               <p className="text-[11px] text-isy-ink/60">
-                ESC/POS Bluetooth / COM Port via QZ Tray
+                QZ Tray PC / Direct Bluetooth Tablet Chrome
               </p>
             </div>
           </div>
@@ -162,10 +197,10 @@ export default function ThermalPrintModal({
           </button>
         </div>
 
-        {/* Printer Selection */}
+        {/* Printer Selection (QZ Tray) */}
         <div className="space-y-2">
           <label className="text-xs font-bold text-isy-green-deep flex items-center justify-between">
-            <span>Pilih Target Printer:</span>
+            <span>Printer PC / Laptop (QZ Tray):</span>
             {loadingPrinters && (
               <span className="text-[10px] text-isy-green-bright font-normal animate-pulse">
                 Mencari printer...
@@ -188,9 +223,9 @@ export default function ThermalPrintModal({
             </select>
           ) : (
             <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 space-y-1">
-              <p className="font-bold">⚠️ Printer Tidak Ditemukan</p>
+              <p className="font-bold">⚠️ Printer QZ Tray Tidak Ditemukan</p>
               <p className="text-[11px] text-amber-800/80 leading-relaxed">
-                Pastikan QZ Tray sudah berjalan di komputer ini &amp; printer Bluetooth ter-pairing di Windows Settings.
+                Jalankan QZ Tray di Laptop, ATAU gunakan tombol Direct Bluetooth Tablet di bawah.
               </p>
             </div>
           )}
@@ -217,28 +252,42 @@ export default function ThermalPrintModal({
         )}
 
         {/* Action Buttons */}
-        <div className="pt-2 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={printStatus === "processing" || printStatus === "printing"}
-            className="w-1/3 rounded-xl border border-isy-line py-3 text-xs font-bold text-isy-ink/70 hover:bg-isy-mist transition-colors disabled:opacity-50"
-          >
-            Tutup
-          </button>
+        <div className="pt-2 space-y-2">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={printStatus === "processing" || printStatus === "printing"}
+              className="w-1/3 rounded-xl border border-isy-line py-3 text-xs font-bold text-isy-ink/70 hover:bg-isy-mist transition-colors disabled:opacity-50"
+            >
+              Tutup
+            </button>
 
-          <button
-            type="button"
-            onClick={handlePrint}
-            disabled={
-              !selectedPrinter ||
-              printStatus === "processing" ||
-              printStatus === "printing"
-            }
-            className="w-2/3 flex items-center justify-center gap-2 rounded-xl bg-isy-green-bright py-3 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 hover:bg-isy-green-deep active:scale-95 transition-all disabled:opacity-50"
-          >
-            <span>Cetak Foto Strip 🖨️</span>
-          </button>
+            <button
+              type="button"
+              onClick={handlePrintQZ}
+              disabled={
+                !selectedPrinter ||
+                printStatus === "processing" ||
+                printStatus === "printing"
+              }
+              className="w-2/3 flex items-center justify-center gap-1.5 rounded-xl bg-isy-green-bright py-3 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 hover:bg-isy-green-deep active:scale-95 transition-all disabled:opacity-50"
+            >
+              <span>Cetak via PC 🖨️</span>
+            </button>
+          </div>
+
+          {/* Mobile Tablet Direct Bluetooth Button */}
+          {hasWebBluetooth && (
+            <button
+              type="button"
+              onClick={handlePrintDirectBluetooth}
+              disabled={printStatus === "processing" || printStatus === "printing"}
+              className="w-full flex items-center justify-center gap-2 rounded-xl border-2 border-isy-green-bright bg-isy-green-bright/10 py-3 text-xs font-black uppercase tracking-wider text-isy-green-deep hover:bg-isy-green-bright hover:text-white transition-all active:scale-95 disabled:opacity-50"
+            >
+              <span>📱 Cetak Direct Bluetooth Tablet (Tanpa QZ Tray)</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
