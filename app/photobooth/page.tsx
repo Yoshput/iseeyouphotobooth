@@ -131,26 +131,43 @@ function TimerChips({
 }
 
 // ── Giant Center QR Modal for Pop-Up Events ──────────────────────────────────
-function GiantQRModal({ uploadedUrl, onClose }: { uploadedUrl: string; onClose: () => void }) {
- const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=8&color=116B3C&data=${encodeURIComponent(uploadedUrl)}`;
+function GiantQRModal({
+  uploadedUrl,
+  qrCodeDataUrl,
+  onClose,
+}: {
+  uploadedUrl: string;
+  qrCodeDataUrl?: string | null;
+  onClose: () => void;
+}) {
+  const qrDisplaySrc =
+    qrCodeDataUrl ||
+    `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=8&color=116B3C&data=${encodeURIComponent(
+      uploadedUrl
+    )}`;
 
- return (
- <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200">
- <div className="relative w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl text-center space-y-4 border border-isy-green-bright/30">
- <button onClick={onClose} className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-isy-mist text-isy-ink/60 hover:bg-isy-line transition-colors"></button>
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl text-center space-y-4 border border-isy-green-bright/30">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-isy-mist text-isy-ink/60 hover:bg-isy-line transition-colors"
+        >
+          ✕
+        </button>
 
- <div className="space-y-1">
- <div className="inline-flex items-center gap-1.5 rounded-full bg-isy-green-bright/10 px-3 py-1 text-xs font-bold text-isy-green-bright">
- <span> Pop-Up Event Booth Mode</span>
- </div>
- <h3 className="font-serif text-xl font-black text-isy-green-deep">Scan & Unduh di HP Kamu</h3>
- <p className="text-xs text-isy-ink/60">Arahkan kamera HP ke QR Code raksasa di bawah ini</p>
- </div>
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-isy-green-bright/10 px-3 py-1 text-xs font-bold text-isy-green-bright">
+            <span>Pop-Up Event Booth Mode</span>
+          </div>
+          <h3 className="font-serif text-xl font-black text-isy-green-deep">Scan &amp; Unduh di HP Kamu</h3>
+          <p className="text-xs text-isy-ink/60">Arahkan kamera HP ke QR Code raksasa di bawah ini</p>
+        </div>
 
- <div className="flex justify-center p-3 bg-isy-mist rounded-2xl border border-isy-green-bright/20 shadow-inner">
- {/* eslint-disable-next-line @next/next/no-img-element */}
- <img src={qrApiUrl} alt="QR Code Event Raksasa" className="h-64 w-64 rounded-xl border-4 border-white bg-white object-contain shadow-lg" />
- </div>
+        <div className="flex justify-center p-3 bg-isy-mist rounded-2xl border border-isy-green-bright/20 shadow-inner">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={qrDisplaySrc} alt="QR Code Event Raksasa" className="h-64 w-64 rounded-xl border-4 border-white bg-white object-contain shadow-lg" />
+        </div>
 
  <p className="text-[11px] font-semibold text-isy-green-deep truncate">{uploadedUrl}</p>
 
@@ -162,66 +179,99 @@ function GiantQRModal({ uploadedUrl, onClose }: { uploadedUrl: string; onClose: 
  );
 }
 
-function QRBox({ phase, uploadedUrl, onOpenGiantQR, onDownload }: {
- phase: UploadPhase; uploadedUrl: string | null; onOpenGiantQR: () => void; onDownload: () => void;
+function QRBox({
+  phase,
+  uploadedUrl,
+  qrCodeDataUrl,
+  uploadError,
+  onOpenGiantQR,
+  onDownload,
+  onRetry,
+}: {
+  phase: UploadPhase;
+  uploadedUrl: string | null;
+  qrCodeDataUrl: string | null;
+  uploadError: string | null;
+  onOpenGiantQR: () => void;
+  onDownload: () => void;
+  onRetry?: () => void;
 }) {
- if (phase === "idle") return null;
+  if (phase === "idle") return null;
 
- if (phase === "uploading") {
- return (
- <div className="flex items-center gap-3 rounded-2xl border border-isy-green-bright/25 bg-isy-mist p-3">
- <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white shadow">
- <div className="h-4 w-4 animate-spin rounded-full border-2 border-isy-green-bright border-t-transparent" />
- </div>
- <div>
- <p className="text-xs font-bold text-isy-green-deep"> Mengunggah Foto…</p>
- <p className="mt-0.5 text-[10px] leading-tight text-isy-ink/55">Menyiapkan QR untuk download di HP.</p>
- </div>
- </div>
- );
- }
+  if (phase === "uploading") {
+    return (
+      <div className="flex items-center gap-3 rounded-2xl border border-isy-green-bright/25 bg-isy-mist p-3">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white shadow">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-isy-green-bright border-t-transparent" />
+        </div>
+        <div>
+          <p className="text-xs font-bold text-isy-green-deep">Mengunggah Foto…</p>
+          <p className="mt-0.5 text-[10px] leading-tight text-isy-ink/55">Menyiapkan QR untuk download di HP.</p>
+        </div>
+      </div>
+    );
+  }
 
- if (phase === "done" && uploadedUrl) {
- const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&color=116B3C&data=${encodeURIComponent(uploadedUrl)}`;
- return (
- <div className="flex items-center justify-between gap-3 rounded-2xl border border-isy-green-bright/40 bg-gradient-to-br from-[#E8F5E9] to-white p-3 shadow-sm">
- <div className="flex items-center gap-3">
- <div className="relative h-[60px] w-[60px] shrink-0">
- {/* eslint-disable-next-line @next/next/no-img-element */}
- <img src={qrApiUrl} alt="QR Code" className="h-full w-full rounded-xl border-2 border-white bg-white object-contain shadow-md" />
- <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-isy-green-bright text-[8px] text-white"></span>
- </div>
- <div className="flex flex-col gap-0.5">
- <p className="text-xs font-black text-isy-green-deep"> Scan & Unduh di HP</p>
- <p className="text-[10px] leading-tight text-isy-ink/60">Arahkan kamera HP ke QR ini.</p>
- </div>
- </div>
+  if (phase === "done" && (qrCodeDataUrl || uploadedUrl)) {
+    const qrDisplaySrc = qrCodeDataUrl || `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&color=116B3C&data=${encodeURIComponent(uploadedUrl || "")}`;
+    return (
+      <div className="flex items-center justify-between gap-3 rounded-2xl border border-isy-green-bright/40 bg-gradient-to-br from-[#E8F5E9] to-white p-3 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="relative h-[60px] w-[60px] shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={qrDisplaySrc} alt="QR Code" className="h-full w-full rounded-xl border-2 border-white bg-white object-contain shadow-md" />
+            <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-isy-green-bright text-[8px] text-white">✓</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-xs font-black text-isy-green-deep">Scan &amp; Unduh di HP</p>
+            <p className="text-[10px] leading-tight text-isy-ink/60">Arahkan kamera HP ke QR ini.</p>
+          </div>
+        </div>
 
- {/* Event Mode Giant QR Button */}
- <button
- onClick={onOpenGiantQR}
- className="flex shrink-0 flex-col items-center gap-1 rounded-xl bg-isy-green-bright px-3 py-2 text-[10px] font-black text-white shadow hover:bg-isy-green-deep active:scale-95 transition-all"
- >
- <span> Perbesar</span>
- <span className="text-[8px] font-medium opacity-80">Event Mode</span>
- </button>
- </div>
- );
- }
+        {/* Event Mode Giant QR Button */}
+        <button
+          onClick={onOpenGiantQR}
+          className="flex shrink-0 flex-col items-center gap-1 rounded-xl bg-isy-green-bright px-3 py-2 text-[10px] font-black text-white shadow hover:bg-isy-green-deep active:scale-95 transition-all"
+        >
+          <span>Perbesar</span>
+          <span className="text-[8px] font-medium opacity-80">Event Mode</span>
+        </button>
+      </div>
+    );
+  }
 
- return (
- <div className="flex items-center gap-3 rounded-2xl border border-dashed border-isy-line bg-white p-3">
- <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-isy-mist text-lg"></div>
- <div>
- <p className="text-xs font-bold text-isy-ink/80">
- {phase === "no-key" ? "QR: Setup ImgBB/Cloudinary di .env.local" : "Upload QR Gagal"}
- </p>
- <button onClick={onDownload} className="mt-1 rounded-lg bg-isy-green-bright px-2.5 py-1 text-[10px] font-bold text-white active:scale-95">
- Simpan Langsung
- </button>
- </div>
- </div>
- );
+  return (
+    <div className="flex flex-col gap-2 rounded-2xl border border-dashed border-red-200 bg-red-50/50 p-3">
+      <div className="flex items-start gap-2.5">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-red-100 text-sm">⚠️</div>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-bold text-red-900 leading-snug">
+            {phase === "no-key" ? "Setup Cloudinary Diperlukan" : "Upload QR Gagal"}
+          </p>
+          <p className="mt-0.5 text-[10px] text-red-700/80 leading-relaxed break-words line-clamp-2">
+            {uploadError || "Pastikan Cloudinary preset di-set Unsigned & ENV Vercel terpasang."}
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 pt-1">
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="rounded-lg bg-red-600 px-3 py-1.5 text-[10px] font-bold text-white shadow active:scale-95 transition-all"
+          >
+            Coba Lagi
+          </button>
+        )}
+        <button
+          onClick={onDownload}
+          className="rounded-lg bg-isy-green-bright px-3 py-1.5 text-[10px] font-bold text-white shadow active:scale-95 transition-all"
+        >
+          Simpan Langsung
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
@@ -343,20 +393,21 @@ function TryOnResult({
 
 // ── StripPreview: Right-panel preview/result for both AR Try-On & Photobooth ──
 function StripPreview({
-  layout, photos, compositeUrl, gifUrl, uploadedUrl, uploadPhase,
+  layout, photos, compositeUrl, gifUrl, uploadedUrl, qrCodeDataUrl, uploadError, uploadPhase,
   phase, photoCount, selectedTheme, selectedFilter,
   onSelectTheme, onSelectFilter, onOpenGiantQR,
   onDownloadStrip, onDownloadGif, onRetake, onChangeLayout, onOpenShareModal,
-  onRetakeSingleSlot, arGlassesName, isArMode = false,
+  onRetakeSingleSlot, onRetryUpload, arGlassesName, isArMode = false,
 }: {
   layout: FrameLayout; photos: string[]; compositeUrl: string | null;
-  gifUrl: string | null; uploadedUrl: string | null; uploadPhase: UploadPhase;
+  gifUrl: string | null; uploadedUrl: string | null; qrCodeDataUrl?: string | null; uploadError?: string | null; uploadPhase: UploadPhase;
   phase: BoothPhase; photoCount: number; selectedTheme: string; selectedFilter: string;
   onSelectTheme: (tId: string) => void; onSelectFilter: (fId: string) => void;
   onOpenGiantQR: () => void;
   onDownloadStrip: () => void; onDownloadGif: () => void;
   onRetake: () => void; onChangeLayout: () => void; onOpenShareModal: () => void;
   onRetakeSingleSlot: (slotIdx: number) => void;
+  onRetryUpload?: () => void;
   arGlassesName?: string; isArMode?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<ResultTab>("strip");
@@ -450,7 +501,15 @@ function StripPreview({
           )}
         </div>
 
-        <QRBox phase={uploadPhase} uploadedUrl={uploadedUrl} onOpenGiantQR={onOpenGiantQR} onDownload={onDownloadStrip} />
+        <QRBox
+          phase={uploadPhase}
+          uploadedUrl={uploadedUrl}
+          qrCodeDataUrl={qrCodeDataUrl || null}
+          uploadError={uploadError || null}
+          onOpenGiantQR={onOpenGiantQR}
+          onDownload={onDownloadStrip}
+          onRetry={onRetryUpload}
+        />
 
         <div className="grid grid-cols-2 gap-2">
           {activeTab === "strip" ? (
@@ -851,26 +910,33 @@ const showToast = useCallback((msg: string) => {
     return () => { cancelled = true; };
   }, [phase]);
 
- // Auto-upload both Photo Strip and Animated GIF to Cloudinary/ImgBB for QR code
- useEffect(() => {
- if (phase !== "result" || !compositeUrl) return;
- let cancelled = false;
- setUploadPhase("uploading");
+  // Auto-upload both Photo Strip and Animated GIF to Cloudinary for QR code
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
- uploadPhotoForQR(compositeUrl, gifUrl).then((result) => {
- if (cancelled) return;
- if (result.ok) {
- setUploadedUrl(result.qrPageUrl);
- setUploadPhase("done");
- } else if (result.error === "IMGBB_KEY_MISSING") {
- setUploadPhase("no-key");
- } else {
- console.warn("QR upload:", result.error);
- setUploadPhase("error");
- }
- });
- return () => { cancelled = true; };
- }, [phase, compositeUrl, gifUrl]);
+  const doUpload = () => {
+    if (phase !== "result" || !compositeUrl) return;
+    setUploadPhase("uploading");
+    setUploadError(null);
+
+    uploadPhotoForQR(compositeUrl, gifUrl).then((result) => {
+      if (result.ok) {
+        setUploadedUrl(result.qrPageUrl);
+        setQrCodeDataUrl(result.qrCodeDataUrl);
+        setUploadPhase("done");
+      } else {
+        console.warn("QR upload:", result.error);
+        setUploadError(result.error);
+        setUploadPhase("error");
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (phase !== "result" || !compositeUrl) return;
+    doUpload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, compositeUrl, gifUrl]);
 
  return (
  <main className="flex min-h-dvh w-full items-center justify-center bg-isy-gradient lg:p-6">
@@ -1135,29 +1201,32 @@ const showToast = useCallback((msg: string) => {
  )}
 
  {rightActive && (
- <StripPreview
- layout={layout}
- photos={photos}
- compositeUrl={compositeUrl}
- gifUrl={gifUrl}
- uploadedUrl={uploadedUrl}
- uploadPhase={uploadPhase}
- phase={phase}
- photoCount={currentSlot}
- selectedTheme={themeId}
- selectedFilter={colorFilterId}
- onSelectTheme={handleSelectTheme}
- onSelectFilter={handleSelectFilter}
- onOpenGiantQR={() => setGiantQRModalOpen(true)}
- onDownloadStrip={downloadStrip}
- onDownloadGif={downloadGif}
- onRetake={handleRetake}
- onChangeLayout={handleChangeLayout}
- onOpenShareModal={() => setShareModalOpen(true)}
- onRetakeSingleSlot={handleRetakeSingleSlot}
- arGlassesName={arEnabled ? glasses?.name : undefined}
- isArMode={arEnabled}
- />
+          <StripPreview
+            layout={layout}
+            photos={photos}
+            compositeUrl={compositeUrl}
+            gifUrl={gifUrl}
+            uploadedUrl={uploadedUrl}
+            qrCodeDataUrl={qrCodeDataUrl}
+            uploadError={uploadError}
+            uploadPhase={uploadPhase}
+            phase={phase}
+            photoCount={currentSlot}
+            selectedTheme={themeId}
+            selectedFilter={colorFilterId}
+            onSelectTheme={handleSelectTheme}
+            onSelectFilter={handleSelectFilter}
+            onOpenGiantQR={() => setGiantQRModalOpen(true)}
+            onDownloadStrip={downloadStrip}
+            onDownloadGif={downloadGif}
+            onRetake={handleRetake}
+            onChangeLayout={handleChangeLayout}
+            onOpenShareModal={() => setShareModalOpen(true)}
+            onRetakeSingleSlot={handleRetakeSingleSlot}
+            onRetryUpload={doUpload}
+            arGlassesName={arEnabled ? glasses?.name : undefined}
+            isArMode={arEnabled}
+          />
  )}
  </div>
 
@@ -1177,9 +1246,13 @@ const showToast = useCallback((msg: string) => {
  {shareModalOpen && compositeUrl && (
  <ShareModal compositeUrl={compositeUrl} gifUrl={gifUrl} onClose={() => setShareModalOpen(false)} onToast={showToast} />
  )}
- {giantQRModalOpen && uploadedUrl && (
- <GiantQRModal uploadedUrl={uploadedUrl} onClose={() => setGiantQRModalOpen(false)} />
- )}
+      {giantQRModalOpen && uploadedUrl && (
+        <GiantQRModal
+          uploadedUrl={uploadedUrl}
+          qrCodeDataUrl={qrCodeDataUrl}
+          onClose={() => setGiantQRModalOpen(false)}
+        />
+      )}
  {toast && (
  <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-50">
  <div className="rounded-full bg-isy-green-deep px-5 py-2 text-xs font-semibold text-white shadow-lg">
