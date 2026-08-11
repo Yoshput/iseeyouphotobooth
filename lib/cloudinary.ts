@@ -18,18 +18,13 @@ export interface CloudinaryUploadResult {
 /**
  * Upload blob/dataURL foto ke Cloudinary.
  * Mengembalikan URL publik permanent (https://) yang bisa di-QR-kan.
- *
- * Setup: buat unsigned upload preset di https://console.cloudinary.com
- * → Settings → Upload → Upload presets → Add upload preset
- * Set delivery type: "public", signing mode: "unsigned"
- * Optional: set auto folder, max file size, dan expiration via transformation.
  */
 export async function uploadToCloudinary(
   blobOrDataUrl: Blob | string
 ): Promise<CloudinaryUploadResult> {
   if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
     throw new Error(
-      "Cloudinary belum dikonfigurasi. Set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME dan NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET di .env.local"
+      "Cloudinary belum dikonfigurasi. Set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME dan NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET di Vercel Settings -> Environment Variables."
     );
   }
 
@@ -44,19 +39,22 @@ export async function uploadToCloudinary(
     formData.append("file", blobOrDataUrl, "photobooth.jpg");
   }
 
-  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-  formData.append("folder", "isy-photobooth");
-  // Tag untuk identifikasi dan potential cleanup
-  formData.append("tags", "photobooth,event");
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET.trim());
 
   const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME.trim()}/image/upload`,
     { method: "POST", body: formData }
   );
 
   if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`Cloudinary upload gagal: ${err}`);
+    let errMessage = "";
+    try {
+      const errJson = await response.json();
+      errMessage = errJson.error?.message || JSON.stringify(errJson);
+    } catch {
+      errMessage = await response.text();
+    }
+    throw new Error(`Cloudinary (${response.status}): ${errMessage}`);
   }
 
   const data = await response.json();
