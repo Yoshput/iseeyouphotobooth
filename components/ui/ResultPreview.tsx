@@ -7,302 +7,566 @@
  * UX hierarchy:
  * 1. Foto hasil (scrollable preview, cukup besar)
  * 2. Tombol SIMPAN (primary, always visible)
- * 3. Share row: WhatsApp · Instagram · Umum
- * 4. Retake / Ganti Layout (secondary)
- * 5. Instagram CTA footer
+ * 3. QR Scan untuk ambil foto di HP (upload Cloudinary → QR)
+ * 4. Share row: WhatsApp · Instagram · Umum
+ * 5. Retake / Ganti Layout (secondary)
+ * 6. Instagram CTA footer
  */
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import QRCode from "qrcode";
 import { gsap } from "gsap";
 import type { FrameLayout } from "@/lib/frameLayouts";
 import { csWhatsappUrl } from "@/lib/branches";
 import { downloadOrShareImage } from "@/lib/saveImage";
+import {
+  uploadToCloudinary,
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_UPLOAD_PRESET,
+} from "@/lib/cloudinary";
 
 interface Props {
- compositeDataUrl: string;
- layout: FrameLayout;
- onRetake: () => void;
- onChangeLayout: () => void;
- /** Name of the glasses tried on, if any (AR mode only) — used to prefill
-  *  the "tanya stok ke CS" WhatsApp message. */
- glassesName?: string;
+  compositeDataUrl: string;
+  layout: FrameLayout;
+  onRetake: () => void;
+  onChangeLayout: () => void;
+  /** Name of the glasses tried on, if any (AR mode only) — used to prefill
+   *  the "tanya stok ke CS" WhatsApp message. */
+  glassesName?: string;
 }
+
+// ── Upload status type ────────────────────────────────────────────────────────
+
+type UploadStatus = "idle" | "uploading" | "done" | "error";
 
 // ── SVG icon atoms ───────────────────────────────────────────────────────────
 
 const IcDownload = () => (
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
- stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
- <path d="M12 3v13" /><path d="M7 11l5 5 5-5" /><path d="M4 20h16" />
- </svg>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3v13" /><path d="M7 11l5 5 5-5" /><path d="M4 20h16" />
+  </svg>
 );
 
 const IcWA = () => (
- <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
- <path d="M16 3C8.82 3 3 8.82 3 16c0 2.36.64 4.57 1.76 6.48L3 29l6.73-1.73A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm6.12 18.08c-.26.73-1.51 1.4-2.08 1.48-.57.08-1.1.36-3.71-.77-3.14-1.36-5.15-4.52-5.3-4.73-.15-.21-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.58-.38.78-.38h.56c.18 0 .43-.07.67.51.25.6.84 2.06.92 2.21.08.14.13.31.03.5-.1.19-.14.31-.28.47-.15.16-.3.36-.43.48-.14.12-.29.25-.12.5.16.24.72 1.19 1.55 1.92 1.07.95 1.97 1.24 2.21 1.38.24.13.38.11.52-.07.14-.18.59-.69.75-.93.16-.23.32-.19.54-.11.22.08 1.39.66 1.63.78.24.12.4.18.46.28.06.1.06.56-.2 1.29z"/>
- </svg>
+  <Image
+    src="/logo/Logo-Whatsapp.png"
+    alt="WhatsApp"
+    width={22}
+    height={22}
+    className="h-5 w-5 object-contain"
+  />
 );
 
 const IcIG = () => (
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
- stroke="currentColor" strokeWidth="2" strokeLinecap="round">
- <rect x="2" y="2" width="20" height="20" rx="6" ry="6" />
- <circle cx="12" cy="12" r="4" />
- <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
- </svg>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <rect x="2" y="2" width="20" height="20" rx="6" ry="6" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+  </svg>
 );
 
 const IcShare = () => (
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
- stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
- <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
- <line x1="8.6" y1="13.5" x2="15.4" y2="17.5" />
- <line x1="15.4" y1="6.5" x2="8.6" y2="10.5" />
- </svg>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+    <line x1="8.6" y1="13.5" x2="15.4" y2="17.5" />
+    <line x1="15.4" y1="6.5" x2="8.6" y2="10.5" />
+  </svg>
 );
 
 const IcRetake = () => (
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
- stroke="currentColor" strokeWidth="2.3" strokeLinecap="round">
- <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" />
- </svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.3" strokeLinecap="round">
+    <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" />
+  </svg>
 );
 
 const IcGrid = () => (
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
- stroke="currentColor" strokeWidth="2.2">
- <rect x="3" y="3" width="7" height="7" rx="1.5" />
- <rect x="14" y="3" width="7" height="7" rx="1.5" />
- <rect x="3" y="14" width="7" height="7" rx="1.5" />
- <rect x="14" y="14" width="7" height="7" rx="1.5" />
- </svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.2">
+    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+  </svg>
+);
+
+const IcQR = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="3" width="7" height="7" rx="1" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+    <path d="M14 14h1v1h-1z" />
+    <path d="M17 14h1v1h-1z" />
+    <path d="M20 14h1v1h-1z" />
+    <path d="M14 17h1v1h-1z" />
+    <path d="M17 17h1v1h-1z" />
+    <path d="M20 17h1v1h-1z" />
+    <path d="M14 20h1v1h-1z" />
+    <path d="M17 20h1v1h-1z" />
+    <path d="M20 20h1v1h-1z" />
+  </svg>
+);
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
+
+const Spinner = ({ size = 24 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    className="animate-spin"
+    aria-hidden="true"
+  >
+    <circle
+      cx="12" cy="12" r="10"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeOpacity="0.25"
+    />
+    <path
+      d="M12 2a10 10 0 0 1 10 10"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+    />
+  </svg>
 );
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function ResultPreview({ compositeDataUrl, layout, onRetake, onChangeLayout, glassesName }: Props) {
- const ref = useRef<HTMLDivElement>(null);
- const photoRef = useRef<HTMLDivElement>(null);
- const actionsRef = useRef<HTMLDivElement>(null);
- const [toast, setToast] = useState<string | null>(null);
+export default function ResultPreview({
+  compositeDataUrl,
+  layout,
+  onRetake,
+  onChangeLayout,
+  glassesName,
+}: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
+  const actionsRef = useRef<HTMLDivElement>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
- // ── GSAP entrance ──────────────────────────────────────────────────────────
- useEffect(() => {
- const ctx = gsap.context(() => {
- gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration: 0.28 });
- gsap.fromTo(photoRef.current,
- { y: 24, opacity: 0 },
- { y: 0, opacity: 1, duration: 0.4, ease: "power2.out", delay: 0.12 });
- gsap.fromTo(actionsRef.current,
- { y: 16, opacity: 0 },
- { y: 0, opacity: 1, duration: 0.36, ease: "power2.out", delay: 0.22 });
- });
- return () => ctx.revert();
- }, []);
+  // ── QR / upload state ───────────────────────────────────────────────────────
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const uploadAttempted = useRef(false);
 
- const showToast = (msg: string) => {
- setToast(msg);
- setTimeout(() => setToast(null), 3200);
- };
+  const cloudinaryConfigured =
+    Boolean(CLOUDINARY_CLOUD_NAME) && Boolean(CLOUDINARY_UPLOAD_PRESET);
 
- // ── Download / Save — cross-platform (iOS Share Sheet / Android / Desktop) ──
- const filename = `iseeyou-photobooth-${Date.now()}.jpg`;
+  // ── GSAP entrance ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration: 0.28 });
+      gsap.fromTo(
+        photoRef.current,
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, ease: "power2.out", delay: 0.12 }
+      );
+      gsap.fromTo(
+        actionsRef.current,
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.36, ease: "power2.out", delay: 0.22 }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
 
- const download = async () => {
-   showToast("Menyimpan foto...");
-   const result = await downloadOrShareImage(compositeDataUrl, filename, "Optik I See You — Photobooth");
-   if (result.method === "share") {
-     showToast("Foto siap disimpan! ");
-   } else if (result.method === "download") {
-     showToast("Foto tersimpan! ");
-   } else {
-     // preview fallback — guide user to long-press save on iOS
-     showToast("Tekan & tahan foto, lalu pilih 'Simpan' ");
-   }
- };
+  // ── Auto-upload on mount (once) ────────────────────────────────────────────
+  useEffect(() => {
+    if (uploadAttempted.current || !cloudinaryConfigured) return;
+    uploadAttempted.current = true;
 
- // ── Share ──────────────────────────────────────────────────────────────
- const shareText =
-   "Coba kacamata di @iseeyou.glasses AR Photobooth! \n" +
-   "Kunjungi: https://www.instagram.com/iseeyou.glasses/";
+    const doUpload = async () => {
+      setUploadStatus("uploading");
+      setUploadError(null);
+      try {
+        const result = await uploadToCloudinary(compositeDataUrl);
+        setUploadedUrl(result.secure_url);
+        // Generate QR from the public Cloudinary URL
+        const qr = await QRCode.toDataURL(result.secure_url, {
+          errorCorrectionLevel: "M",
+          margin: 2,
+          width: 220,
+          color: { dark: "#116B3C", light: "#FFFFFF" },
+        });
+        setQrDataUrl(qr);
+        setUploadStatus("done");
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "Upload gagal";
+        setUploadError(msg);
+        setUploadStatus("error");
+      }
+    };
 
- const share = async (platform: "whatsapp" | "instagram" | "general") => {
-   // Always try native share sheet first (iOS & Android)
-   const result = await downloadOrShareImage(compositeDataUrl, filename, "I See You AR Photobooth");
-   if (result.method === "share") return; // native share handled it
+    // Small delay so the GSAP entrance finishes first
+    const t = setTimeout(doUpload, 600);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-   // Desktop / browser fallback
-   if (platform === "whatsapp") {
-     window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
-   } else if (platform === "instagram") {
-     window.open("https://www.instagram.com/iseeyou.glasses/", "_blank");
-     showToast("Foto diunduh — buka Instagram & share dari galeri! ");
-   } else {
-     showToast("Foto diunduh! Sekarang bisa dibagikan ");
-   }
- };
+  const retryUpload = () => {
+    uploadAttempted.current = false;
+    setUploadStatus("idle");
+    setUploadError(null);
+    setUploadedUrl(null);
+    setQrDataUrl(null);
 
- return (
- <div ref={ref} className="absolute inset-0 z-50 flex flex-col bg-gradient-to-b from-white to-isy-mist overflow-y-auto">
+    // Re-trigger upload
+    setTimeout(async () => {
+      uploadAttempted.current = true;
+      setUploadStatus("uploading");
+      try {
+        const result = await uploadToCloudinary(compositeDataUrl);
+        setUploadedUrl(result.secure_url);
+        const qr = await QRCode.toDataURL(result.secure_url, {
+          errorCorrectionLevel: "M",
+          margin: 2,
+          width: 220,
+          color: { dark: "#116B3C", light: "#FFFFFF" },
+        });
+        setQrDataUrl(qr);
+        setUploadStatus("done");
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "Upload gagal";
+        setUploadError(msg);
+        setUploadStatus("error");
+      }
+    }, 100);
+  };
 
- {/* ── Header ─────────────────────────────────────────────────────── */}
- <div className="flex shrink-0 items-center justify-between px-5 pt-5 pb-2">
- <div className="inline-flex items-center">
- <Image src="/logo.png" alt="Optik I See You"
- width={120} height={47} className="h-8 w-auto" />
- </div>
- <div className="text-right">
- <p className="text-xs font-bold text-isy-green-bright">Foto siap! </p>
- <p className="text-[11px] text-isy-ink/50 capitalize">{layout.label}</p>
- </div>
- </div>
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3200);
+  };
 
- {/* ── Composite photo ────────────────────────────────────────────── */}
- <div ref={photoRef} className="flex shrink-0 justify-center px-5 pb-3">
- {/* eslint-disable-next-line @next/next/no-img-element */}
- <img
- src={compositeDataUrl}
- alt="Hasil foto"
- className="w-full max-w-xs rounded-2xl border border-isy-line shadow-xl"
- />
- </div>
+  // ── Download / Save — cross-platform (iOS Share Sheet / Android / Desktop) ──
+  const filename = `iseeyou-photobooth-${Date.now()}.jpg`;
 
- {/* ── Toast ──────────────────────────────────────────────────────── */}
- <div className={`
- flex justify-center px-5 transition-all duration-300
- ${toast ? "mb-1 opacity-100" : "mb-0 opacity-0 pointer-events-none"}
- `}>
- <span className="rounded-full bg-isy-green-deep px-5 py-2 text-xs font-semibold text-white shadow">
- {toast ?? "​"}
- </span>
- </div>
+  const download = async () => {
+    showToast("Menyimpan foto...");
+    const result = await downloadOrShareImage(
+      compositeDataUrl,
+      filename,
+      "Optik I See You — Photobooth"
+    );
+    if (result.method === "share") {
+      showToast("Foto siap disimpan!");
+    } else if (result.method === "download") {
+      showToast("Foto tersimpan!");
+    } else {
+      // preview fallback — guide user to long-press save on iOS
+      showToast("Tekan & tahan foto, lalu pilih 'Simpan'");
+    }
+  };
 
- {/* ── Actions ────────────────────────────────────────────────────── */}
- <div ref={actionsRef} className="shrink-0 px-5 pb-4 space-y-2.5">
+  // ── Share ──────────────────────────────────────────────────────────────
+  const shareText =
+    "Coba kacamata di @iseeyou.glasses AR Photobooth! \n" +
+    "Kunjungi: https://www.instagram.com/iseeyou.glasses/";
 
- {/* PRIMARY: Download / Simpan */}
- <button
- id="result-download"
- onClick={download}
- className="
- flex w-full items-center justify-center gap-2.5
- rounded-2xl bg-isy-green-bright py-4
- text-sm font-black uppercase tracking-[0.15em] text-white
- shadow-md transition-all active:scale-[0.97] hover:bg-isy-green-deep
- "
- >
- <IcDownload />
- Simpan Foto
- </button>
+  const share = async (platform: "whatsapp" | "instagram" | "general") => {
+    // Always try native share sheet first (iOS & Android)
+    const result = await downloadOrShareImage(
+      compositeDataUrl,
+      filename,
+      "I See You AR Photobooth"
+    );
+    if (result.method === "share") return; // native share handled it
 
- {/* Tanya stok ke CS — only shown when a specific pair of glasses was
- tried on (AR mode), since "Photobooth Biasa" has no glasses context */}
- {glassesName && (
- <a
- id="result-ask-cs"
- href={csWhatsappUrl(glassesName)}
- target="_blank"
- rel="noopener noreferrer"
- className="
- flex w-full items-center justify-center gap-2.5
- rounded-2xl border-2 border-isy-green-deep bg-white py-3.5
- text-sm font-bold text-isy-green-deep
- transition-all active:scale-[0.97] hover:bg-isy-mist
- "
- >
- <IcWA />
- Tanya Stok &quot;{glassesName}&quot; ke CS
- </a>
- )}
+    // Desktop / browser fallback
+    if (platform === "whatsapp") {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+        "_blank"
+      );
+    } else if (platform === "instagram") {
+      window.open("https://www.instagram.com/iseeyou.glasses/", "_blank");
+      showToast("Foto diunduh — buka Instagram & share dari galeri!");
+    } else {
+      showToast("Foto diunduh! Sekarang bisa dibagikan");
+    }
+  };
 
- {/* SECONDARY: Share row */}
- <div className="grid grid-cols-3 gap-2">
- {(
- [
- { id: "result-share-wa", icon: <IcWA />, label: "WhatsApp", platform: "whatsapp" },
- { id: "result-share-ig", icon: <IcIG />, label: "Instagram", platform: "instagram" },
- { id: "result-share-gen", icon: <IcShare />, label: "Bagikan", platform: "general" },
- ] as const
- ).map(({ id, icon, label, platform }) => (
- <button
- key={id}
- id={id}
- onClick={() => share(platform)}
- className="
- flex flex-col items-center gap-1.5 rounded-2xl
- border border-isy-line bg-white py-3
- text-xs font-semibold text-isy-green-deep
- transition-all active:scale-95
- hover:border-isy-green-bright hover:bg-isy-mist
- "
- >
- {icon}
- {label}
- </button>
- ))}
- </div>
+  // ── QR Panel renderer ──────────────────────────────────────────────────────
 
- {/* TERTIARY: Retake / Ganti Layout */}
- <div className="grid grid-cols-2 gap-2">
- <button
- id="result-retake"
- onClick={onRetake}
- className="
- flex items-center justify-center gap-1.5 rounded-xl
- border border-isy-green-bright bg-white py-3
- text-sm font-bold text-isy-green-deep
- transition-all active:scale-95 hover:bg-isy-mist
- "
- >
- <IcRetake />
- Foto Ulang
- </button>
- <button
- id="result-change-layout"
- onClick={onChangeLayout}
- className="
- flex items-center justify-center gap-1.5 rounded-xl
- border border-isy-line bg-white py-3
- text-sm font-semibold text-isy-ink/60
- transition-all active:scale-95 hover:border-isy-ink/30
- "
- >
- <IcGrid />
- Ganti Layout
- </button>
- </div>
- </div>
+  const renderQrPanel = () => {
+    // Case 1: Cloudinary not configured
+    if (!cloudinaryConfigured) {
+      return (
+        <div className="rounded-2xl border border-isy-line bg-isy-mist p-4 text-center">
+          <div className="mb-2 flex justify-center text-isy-green-deep/40">
+            <IcQR />
+          </div>
+          <p className="text-xs font-semibold text-isy-ink/60">
+            QR Scan belum aktif
+          </p>
+          <p className="mt-0.5 text-[11px] text-isy-ink/40">
+            Setup Cloudinary diperlukan — lihat{" "}
+            <span className="font-bold text-isy-green-deep">SETUP-CLOUDINARY.md</span>
+          </p>
+        </div>
+      );
+    }
 
- {/* ── Instagram CTA footer ───────────────────────────────────────── */}
- <div className="mt-auto shrink-0 border-t border-isy-line bg-white/80 px-5 py-4">
- <a
- id="result-ig-cta"
- href="https://www.instagram.com/iseeyou.glasses/"
- target="_blank"
- rel="noopener noreferrer"
- className="
- mx-auto flex max-w-sm items-center gap-3 rounded-2xl
- bg-isy-mist px-4 py-3
- transition-all hover:bg-isy-line active:scale-[0.98]
- "
- >
- <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm text-isy-green-bright">
- <IcIG />
- </div>
- <div className="min-w-0">
- <p className="text-[11px] text-isy-ink/50">Kunjungi Instagram kami</p>
- <p className="text-sm font-black text-isy-green-bright">@iseeyou.glasses</p>
- </div>
- <svg className="ml-auto shrink-0 text-isy-ink/30" width="16" height="16"
- viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
- <path d="M9 18l6-6-6-6" />
- </svg>
- </a>
- <p className="mt-2.5 text-center text-[11px] text-isy-ink/40">
- Optik I See You · Purwokerto · Jadi Sahabat Mata Kamu
- </p>
- </div>
- </div>
- );
+    // Case 2: Uploading
+    if (uploadStatus === "uploading" || uploadStatus === "idle") {
+      return (
+        <div className="flex flex-col items-center gap-2 rounded-2xl border border-isy-line bg-isy-mist p-5">
+          <Spinner size={28} />
+          <p className="text-xs font-semibold text-isy-green-deep">
+            Menyiapkan QR...
+          </p>
+          <p className="text-[11px] text-isy-ink/40">
+            Foto sedang diunggah, tunggu sebentar
+          </p>
+        </div>
+      );
+    }
+
+    // Case 3: Error
+    if (uploadStatus === "error") {
+      return (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-center">
+          <p className="text-xs font-semibold text-red-600">
+            QR tidak tersedia
+          </p>
+          <p className="mt-0.5 text-[11px] text-red-400 line-clamp-2">
+            {uploadError}
+          </p>
+          <button
+            onClick={retryUpload}
+            className="
+              mt-3 rounded-xl border border-red-300 bg-white px-4 py-1.5
+              text-xs font-bold text-red-600
+              transition-all active:scale-95 hover:bg-red-50
+            "
+          >
+            Coba Lagi
+          </button>
+          <p className="mt-2 text-[10px] text-isy-ink/40">
+            Gunakan tombol Simpan di atas untuk mengunduh foto
+          </p>
+        </div>
+      );
+    }
+
+    // Case 4: Done — show QR
+    if (uploadStatus === "done" && qrDataUrl && uploadedUrl) {
+      return (
+        <div className="flex flex-col items-center gap-2 rounded-2xl border border-isy-green-bright/30 bg-white p-4 shadow-sm">
+          <p className="text-xs font-bold text-isy-green-deep">
+            Scan QR untuk simpan di HP
+          </p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={qrDataUrl}
+            alt="QR Code foto"
+            className="h-[140px] w-[140px] rounded-lg"
+          />
+          <p className="text-[10px] text-isy-ink/40 text-center">
+            Scan dengan kamera HP untuk buka & simpan foto
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="absolute inset-0 z-50 flex flex-col bg-gradient-to-b from-white to-isy-mist overflow-y-auto"
+    >
+      {/* ── Header ─────────────────────────────────────────────────────── */}
+      <div className="flex shrink-0 items-center justify-between px-5 pt-5 pb-2">
+        <div className="inline-flex items-center">
+          <Image
+            src="/logo.png"
+            alt="Optik I See You"
+            width={120}
+            height={47}
+            className="h-8 w-auto"
+          />
+        </div>
+        <div className="text-right">
+          <p className="text-xs font-bold text-isy-green-bright">Foto siap!</p>
+          <p className="text-[11px] text-isy-ink/50 capitalize">
+            {layout.label}
+          </p>
+        </div>
+      </div>
+
+      {/* ── Composite photo ────────────────────────────────────────────── */}
+      <div ref={photoRef} className="flex shrink-0 justify-center px-5 pb-3">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={compositeDataUrl}
+          alt="Hasil foto"
+          className="w-full max-w-xs rounded-2xl border border-isy-line shadow-xl"
+        />
+      </div>
+
+      {/* ── Toast ──────────────────────────────────────────────────────── */}
+      <div
+        className={`
+          flex justify-center px-5 transition-all duration-300
+          ${toast ? "mb-1 opacity-100" : "mb-0 opacity-0 pointer-events-none"}
+        `}
+      >
+        <span className="rounded-full bg-isy-green-deep px-5 py-2 text-xs font-semibold text-white shadow">
+          {toast ?? "​"}
+        </span>
+      </div>
+
+      {/* ── Actions ────────────────────────────────────────────────────── */}
+      <div ref={actionsRef} className="shrink-0 px-5 pb-4 space-y-2.5">
+
+        {/* PRIMARY: Download / Simpan */}
+        <button
+          id="result-download"
+          onClick={download}
+          className="
+            flex w-full items-center justify-center gap-2.5
+            rounded-2xl bg-isy-green-bright py-4
+            text-sm font-black uppercase tracking-[0.15em] text-white
+            shadow-md transition-all active:scale-[0.97] hover:bg-isy-green-deep
+          "
+        >
+          <IcDownload />
+          Simpan Foto
+        </button>
+
+        {/* QR Code section */}
+        <div id="result-qr-section">
+          {renderQrPanel()}
+        </div>
+
+        {/* Tanya stok ke CS — only shown when a specific pair of glasses was
+            tried on (AR mode), since "Photobooth Biasa" has no glasses context */}
+        {glassesName && (
+          <a
+            id="result-ask-cs"
+            href={csWhatsappUrl(glassesName)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              flex w-full items-center justify-center gap-2.5
+              rounded-2xl border-2 border-isy-green-deep bg-white py-3.5
+              text-sm font-bold text-isy-green-deep
+              transition-all active:scale-[0.97] hover:bg-isy-mist
+            "
+          >
+            <IcWA />
+            Tanya Stok &quot;{glassesName}&quot; ke CS
+          </a>
+        )}
+
+        {/* SECONDARY: Share row */}
+        <div className="grid grid-cols-3 gap-2">
+          {(
+            [
+              { id: "result-share-wa", icon: <IcWA />, label: "WhatsApp", platform: "whatsapp" },
+              { id: "result-share-ig", icon: <IcIG />, label: "Instagram", platform: "instagram" },
+              { id: "result-share-gen", icon: <IcShare />, label: "Bagikan", platform: "general" },
+            ] as const
+          ).map(({ id, icon, label, platform }) => (
+            <button
+              key={id}
+              id={id}
+              onClick={() => share(platform)}
+              className="
+                flex flex-col items-center gap-1.5 rounded-2xl
+                border border-isy-line bg-white py-3
+                text-xs font-semibold text-isy-green-deep
+                transition-all active:scale-95
+                hover:border-isy-green-bright hover:bg-isy-mist
+              "
+            >
+              {icon}
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* TERTIARY: Retake / Ganti Layout */}
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            id="result-retake"
+            onClick={onRetake}
+            className="
+              flex items-center justify-center gap-1.5 rounded-xl
+              border border-isy-green-bright bg-white py-3
+              text-sm font-bold text-isy-green-deep
+              transition-all active:scale-95 hover:bg-isy-mist
+            "
+          >
+            <IcRetake />
+            Foto Ulang
+          </button>
+          <button
+            id="result-change-layout"
+            onClick={onChangeLayout}
+            className="
+              flex items-center justify-center gap-1.5 rounded-xl
+              border border-isy-line bg-white py-3
+              text-sm font-semibold text-isy-ink/60
+              transition-all active:scale-95 hover:border-isy-ink/30
+            "
+          >
+            <IcGrid />
+            Ganti Layout
+          </button>
+        </div>
+      </div>
+
+      {/* ── Instagram CTA footer ───────────────────────────────────────── */}
+      <div className="mt-auto shrink-0 border-t border-isy-line bg-white/80 px-5 py-4">
+        <a
+          id="result-ig-cta"
+          href="https://www.instagram.com/iseeyou.glasses/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            mx-auto flex max-w-sm items-center gap-3 rounded-2xl
+            bg-isy-mist px-4 py-3
+            transition-all hover:bg-isy-line active:scale-[0.98]
+          "
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm text-isy-green-bright">
+            <IcIG />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11px] text-isy-ink/50">Kunjungi Instagram kami</p>
+            <p className="text-sm font-black text-isy-green-bright">
+              @iseeyou.glasses
+            </p>
+          </div>
+          <svg
+            className="ml-auto shrink-0 text-isy-ink/30"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </a>
+        <p className="mt-2.5 text-center text-[11px] text-isy-ink/40">
+          Optik I See You · Purwokerto · Jadi Sahabat Mata Kamu
+        </p>
+      </div>
+    </div>
+  );
 }

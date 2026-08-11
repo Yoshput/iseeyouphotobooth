@@ -6,6 +6,8 @@ export interface Branch {
   lat: number;
   lng: number;
   hours: string;
+  hoursDetail?: { weekdays?: string; weekend?: string };
+  phone?: string;
   images: string[];
   instagram: string;
   handle: string;
@@ -35,7 +37,8 @@ export const BRANCHES: Branch[] = [
     address: "Jl. Jenderal Soedirman, Sumberan Selatan, Wonosobo Bar., Kec. Wonosobo, Kabupaten Wonosobo, Jawa Tengah 56311",
     lat: -7.364198400005904,
     lng: 109.90066929262443,
-    hours: "Buka 09:00 - 18:00 WIB",
+    hours: "Setiap hari, 09.00\u201318.00 WIB",
+    phone: "0878-3243-5384",
     instagram: "https://www.instagram.com/iseeyou.wonosobo/",
     handle: "@iseeyou.wonosobo",
     images: [
@@ -51,7 +54,8 @@ export const BRANCHES: Branch[] = [
     address: "Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Rawagaru, Sidanegara, Kec. Cilacap Tengah, Kabupaten Cilacap, Jawa Tengah 53223",
     lat: -7.7025949439074815,
     lng: 109.0162702336721,
-    hours: "Buka 09:00 - 21:00 WIB",
+    hours: "Setiap hari, 09.00\u201321.00 WIB",
+    phone: "0851-3593-0533",
     instagram: "https://www.instagram.com/iseeyou.cilacap/",
     handle: "@iseeyou.cilacap",
     images: [
@@ -64,10 +68,15 @@ export const BRANCHES: Branch[] = [
     id: "purbalingga",
     name: "Optik I See You — Purbalingga",
     city: "Purbalingga",
-    address: "Jl. Onje No.1, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311",
+    address: "Jl. Onje No.1, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311",
     lat: -7.388426037302636,
     lng: 109.36448728949104,
-    hours: "Buka 09:00 - 21:00 WIB",
+    hours: "Sen\u2013Jum 11.00\u201320.00 \u00b7 Sab\u2013Min 09.00\u201321.00 WIB",
+    hoursDetail: {
+      weekdays: "Senin\u2013Jumat: 11.00\u201320.00 WIB",
+      weekend: "Sabtu\u2013Minggu: 09.00\u201321.00 WIB",
+    },
+    phone: "0822-3486-2322",
     instagram: "https://www.instagram.com/iseeyou.purbalingga/",
     handle: "@iseeyou.purbalingga",
     images: [
@@ -86,6 +95,8 @@ export function mapsDirectionsUrl(branch: Branch) {
   return `https://www.google.com/maps/dir/?api=1&destination=${branch.lat},${branch.lng}`;
 }
 
+/** Nomor WhatsApp Khusus Katalog & Pemesanan Frame */
+export const CATALOG_WA_NUMBER = "62895415614261";
 export const CS_WHATSAPP_NUMBER = "62895415614261";
 export const KONSULTASI_WA_NUMBER = "62895415614261";
 export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
@@ -93,9 +104,13 @@ export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=Shop
 
 export function csWhatsappUrl(glassesName?: string) {
   const message = glassesName
-    ? `Halo kak, saya tertarik dengan frame "${glassesName}" ini. Boleh tau apakah masih tersedia atau tidak? Soalnya cocok banget di aku.`
+    ? `Halo kak, saya tertarik dengan frame "${glassesName}" di katalog. Boleh tau apakah masih tersedia atau tidak? Soalnya cocok banget di aku.`
     : `Halo kak, saya mau tanya-tanya soal kacamata di Optik I See You.`;
-  return `https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${CATALOG_WA_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+export function catalogWhatsappUrl(glassesName?: string) {
+  return csWhatsappUrl(glassesName);
 }
 
 export function konsultasiWhatsappUrl() {

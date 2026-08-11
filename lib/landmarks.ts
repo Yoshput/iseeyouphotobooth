@@ -36,6 +36,22 @@ export const REFERENCE_IPD_NORM = 0.215;
 export const GLASSES_SCALE_MIN = 40;   // 40px — face at extreme edge, still visible
 export const GLASSES_SCALE_MAX = 600;  // 600px — face pressed very close, still sane
 
+/**
+ * Proportional downward offset applied to the nose-bridge Y anchor so that
+ * the glasses sit on the nose rather than floating above the eyebrows.
+ *
+ * The offset is expressed as a multiple of ipdNorm (the inter-pupillary
+ * distance in normalized X units).  Because ipdNorm shrinks as the face
+ * moves further from the camera, the pixel-level shift stays visually
+ * consistent at every distance:
+ *
+ *   offsetNorm = ipdNorm × Y_OFFSET_FACTOR
+ *
+ * Tune this value up (e.g. 0.20) to push the glasses lower, or down
+ * (e.g. 0.05) to push them higher.
+ */
+export const Y_OFFSET_FACTOR = 0.12;
+
 // ---------------------------------------------------------------------------
 // GlassesAnchor
 // ---------------------------------------------------------------------------
@@ -81,8 +97,13 @@ export function computeGlassesAnchor(
   // Horizontal span in normalized units — used as the primary scale driver
   const ipdNorm = Math.abs(rightEye.x - leftEye.x);
 
+  // Apply a proportional downward offset so the glasses rest on the nose
+  // instead of floating above the eyebrows.  The offset scales with ipdNorm
+  // so it remains consistent regardless of face distance from the camera.
+  const centerY = nose.y + ipdNorm * Y_OFFSET_FACTOR;
+
   return {
-    centerNormalized: { x: nose.x, y: nose.y },
+    centerNormalized: { x: nose.x, y: centerY },
     eyeSpanPx: Math.hypot(dx, dy),
     ipdNorm,
     roll: Math.atan2(dy, dx),

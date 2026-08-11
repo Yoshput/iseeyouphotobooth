@@ -34,28 +34,28 @@ function dist(a: Landmark, b: Landmark): number {
 const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string; style: string; tip: string }> = {
   Oval: {
     id: "oval",
-    label: "Lonjong (Oval)",
+    label: "Oval",
     glasses: "aviator-silver",
     style: "Aviator / Wayfarer",
     tip: "Cocok untuk hampir semua frame!",
   },
   Round: {
     id: "round",
-    label: "Bulat (Round)",
+    label: "Round",
     glasses: "square-black",
     style: "Square / Rectangle Frame",
     tip: "Frame kotak menciptakan keseimbangan.",
   },
   Square: {
     id: "square",
-    label: "Kotak (Square)",
+    label: "Square",
     glasses: "round-gold",
     style: "Oval / Round Frame",
     tip: "Frame bulat melembutkan rahang tegas.",
   },
   Heart: {
     id: "heart",
-    label: "Hati (Heart)",
+    label: "Heart",
     glasses: "cateye-tortoise",
     style: "Cat-Eye / Wire Frame",
     tip: "Cat-eye menyeimbangkan dagu lancip.",
@@ -69,7 +69,7 @@ const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string
   },
   Oblong: {
     id: "oblong",
-    label: "Oblong (Panjang)",
+    label: "Oblong",
     glasses: "aviator-silver",
     style: "Wide / Oversized Frame",
     tip: "Frame lebar bikin wajah kelihatan proporsional.",

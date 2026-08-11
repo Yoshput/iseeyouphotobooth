@@ -156,8 +156,23 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
               </div>
             </div>
 
+            {/* Phone — rendered only when branch.phone is set */}
+            {branch.phone && (
+              <div className="flex items-center gap-3 p-4">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm" style={{ color: accentColor }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.46 16z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Telepon</p>
+                  <p className="mt-0.5 text-sm font-bold text-isy-green-deep">{branch.phone}</p>
+                </div>
+              </div>
+            )}
+
             {/* Hours */}
-            <div className="flex items-center gap-3 p-4">
+            <div className="flex items-start gap-3 p-4">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm" style={{ color: accentColor }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
@@ -165,7 +180,14 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
               </div>
               <div>
                 <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Jam Operasional</p>
-                <p className="mt-0.5 text-sm font-black" style={{ color: accentColor }}>{branch.hours}</p>
+                {branch.hoursDetail ? (
+                  <>
+                    <p className="mt-0.5 text-sm font-black" style={{ color: accentColor }}>{branch.hoursDetail.weekdays}</p>
+                    <p className="mt-0.5 text-sm font-black" style={{ color: accentColor }}>{branch.hoursDetail.weekend}</p>
+                  </>
+                ) : (
+                  <p className="mt-0.5 text-sm font-black" style={{ color: accentColor }}>{branch.hours}</p>
+                )}
               </div>
             </div>
 

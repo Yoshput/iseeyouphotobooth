@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import BranchCarousel from "@/components/ui/BranchCarousel";
 import FloatingGlasses from "@/components/ui/FloatingGlasses";
+import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
 import Navbar from "@/components/ui/Navbar";
 import Link from "next/link";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
@@ -128,9 +129,9 @@ export default function LandingPage() {
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <Link
                   href="/katalog"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/15 bg-white/40 backdrop-blur-sm px-4 py-2 text-[11px] font-semibold text-isy-ink/60 transition-all duration-200 hover:border-isy-green-bright hover:bg-white/70 hover:text-isy-green-deep hover:-translate-y-px active:scale-95"
+                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/60 backdrop-blur-md px-5 py-2.5 text-[12px] font-semibold text-isy-ink/60 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white/80 hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
                 >
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                   Katalog Frame
                 </Link>
 
@@ -138,46 +139,26 @@ export default function LandingPage() {
                   href={PRICE_LIST_LENSA_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/15 bg-white/40 backdrop-blur-sm px-4 py-2 text-[11px] font-semibold text-isy-ink/60 transition-all duration-200 hover:border-isy-green-bright hover:bg-white/70 hover:text-isy-green-deep hover:-translate-y-px active:scale-95"
+                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/60 backdrop-blur-md px-5 py-2.5 text-[12px] font-semibold text-isy-ink/60 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white/80 hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
                 >
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                   Pricelist Lensa
-                </a>
-
-                <a
-                  href={konsultasiWhatsappUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/15 bg-white/40 backdrop-blur-sm px-4 py-2 text-[11px] font-semibold text-isy-ink/60 transition-all duration-200 hover:border-isy-green-bright hover:bg-white/70 hover:text-isy-green-deep hover:-translate-y-px active:scale-95"
-                >
-                  <Image src="/logo/Logo-Whatsapp.png" alt="WA" width={11} height={11} className="h-[11px] w-[11px] object-contain" />
-                  Konsultasi Gratis
-                </a>
-
-                <a
-                  href={SHOPEE_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-full border border-orange-200/60 bg-white/40 backdrop-blur-sm px-4 py-2 text-[11px] font-semibold text-isy-ink/60 transition-all duration-200 hover:border-orange-400 hover:bg-orange-50/70 hover:text-orange-600 hover:-translate-y-px active:scale-95"
-                >
-                  <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={11} height={11} className="h-[11px] w-[11px] object-contain" />
-                  Toko Shopee
                 </a>
               </div>
             </div>
           </div>
 
-          {/* ── RIGHT: Floating Glasses Showcase — no background glow ── */}
-          <div className="hidden md:flex items-center justify-center relative py-12">
+          {/* ── RIGHT: Floating Glasses Showcase ── */}
+          <div className="flex flex-col items-center justify-center relative py-6 md:py-10 w-full">
 
             {/* Sparkle particle 1 — top-right */}
             <span
               aria-hidden
-              className="absolute top-[18%] right-[14%] pointer-events-none"
+              className="absolute top-[12%] right-[10%] pointer-events-none"
               style={{
-                width: 5, height: 5, borderRadius: "50%",
+                width: 6, height: 6, borderRadius: "50%",
                 background: "#2FA84F",
-                opacity: 0.55,
+                opacity: 0.6,
                 animation: "sparkle-float 3.2s ease-in-out infinite",
                 animationDelay: "0s",
               }}
@@ -185,11 +166,11 @@ export default function LandingPage() {
             {/* Sparkle particle 2 — bottom-left */}
             <span
               aria-hidden
-              className="absolute bottom-[22%] left-[12%] pointer-events-none"
+              className="absolute bottom-[20%] left-[6%] pointer-events-none"
               style={{
-                width: 3.5, height: 3.5, borderRadius: "50%",
+                width: 4, height: 4, borderRadius: "50%",
                 background: "#1B4332",
-                opacity: 0.4,
+                opacity: 0.45,
                 animation: "sparkle-float 4s ease-in-out infinite",
                 animationDelay: "1.1s",
               }}
@@ -197,9 +178,9 @@ export default function LandingPage() {
             {/* Sparkle arc line — subtle curved line */}
             <span
               aria-hidden
-              className="absolute top-[28%] left-[8%] pointer-events-none"
+              className="absolute top-[22%] left-[4%] pointer-events-none"
               style={{
-                width: 28, height: 28,
+                width: 32, height: 32,
                 borderRadius: "50%",
                 border: "1.5px solid rgba(47,168,79,0.25)",
                 borderBottomColor: "transparent",
@@ -209,60 +190,145 @@ export default function LandingPage() {
               }}
             />
 
+            {/* Prominent Floating Glasses */}
             <FloatingGlasses
-              src="/glasses/aviator-silver.png"
-              alt="Aviator Silver — Optik I See You"
-              width={440}
-              height={220}
+              items={[
+                {
+                  src: "/glasses/square-frame.png",
+                  alt: "Frame Hitam — Optik I See You",
+                },
+                {
+                  src: "/glasses/caramel-frame.png",
+                  alt: "Frame Tortoise Caramel — Optik I See You",
+                },
+              ]}
+              width={540}
+              height={270}
             />
+
+            {/* ── Prominent Floating Action Buttons (WA & Shopee) below floating glasses ── */}
+            <div className="flex flex-row items-center justify-center gap-6 mt-8 z-10">
+              {/* WhatsApp Button */}
+              <a
+                href={konsultasiWhatsappUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Hubungi kami via WhatsApp untuk konsultasi gratis"
+                title="Chat WhatsApp CS"
+                className="relative flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group"
+              >
+                <span className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping opacity-25 group-hover:opacity-40" />
+                <Image
+                  src="/logo/Logo-Whatsapp.png"
+                  alt="WhatsApp"
+                  width={38}
+                  height={38}
+                  className="h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                />
+              </a>
+
+              {/* Shopee Button */}
+              <a
+                href={SHOPEE_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Kunjungi toko Shopee I See You"
+                title="Toko Shopee Official"
+                className="relative flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-white/85 backdrop-blur-lg border-2 border-orange-400/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-orange-500 hover:-translate-y-1.5 active:scale-95 group"
+              >
+                <Image
+                  src="/logo/Logo-Shoppe.png"
+                  alt="Shopee"
+                  width={38}
+                  height={38}
+                  className="h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                />
+              </a>
+            </div>
           </div>
 
         </div>
       </section>
 
 
-      {/* ═══ KATALOG PREVIEW ═══ */}
-      <section className="w-full bg-white px-6 py-16 border-t border-isy-line">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-10 text-center flex flex-col items-center">
-            <span className="mb-3 inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.15em] text-isy-green-bright">
-              Koleksi Kacamata
-            </span>
-            <h2 className="font-serif text-3xl font-black text-isy-green-deep">Katalog Frame I See You</h2>
-            <p className="mt-2 text-lg sm:text-xl tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
-              for every you
-            </p>
+      {/* ═══ KATALOG PREVIEW — Infinite 2-Row Marquee Showcase ═══ */}
+      <section className="w-full bg-white py-16 border-t border-isy-line overflow-hidden">
+        <div className="mx-auto max-w-5xl px-6 mb-10 text-center flex flex-col items-center">
+          <span className="mb-3 inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.15em] text-isy-green-bright">
+            Koleksi Kacamata
+          </span>
+          <h2 className="font-serif text-3xl font-black text-isy-green-deep">Katalog Frame I See You</h2>
+          <p className="mt-2 text-lg sm:text-xl tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
+            for every you
+          </p>
+        </div>
+
+        {/* ── Marquee Showcase (2 Rows, Opposite Directions, Smooth Infinite Looping) ── */}
+        <div className="w-full space-y-6 overflow-hidden">
+          {/* Row 1: Moving LEFTWARD (Cat Eye, New Collection, Titanium — primary clean photos only) */}
+          <div className="marquee-group relative w-full overflow-hidden py-1">
+            <div className="animate-marquee-left flex items-center gap-6">
+              {CATALOG_COLLECTIONS.slice(0, 3)
+                .map((c) => c.coverImage)
+                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
+                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
+                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
+                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
+                .map((imgSrc, index) => (
+                  <div
+                    key={`top-${index}`}
+                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer"
+                  >
+                    <Image
+                      src={imgSrc}
+                      alt="Koleksi Frame Utama Optik I See You"
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+                      sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {CATALOG_COLLECTIONS.map((col) => (
-              <div key={col.id} className="group relative overflow-hidden rounded-3xl border border-isy-line bg-isy-mist/40 p-6 transition-all hover:shadow-xl hover:border-isy-green-bright/40">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="rounded-full bg-isy-green-bright/10 px-3 py-1 text-[10px] font-black uppercase text-isy-green-bright">
-                    {col.badge}
-                  </span>
-                  <span className="text-xs font-bold text-isy-ink/40">{col.items.length} Model</span>
-                </div>
-                <h3 className="font-serif text-2xl font-black text-isy-green-deep">{col.title}</h3>
-                <p className="mt-1 text-xs text-isy-ink/60">{col.description}</p>
-                <div className="mt-4 relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-white border border-isy-line">
-                  <Image src={col.coverImage || col.images?.[0]} alt={col.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                </div>
-              </div>
-            ))}
+          {/* Row 2: Moving RIGHTWARD (Metro Deek, Quiet Luxury, Shades Of Elegance — primary clean photos only) */}
+          <div className="marquee-group relative w-full overflow-hidden py-1">
+            <div className="animate-marquee-right flex items-center gap-6">
+              {CATALOG_COLLECTIONS.slice(3, 6)
+                .map((c) => c.coverImage)
+                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
+                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
+                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
+                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
+                .map((imgSrc, index) => (
+                  <div
+                    key={`bottom-${index}`}
+                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer"
+                  >
+                    <Image
+                      src={imgSrc}
+                      alt="Koleksi Frame Utama Optik I See You"
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+                      sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
+        </div>
 
-          <div className="mt-10 text-center">
-            <Link
-              href="/katalog"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-isy-green-deep px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg transition-all hover:bg-isy-green-bright active:scale-95"
-            >
-              <span>Lihat Full Katalog Frame</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
+        {/* CTA Link to Full Catalog */}
+        <div className="mt-12 text-center px-6">
+          <Link
+            href="/katalog"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-isy-green-deep px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg transition-all hover:bg-isy-green-bright active:scale-95"
+          >
+            <span>Lihat Full Katalog Frame</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </section>
 
@@ -312,6 +378,9 @@ export default function LandingPage() {
           </button>
         </div>
       </section>
+
+      {/* ═══ FASILITAS PEMERIKSAAN MATA ═══ */}
+      <EyeExamFacilitySection />
 
       {/* ═══ CABANG & LOKASI ═══ */}
       <section id="lokasi" className="w-full bg-white px-6 py-16">

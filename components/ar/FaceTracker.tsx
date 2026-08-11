@@ -28,6 +28,8 @@ import { computeGlassesAnchor } from "@/lib/landmarks";
 import { computeCoverTransform, videoPxToContainerPx } from "@/lib/videoCover";
 import GlassesRenderer, { type GlassesRendererHandle } from "./GlassesRenderer";
 import FaceScanIntro from "./FaceScanIntro";
+import FaceGuideOverlay from "./FaceGuideOverlay";
+import { validateFaceGuide, type FaceGuideValidation } from "@/lib/faceGuide";
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 export interface FaceTrackerHandle {
@@ -44,6 +46,7 @@ interface Props {
   beautyMode?: boolean;
   lipstickMode?: boolean;
   scanIntro?: boolean;
+  showFaceGuide?: boolean;
   faceResult?: any;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
@@ -105,6 +108,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       beautyMode = false,
       lipstickMode = false,
       scanIntro = false,
+      showFaceGuide = true,
       faceResult,
       onScanIntroComplete,
       onFaceCountChange,
@@ -121,6 +125,9 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
     const [cameraReady, setCameraReady] = useState(false);
     const [cameraError, setCameraError] = useState<string | null>(null);
     const [rawLandmarks, setRawLandmarks] = useState<Array<{ x: number; y: number; z: number }> | null>(null);
+    const [guideValidation, setGuideValidation] = useState<FaceGuideValidation>(() =>
+      validateFaceGuide(null)
+    );
 
     const prevFaceCountRef  = useRef(0);
     const lastRingTimeRef   = useRef<Record<number, number>>({});
@@ -301,8 +308,12 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           setRawLandmarks(null);
         }
 
-        // Fire onLandmarksChange every 15 frames, but SKIP during warm-up
+        // Validate face guide position every 3 frames for zero UI lag
         landmarkFrameRef.current++;
+        if (showFaceGuide && landmarkFrameRef.current % 3 === 0) {
+          const val = validateFaceGuide(faces[0] as NormalizedLandmark[] | undefined);
+          setGuideValidation(val);
+        }
         if (
           !meta.warmUp &&
           landmarkFrameRef.current % 15 === 0 &&
@@ -458,6 +469,11 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
               maxFaces={numFaces}
             />
           </div>
+        )}
+
+        {/* Face-Guide Frame Overlay */}
+        {showFaceGuide && cameraReady && size.width > 0 && size.height > 0 && (
+          <FaceGuideOverlay validation={guideValidation} />
         )}
 
         {/* Scan-ring overlay */}

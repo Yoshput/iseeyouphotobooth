@@ -20,11 +20,12 @@ import confetti from "canvas-confetti";
 import FaceTracker, { type FaceTrackerHandle } from "@/components/ar/FaceTracker";
 import Countdown from "@/components/ui/Countdown";
 import FramePicker from "@/components/ui/FramePicker";
+import FrameThemePicker from "@/components/ui/FrameThemePicker";
 import { FRAME_LAYOUTS, type FrameLayout } from "@/lib/frameLayouts";
-import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, type FrameTheme } from "@/lib/frameCompositor";
+import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, getCompatibleThemes, type FrameTheme } from "@/lib/frameCompositor";
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
-import { csWhatsappUrl } from "@/lib/branches";
+import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
@@ -33,6 +34,7 @@ import manifestRaw from "@/public/glasses/manifest.json";
 
 type BoothPhase =
  | "frame-select"
+ | "theme-select"
  | "ready"
  | "countdown"
  | "flash"
@@ -252,18 +254,25 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
         </div>
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { icon: "📸", label: "Unduh Strip", fn: downloadStrip },
-            { icon: "🎬", label: "Unduh GIF", fn: downloadGif, disabled: !gifUrl },
-            { icon: "💬", label: "WhatsApp", fn: shareWA },
-            { icon: "✨", label: "Instagram Story", fn: shareIG },
+            { icon: <span className="text-2xl">📸</span>, label: "Unduh Strip", fn: downloadStrip },
+            { icon: <span className="text-2xl">🎬</span>, label: "Unduh GIF", fn: downloadGif, disabled: !gifUrl },
+            { icon: <Image src="/logo/Logo-Whatsapp.png" alt="WhatsApp" width={32} height={32} className="h-8 w-8 object-contain" />, label: "WhatsApp", fn: shareWA },
+            { icon: <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={32} height={32} className="h-8 w-8 object-contain" />, label: "Shopee Store", fn: () => window.open(SHOPEE_STORE_URL, "_blank") },
           ].map(({ icon, label, fn, disabled }) => (
             <button key={label} onClick={fn} disabled={disabled}
-              className="flex flex-col items-center gap-1.5 rounded-2xl border border-isy-line bg-isy-mist p-3 text-xs font-bold text-isy-green-deep hover:border-isy-green-bright hover:bg-white transition-all active:scale-95 disabled:opacity-40">
-              <span className="text-2xl">{icon}</span>
-              {label}
+              className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-isy-line bg-isy-mist p-3.5 text-xs font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white transition-all active:scale-95 disabled:opacity-40 shadow-xs">
+              <div className="flex h-9 w-9 items-center justify-center">{icon}</div>
+              <span>{label}</span>
             </button>
           ))}
         </div>
+        <button
+          onClick={shareIG}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-isy-line bg-isy-mist py-3 text-xs font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white transition-all active:scale-95"
+        >
+          <span>✨</span>
+          <span>Share ke Instagram Story</span>
+        </button>
       </div>
     </div>
   );
@@ -401,11 +410,11 @@ function StripPreview({
 
         {/* Color filter chips */}
         <div className="flex flex-col gap-1 rounded-xl border border-isy-line bg-isy-mist/50 p-2">
-          <span className="text-[10px] font-bold text-isy-green-deep">Filter Warna:</span>
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-isy-green-deep">Filter Warna:</span>
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             {COLOR_FILTERS.map((f) => (
               <button key={f.id} onClick={() => onSelectFilter(f.id)}
-                className={`flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-[9.5px] font-bold transition-all active:scale-95 ${f.id === selectedFilter ? "border-isy-green-bright bg-isy-green-bright text-white shadow-sm" : "border-isy-line bg-white text-isy-ink/70 hover:border-isy-green-bright/50"}`}>
+                className={`flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[10px] font-bold transition-all active:scale-95 whitespace-nowrap ${f.id === selectedFilter ? "border-isy-green-bright bg-isy-green-bright text-white shadow-sm" : "border-isy-line bg-white text-isy-ink/75 hover:border-isy-green-bright/50"}`}>
                 <span>{f.emoji}</span><span>{f.name}</span>
               </button>
             ))}
@@ -414,15 +423,17 @@ function StripPreview({
 
         {/* Frame theme chips */}
         {activeTab === "strip" && (
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5">
-            <span className="text-[10px] font-bold text-isy-ink/40 shrink-0">Frame:</span>
-            {FRAME_THEMES.map((th) => (
-              <button key={th.id} onClick={() => onSelectTheme(th.id)}
-                className={`flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[9px] font-bold transition-all active:scale-95 ${th.id === selectedTheme ? "border-isy-green-bright bg-isy-green-bright/10 text-isy-green-deep shadow-sm" : "border-isy-line bg-white text-isy-ink/60 hover:border-isy-green-bright/40"}`}>
-                <span className="h-2.5 w-2.5 rounded-full border border-black/10 shadow-inner" style={{ backgroundColor: th.bgColor }} />
-                {th.name}
-              </button>
-            ))}
+          <div className="flex flex-col gap-1 rounded-xl border border-isy-line bg-isy-mist/50 p-2">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-isy-green-deep">Tema Frame:</span>
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+              {getCompatibleThemes(layout).map((th) => (
+                <button key={th.id} onClick={() => onSelectTheme(th.id)}
+                  className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-bold transition-all active:scale-95 whitespace-nowrap ${th.id === selectedTheme ? "border-isy-green-bright bg-isy-green-bright text-white shadow-sm" : "border-isy-line bg-white text-isy-ink/75 hover:border-isy-green-bright/50"}`}>
+                  <span className="h-2.5 w-2.5 rounded-full border border-black/10 shadow-inner" style={{ backgroundColor: th.bgColor }} />
+                  <span>{th.name}</span>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
@@ -683,11 +694,11 @@ const showToast = useCallback((msg: string) => {
  setUploadPhase("idle");
  }, []);
 
- const handleLayoutSelect = useCallback((chosen: FrameLayout) => {
- setLayout(chosen);
- resetSession();
- setPhase("ready");
- }, [resetSession]);
+  const handleLayoutSelect = useCallback((chosen: FrameLayout) => {
+    setLayout(chosen);
+    resetSession();
+    setPhase("theme-select");
+  }, [resetSession]);
 
  const handleRetake = useCallback(() => {
  resetSession();
@@ -902,6 +913,7 @@ const showToast = useCallback((msg: string) => {
   beautyMode={beautyMode}
   lipstickMode={lipstickMode}
   scanIntro={isScanning}
+  showFaceGuide={arEnabled}
   faceResult={faceResult}
   onScanIntroComplete={() => {
     setIsScanning(false);
@@ -1151,6 +1163,17 @@ const showToast = useCallback((msg: string) => {
 
  {/* Overlays */}
  {phase === "frame-select" && <FramePicker onSelect={handleLayoutSelect} onBack={goHome} />}
+ {phase === "theme-select" && (
+ <FrameThemePicker
+ layout={layout}
+ selectedThemeId={themeId}
+ onSelect={(tId) => {
+ setThemeId(tId);
+ setPhase("ready");
+ }}
+ onBack={() => setPhase("frame-select")}
+ />
+ )}
  {shareModalOpen && compositeUrl && (
  <ShareModal compositeUrl={compositeUrl} gifUrl={gifUrl} onClose={() => setShareModalOpen(false)} onToast={showToast} />
  )}

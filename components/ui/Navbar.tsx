@@ -41,6 +41,7 @@ export default function Navbar() {
     { href: "/photobooth?mode=ar", label: "Try On Kacamata" },
     { href: "/photobooth?mode=photobooth", label: "Photobooth" },
     { href: "/katalog", label: "Katalog Frame" },
+    { href: "/softlens", label: "Softlens" },
     { href: "/#lokasi", label: "Lokasi Cabang" },
   ];
 
