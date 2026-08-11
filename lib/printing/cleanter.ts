@@ -1,17 +1,22 @@
 /**
  * lib/printing/cleanter.ts
  *
- * Cleanter Android Local Print Bridge Adapter for ESC/POS Thermal 80mm Printers (IWARE XS-80BT / RPP02N).
- * Communicates via client-side HTTP POST to Cleanter local bridge (default http://localhost:9100/print).
+ * Cleanter Android Local Print Bridge Adapter — Official API Schema.
+ * Documentation: https://cleanter.cleancode.id/
  *
- * Cleanter PrintJob Request Schema:
+ * Official PrintJob schema:
+ * POST http://localhost:9100/print
  * {
- *   "commands": [
- *     { "type": "image", "value": "data:image/png;base64,..." },
- *     { "type": "feed", "lines": 3 },
- *     { "type": "cut" }
- *   ]
+ *   "content": [
+ *     { "type": "image", "base64": "<pure base64, NO data-url prefix>", "align": "center", "dither": true },
+ *     { "type": "text", "value": "..." },
+ *     { "type": "feed", "lines": 3 }
+ *   ],
+ *   "cut": true,
+ *   "paperWidth": 80
  * }
+ *
+ * Health check: GET http://localhost:9100/health
  *
  * 100% Client-Side & Static Export Compatible.
  */
@@ -19,9 +24,9 @@
 import { processImageForThermal } from "../qzPrint";
 
 export interface CleanterPrintOptions {
-  hostUrl?: string; // Default: "http://localhost:9100/print"
-  timeoutMs?: number; // Default: 10000ms
-  autoCut?: boolean; // Default: true
+  hostUrl?: string;     // Base host, e.g. "http://192.168.1.10:9100" (default: "http://localhost:9100")
+  timeoutMs?: number;   // Default: 10000ms
+  autoCut?: boolean;    // Default: true
 }
 
 export interface CleanterStatus {
@@ -30,15 +35,20 @@ export interface CleanterStatus {
   detail?: string;
 }
 
-export type CleanterCommand =
-  | { type: "image"; value: string }
-  | { type: "text"; value: string }
+// Official Cleanter content block types
+export type CleanterContentBlock =
+  | { type: "image"; base64: string; align?: "left" | "center" | "right"; dither?: boolean }
+  | { type: "text"; value: string; align?: "left" | "center" | "right"; bold?: boolean }
   | { type: "feed"; lines: number }
-  | { type: "cut" }
-  | { type: "raw"; value: string };
+  | { type: "barcode"; value: string; format?: string }
+  | { type: "qr"; value: string };
 
+// Official Cleanter PrintJob top-level body
 export interface CleanterPrintJob {
-  commands: CleanterCommand[];
+  content: CleanterContentBlock[];
+  cut?: boolean;
+  paperWidth?: number;
+  printer?: string;
 }
 
 export interface CleanterResult {
@@ -48,55 +58,58 @@ export interface CleanterResult {
   requestPayload?: string;
 }
 
-const DEFAULT_CLEANTER_ENDPOINT = "http://localhost:9100/print";
+const DEFAULT_BRIDGE_HOST = "http://localhost:9100";
 const DEFAULT_TIMEOUT_MS = 10000;
 
 let lastPrintedJobId = "";
 
 /**
- * Normalizes host URL to ensure valid http:// or https:// scheme and /print path.
+ * Resolves the Cleanter bridge base host from an optional custom host string.
+ * Strips trailing slashes; does NOT add "/print" or "/health" — callers append that.
  */
-export function getCleanterEndpoint(customHost?: string): string {
-  if (!customHost || !customHost.trim()) {
-    return DEFAULT_CLEANTER_ENDPOINT;
-  }
+export function getCleanterBaseHost(customHost?: string): string {
+  if (!customHost || !customHost.trim()) return DEFAULT_BRIDGE_HOST;
   let host = customHost.trim();
-  if (!/^https?:\/\//i.test(host)) {
-    host = `http://${host}`;
-  }
-  if (!host.endsWith("/print")) {
-    host = host.replace(/\/+$/, "") + "/print";
-  }
+  // Remove /print or /health suffix if user accidentally included it
+  host = host.replace(/\/(print|health)\/?$/, "");
+  // Remove trailing slashes
+  host = host.replace(/\/+$/, "");
+  // Ensure protocol
+  if (!/^https?:\/\//i.test(host)) host = `http://${host}`;
   return host;
 }
 
 /**
- * Checks if Cleanter Print Bridge service is active and reachable.
+ * Strips the data-URL prefix from a base64 string.
+ * e.g. "data:image/png;base64,iVBOR..." → "iVBOR..."
+ * If already pure base64, returns as-is.
+ */
+function stripDataUrlPrefix(dataUrl: string): string {
+  const commaIdx = dataUrl.indexOf(",");
+  if (commaIdx !== -1) return dataUrl.slice(commaIdx + 1);
+  return dataUrl;
+}
+
+/**
+ * Official: checks if Cleanter bridge is alive via GET /health.
  */
 export async function checkCleanterConnection(
   customHost?: string,
   timeoutMs: number = 3000
 ): Promise<CleanterStatus> {
-  const endpoint = getCleanterEndpoint(customHost);
+  const host = getCleanterBaseHost(customHost);
+  const endpoint = `${host}/health`;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch(endpoint, {
-      method: "OPTIONS",
+      method: "GET",
       signal: controller.signal,
-    }).catch(async () => {
-      return await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ commands: [] }),
-        signal: controller.signal,
-      });
     });
-
     clearTimeout(timeoutId);
 
-    if (response.ok || response.status === 400 || response.status === 405 || response.status === 200) {
+    if (response.ok) {
       return {
         isAvailable: true,
         message: "Cleanter Print Bridge siap (Terkoneksi ke Printer)",
@@ -105,7 +118,7 @@ export async function checkCleanterConnection(
 
     return {
       isAvailable: false,
-      message: `Cleanter tidak merespon (Status: ${response.status}). Pastikan app Cleanter berjalan.`,
+      message: `Cleanter merespon tapi tidak siap (Status: ${response.status}).`,
     };
   } catch (err) {
     clearTimeout(timeoutId);
@@ -113,44 +126,92 @@ export async function checkCleanterConnection(
     return {
       isAvailable: false,
       message: isAborted
-        ? "Koneksi ke Cleanter timeout (3 dtk). Buka & jalankan app Cleanter di Android."
-        : "Aplikasi Cleanter tidak terdeteksi di tablet. Pastikan app Cleanter aktif di http://localhost:9100",
+        ? "Koneksi ke Cleanter timeout. Buka & jalankan app Cleanter di Android."
+        : "Aplikasi Cleanter tidak terdeteksi. Pastikan app Cleanter aktif di port 9100.",
     };
   }
 }
 
 /**
- * Sends photobooth receipt print job to Cleanter Android Print Bridge.
- * Logs full request & response bodies to browser console for debugging.
+ * Official: sends a print job to Cleanter bridge via POST /print.
+ * Uses { "content": [...], "cut": true, "paperWidth": 80 } schema.
+ */
+export async function printReceipt(
+  content: CleanterContentBlock[],
+  options: CleanterPrintOptions = {}
+): Promise<void> {
+  const host = getCleanterBaseHost(options.hostUrl);
+  const endpoint = `${host}/print`;
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const autoCut = options.autoCut ?? true;
+
+  const payload: CleanterPrintJob = {
+    content,
+    cut: autoCut,
+    paperWidth: 80,
+  };
+
+  const payloadStr = JSON.stringify(payload);
+
+  console.log("==========================================");
+  console.log("🚀 [CLEANTER REQUEST POST]:", endpoint);
+  console.log("📦 [CLEANTER REQUEST BODY]:", JSON.stringify(payload, (k, v) =>
+    k === "base64" && typeof v === "string" && v.length > 80
+      ? v.slice(0, 80) + `...(${v.length} chars total)`
+      : v
+  , 2));
+  console.log("==========================================");
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payloadStr,
+    signal: AbortSignal.timeout(timeoutMs),
+  });
+
+  const resText = await res.text().catch(() => "");
+  console.log("==========================================");
+  console.log("📥 [CLEANTER RESPONSE STATUS]:", res.status, res.statusText);
+  console.log("📄 [CLEANTER RESPONSE BODY]:", resText);
+  console.log("==========================================");
+
+  if (!res.ok) {
+    let detail = resText;
+    try {
+      const json = JSON.parse(resText);
+      detail = json.detail ?? json.message ?? resText;
+    } catch { /* not JSON */ }
+    throw new Error(`Print failed: ${res.status} ${detail}`);
+  }
+}
+
+/**
+ * Sends photobooth photo strip print job to Cleanter.
+ * Processes imageDataUrl → 1-bit dithered PNG 80mm (576px) → strips data-URL prefix → sends as image block.
  */
 export async function printPhotoboothReceipt(
   imageDataUrl: string,
   options: CleanterPrintOptions = {}
 ): Promise<CleanterResult> {
-  const endpoint = getCleanterEndpoint(options.hostUrl);
-  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
-  const autoCut = options.autoCut ?? true;
-
   const jobId = `${Date.now()}_${imageDataUrl.slice(-20)}`;
   if (jobId === lastPrintedJobId) {
-    return {
-      success: false,
-      message: "Permintaan cetak sedang diproses. Mohon tunggu sejenak.",
-    };
+    return { success: false, message: "Permintaan cetak sedang diproses. Mohon tunggu sejenak." };
   }
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
   try {
-    // 1. Process photo strip into 1-bit Floyd-Steinberg dithered PNG (576px width for 80mm thermal paper)
+    // 1. Convert photo to 1-bit Floyd-Steinberg dithered PNG at 576px width (80mm)
     const ditheredDataUrl = await processImageForThermal(imageDataUrl, 576);
 
-    // 2. Build official Cleanter PrintJob command list
-    const commands: CleanterCommand[] = [
+    // 2. Strip the data-URL prefix — Cleanter requires PURE base64 only
+    const pureBase64 = stripDataUrlPrefix(ditheredDataUrl);
+
+    // 3. Build content array per official Cleanter schema
+    const content: CleanterContentBlock[] = [
       {
         type: "image",
-        value: ditheredDataUrl,
+        base64: pureBase64,    // ← pure base64, no "data:image/png;base64," prefix
+        align: "center",
+        dither: true,
       },
       {
         type: "feed",
@@ -158,165 +219,89 @@ export async function printPhotoboothReceipt(
       },
     ];
 
-    if (autoCut) {
-      commands.push({ type: "cut" });
-    }
+    // 4. Send to Cleanter
+    await printReceipt(content, options);
 
-    const payload: CleanterPrintJob = { commands };
-    const payloadJsonStr = JSON.stringify(payload, null, 2);
-
-    // LOG FULL REQUEST TO BROWSER CONSOLE
-    console.log("==========================================");
-    console.log("🚀 [CLEANTER REQUEST POST]:", endpoint);
-    console.log("📦 [CLEANTER REQUEST BODY]:\n", payloadJsonStr);
-    console.log("==========================================");
-
-    // 3. Send payload to Cleanter print bridge
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    const resText = await response.text().catch(() => "");
-
-    // LOG FULL RESPONSE TO BROWSER CONSOLE
-    console.log("==========================================");
-    console.log("📥 [CLEANTER RESPONSE STATUS]:", response.status, response.statusText);
-    console.log("📄 [CLEANTER RESPONSE BODY]:\n", resText);
-    console.log("==========================================");
-
-    if (response.ok || response.status === 200) {
-      lastPrintedJobId = jobId;
-      return {
-        success: true,
-        message: "Struk foto strip berhasil dicetak!",
-        detail: resText,
-        requestPayload: payloadJsonStr,
-      };
-    }
-
+    lastPrintedJobId = jobId;
     return {
-      success: false,
-      message: `Cleanter menolak cetak (Status HTTP ${response.status}).`,
-      detail: resText || `HTTP Status Code ${response.status}`,
-      requestPayload: payloadJsonStr,
+      success: true,
+      message: "Struk foto strip berhasil dicetak!",
     };
   } catch (err) {
-    clearTimeout(timeoutId);
-    const isAborted = err instanceof Error && err.name === "AbortError";
+    const errMsg = err instanceof Error ? err.message : String(err);
 
-    if (isAborted) {
+    if (errMsg.includes("AbortError") || errMsg.includes("timeout")) {
       return {
         success: false,
         message: "Cetak timeout. Pastikan printer menyala dan terhubung di app Cleanter.",
-        detail: "AbortError: Request timeout setelah " + timeoutMs + "ms",
+        detail: errMsg,
+      };
+    }
+    if (errMsg.includes("Failed to fetch") || errMsg.includes("NetworkError")) {
+      return {
+        success: false,
+        message: "Tidak dapat terhubung ke Cleanter (localhost:9100). Buka app Cleanter di Android.",
+        detail: errMsg,
       };
     }
 
-    const errMsg = err instanceof Error ? err.message : String(err);
-    console.error("❌ [CLEANTER PRINT ERROR]:", err);
-
     return {
       success: false,
-      message: `Gagal mencetak: ${errMsg}`,
+      message: `Gagal mencetak: ${errMsg.replace("Print failed: ", "")}`,
       detail: errMsg,
     };
   }
 }
 
 /**
- * Sends a lightweight Test Print receipt to verify functionality before an event.
- * Logs full request & response bodies to browser console.
+ * Test print — verifies IWARE XS-80BT / RPP02N functionality before an event.
  */
 export async function printTestReceipt(
   options: CleanterPrintOptions = {}
 ): Promise<CleanterResult> {
-  const endpoint = getCleanterEndpoint(options.hostUrl);
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 6000);
+  const dateStr = new Date().toLocaleString("id-ID");
+
+  const content: CleanterContentBlock[] = [
+    {
+      type: "text",
+      value: "================================\n",
+      align: "center",
+    },
+    {
+      type: "text",
+      value: "  OPTIK I SEE YOU PHOTOBOOTH  \n",
+      align: "center",
+      bold: true,
+    },
+    {
+      type: "text",
+      value: "       PRINTER TEST OK!       \n",
+      align: "center",
+      bold: true,
+    },
+    {
+      type: "text",
+      value: "================================\n",
+      align: "center",
+    },
+    {
+      type: "text",
+      value: `Printer : RPP02N / IWARE XS-80BT\nStatus  : CLEANTER BRIDGE READY\nWaktu   : ${dateStr}\n`,
+    },
+    {
+      type: "feed",
+      lines: 3,
+    },
+  ];
 
   try {
-    const dateStr = new Date().toLocaleString("id-ID");
-
-    const payload: CleanterPrintJob = {
-      commands: [
-        {
-          type: "text",
-          value:
-            "================================\n" +
-            "   OPTIK I SEE YOU PHOTOBOOTH   \n" +
-            "        PRINTER TEST OK!        \n" +
-            "================================\n",
-        },
-        {
-          type: "text",
-          value:
-            "Printer : IWARE XS-80BT / RPP02N\n" +
-            "Status  : CLEANTER BRIDGE READY\n" +
-            "Waktu   : " +
-            dateStr +
-            "\n",
-        },
-        {
-          type: "feed",
-          lines: 3,
-        },
-        {
-          type: "cut",
-        },
-      ],
-    };
-
-    const payloadJsonStr = JSON.stringify(payload, null, 2);
-
-    console.log("==========================================");
-    console.log("🚀 [CLEANTER TEST PRINT REQUEST]:", endpoint);
-    console.log("📦 [CLEANTER TEST PRINT BODY]:\n", payloadJsonStr);
-    console.log("==========================================");
-
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    const resText = await response.text().catch(() => "");
-
-    console.log("==========================================");
-    console.log("📥 [CLEANTER TEST PRINT RESPONSE STATUS]:", response.status);
-    console.log("📄 [CLEANTER TEST PRINT RESPONSE BODY]:\n", resText);
-    console.log("==========================================");
-
-    if (response.ok || response.status === 200) {
-      return {
-        success: true,
-        message: "Tes print berhasil! Printer siap digunakan.",
-        detail: resText,
-        requestPayload: payloadJsonStr,
-      };
-    }
-
-    return {
-      success: false,
-      message: `Cleanter menolak tes print (HTTP ${response.status}).`,
-      detail: resText || `HTTP Status ${response.status}`,
-      requestPayload: payloadJsonStr,
-    };
+    await printReceipt(content, options);
+    return { success: true, message: "Tes print berhasil! Printer siap digunakan." };
   } catch (err) {
-    clearTimeout(timeoutId);
     const errMsg = err instanceof Error ? err.message : String(err);
     return {
       success: false,
-      message: "Cleanter bridge tidak terdeteksi.",
+      message: `Tes print gagal: ${errMsg.replace("Print failed: ", "")}`,
       detail: errMsg,
     };
   }
