@@ -86,6 +86,22 @@ export const FRAME_LAYOUTS: FrameLayout[] = [
     ],
   },
 
+  // 5. Trio Koran Editorial (3 Foto Frame Koran — 4×6 inch card, ratio 2:3) ────
+  {
+    id: "trio_koran",
+    label: "3 Foto",
+    sublabel: "Frame Koran",
+    numPhotos: 3,
+    canvasWidth: 1200,
+    canvasHeight: 1800,
+    aspectRatioClass: "aspect-[2/3]",
+    slots: [
+      { x: 18, y: 590, w: 1164, h: 493 },
+      { x: 454, y: 1167, w: 292, h: 210 },
+      { x: 33, y: 1387, w: 370, h: 352 },
+    ],
+  },
+
   // 5. Quartet Strip Vertikal (4 Foto Strip Klasik — 2×6 inch strip, ratio 1:3)
   {
     id: "quartet_strip",

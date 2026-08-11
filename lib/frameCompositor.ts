@@ -638,10 +638,16 @@ export async function compositeFrame(
     return canvas.toDataURL("image/jpeg", 0.93);
   }
 
-  // Custom theme branch: Frame Koran Custom PNG Overlay
+  // Custom theme branch: Frame Koran Custom PNG Overlay (Fixed 1200x1800 ratio to prevent squishing)
   if (themeId === "frame-koran-custom") {
-    await drawFrameKoranCustomOverlay(ctx, width, height, layout, photos, colorFilterId);
-    return canvas.toDataURL("image/jpeg", 0.93);
+    const koranWidth = 1200;
+    const koranHeight = 1800;
+    const koranCanvas = document.createElement("canvas");
+    koranCanvas.width = koranWidth;
+    koranCanvas.height = koranHeight;
+    const koranCtx = koranCanvas.getContext("2d")!;
+    await drawFrameKoranCustomOverlay(koranCtx, koranWidth, koranHeight, layout, photos, colorFilterId);
+    return koranCanvas.toDataURL("image/jpeg", 0.93);
   }
 
   // Background
