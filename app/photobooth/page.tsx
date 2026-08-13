@@ -563,16 +563,21 @@ function StripPreview({
             className={`group relative overflow-hidden rounded-xl border-2 bg-isy-mist transition-all duration-300 ${photos[i] ? "border-isy-green-bright shadow-md scale-[1.01]" : i === photoCount ? "border-isy-green-bright/50 ring-2 ring-isy-green-bright/30 animate-pulse" : "border-dashed border-isy-line"}`}
             style={{ aspectRatio: "4/3" }}>
             {photos[i] ? (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photos[i]} alt="" className="h-full w-full object-cover" />
-                <button onClick={() => onRetakeSingleSlot(i)}
-                  className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]">
-                  <span className="rounded-full bg-white px-3 py-1.5 text-[10px] font-black text-isy-green-deep shadow-lg hover:bg-isy-green-bright hover:text-white transition-colors">
-                    Retake Foto #{i + 1}
-                  </span>
-                </button>
-              </>
+          <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photos[i]} alt="" className="h-full w-full object-cover" />
+              {/* Retake button: always visible as corner icon (touch-friendly) */}
+              <button
+                onClick={() => onRetakeSingleSlot(i)}
+                className="absolute top-1.5 right-1.5 flex items-center justify-center rounded-full bg-black/60 backdrop-blur-sm w-7 h-7 shadow-md transition-all active:scale-90 hover:bg-black/80"
+                title={`Retake Foto #${i + 1}`}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.3" strokeLinecap="round">
+                  <path d="M1 4v6h6" />
+                  <path d="M3.51 15a9 9 0 1 0 .49-4.5" />
+                </svg>
+              </button>
+            </>
             ) : (
               <div className="flex h-full items-center justify-center">
                 <div className="flex flex-col items-center gap-1">
@@ -787,6 +792,14 @@ const showToast = useCallback((msg: string) => {
  setPhase("countdown");
  }, []);
 
+ // Handle advancing to next photo (called from "between" phase button)
+ // Note: currentSlot is already set to the next target slot by handleCountdownComplete
+ const handleNextPhoto = useCallback(() => {
+ if (phase !== "between") return;
+ // Start countdown for the current slot (already set correctly by handleCountdownComplete)
+ setPhase("countdown");
+ }, [phase]);
+
  const handleChangeLayout = useCallback(() => {
  resetSession();
  if (arEnabled) {
@@ -815,30 +828,41 @@ const showToast = useCallback((msg: string) => {
 
  const targetSlot = singleSlotRetake !== null ? singleSlotRetake : currentSlot;
 
+ // Track the new photos state locally to check remaining slots
+ let updatedPhotos: string[] = [];
  setPhotos((prev) => {
- const n = [...prev];
- n[targetSlot] = dataUrl;
- return n;
+  const n = [...prev];
+  n[targetSlot] = dataUrl;
+  updatedPhotos = n;
+  return n;
  });
 
- // If we were retaking a single slot -> finish immediately & re-composite!
+ // If we were retaking a single slot
  if (singleSlotRetake !== null) {
- setSingleSlotRetake(null);
- setTimeout(() => setPhase("compositing"), 400);
- return;
+  setSingleSlotRetake(null);
+  // Check if all required photo slots are now filled
+  const allFilled = Array.from({ length: layout.numPhotos }, (_, i) => updatedPhotos[i]).every(Boolean);
+  if (allFilled) {
+   // All photos done — composite!
+   setTimeout(() => setPhase("compositing"), 400);
+  } else {
+   // Still empty slots — find next one and pause for user to continue
+   const nextEmpty = Array.from({ length: layout.numPhotos }, (_, i) => i).find(i => !updatedPhotos[i]) ?? currentSlot + 1;
+   setCurrentSlot(nextEmpty);
+   setPhase("between");
+  }
+  return;
  }
 
  const nextSlot = currentSlot + 1;
 
  if (nextSlot < layout.numPhotos) {
- setPhase("between");
- setTimeout(() => {
- setCurrentSlot(nextSlot);
- setPhase("countdown");
- }, 1200);
+  // Advance to next slot, then pause for user to click "Lanjut"
+  setCurrentSlot(nextSlot);
+  setPhase("between");
  } else {
- setCurrentSlot(nextSlot);
- setTimeout(() => setPhase("compositing"), 400);
+  setCurrentSlot(nextSlot);
+  setTimeout(() => setPhase("compositing"), 400);
  }
  }, [currentSlot, layout.numPhotos, singleSlotRetake]);
 
@@ -988,7 +1012,7 @@ const showToast = useCallback((msg: string) => {
   beautyMode={beautyMode}
   lipstickMode={lipstickMode}
   scanIntro={isScanning}
-  showFaceGuide={arEnabled}
+  showFaceGuide={false}
   faceResult={faceResult}
   onScanIntroComplete={() => {
     setIsScanning(false);
@@ -1038,32 +1062,42 @@ const showToast = useCallback((msg: string) => {
     <Countdown from={timerSec} duration={1} soundEnabled={soundEnabled} onComplete={handleCountdownComplete} />
  )}
 
+ {/* "between" phase: Lanjut button at same position as capture button */}
  {phase === "between" && (
- <div className="absolute inset-0 z-30 flex items-center justify-center">
- <div className="flex flex-col items-center gap-2 rounded-2xl bg-black/50 px-6 py-4 backdrop-blur-sm">
- <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
- <p className="text-xs font-bold text-white">
- Foto {photos.length}/{layout.numPhotos} · Siap untuk berikutnya…
- </p>
- </div>
- </div>
+  <div className="absolute bottom-0 inset-x-0 z-30 flex flex-col items-center gap-2 px-4 pb-4 pt-2 bg-gradient-to-t from-black/70 to-transparent">
+   <p className="text-xs font-semibold text-white/80">
+    Foto {photos.filter(Boolean).length}/{layout.numPhotos} selesai
+   </p>
+   <button
+    onClick={handleNextPhoto}
+    className="group relative w-full max-w-[320px] overflow-hidden rounded-2xl bg-isy-green-bright py-4 text-sm font-black uppercase tracking-[0.15em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.5)] transition-all hover:bg-isy-green-deep active:scale-[0.97]"
+   >
+    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
+    <span className="relative">Lanjut →</span>
+   </button>
+  </div>
  )}
 
- {shooting && phase !== "countdown" && phase !== "between" && (
- <div className={`
- absolute bottom-3 left-1/2 -translate-x-1/2
- flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold shadow-md transition-all
- ${faceDetected ? "bg-isy-green-bright text-white" : "bg-black/50 backdrop-blur text-white/70"}
- `}>
- <span className={`h-1.5 w-1.5 rounded-full ${faceDetected ? "animate-pulse bg-white" : "bg-white/40"}`} />
- {faceDetected ? "Wajah Terdeteksi! " : "Arahkan ke Kamera"}
- </div>
- )}
-
- {shooting && (
- <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-black/50 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm lg:hidden">
- {photos.length}/{layout.numPhotos}
- </div>
+ {/* Capture button area — anchored at bottom of camera */}
+ {shooting && phase === "ready" && (
+  <div className="absolute bottom-0 inset-x-0 z-20 flex flex-col items-center px-4 pb-4 pt-2 bg-gradient-to-t from-black/60 to-transparent">
+  {/* Main capture button */}
+  <button
+  id="shutter-btn"
+  onClick={handleStartSession}
+  disabled={!showShutter || (arEnabled && !scanComplete)}
+  className="group relative w-full max-w-[320px] overflow-hidden rounded-2xl bg-isy-green-bright py-4 text-sm font-black uppercase tracking-[0.15em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.5)] transition-all hover:bg-isy-green-deep active:scale-[0.97] active:shadow-[0_2px_8px_rgba(47,168,79,0.4)] disabled:opacity-50 disabled:pointer-events-none"
+  >
+  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
+  <span className="relative flex items-center justify-center gap-2">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+  <circle cx="12" cy="13" r="4" />
+  </svg>
+  {arEnabled ? `Try On & Ambil Foto` : `Mulai Foto`}
+  </span>
+  </button>
+  </div>
  )}
  </div>
  </div>
@@ -1090,27 +1124,23 @@ const showToast = useCallback((msg: string) => {
  {shooting && (
  <div className="flex shrink-0 flex-col gap-3 border-b border-isy-line px-4 py-3">
 
-  <div className="flex items-center justify-between flex-wrap gap-2">
-  {arEnabled && (
-  <div className="flex items-center gap-2 flex-wrap">
-  <AIModeToggle on={aiMode} onToggle={() => setAiMode((v) => !v)} />
-  {aiMode && <FaceHUD result={faceResult} analyzing={aiAnalyzing} />}
-  <button
-    onClick={handleReScan}
-    title="Scan Ulang Wajah"
-    className="flex items-center gap-1 rounded-full border border-isy-line bg-isy-mist/70 px-2.5 py-1 text-[10px] font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white hover:text-isy-green-bright transition-all active:scale-95 shadow-2xs"
-  >
-    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-    </svg>
-    Scan Ulang
-  </button>
-  </div>
-  )}
- <div className={`flex items-center gap-1 text-[10px] font-bold ${faceDetected ? "text-isy-green-bright" : "text-isy-ink/30"}`}>
- <span className={`h-1.5 w-1.5 rounded-full ${faceDetected ? "animate-pulse bg-isy-green-bright" : "bg-isy-ink/20"}`} />
- {faceDetected ? "Terdeteksi" : "Tidak ada wajah"}
+ <div className="flex items-center justify-between flex-wrap gap-2">
+ {arEnabled && (
+ <div className="flex items-center gap-2 flex-wrap">
+ <AIModeToggle on={aiMode} onToggle={() => setAiMode((v) => !v)} />
+ {aiMode && <FaceHUD result={faceResult} analyzing={aiAnalyzing} />}
+ <button
+ onClick={handleReScan}
+ title="Scan Ulang Wajah"
+ className="flex items-center gap-1 rounded-full border border-isy-line bg-isy-mist/70 px-2.5 py-1 text-[10px] font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white hover:text-isy-green-bright transition-all active:scale-95 shadow-2xs"
+ >
+ <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+ <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+ </svg>
+ Scan Ulang
+ </button>
  </div>
+ )}
  </div>
 
  <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -1169,29 +1199,6 @@ const showToast = useCallback((msg: string) => {
  </div>
  )}
 
- <button
- id="shutter-btn"
- onClick={handleStartSession}
- disabled={!showShutter || (arEnabled && !scanComplete)}
- className="group relative w-full overflow-hidden rounded-xl bg-isy-green-bright py-3.5 text-sm font-black uppercase tracking-[0.15em] text-white shadow-md transition-all hover:bg-isy-green-deep active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none"
- >
- <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
- <span className="relative flex items-center justify-center gap-2">
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
- <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
- <circle cx="12" cy="13" r="4" />
- </svg>
- {showShutter
-    ? arEnabled
-      ? `Try On & Ambil Foto (1x)`
-      : `Mulai Foto — ${timerSec}s × ${layout.numPhotos} Foto`
-    : phase === "countdown" ? " Bersiap…"
-    : phase === "between" ? ` ${photos.length}/${layout.numPhotos} foto`
-    : phase === "flash" ? " Jepret!"
-    : "Memproses…"}
- </span>
- </button>
-
  <div className="flex items-center justify-between text-xs">
  {!arEnabled ? (
  <button onClick={handleChangeLayout} className="text-isy-ink/40 hover:text-isy-green-deep transition-colors">
@@ -1200,11 +1207,9 @@ const showToast = useCallback((msg: string) => {
  ) : (
  <span className="text-[11px] font-bold text-isy-green-bright">✨ Try-On 1x Foto</span>
  )}
- {photos.length > 0 && (
  <button onClick={handleRetake} className="text-isy-ink/40 hover:text-red-500 transition-colors">
  Ulangi
  </button>
- )}
  </div>
  </div>
  )}

@@ -87,7 +87,7 @@ export const FRAME_THEMES: FrameTheme[] = [
     slotBg: "#FFFFFF",
     slotBorder: "#1A1A1A",
     dotColor: "#D0CCC4",
-    supportedPhotoCounts: [1, 2, 3, 4, 6],
+    supportedLayoutIds: ["trio_koran"],
   },
   {
     id: "emerald-luxury",
@@ -147,6 +147,39 @@ export const FRAME_THEMES: FrameTheme[] = [
     slotBg: "#1C2420",
     slotBorder: "#2A3630",
     dotColor: "#2FA84F",
+    supportedPhotoCounts: [1, 2, 3, 4, 6],
+  },
+  // ── Structural Themes: Optics / Kacamata Motif ───────────────────────────
+  {
+    id: "optical-blueprint",
+    name: "Optical Blueprint",
+    badge: "Tema Baru · Teknis",
+    description: "Desain engineering blueprint optik dengan grid teknis, siluet frame kacamata, dan marker ukuran lensa.",
+    bgColor: "#0D1B2A",
+    bgGradEnd: "#071018",
+    topBarColor: "#00B4D8",
+    accentBarColor: "#0077B6",
+    textColor: "#CAF0F8",
+    igColor: "#00B4D8",
+    slotBg: "#0A2540",
+    slotBorder: "#00B4D8",
+    dotColor: "#00B4D8",
+    supportedPhotoCounts: [1, 2, 3, 4, 6],
+  },
+  {
+    id: "lens-flare-gold",
+    name: "Lens Flare Gold",
+    badge: "Tema Baru · Mewah",
+    description: "Efek bokeh lensa kamera mewah dengan cincin flare gold dan elemen resep kacamata optician.",
+    bgColor: "#0A0A0A",
+    bgGradEnd: "#1A1200",
+    topBarColor: "#B8860B",
+    accentBarColor: "#D4AF37",
+    textColor: "#FFF8DC",
+    igColor: "#D4AF37",
+    slotBg: "#111100",
+    slotBorder: "#D4AF37",
+    dotColor: "#D4AF37",
     supportedPhotoCounts: [1, 2, 3, 4, 6],
   },
 ];
@@ -611,6 +644,406 @@ async function drawFrameKoranCustomOverlay(
   }
 }
 
+/**
+ * Custom renderer for TEMA "Optical Blueprint" — Engineering/Optik style
+ */
+async function drawOpticalBlueprintFrame(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  layout: FrameLayout,
+  photos: string[],
+  logoSrc: string
+) {
+  // 1. Dark engineering blueprint background
+  ctx.fillStyle = "#0D1B2A";
+  ctx.fillRect(0, 0, width, height);
+
+  // 2. Blueprint Grid lines (fine cyan grid)
+  ctx.save();
+  const gridSize = 40;
+  ctx.strokeStyle = "rgba(0, 180, 216, 0.12)";
+  ctx.lineWidth = 0.8;
+  for (let x = 0; x < width; x += gridSize) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+  }
+  for (let y = 0; y < height; y += gridSize) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+  }
+  // Major grid lines every 200px
+  ctx.strokeStyle = "rgba(0, 180, 216, 0.22)";
+  ctx.lineWidth = 1;
+  for (let x = 0; x < width; x += 200) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+  }
+  for (let y = 0; y < height; y += 200) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+  }
+  ctx.restore();
+
+  // 3. Blueprint title bar at top
+  ctx.save();
+  ctx.fillStyle = "rgba(0, 180, 216, 0.15)";
+  ctx.fillRect(0, 0, width, 110);
+  ctx.strokeStyle = "#00B4D8";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(0, 0, width, 110);
+  ctx.restore();
+
+  // 4. Glasses silhouette header — draw technical aviator-style frame outline
+  const gx = width / 2;
+  const gy = 55;
+  const lensW = 90;
+  const lensH = 38;
+  const bridgeGap = 20;
+  ctx.save();
+  ctx.strokeStyle = "#00B4D8";
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = "rgba(0, 180, 216, 0.6)";
+  ctx.shadowBlur = 10;
+  // Left lens oval
+  ctx.beginPath();
+  ctx.ellipse(gx - bridgeGap / 2 - lensW / 2, gy, lensW / 2, lensH / 2, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  // Right lens oval
+  ctx.beginPath();
+  ctx.ellipse(gx + bridgeGap / 2 + lensW / 2, gy, lensW / 2, lensH / 2, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  // Bridge
+  ctx.beginPath();
+  ctx.moveTo(gx - bridgeGap / 2, gy - 5);
+  ctx.bezierCurveTo(gx - bridgeGap / 4, gy - 14, gx + bridgeGap / 4, gy - 14, gx + bridgeGap / 2, gy - 5);
+  ctx.stroke();
+  // Left temple arm
+  ctx.beginPath();
+  ctx.moveTo(gx - bridgeGap / 2 - lensW, gy - 8);
+  ctx.lineTo(gx - bridgeGap / 2 - lensW - 70, gy - 6);
+  ctx.stroke();
+  // Right temple arm
+  ctx.beginPath();
+  ctx.moveTo(gx + bridgeGap / 2 + lensW, gy - 8);
+  ctx.lineTo(gx + bridgeGap / 2 + lensW + 70, gy - 6);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.restore();
+
+  // 5. Technical annotations on glasses
+  ctx.save();
+  ctx.fillStyle = "#00B4D8";
+  ctx.font = "bold 9px 'Courier New', monospace";
+  ctx.textAlign = "center";
+  // PD marker between lenses
+  ctx.fillText("← PD 64mm →", gx, gy + 28);
+  // Lens size annotation
+  ctx.textAlign = "left";
+  ctx.fillStyle = "rgba(0, 180, 216, 0.7)";
+  ctx.fillText("⌀ 52mm", gx - bridgeGap / 2 - lensW + 5, gy - 24);
+  ctx.fillText("⌀ 52mm", gx + bridgeGap / 2 + 5, gy - 24);
+  ctx.restore();
+
+  // 6. Brand header: load actual logo with white invert (dark background)
+  ctx.save();
+  try {
+    const logo = await loadImage(logoSrc);
+    const maxH = 52;
+    const s = Math.min(220 / logo.width, maxH / logo.height);
+    const lw = logo.width * s;
+    const lh = logo.height * s;
+    ctx.filter = "brightness(0) invert(1) opacity(0.9)";
+    ctx.drawImage(logo, (width - lw) / 2, 14 + (110 - 14 - lh) / 2, lw, lh);
+    ctx.filter = "none";
+  } catch {
+    // Fallback to text if logo fails
+    ctx.font = "bold 13px 'Courier New', monospace";
+    ctx.fillStyle = "rgba(0, 180, 216, 0.85)";
+    ctx.textAlign = "center";
+    ctx.fillText("OPTIK I SEE YOU", width / 2, 58);
+  }
+  ctx.textAlign = "right";
+  ctx.font = "bold 10px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(202, 240, 248, 0.5)";
+  ctx.fillText(`REF: ISY-${new Date().getFullYear()}-OPT`, width - 20, 104);
+  ctx.textAlign = "left";
+  ctx.fillText("OPTICAL BLUEPRINT EDITION", 20, 104);
+  ctx.restore();
+
+  // 7. Crosshair target markers at corners of photo area
+  const cSize = 16;
+  const minX = Math.min(...layout.slots.map(s => s.x));
+  const minY = Math.min(...layout.slots.map(s => s.y));
+  const maxX = Math.max(...layout.slots.map(s => s.x + s.w));
+  const maxY = Math.max(...layout.slots.map(s => s.y + s.h));
+  const corners2 = [
+    { x: minX - 12, y: minY - 12 },
+    { x: maxX + 12, y: minY - 12 },
+    { x: minX - 12, y: maxY + 12 },
+    { x: maxX + 12, y: maxY + 12 },
+  ];
+  ctx.save();
+  ctx.strokeStyle = "rgba(0, 180, 216, 0.8)";
+  ctx.lineWidth = 1.5;
+  corners2.forEach(({ x, y }) => {
+    const dx = x < width / 2 ? 1 : -1;
+    const dy = y < height / 2 ? 1 : -1;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + dx * cSize, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + dy * cSize); ctx.stroke();
+    // small dot
+    ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fillStyle = "#00B4D8"; ctx.fill();
+  });
+  ctx.restore();
+
+  // 8. Photo slots
+  for (let i = 0; i < layout.slots.length; i++) {
+    const slot = layout.slots[i];
+    if (photos[i]) {
+      try {
+        const img = await loadImage(photos[i]);
+        drawCoverImage(ctx, img, slot, "normal", 4);
+      } catch {
+        drawEmptySlot(ctx, slot, i, FRAME_THEMES.find(t => t.id === "optical-blueprint") || FRAME_THEMES[0], 4);
+      }
+    } else {
+      drawEmptySlot(ctx, slot, i, FRAME_THEMES.find(t => t.id === "optical-blueprint") || FRAME_THEMES[0], 4);
+    }
+    // Slot label: "FRAME 01", "FRAME 02"...
+    ctx.save();
+    ctx.font = "bold 10px 'Courier New', monospace";
+    ctx.fillStyle = "rgba(0, 180, 216, 0.6)";
+    ctx.textAlign = "left";
+    ctx.fillText(`FRAME ${String(i + 1).padStart(2, "0")}`, slot.x + 8, slot.y + slot.h - 10);
+    ctx.restore();
+  }
+
+  // 9. Footer — technical specs bar
+  const now = new Date();
+  const footY = height - 80;
+  ctx.save();
+  ctx.fillStyle = "rgba(0, 180, 216, 0.12)";
+  ctx.fillRect(0, footY, width, 80);
+  ctx.strokeStyle = "rgba(0, 180, 216, 0.5)";
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, footY); ctx.lineTo(width, footY); ctx.stroke();
+
+  ctx.font = "bold 11px 'Courier New', monospace";
+  ctx.fillStyle = "#00B4D8";
+  ctx.textAlign = "left";
+  ctx.fillText("SPH: —  CYL: —  AX: —  ADD: —", 20, footY + 24);
+  ctx.textAlign = "center";
+  ctx.fillStyle = "rgba(202, 240, 248, 0.8)";
+  ctx.fillText("@iseeyou.glasses · OPTIK I SEE YOU", width / 2, footY + 24);
+  ctx.textAlign = "right";
+  ctx.fillStyle = "rgba(0, 180, 216, 0.7)";
+  ctx.fillText(`DATE: ${now.getDate().toString().padStart(2,"0")}.${(now.getMonth()+1).toString().padStart(2,"0")}.${now.getFullYear()}`, width - 20, footY + 24);
+
+  ctx.font = "9px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(202, 240, 248, 0.4)";
+  ctx.textAlign = "center";
+  ctx.fillText("OPTICAL QUALITY BLUEPRINT · PURWOKERTO · INDONESIA", width / 2, footY + 50);
+  ctx.restore();
+
+  // Top accent line
+  ctx.fillStyle = "#00B4D8";
+  ctx.fillRect(0, 0, width, 3);
+  ctx.fillStyle = "rgba(0, 119, 182, 0.8)";
+  ctx.fillRect(0, 3, width, 2);
+}
+
+/**
+ * Custom renderer for TEMA "Lens Flare Gold" — Luxury optic lens bokeh style
+ */
+async function drawLensFlareGoldFrame(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  layout: FrameLayout,
+  photos: string[],
+  logoSrc: string
+) {
+  // 1. Deep black background with subtle gold tint at bottom
+  const bg = ctx.createLinearGradient(0, 0, 0, height);
+  bg.addColorStop(0, "#0A0A0A");
+  bg.addColorStop(0.6, "#0A0A0A");
+  bg.addColorStop(1, "#1A1200");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, width, height);
+
+  // 2. Lens flare / bokeh circles — concentric gold rings scattered
+  const flares = [
+    { cx: width * 0.15, cy: height * 0.08, r: 180, alpha: 0.06 },
+    { cx: width * 0.82, cy: height * 0.12, r: 140, alpha: 0.07 },
+    { cx: width * 0.5, cy: height * 0.5, r: 240, alpha: 0.04 },
+    { cx: width * 0.1, cy: height * 0.9, r: 130, alpha: 0.05 },
+    { cx: width * 0.88, cy: height * 0.85, r: 160, alpha: 0.06 },
+  ];
+  ctx.save();
+  flares.forEach(({ cx, cy, r, alpha }) => {
+    // Multiple ring halos
+    [1.0, 0.75, 0.5, 0.3].forEach((rFactor, idx) => {
+      const ring = ctx.createRadialGradient(cx, cy, r * rFactor * 0.3, cx, cy, r * rFactor);
+      ring.addColorStop(0, `rgba(212, 175, 55, 0)`);
+      ring.addColorStop(0.7, `rgba(212, 175, 55, 0)`);
+      ring.addColorStop(0.88, `rgba(212, 175, 55, ${alpha * (1 - idx * 0.2)})`);
+      ring.addColorStop(1, `rgba(212, 175, 55, 0)`);
+      ctx.fillStyle = ring;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * rFactor, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  });
+  ctx.restore();
+
+  // 3. Lens flare streak from top-left corner
+  ctx.save();
+  const flareGrad = ctx.createLinearGradient(0, 0, width * 0.6, height * 0.35);
+  flareGrad.addColorStop(0, "rgba(212, 175, 55, 0.18)");
+  flareGrad.addColorStop(0.4, "rgba(212, 175, 55, 0.06)");
+  flareGrad.addColorStop(1, "rgba(212, 175, 55, 0)");
+  ctx.fillStyle = flareGrad;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(width * 0.7, 0);
+  ctx.lineTo(width * 0.15, height * 0.45);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  // 4. Header — brand title with luxury gold treatment
+  const HEADER_H = 140;
+  ctx.save();
+  // Gold top bar
+  const goldBar = ctx.createLinearGradient(0, 0, width, 0);
+  goldBar.addColorStop(0, "rgba(212, 175, 55, 0)");
+  goldBar.addColorStop(0.3, "#D4AF37");
+  goldBar.addColorStop(0.7, "#D4AF37");
+  goldBar.addColorStop(1, "rgba(212, 175, 55, 0)");
+  ctx.fillStyle = goldBar;
+  ctx.fillRect(0, 0, width, 4);
+  ctx.restore();
+
+  // Logo
+  try {
+    const logo = await loadImage(logoSrc);
+    const maxH = 68;
+    const s = Math.min(240 / logo.width, maxH / logo.height);
+    const lw = logo.width * s;
+    const lh = logo.height * s;
+    ctx.save();
+    ctx.filter = "brightness(0) sepia(1) saturate(3) hue-rotate(5deg)";
+    ctx.drawImage(logo, (width - lw) / 2, 18, lw, lh);
+    ctx.restore();
+  } catch {
+    ctx.save();
+    ctx.font = "800 44px Georgia, serif";
+    ctx.fillStyle = "#D4AF37";
+    ctx.shadowColor = "rgba(212, 175, 55, 0.5)";
+    ctx.shadowBlur = 12;
+    ctx.textAlign = "center";
+    ctx.fillText("OPTIK I SEE YOU", width / 2, 70);
+    ctx.restore();
+  }
+
+  // Optician tagline
+  ctx.save();
+  ctx.font = "italic 14px Georgia, 'Times New Roman', serif";
+  ctx.fillStyle = "rgba(255, 248, 220, 0.5)";
+  ctx.textAlign = "center";
+  ctx.fillText("Est. Optical Quality · Since 2010 · Purwokerto", width / 2, HEADER_H - 12);
+  ctx.restore();
+
+  // Thin gold divider
+  ctx.save();
+  const divGrad = ctx.createLinearGradient(0, 0, width, 0);
+  divGrad.addColorStop(0, "rgba(212, 175, 55, 0)");
+  divGrad.addColorStop(0.5, "rgba(212, 175, 55, 0.8)");
+  divGrad.addColorStop(1, "rgba(212, 175, 55, 0)");
+  ctx.strokeStyle = divGrad;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, HEADER_H); ctx.lineTo(width, HEADER_H); ctx.stroke();
+  ctx.restore();
+
+  // 5. Photo slots
+  for (let i = 0; i < layout.slots.length; i++) {
+    const slot = layout.slots[i];
+    if (photos[i]) {
+      try {
+        const img = await loadImage(photos[i]);
+        drawCoverImage(ctx, img, slot, "normal", 8);
+      } catch {
+        drawEmptySlot(ctx, slot, i, FRAME_THEMES.find(t => t.id === "lens-flare-gold") || FRAME_THEMES[0], 8);
+      }
+    } else {
+      drawEmptySlot(ctx, slot, i, FRAME_THEMES.find(t => t.id === "lens-flare-gold") || FRAME_THEMES[0], 8);
+    }
+    // Gold corner accents on each slot
+    ctx.save();
+    ctx.strokeStyle = "rgba(212, 175, 55, 0.7)";
+    ctx.lineWidth = 1.5;
+    const bSize = 14;
+    const slotCorners = [
+      { x: slot.x, y: slot.y, dx: 1, dy: 1 },
+      { x: slot.x + slot.w, y: slot.y, dx: -1, dy: 1 },
+      { x: slot.x, y: slot.y + slot.h, dx: 1, dy: -1 },
+      { x: slot.x + slot.w, y: slot.y + slot.h, dx: -1, dy: -1 },
+    ];
+    slotCorners.forEach(c => {
+      ctx.beginPath();
+      ctx.moveTo(c.x + c.dx * bSize, c.y);
+      ctx.lineTo(c.x, c.y);
+      ctx.lineTo(c.x, c.y + c.dy * bSize);
+      ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  // 6. Footer — Prescription-style text + Instagram handle
+  const FOOTER_Y = height - 130;
+  ctx.save();
+  const footGrad2 = ctx.createLinearGradient(0, 0, width, 0);
+  footGrad2.addColorStop(0, "rgba(212, 175, 55, 0)");
+  footGrad2.addColorStop(0.5, "rgba(212, 175, 55, 0.6)");
+  footGrad2.addColorStop(1, "rgba(212, 175, 55, 0)");
+  ctx.strokeStyle = footGrad2;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, FOOTER_Y); ctx.lineTo(width, FOOTER_Y); ctx.stroke();
+
+  // Rx prescription-style decoration
+  ctx.font = "bold 26px Georgia, serif";
+  ctx.fillStyle = "rgba(212, 175, 55, 0.25)";
+  ctx.textAlign = "left";
+  ctx.fillText("℞", 24, FOOTER_Y + 50);
+
+  // Fake prescription data
+  ctx.font = "10px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(255, 248, 220, 0.35)";
+  ctx.textAlign = "left";
+  ctx.fillText("R  SPH: —    CYL: —    AX: —    ADD: —", 50, FOOTER_Y + 32);
+  ctx.fillText("L  SPH: —    CYL: —    AX: —    PD: 64", 50, FOOTER_Y + 48);
+
+  // Center branding
+  ctx.font = "italic 700 24px Georgia, serif";
+  ctx.fillStyle = "rgba(255, 248, 220, 0.9)";
+  ctx.textAlign = "center";
+  ctx.fillText("Jadi Sahabat Mata Kamu ✨", width / 2, FOOTER_Y + 44);
+
+  ctx.font = "bold 20px 'Inter', sans-serif";
+  ctx.fillStyle = "#D4AF37";
+  ctx.textAlign = "center";
+  ctx.shadowColor = "rgba(212, 175, 55, 0.5)";
+  ctx.shadowBlur = 8;
+  ctx.fillText("@iseeyou.glasses", width / 2, FOOTER_Y + 76);
+  ctx.shadowBlur = 0;
+  ctx.restore();
+
+  // Bottom gold bar
+  const goldBarBot = ctx.createLinearGradient(0, 0, width, 0);
+  goldBarBot.addColorStop(0, "rgba(212, 175, 55, 0)");
+  goldBarBot.addColorStop(0.3, "#D4AF37");
+  goldBarBot.addColorStop(0.7, "#D4AF37");
+  goldBarBot.addColorStop(1, "rgba(212, 175, 55, 0)");
+  ctx.fillStyle = goldBarBot;
+  ctx.fillRect(0, height - 4, width, 4);
+}
+
 export async function compositeFrame(
   layout: FrameLayout,
   photos: string[],
@@ -648,6 +1081,18 @@ export async function compositeFrame(
     const koranCtx = koranCanvas.getContext("2d")!;
     await drawFrameKoranCustomOverlay(koranCtx, koranWidth, koranHeight, layout, photos, colorFilterId);
     return koranCanvas.toDataURL("image/jpeg", 0.93);
+  }
+
+  // Custom theme branch: Optical Blueprint
+  if (themeId === "optical-blueprint") {
+    await drawOpticalBlueprintFrame(ctx, width, height, layout, photos, logoSrc);
+    return canvas.toDataURL("image/jpeg", 0.93);
+  }
+
+  // Custom theme branch: Lens Flare Gold
+  if (themeId === "lens-flare-gold") {
+    await drawLensFlareGoldFrame(ctx, width, height, layout, photos, logoSrc);
+    return canvas.toDataURL("image/jpeg", 0.93);
   }
 
   // Background

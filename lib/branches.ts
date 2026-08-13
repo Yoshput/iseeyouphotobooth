@@ -7,7 +7,8 @@ export interface Branch {
   lng: number;
   hours: string;
   hoursDetail?: { weekdays?: string; weekend?: string };
-  phone?: string;
+  phone: string;
+  waNumber?: string;
   images: string[];
   instagram: string;
   handle: string;
@@ -22,6 +23,8 @@ export const BRANCHES: Branch[] = [
     lat: -7.392899320708557,
     lng: 109.24966692636308,
     hours: "Buka 09:00 - 21:00 WIB",
+    phone: "0895-4156-14261",
+    waNumber: "62895415614261",
     instagram: "https://www.instagram.com/iseeyou.glasses/",
     handle: "@iseeyou.glasses",
     images: [
@@ -37,8 +40,9 @@ export const BRANCHES: Branch[] = [
     address: "Jl. Jenderal Soedirman, Sumberan Selatan, Wonosobo Bar., Kec. Wonosobo, Kabupaten Wonosobo, Jawa Tengah 56311",
     lat: -7.364198400005904,
     lng: 109.90066929262443,
-    hours: "Setiap hari, 09.00\u201318.00 WIB",
-    phone: "0878-3243-5384",
+    hours: "Setiap hari, 09.00–18.00 WIB",
+    phone: "0897-7129-039",
+    waNumber: "628977129039",
     instagram: "https://www.instagram.com/iseeyou.wonosobo/",
     handle: "@iseeyou.wonosobo",
     images: [
@@ -54,8 +58,9 @@ export const BRANCHES: Branch[] = [
     address: "Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Rawagaru, Sidanegara, Kec. Cilacap Tengah, Kabupaten Cilacap, Jawa Tengah 53223",
     lat: -7.7025949439074815,
     lng: 109.0162702336721,
-    hours: "Setiap hari, 09.00\u201321.00 WIB",
+    hours: "Setiap hari, 09.00–21.00 WIB",
     phone: "0851-3593-0533",
+    waNumber: "6285135930533",
     instagram: "https://www.instagram.com/iseeyou.cilacap/",
     handle: "@iseeyou.cilacap",
     images: [
@@ -71,12 +76,13 @@ export const BRANCHES: Branch[] = [
     address: "Jl. Onje No.1, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311",
     lat: -7.388426037302636,
     lng: 109.36448728949104,
-    hours: "Sen\u2013Jum 11.00\u201320.00 \u00b7 Sab\u2013Min 09.00\u201321.00 WIB",
+    hours: "Sen–Jum 11.00–20.00 · Sab–Min 09.00–21.00 WIB",
     hoursDetail: {
-      weekdays: "Senin\u2013Jumat: 11.00\u201320.00 WIB",
-      weekend: "Sabtu\u2013Minggu: 09.00\u201321.00 WIB",
+      weekdays: "Senin–Jumat: 11.00–20.00 WIB",
+      weekend: "Sabtu–Minggu: 09.00–21.00 WIB",
     },
     phone: "0822-3486-2322",
+    waNumber: "6282234862322",
     instagram: "https://www.instagram.com/iseeyou.purbalingga/",
     handle: "@iseeyou.purbalingga",
     images: [
@@ -101,6 +107,13 @@ export const CS_WHATSAPP_NUMBER = "62895415614261";
 export const KONSULTASI_WA_NUMBER = "62895415614261";
 export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
 export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=ShopBySearch&searchKeyword=iseeyou.id";
+
+export function branchWhatsappUrl(branch: Branch) {
+  const num = branch.waNumber || branch.phone.replace(/[^0-9]/g, "");
+  const formattedNum = num.startsWith("0") ? `62${num.slice(1)}` : num;
+  const message = `Halo Optik I See You cabang ${branch.city}, saya mau tanya lokasi & produk yang ada di toko.`;
+  return `https://wa.me/${formattedNum}?text=${encodeURIComponent(message)}`;
+}
 
 export function csWhatsappUrl(glassesName?: string) {
   const message = glassesName

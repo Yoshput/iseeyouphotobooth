@@ -64,27 +64,5 @@
     "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond"],
     "color": "#262626",
     "lensType": "open"
-  },
-  {
-    "id": "round-gold",
-    "name": "Round Gold Wire",
-    "file": "round-gold.png",
-    "fitWidthRatio": 1.40,
-    "ipdScaleRef": 1.00,
-    "style": "Round",
-    "recommendedFor": ["Square", "Heart", "Diamond"],
-    "color": "#D4AF37",
-    "lensType": "open"
-  },
-  {
-    "id": "clear-antirad",
-    "name": "Clear Anti-Rad",
-    "file": "clear-antirad.png",
-    "fitWidthRatio": 1.42,
-    "ipdScaleRef": 1.02,
-    "style": "Transparan",
-    "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
-    "color": "#E8F4FD",
-    "lensType": "open"
   }
 ]

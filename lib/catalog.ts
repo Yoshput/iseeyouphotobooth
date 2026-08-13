@@ -94,7 +94,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Round Wire",
         recommendedFor: ["Square", "Heart", "Diamond"],
         description: "Frame kawat bulat yang halus dan ringan, memberikan kesan retro modern.",
-        glassesId: "round-gold",
+        glassesId: "oval-frame",
       },
     ],
   },
@@ -132,7 +132,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Titanium",
         recommendedFor: ["Oval", "Round", "Diamond"],
         description: "Gaya profesional yang tipis, presisi, dan sangat nyaman dipakai seharian.",
-        glassesId: "round-gold",
+        glassesId: "oval-frame",
       },
     ],
   },
@@ -168,7 +168,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Transparan",
         recommendedFor: ["Round", "Oval", "Square"],
         description: "Frame transparan bening dengan detail engsel yang kokoh dan estetik.",
-        glassesId: "clear-antirad",
+        glassesId: "square-frame",
       },
       {
         id: "metro-3",
@@ -255,7 +255,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Soft Square",
         recommendedFor: ["Round", "Oval", "Diamond"],
         description: "Kombinasi warna kristal gelap dengan kilau mewah yang menonjolkan percaya diri.",
-        glassesId: "clear-antirad",
+        glassesId: "square-frame",
       },
     ],
   },
@@ -281,7 +281,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Sunglasses Square",
         recommendedFor: ["Oval", "Round", "Heart"],
         description: "Kacamata hitam gaya klasik dengan lensa dark smoke anti-glare & proteksi UV400 maksimal.",
-        glassesId: "sunglasses-classic",
+        glassesId: "square-frame", // sunglasses-classic mapped to square-frame (closest style)
       },
       {
         id: "shades-2",
@@ -293,7 +293,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Sunglasses Aviator",
         recommendedFor: ["Square", "Oval", "Diamond"],
         description: "Siluet modern dengan aksen warna amber gold yang elegan untuk penampilan outdoor stylish.",
-        glassesId: "sunglasses-modern",
+        glassesId: "aviator-frame", // sunglasses-modern mapped to aviator-frame (closest style)
       },
     ],
   },

@@ -36,6 +36,9 @@ function VisualThemeMockup({
 }) {
   const isVintageFilm = theme.id === "vintage-film-bw";
   const isNewspaper = theme.id === "newspaper-editorial";
+  const isFrameKoran = theme.id === "frame-koran-custom";
+  const isOpticalBlueprint = theme.id === "optical-blueprint";
+  const isLensFlareGold = theme.id === "lens-flare-gold";
   const isStrip1x3 = layout.aspectRatioClass === "aspect-[1/3]";
 
   // Person SVG icon for slot placeholder
@@ -98,6 +101,112 @@ function VisualThemeMockup({
           <div className="pt-0.5 border-t border-[#1A1A1A]/40 flex items-center justify-between text-[5.5px] font-mono text-[#1A1A1A]">
             <span>VOL. 2026</span>
             <span className="font-bold text-isy-green-deep">@iseeyou.glasses</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Frame Koran preview — use actual preview image asset
+  if (isFrameKoran) {
+    return (
+      <div className="flex h-[180px] w-full items-center justify-center py-1">
+        <div
+          className={`relative ${
+            isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
+          } h-full w-full rounded-xl overflow-hidden shadow-xs transition-all duration-300 group-hover:shadow-md`}
+        >
+          <Image
+            src="/frame photobooth/Frame Koran_preview.png"
+            alt="Frame Koran Preview"
+            fill
+            className="object-cover"
+            sizes="126px"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Optical Blueprint mockup
+  if (isOpticalBlueprint) {
+    return (
+      <div className="flex h-[180px] w-full items-center justify-center py-1">
+        <div
+          className={`relative ${
+            isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
+          } h-full w-full rounded-xl border border-[#00B4D8]/50 bg-[#0D1B2A] p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-[0_0_12px_rgba(0,180,216,0.3)]`}
+        >
+          {/* Blueprint grid */}
+          <div className="absolute inset-0 opacity-20" style={{
+            backgroundImage: "linear-gradient(rgba(0,180,216,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,180,216,0.3) 1px, transparent 1px)",
+            backgroundSize: "8px 8px"
+          }} />
+
+          {/* Glasses silhouette SVG */}
+          <div className="flex justify-center pt-0.5 z-10">
+            <svg viewBox="0 0 80 28" className="w-14 h-auto">
+              <ellipse cx="20" cy="14" rx="14" ry="9" fill="none" stroke="#00B4D8" strokeWidth="1.2" />
+              <ellipse cx="60" cy="14" rx="14" ry="9" fill="none" stroke="#00B4D8" strokeWidth="1.2" />
+              <path d="M34 11 Q40 6 46 11" fill="none" stroke="#00B4D8" strokeWidth="1.2" />
+              <line x1="0" y1="11" x2="6" y2="12" stroke="#00B4D8" strokeWidth="1.2" />
+              <line x1="74" y1="11" x2="80" y2="12" stroke="#00B4D8" strokeWidth="1.2" />
+            </svg>
+          </div>
+
+          {/* Slots */}
+          <div className="my-1 flex-1 flex flex-col gap-1 overflow-hidden z-10">
+            {layout.slots.slice(0, Math.min(layout.numPhotos, 4)).map((_, i) => (
+              <div key={i} className="flex-1 rounded-[2px] border border-[#00B4D8]/40 bg-[#0A2540] flex items-center justify-center">
+                <span className="text-[5px] font-mono text-[#00B4D8]/60">{String(i+1).padStart(2,"0")}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="pt-0.5 border-t border-[#00B4D8]/30 z-10">
+            <span className="text-[5px] font-mono text-[#00B4D8]/70 block text-center">OPTIK I SEE YOU</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Lens Flare Gold mockup
+  if (isLensFlareGold) {
+    return (
+      <div className="flex h-[180px] w-full items-center justify-center py-1">
+        <div
+          className={`relative ${
+            isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
+          } h-full w-full rounded-xl border border-[#D4AF37]/40 bg-[#0A0A0A] p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-[0_0_12px_rgba(212,175,55,0.3)]`}
+        >
+          {/* Bokeh rings */}
+          <div className="absolute top-2 left-2 w-12 h-12 rounded-full border border-[#D4AF37]/15 pointer-events-none" />
+          <div className="absolute top-4 left-4 w-8 h-8 rounded-full border border-[#D4AF37]/10 pointer-events-none" />
+          <div className="absolute bottom-4 right-2 w-10 h-10 rounded-full border border-[#D4AF37]/15 pointer-events-none" />
+          <div className="absolute -top-2 right-3 w-14 h-14 rounded-full border border-[#D4AF37]/08 pointer-events-none" />
+
+          {/* Header */}
+          <div className="text-center pb-1 border-b border-[#D4AF37]/30 z-10">
+            <span className="text-[6px] font-serif italic text-[#D4AF37] block leading-none">Optik I See You</span>
+            <span className="text-[4.5px] text-[#FFF8DC]/50 block">Est. Optical Quality</span>
+          </div>
+
+          {/* Slots */}
+          <div className="my-1 flex-1 flex flex-col gap-1 overflow-hidden z-10">
+            {layout.slots.slice(0, Math.min(layout.numPhotos, 4)).map((_, i) => (
+              <div key={i} className="flex-1 rounded-[3px] border border-[#D4AF37]/30 bg-[#111100] flex items-center justify-center">
+                <svg className="w-3 h-3 text-[#D4AF37]/30" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="pt-0.5 border-t border-[#D4AF37]/30 z-10">
+            <span className="text-[5px] font-serif italic text-[#D4AF37]/80 block text-center">@iseeyou.glasses</span>
           </div>
         </div>
       </div>

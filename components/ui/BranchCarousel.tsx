@@ -5,7 +5,7 @@ import Image from "next/image";
 import {
   BRANCHES,
   mapsDirectionsUrl,
-  csWhatsappUrl,
+  branchWhatsappUrl,
   type Branch,
 } from "@/lib/branches";
 
@@ -156,18 +156,29 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
               </div>
             </div>
 
-            {/* Phone — rendered only when branch.phone is set */}
+            {/* Phone */}
             {branch.phone && (
-              <div className="flex items-center gap-3 p-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm" style={{ color: accentColor }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.46 16z" />
-                  </svg>
+              <div className="flex items-center justify-between p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm" style={{ color: accentColor }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.46 16z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Telepon / WhatsApp Cabang</p>
+                    <p className="mt-0.5 text-sm font-bold text-isy-green-deep">{branch.phone}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Telepon</p>
-                  <p className="mt-0.5 text-sm font-bold text-isy-green-deep">{branch.phone}</p>
-                </div>
+
+                <a
+                  href={branchWhatsappUrl(branch)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-emerald-300 bg-emerald-50 px-3.5 py-1.5 text-xs font-black text-emerald-700 hover:bg-emerald-100 transition-all active:scale-95 shadow-sm"
+                >
+                  Chat WA
+                </a>
               </div>
             )}
 
@@ -306,16 +317,16 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
             </a>
 
             <a
-              href={csWhatsappUrl()}
+              href={branchWhatsappUrl(branch)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 rounded-2xl border-2 bg-white py-4 text-sm font-black text-isy-green-deep shadow-md transition-all hover:bg-isy-mist active:scale-[0.97]"
+              className="flex items-center justify-center gap-2 rounded-2xl border-2 bg-white py-4 text-xs font-black shadow-md transition-all hover:bg-isy-mist active:scale-[0.97]"
               style={{ borderColor: accentColor, color: accentColor }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16 3C8.82 3 3 8.82 3 16c0 2.36.64 4.57 1.76 6.48L3 29l6.73-1.73A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm6.12 18.08c-.26.73-1.51 1.4-2.08 1.48-.57.08-1.1.36-3.71-.77-3.14-1.36-5.15-4.52-5.3-4.73-.15-.21-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.58-.38.78-.38h.56c.18 0 .43-.07.67.51.25.6.84 2.06.92 2.21.08.14.13.31.03.5-.1.19-.14.31-.28.47-.15.16-.3.36-.43.48-.14.12-.29.25-.12.5.16.24.72 1.19 1.55 1.92 1.07.95 1.97 1.24 2.21 1.38.24.13.38.11.52-.07.14-.18.59-.69.75-.93.16-.23.32-.19.54-.11.22.08 1.39.66 1.63.78.24.12.4.18.46.28.06.1.06.56-.2 1.29z"/>
               </svg>
-              Tanya CS WhatsApp
+              <span>WA {branch.city} ({branch.phone})</span>
             </a>
           </div>
         </div>
