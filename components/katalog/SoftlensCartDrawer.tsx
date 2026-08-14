@@ -72,7 +72,7 @@ function QuantityStepper({
       {/* Decrement or Remove */}
       <button
         onClick={isOne ? onRemove : onDecrement}
-        className={`flex h-7 w-7 items-center justify-center text-xs font-bold transition-all duration-150 ${
+        className={`flex h-9 w-9 items-center justify-center text-xs font-bold transition-all duration-150 ${
           isOne
             ? "text-red-400 hover:bg-red-50 hover:text-red-600"
             : "text-isy-ink hover:bg-isy-mist"
@@ -84,14 +84,14 @@ function QuantityStepper({
       </button>
 
       {/* Quantity */}
-      <span className="w-7 text-center text-xs font-black text-isy-green-deep tabular-nums select-none">
+      <span className="w-8 text-center text-xs font-black text-isy-green-deep tabular-nums select-none">
         {quantity}
       </span>
 
       {/* Increment */}
       <button
         onClick={onIncrement}
-        className="flex h-7 w-7 items-center justify-center text-xs font-bold text-isy-ink hover:bg-isy-mist transition-colors"
+        className="flex h-9 w-9 items-center justify-center text-xs font-bold text-isy-ink hover:bg-isy-mist transition-colors"
         title="Tambah jumlah"
         aria-label="Tambah jumlah"
       >
@@ -211,7 +211,7 @@ export default function SoftlensCartDrawer({
                     className="flex items-center justify-between gap-3 rounded-2xl border border-isy-line bg-isy-mist/30 p-3 shadow-sm transition-all duration-200 hover:border-isy-green-bright/30 hover:shadow-md hover:-translate-y-px"
                   >
                     {/* Product Image */}
-                    <div className="relative h-14 w-14 shrink-0 rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-slate-50">
+                    <div className="relative h-14 w-14 shrink-0 rounded-xl overflow-hidden shadow-sm border border-isy-line bg-isy-mist">
                       {item.product.image ? (
                         <Image
                           src={item.product.image}
@@ -258,7 +258,10 @@ export default function SoftlensCartDrawer({
 
           {/* ── Sticky Footer — Total & CTA ──────────────────────────────── */}
           {cartItems.length > 0 && (
-            <div className="shrink-0 border-t border-isy-line bg-white p-5 space-y-4 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
+            <div
+              className="shrink-0 border-t border-isy-line bg-white p-5 space-y-4 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]"
+              style={{ paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom, 0px))" }}
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <span className="text-[11px] font-semibold text-isy-ink/55 uppercase tracking-wider block">

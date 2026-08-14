@@ -134,6 +134,7 @@ Implementasi responsive:
   `lib/branches.ts` (`csWhatsappUrl`) — satu sumber, jangan hardcode nomor
   WA di komponen manapun.
 
+
 ### YANG MASIH PERLU DARI TOKO (nggak bisa saya buatkan)
 - Foto depan & dalam toko untuk 4 cabang (taruh di `public/branches/<id>-depan.jpg`
   dan `<id>-dalam.jpg`, lalu sambungkan ke placeholder di `BranchCarousel.tsx`)
@@ -142,3 +143,40 @@ Implementasi responsive:
   tinggal asetnya
 - Konfirmasi source foto katalog (`public/catalog-glasses.jpg`) itu placeholder
   atau final
+
+---
+
+## UPDATE — Revisi Alur Finalisasi Foto (14 Agustus 2026)
+
+**Scope:** Mode Photobooth Biasa (`?mode=photobooth`, `arEnabled=false`) saja. Mode AR Try-On tidak diubah sama sekali.
+**File diubah:** HANYA `app/photobooth/page.tsx`
+
+### 1. Retake / Konfirmasi Setelah Tiap Foto (Termasuk Foto Terakhir)
+
+**Sebelum:** Foto terakhir begitu selesai langsung lompat ke compositing (setTimeout 400ms). Nol kesempatan review/retake. Overlay "between" hanya menampilkan teks progress dan tombol "Lanjut →" tanpa preview foto.
+
+**Sesudah:**
+- `handleCountdownComplete` — branch foto terakhir (else) sekarang juga `setPhase("between")`, bukan langsung compositing.
+- `handleNextPhoto` — sekarang cek `photos.filter(Boolean).length >= layout.numPhotos`:
+  - Semua slot terisi → `setPhase("compositing")`
+  - Belum → `setPhase("countdown")`
+- Overlay `"between"` baru: **overlay penuh** (bukan hanya action bar bawah) — menampilkan preview foto yang baru diambil (`photos[currentSlot - 1]`) dengan badge nomor foto, tombol **Retake** (wired ke `handleRetakeSingleSlot(justTakenIdx)`) dan CTA **"Lanjut →"** / **"Selesai, Lanjut →"** (beda teks sesuai kondisi semua slot terisi).
+- Ikon retake per-slot di Preview Strip kanan tetap dipertahankan (jalur retake foto-foto sebelumnya).
+
+### 2. Pisahkan Kustomisasi dari Hasil Akhir + Fix QR Refresh
+
+**Sebelum:** Setelah compositing, langsung masuk `"result"`. Semua ada di satu layar: chip Filter + Tema Frame + QR + Simpan + Cetak. Tiap tap chip → `compositeUrl` baru → useEffect upload terpicu → Cloudinary upload ulang + QR re-generate. Screenshot: "Mengunggah Foto…" muncul berkali-kali.
+
+**Sesudah:**
+- Tambah `"customize"` ke `BoothPhase` union type.
+- Jalur non-AR compositing → `setPhase("customize")` (bukan langsung `"result"`).
+- **Layar Kustomisasi** (`phase === "customize"`): chip Filter Warna + chip Tema Frame + preview gambar/GIF. TANPA QR/Simpan/Cetak/Bagikan. Tombol baru **"Lanjut, Lihat Hasil →"** → `setPhase("result")`.
+- **Layar Hasil Akhir** (`phase === "result"`): preview gambar/GIF + QRBox + Simpan + Cetak + Bagikan + tombol **"Ubah Frame / Filter"** → kembali ke `setPhase("customize")`. Chip Filter/Tema Frame **tidak ada** di layar ini (harus lewat Ubah Frame/Filter dulu).
+- `useEffect` upload tidak diubah strukturnya — guard `phase !== "result"` otomatis memblokir upload saat kustomisasi.
+- **Skip-upload optimization:** `lastUploadedCompositeRef` (useRef) menyimpan `compositeUrl` terakhir yang sukses di-upload. `doUpload()` skip jika `compositeUrl === lastUploadedCompositeRef.current && uploadPhase === "done"` — cegah double upload saat bolak-balik Hasil ↔ Kustomisasi tanpa ganti apapun.
+- `doUpload` diubah ke `useCallback` (dependency: `phase, compositeUrl, gifUrl, uploadPhase`).
+- Animasi fade-in GSAP baris 420: `phase === "result"` → `phase === "result" || phase === "customize"`.
+
+### TypeScript
+- Build: `tsc --noEmit` exit 0, zero errors.
+

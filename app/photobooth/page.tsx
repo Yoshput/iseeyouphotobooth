@@ -42,6 +42,7 @@ type BoothPhase =
  | "flash"
  | "between"
  | "compositing"
+ | "customize"
  | "result";
 
 type UploadPhase = "idle" | "uploading" | "done" | "error" | "no-key";
@@ -399,7 +400,8 @@ function StripPreview({
   phase, photoCount, selectedTheme, selectedFilter,
   onSelectTheme, onSelectFilter, onOpenGiantQR,
   onDownloadStrip, onDownloadGif, onRetake, onChangeLayout, onOpenShareModal,
-  onOpenThermalPrint, onRetakeSingleSlot, onRetryUpload, arGlassesName, isArMode = false,
+  onOpenThermalPrint, onRetakeSingleSlot, onRetryUpload, onGoToResult, onGoToCustomize,
+  arGlassesName, isArMode = false,
 }: {
   layout: FrameLayout; photos: string[]; compositeUrl: string | null;
   gifUrl: string | null; uploadedUrl: string | null; qrCodeDataUrl?: string | null; uploadError?: string | null; uploadPhase: UploadPhase;
@@ -411,13 +413,15 @@ function StripPreview({
   onOpenThermalPrint: () => void;
   onRetakeSingleSlot: (slotIdx: number) => void;
   onRetryUpload?: () => void;
+  onGoToResult: () => void;
+  onGoToCustomize: () => void;
   arGlassesName?: string; isArMode?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<ResultTab>("strip");
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (phase === "result" && ref.current) {
+    if ((phase === "result" || phase === "customize") && ref.current) {
       gsap.fromTo(ref.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
     }
   }, [phase]);
@@ -447,14 +451,14 @@ function StripPreview({
     );
   }
 
-  // Photobooth strip result
-  if (phase === "result" && compositeUrl) {
+  // Photobooth strip — Kustomisasi (Filter + Frame, tanpa QR/Simpan/Cetak)
+  if (phase === "customize" && compositeUrl) {
     return (
       <div ref={ref} className="flex flex-col gap-2.5 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
-            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-bright">Hasil Photobooth 📸</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-bright">Kustomisasi Foto 🎨</span>
           </div>
           <div className="flex rounded-full border border-isy-line bg-isy-mist p-0.5">
             <button onClick={() => setActiveTab("strip")} className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all ${activeTab === "strip" ? "bg-white text-isy-green-deep shadow-sm" : "text-isy-ink/50"}`}>Foto</button>
@@ -490,6 +494,49 @@ function StripPreview({
             </div>
           </div>
         )}
+
+        {/* Preview image */}
+        <div className="overflow-hidden rounded-2xl border border-isy-line shadow-lg max-h-[340px] flex items-center justify-center bg-black/5">
+          {activeTab === "strip" ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={compositeUrl} alt="Preview foto" className="h-full max-h-[340px] object-contain" />
+          ) : gifUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={gifUrl} alt="Preview GIF animasi" className="h-full max-h-[340px] object-contain" />
+          ) : (
+            <div className="flex h-44 items-center justify-center text-xs text-isy-ink/40">Memproses GIF…</div>
+          )}
+        </div>
+
+        {/* CTA: Lanjut ke Hasil Akhir */}
+        <button
+          onClick={onGoToResult}
+          className="group relative w-full overflow-hidden rounded-2xl bg-isy-green-bright py-4 text-sm font-black uppercase tracking-[0.15em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.45)] transition-all hover:bg-isy-green-deep active:scale-[0.97]"
+        >
+          <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
+          <span className="relative flex items-center justify-center gap-2">
+            Lanjut, Lihat Hasil
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
+          </span>
+        </button>
+      </div>
+    );
+  }
+
+  // Photobooth strip — Hasil Akhir (QR + Simpan + Cetak + Bagikan)
+  if (phase === "result" && compositeUrl) {
+    return (
+      <div ref={ref} className="flex flex-col gap-2.5 px-4 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
+            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-bright">Hasil Photobooth 📸</span>
+          </div>
+          <div className="flex rounded-full border border-isy-line bg-isy-mist p-0.5">
+            <button onClick={() => setActiveTab("strip")} className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all ${activeTab === "strip" ? "bg-white text-isy-green-deep shadow-sm" : "text-isy-ink/50"}`}>Foto</button>
+            <button onClick={() => setActiveTab("gif")} className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all ${activeTab === "gif" ? "bg-white text-isy-green-deep shadow-sm" : "text-isy-ink/50"}`}>GIF</button>
+          </div>
+        </div>
 
         {/* Preview image */}
         <div className="overflow-hidden rounded-2xl border border-isy-line shadow-lg max-h-[340px] flex items-center justify-center bg-black/5">
@@ -534,6 +581,15 @@ function StripPreview({
             Bagikan
           </button>
         </div>
+
+        {/* Ubah Frame/Filter — kembali ke layar Kustomisasi */}
+        <button
+          onClick={onGoToCustomize}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-isy-green-bright/60 bg-isy-mist py-2.5 text-xs font-bold text-isy-green-deep hover:border-isy-green-bright hover:bg-white active:scale-95 transition-all"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round"><circle cx="12" cy="12" r="3" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" /></svg>
+          Ubah Frame / Filter
+        </button>
 
         <div className="grid grid-cols-2 gap-2">
           <button onClick={onRetake} className="flex items-center justify-center gap-1.5 rounded-xl border border-isy-line bg-white py-2.5 text-xs font-bold text-isy-ink/70 hover:border-isy-green-bright hover:text-isy-green-deep active:scale-95">
@@ -796,9 +852,16 @@ const showToast = useCallback((msg: string) => {
  // Note: currentSlot is already set to the next target slot by handleCountdownComplete
  const handleNextPhoto = useCallback(() => {
  if (phase !== "between") return;
- // Start countdown for the current slot (already set correctly by handleCountdownComplete)
- setPhase("countdown");
- }, [phase]);
+ // Cek apakah semua slot sudah terisi (cara aman, tidak pakai currentSlot mentah)
+ const allFilled = photos.filter(Boolean).length >= layout.numPhotos;
+ if (allFilled) {
+  // Semua slot terisi → compositing
+  setPhase("compositing");
+ } else {
+  // Masih ada slot kosong → countdown untuk slot berikutnya
+  setPhase("countdown");
+ }
+ }, [phase, photos, layout.numPhotos]);
 
  const handleChangeLayout = useCallback(() => {
  resetSession();
@@ -861,8 +924,9 @@ const showToast = useCallback((msg: string) => {
   setCurrentSlot(nextSlot);
   setPhase("between");
  } else {
+  // Foto terakhir — tetap berhenti di "between" untuk review/retake
   setCurrentSlot(nextSlot);
-  setTimeout(() => setPhase("compositing"), 400);
+  setPhase("between");
  }
  }, [currentSlot, layout.numPhotos, singleSlotRetake]);
 
@@ -924,7 +988,9 @@ const showToast = useCallback((msg: string) => {
     compositeFrame(layout, photos, themeId, colorFilterId).then((url) => {
       if (!cancelled) {
         setCompositeUrl(url);
-        setPhase("result");
+        // Masuk layar Kustomisasi dulu (bukan langsung result)
+        // Confetti tetap dimainkan saat masuk kustomisasi
+        setPhase("customize");
         confetti({
           particleCount: 90,
           spread: 75,
@@ -947,8 +1013,14 @@ const showToast = useCallback((msg: string) => {
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const doUpload = () => {
+  // Ref untuk menyimpan compositeUrl terakhir yang sukses di-upload
+  // Mencegah double-upload saat user bolak-balik Hasil ⇄ Kustomisasi tanpa ganti apapun
+  const lastUploadedCompositeRef = useRef<string | null>(null);
+
+  const doUpload = useCallback(() => {
     if (phase !== "result" || !compositeUrl) return;
+    // Skip upload jika compositeUrl tidak berubah sejak upload terakhir yang sukses
+    if (lastUploadedCompositeRef.current === compositeUrl && uploadPhase === "done") return;
     setUploadPhase("uploading");
     setUploadError(null);
 
@@ -957,13 +1029,14 @@ const showToast = useCallback((msg: string) => {
         setUploadedUrl(result.qrPageUrl);
         setQrCodeDataUrl(result.qrCodeDataUrl);
         setUploadPhase("done");
+        lastUploadedCompositeRef.current = compositeUrl;
       } else {
         console.warn("QR upload:", result.error);
         setUploadError(result.error);
         setUploadPhase("error");
       }
     });
-  };
+  }, [phase, compositeUrl, gifUrl, uploadPhase]);
 
   useEffect(() => {
     if (phase !== "result" || !compositeUrl) return;
@@ -1062,21 +1135,57 @@ const showToast = useCallback((msg: string) => {
     <Countdown from={timerSec} duration={1} soundEnabled={soundEnabled} onComplete={handleCountdownComplete} />
  )}
 
- {/* "between" phase: Lanjut button at same position as capture button */}
- {phase === "between" && (
-  <div className="absolute bottom-0 inset-x-0 z-30 flex flex-col items-center gap-2 px-4 pb-4 pt-2 bg-gradient-to-t from-black/70 to-transparent">
-   <p className="text-xs font-semibold text-white/80">
-    Foto {photos.filter(Boolean).length}/{layout.numPhotos} selesai
-   </p>
-   <button
-    onClick={handleNextPhoto}
-    className="group relative w-full max-w-[320px] overflow-hidden rounded-2xl bg-isy-green-bright py-4 text-sm font-black uppercase tracking-[0.15em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.5)] transition-all hover:bg-isy-green-deep active:scale-[0.97]"
-   >
-    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
-    <span className="relative">Lanjut →</span>
-   </button>
-  </div>
- )}
+ {/* "between" phase: Preview foto yang baru diambil + tombol Retake + Lanjut */}
+ {phase === "between" && (() => {
+  const allFilled = photos.filter(Boolean).length >= layout.numPhotos;
+  // Foto yang baru selesai = slot sebelum currentSlot
+  const justTakenIdx = currentSlot - 1;
+  const justTakenPhoto = justTakenIdx >= 0 ? photos[justTakenIdx] : null;
+  return (
+   <div className="absolute inset-0 z-30 flex flex-col items-end justify-end bg-black/60 backdrop-blur-[2px]">
+    {/* Preview foto yang baru diambil */}
+    {justTakenPhoto && (
+     <div className="absolute inset-x-4 top-4 bottom-[180px] flex items-center justify-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+       src={justTakenPhoto}
+       alt="Foto yang baru diambil"
+       className="h-full max-h-full w-auto rounded-2xl border-4 border-white shadow-2xl object-contain"
+      />
+      {/* Badge nomor foto */}
+      <span className="absolute top-2 left-2 rounded-full bg-black/60 backdrop-blur-sm px-2.5 py-1 text-[10px] font-black text-white">
+       Foto {justTakenIdx + 1}
+      </span>
+     </div>
+    )}
+
+    {/* Action bar */}
+    <div className="w-full flex flex-col items-center gap-2.5 px-4 pb-4 pt-3 bg-gradient-to-t from-black/80 to-transparent">
+     <p className="text-xs font-semibold text-white/80">
+      {allFilled ? "Semua foto selesai! Mau lanjut atau foto ulang?" : `Foto ${photos.filter(Boolean).length}/${layout.numPhotos} selesai`}
+     </p>
+     <div className="flex w-full max-w-[340px] gap-2.5">
+      {/* Retake tombol */}
+      <button
+       onClick={() => handleRetakeSingleSlot(justTakenIdx >= 0 ? justTakenIdx : 0)}
+       className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-2 border-white/40 bg-black/50 py-3.5 text-sm font-black text-white backdrop-blur-sm hover:bg-black/70 active:scale-[0.97] transition-all"
+      >
+       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" /></svg>
+       Retake
+      </button>
+      {/* Lanjut / Selesai tombol */}
+      <button
+       onClick={handleNextPhoto}
+       className="group relative flex-[2] overflow-hidden rounded-2xl bg-isy-green-bright py-3.5 text-sm font-black uppercase tracking-[0.12em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.55)] transition-all hover:bg-isy-green-deep active:scale-[0.97]"
+      >
+       <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
+       <span className="relative">{allFilled ? "Selesai, Lanjut →" : "Lanjut →"}</span>
+      </button>
+     </div>
+    </div>
+   </div>
+  );
+ })()}
 
  {/* Capture button area — anchored at bottom of camera */}
  {shooting && phase === "ready" && (
@@ -1239,6 +1348,8 @@ const showToast = useCallback((msg: string) => {
             onOpenThermalPrint={() => setThermalPrintModalOpen(true)}
             onRetakeSingleSlot={handleRetakeSingleSlot}
             onRetryUpload={doUpload}
+            onGoToResult={() => setPhase("result")}
+            onGoToCustomize={() => setPhase("customize")}
             arGlassesName={arEnabled ? glasses?.name : undefined}
             isArMode={arEnabled}
           />

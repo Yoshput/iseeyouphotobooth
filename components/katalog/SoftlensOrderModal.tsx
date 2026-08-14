@@ -120,11 +120,11 @@ export default function SoftlensOrderModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl border border-isy-line animate-in zoom-in-95 duration-300">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 [backdrop-filter:blur(8px)] [-webkit-backdrop-filter:blur(8px)] p-4 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl bg-white shadow-2xl border border-isy-line animate-in zoom-in-95 duration-300">
 
         {/* ── Header ─────────────────────────────────────────────────────── */}
-        <div className="flex items-center justify-between border-b border-isy-line bg-[#FAF9F5] px-6 py-4">
+        <div className="flex items-center justify-between border-b border-isy-line bg-isy-mist px-6 py-4">
           <div className="flex items-center gap-3">
             {/* Step Indicator */}
             <div className="flex items-center gap-1.5">

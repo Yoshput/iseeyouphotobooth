@@ -19,17 +19,19 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        "isy-gradient":
-          "radial-gradient(120% 100% at 50% 0%, #FFFFFF 0%, #F3F8F4 100%)",
+        "isy-gradient": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
       },
       fontFamily: {
         // Using CSS custom properties set in globals.css / :root
         sans:  ["var(--font-inter)",     "Inter",            "system-ui", "sans-serif"],
         serif: ["var(--font-playfair)",  "Playfair Display", "Georgia",   "serif"],
       },
+      boxShadow: {
+        xs: "0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
 
 export default config;

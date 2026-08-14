@@ -37,16 +37,23 @@ export default function ProductImageZoomModal({
     setPosition({ x: 0, y: 0 });
   }, [initialIndex, isOpen]);
 
-  // Lock body scroll when zoom modal is open
+  // Lock body scroll when zoom modal is open — iOS-safe via class
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      // Save scroll position and lock
+      const scrollY = window.scrollY;
+      document.body.classList.add("scroll-locked");
+      document.body.style.top = `-${scrollY}px`;
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") onClose();
       };
       window.addEventListener("keydown", handleKeyDown);
       return () => {
-        document.body.style.overflow = "";
+        // Restore scroll position
+        const top = document.body.style.top;
+        document.body.classList.remove("scroll-locked");
+        document.body.style.top = "";
+        window.scrollTo(0, parseInt(top || "0") * -1);
         window.removeEventListener("keydown", handleKeyDown);
       };
     }
@@ -117,8 +124,33 @@ export default function ProductImageZoomModal({
     }
   };
 
+  // Touch Drag Panning (mobile/tablet)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (zoomLevel > 1 && e.touches.length === 1) {
+      setIsDragging(true);
+      setDragStart({
+        x: e.touches[0].clientX - position.x,
+        y: e.touches[0].clientY - position.y,
+      });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging && zoomLevel > 1 && e.touches.length === 1) {
+      e.preventDefault();
+      setPosition({
+        x: e.touches[0].clientX - dragStart.x,
+        y: e.touches[0].clientY - dragStart.y,
+      });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-black/95 backdrop-blur-xl animate-in fade-in duration-300 select-none">
+    <div className="fixed inset-0 z-[100] flex flex-col bg-black/95 [backdrop-filter:blur(20px)] [-webkit-backdrop-filter:blur(20px)] animate-in fade-in duration-300 select-none">
       {/* ── TOP CONTROL BAR ───────────────────────────────────────────────── */}
       <div className="flex items-center justify-between border-b border-white/15 bg-black/60 px-4 py-3 sm:px-6 backdrop-blur-md">
         {/* Title & Badge */}
@@ -126,8 +158,8 @@ export default function ProductImageZoomModal({
           <h3 className="font-serif text-base sm:text-lg font-black text-white truncate">
             {title}
           </h3>
-          <span className="text-[11px] font-bold text-[#c9a869] block truncate">
-            🔍 Mode Zoom HD · {currentImage.label}
+          <span className="text-[11px] font-bold text-isy-green-bright block truncate">
+            Zoom HD · {currentImage.label}
           </span>
         </div>
 
@@ -143,7 +175,7 @@ export default function ProductImageZoomModal({
                 }}
                 className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all ${
                   currentIndex === idx
-                    ? "bg-[#c9a869] text-black shadow-md"
+                    ? "bg-isy-green-bright text-white shadow-md"
                     : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
               >
@@ -205,7 +237,7 @@ export default function ProductImageZoomModal({
               }}
               className={`rounded-full px-3 py-1 text-[11px] font-bold ${
                 currentIndex === idx
-                  ? "bg-[#c9a869] text-black"
+                  ? "bg-isy-green-bright text-white"
                   : "bg-white/10 text-white/80"
               }`}
             >
@@ -224,6 +256,9 @@ export default function ProductImageZoomModal({
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onDoubleClick={handleDoubleTap}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         className={`relative flex-1 w-full overflow-hidden flex items-center justify-center p-4 ${
           zoomLevel > 1
             ? isDragging
@@ -245,7 +280,7 @@ export default function ProductImageZoomModal({
               fill
               className="object-contain drop-shadow-2xl"
               priority
-              sizes="100vw"
+              sizes="(max-width: 896px) 100vw, 1200px"
             />
           </div>
         </div>
@@ -254,11 +289,11 @@ export default function ProductImageZoomModal({
       {/* ── BOTTOM HINT & NAV FOOTER ──────────────────────────────────────── */}
       <div className="flex items-center justify-between border-t border-white/15 bg-black/60 px-6 py-3 backdrop-blur-md text-xs text-white/80">
         <div className="flex items-center gap-2">
-          <span className="text-base">💡</span>
-          <span className="font-medium text-slate-300">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className="text-white/50 shrink-0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span className="font-medium text-white/70 text-xs">
             {zoomLevel > 1
-              ? "Geser mouse/jarum untuk menggeser poster poster."
-              : "Klik 2x, scroll, atau gunakan tombol (+) untuk zoom poster HD."}
+              ? "Geser dengan jari / mouse untuk menggeser gambar."
+              : "Ketuk 2x, scroll, atau tombol (+) untuk zoom poster HD."}
           </span>
         </div>
 

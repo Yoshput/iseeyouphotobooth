@@ -57,6 +57,7 @@ export default function Navbar() {
         }`}
         style={{
           WebkitBackdropFilter: scrolled ? "blur(28px) saturate(200%)" : "blur(12px)",
+          backdropFilter: scrolled ? "blur(28px) saturate(200%)" : "blur(12px)",
         }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">

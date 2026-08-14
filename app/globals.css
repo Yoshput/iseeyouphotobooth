@@ -19,11 +19,18 @@ body {
   touch-action: manipulation;
 }
 
-/* Disable tap highlight on buttons / links */
+/* Disable tap highlight & text selection on interactive elements */
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
   user-select: none;
+}
+
+/* Also disable tap highlight on clickable divs/cards */
+[role="button"],
+[onClick] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── Shutter flash ─────────────────────────────────────────────────────────
@@ -88,3 +95,52 @@ a {
 .marquee-group:hover .animate-marquee-right {
   animation-play-state: paused;
 }
+
+/* ── Safe-area support for iPhone notch / Dynamic Island ──────────────────── */
+/* Applied to the floating cart button via env(safe-area-inset-bottom)        */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-safe {
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── iOS scroll lock — body overflow:hidden doesn't work on Safari iOS ─────── */
+/* Use .scroll-locked on <body> when a modal is open */
+body.scroll-locked {
+  position: fixed;
+  width: 100%;
+  overflow-y: scroll; /* preserve scroll position */
+}
+
+/* ── Hide custom cursor on touch devices (iOS, Android) ────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+}
+
+/* ── Safari: -webkit-overflow-scrolling for smooth momentum scroll ──────────── */
+.overflow-y-auto,
+.overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Line-clamp Safari prefix (for older Safari < 16) ──────────────────────── */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+/* ── Backdrop-filter: Safari requires -webkit- prefix ──────────────────────── */
+.backdrop-blur-md,
+.backdrop-blur-sm,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+[class*="backdrop-blur"] {
+  -webkit-backdrop-filter: blur(var(--tw-backdrop-blur, 12px));
+}
+
