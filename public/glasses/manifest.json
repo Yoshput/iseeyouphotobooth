@@ -39,7 +39,7 @@
     "fitWidthRatio": 1.44,
     "ipdScaleRef": 1.0,
     "style": "Semi-Square",
-    "recommendedFor": ["Heart", "Oval", "Round"],
+    "recommendedFor": ["Heart", "Oval", "Round", "Diamond"],
     "color": "#C4956A",
     "lensType": "open"
   },
@@ -50,7 +50,7 @@
     "fitWidthRatio": 1.44,
     "ipdScaleRef": 1.02,
     "style": "Cat-Eye",
-    "recommendedFor": ["Heart", "Oval", "Round", "Diamond"],
+    "recommendedFor": ["Heart", "Oval", "Round", "Diamond", "Square"],
     "color": "#8B4513",
     "lensType": "open"
   },
@@ -61,7 +61,7 @@
     "fitWidthRatio": 1.44,
     "ipdScaleRef": 1.0,
     "style": "Cat-Eye",
-    "recommendedFor": ["Heart", "Oval", "Round"],
+    "recommendedFor": ["Heart", "Oval", "Round", "Diamond"],
     "color": "#C8B8A2",
     "lensType": "open"
   },
@@ -72,7 +72,7 @@
     "fitWidthRatio": 1.42,
     "ipdScaleRef": 1.02,
     "style": "Square",
-    "recommendedFor": ["Round", "Oval", "Diamond"],
+    "recommendedFor": ["Round", "Oval", "Oblong"],
     "color": "#1a1a1a",
     "lensType": "open"
   },
@@ -83,7 +83,7 @@
     "fitWidthRatio": 1.45,
     "ipdScaleRef": 1.02,
     "style": "Browline",
-    "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond"],
+    "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
     "color": "#262626",
     "lensType": "open"
   },
