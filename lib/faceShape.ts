@@ -50,8 +50,8 @@ const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string
     id: "square",
     label: "Square",
     glasses: "round-frame",
-    style: "Bulat / Oval Frame",
-    tip: "Frame bulat melembutkan rahang tegas dan memberikan keseimbangan.",
+    style: "Oval Kecil Frame",
+    tip: "Frame oval kecil melembutkan rahang tegas dan memberikan keseimbangan.",
   },
   Heart: {
     id: "heart",
