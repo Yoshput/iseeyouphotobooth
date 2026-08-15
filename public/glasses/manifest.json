@@ -34,11 +34,11 @@
   },
   {
     "id": "cateye-pastel",
-    "name": "Cat-Eye Plastik Pastel",
+    "name": "Semi Kotak Plastik Pastel",
     "file": "cateye-pastel.png",
     "fitWidthRatio": 1.44,
     "ipdScaleRef": 1.0,
-    "style": "Cat-Eye",
+    "style": "Semi-Square",
     "recommendedFor": ["Heart", "Oval", "Round"],
     "color": "#C4956A",
     "lensType": "open"
@@ -52,6 +52,17 @@
     "style": "Cat-Eye",
     "recommendedFor": ["Heart", "Oval", "Round", "Diamond"],
     "color": "#8B4513",
+    "lensType": "open"
+  },
+  {
+    "id": "cateye-pastel-v2",
+    "name": "Cat-Eye Pastel",
+    "file": "cateye-pastel-v2.png",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.0,
+    "style": "Cat-Eye",
+    "recommendedFor": ["Heart", "Oval", "Round"],
+    "color": "#C8B8A2",
     "lensType": "open"
   },
   {
@@ -78,13 +89,37 @@
   },
   {
     "id": "sunglasses-black",
-    "name": "Sunglasses Hitam",
+    "name": "Sunglasses Wayfarer",
     "file": "sunglasses-black.png",
     "fitWidthRatio": 1.46,
     "ipdScaleRef": 1.05,
     "style": "Sunglasses",
     "recommendedFor": [],
     "color": "#111111",
+    "lensType": "tinted",
+    "excludeFromAiMatch": true
+  },
+  {
+    "id": "sunglasses-square-metal",
+    "name": "Sunglasses Kotak Metal",
+    "file": "sunglasses-square-metal.png",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.03,
+    "style": "Sunglasses",
+    "recommendedFor": [],
+    "color": "#1a1a1a",
+    "lensType": "tinted",
+    "excludeFromAiMatch": true
+  },
+  {
+    "id": "sunglasses-pixel",
+    "name": "Pixel Sunglasses 😎",
+    "file": "sunglasses-pixel.png",
+    "fitWidthRatio": 1.55,
+    "ipdScaleRef": 0.95,
+    "style": "Sunglasses",
+    "recommendedFor": [],
+    "color": "#000000",
     "lensType": "tinted",
     "excludeFromAiMatch": true
   }
