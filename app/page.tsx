@@ -18,6 +18,7 @@ import { gsap } from "gsap";
 import BranchCarousel from "@/components/ui/BranchCarousel";
 import FloatingGlasses from "@/components/ui/FloatingGlasses";
 import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
+import LandingVideoShowcase from "@/components/ui/LandingVideoShowcase";
 import Navbar from "@/components/ui/Navbar";
 import Link from "next/link";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
@@ -338,6 +339,9 @@ export default function LandingPage() {
           </Link>
         </div>
       </section>
+
+      {/* ═══ CINEMATIC VIDEO SHOWCASE ═══ */}
+      <LandingVideoShowcase />
 
       {/* ═══ FITUR ═══ */}
       <section className="w-full bg-white px-6 py-16 border-t border-isy-line">
