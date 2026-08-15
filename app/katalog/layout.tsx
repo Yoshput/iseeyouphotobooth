@@ -1,0 +1,32 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Katalog Frame Kacamata — Koleksi Mewah & Elegan",
+  description:
+    "Jelajahi koleksi frame kacamata premium Optik I See You: Quiet Luxury, Cat Eye, Metro Geek, Shades Edition, dan Titanium Series di Purwokerto.",
+  alternates: {
+    canonical: "https://optikiseeyou.com/katalog",
+  },
+  openGraph: {
+    title: "Katalog Frame Kacamata | Optik I See You",
+    description:
+      "Temukan frame kacamata yang cocok dengan bentuk wajahmu. Cek spesifikasi lengkap dan pesan mudah via WhatsApp CS.",
+    url: "https://optikiseeyou.com/katalog",
+    images: [
+      {
+        url: "/catalog-glasses.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Katalog Frame Kacamata Optik I See You",
+      },
+    ],
+  },
+};
+
+export default function KatalogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+}

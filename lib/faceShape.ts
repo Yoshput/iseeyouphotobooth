@@ -35,8 +35,8 @@ const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string
   Oval: {
     id: "oval",
     label: "Oval",
-    glasses: "aviator-frame",
-    style: "Aviator / Wayfarer",
+    glasses: "oval-pastel",
+    style: "Oval / Pastel Frame",
     tip: "Cocok untuk hampir semua frame!",
   },
   Round: {
@@ -49,29 +49,29 @@ const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string
   Square: {
     id: "square",
     label: "Square",
-    glasses: "oval-frame",
-    style: "Oval / Round Frame",
+    glasses: "round-frame",
+    style: "Round / Wire Frame",
     tip: "Frame bulat melembutkan rahang tegas.",
   },
   Heart: {
     id: "heart",
     label: "Heart",
-    glasses: "cateye-frame",
-    style: "Cat-Eye / Wire Frame",
+    glasses: "cateye-pastel",
+    style: "Cat-Eye / Pastel Frame",
     tip: "Cat-eye menyeimbangkan dagu lancip.",
   },
   Diamond: {
     id: "diamond",
     label: "Diamond",
-    glasses: "oval-frame",
+    glasses: "oval-pastel",
     style: "Round / Cat-Eye Frame",
     tip: "Frame bulat/cat-eye melembutkan tulang pipi tinggi.",
   },
   Oblong: {
     id: "oblong",
     label: "Oblong",
-    glasses: "aviator-frame",
-    style: "Wide / Oversized Frame",
+    glasses: "clubmaster-frame",
+    style: "Clubmaster / Browline Frame",
     tip: "Frame lebar bikin wajah kelihatan proporsional.",
   },
 };
@@ -89,8 +89,8 @@ export function detectFaceShape(landmarks: Landmark[]): FaceShapeResult {
     return {
       shape: "Oval",
       shapeId: "oval",
-      recommendedGlassesId: "aviator-frame",
-      recommendedStyle: "Aviator / Wayfarer",
+      recommendedGlassesId: "oval-pastel",
+      recommendedStyle: "Oval / Pastel Frame",
       confidence: 0,
     };
   }
@@ -146,9 +146,12 @@ export interface GlassesManifestEntry {
   name: string;
   file: string;
   fitWidthRatio: number;
+  ipdScaleRef?: number;
   style: string;
   recommendedFor: string[];
   color: string;
+  lensType?: string;
+  excludeFromAiMatch?: boolean;
 }
 
 export interface RankedGlasses extends GlassesManifestEntry {
@@ -157,18 +160,9 @@ export interface RankedGlasses extends GlassesManifestEntry {
 
 /**
  * Scores every item in the catalog against the detected shape and returns
- * them sorted best-first. This is the function that powers "10+ frame
- * recommendations" — it already works with any number of catalog entries,
- * it just needs a catalog with 10+ tagged entries to actually SHOW 10+
- * results (see AGENT.md for the asset requirement — this function itself
- * has no hardcoded cap).
- *
- * Scoring:
- *  - 100 if the item explicitly lists this shape in recommendedFor
- *  - 55  if the item is tagged as suitable for most shapes (4+ tags — a
- *        universal frame like a light/transparent style)
- *  - 20  baseline otherwise, so nothing is ever fully excluded — a store
- *        may still want to show everything, just ranked
+ * them sorted best-first.
+ * Opaque/tinted sunglasses (excludeFromAiMatch = true or lensType = 'tinted')
+ * are excluded from auto-recommendations so AI Match only recommends transparent frames.
  */
 export function rankGlassesForShape(
   shape: FaceShape,
@@ -176,7 +170,7 @@ export function rankGlassesForShape(
   topN?: number
 ): RankedGlasses[] {
   const ranked = catalog
-    .filter((g) => g.id !== "none")
+    .filter((g) => g.id !== "none" && !g.excludeFromAiMatch && g.lensType !== "tinted")
     .map((g) => {
       let matchScore = 20;
       if (g.recommendedFor.includes(shape)) {

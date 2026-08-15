@@ -115,7 +115,7 @@ function SoftlensPreviewModal({
 
               {/* Price Display */}
               <div className="mt-2 flex items-baseline gap-2 whitespace-nowrap">
-                <span className="font-serif text-3xl font-black text-isy-green-deep">
+                <span className="text-3xl font-black text-isy-green-deep tracking-tight">
                   {product.priceFormatted}
                 </span>
                 <span className="text-xs font-semibold text-isy-ink/40">
@@ -301,7 +301,7 @@ function LuxurySoftlensCard({
       {/* Price & Cart CTA Button */}
       <div className="mt-3 pt-3 border-t border-isy-line flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-1 whitespace-nowrap overflow-hidden">
-          <span className="font-serif text-lg sm:text-xl font-black text-isy-green-deep whitespace-nowrap">
+          <span className="text-lg sm:text-xl font-black text-isy-green-deep tracking-tight whitespace-nowrap">
             {product.priceFormatted}
           </span>
           <span className="text-[10px] text-isy-ink/40 font-bold whitespace-nowrap">

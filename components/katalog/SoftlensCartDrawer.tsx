@@ -267,7 +267,7 @@ export default function SoftlensCartDrawer({
                   <span className="text-[11px] font-semibold text-isy-ink/55 uppercase tracking-wider block">
                     Total Pembayaran
                   </span>
-                  <span className="font-serif text-xl font-black text-isy-green-deep tabular-nums">
+                  <span className="text-xl font-black text-isy-green-deep tracking-tight tabular-nums">
                     Rp {totalPrice.toLocaleString("id-ID")}
                   </span>
                 </div>

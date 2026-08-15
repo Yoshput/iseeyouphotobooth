@@ -1,0 +1,58 @@
+{
+  "name": "Optik I See You",
+  "short_name": "I See You",
+  "description": "Katalog Softlens, AR Photobooth & Kacamata Optik I See You Purwokerto",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1B4332",
+  "lang": "id",
+  "categories": ["shopping", "lifestyle", "health"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Katalog Softlens",
+      "short_name": "Softlens",
+      "description": "Buka katalog softlens langsung",
+      "url": "/softlens",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Katalog Kacamata",
+      "short_name": "Kacamata",
+      "description": "Buka katalog kacamata",
+      "url": "/katalog",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/hero-bg.jpg",
+      "sizes": "1280x853",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Optik I See You — Halaman Utama"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ const config: Config = {
         // Design tokens — design.md §2
         isy: {
           white:          "#FFFFFF",
+          ivory:          "#FAF6EC",
           mist:           "#F3F8F4",
           "green-deep":   "#1B4332",
           "green-bright": "#2FA84F",
@@ -19,7 +20,7 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        "isy-gradient": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "isy-gradient": "linear-gradient(180deg, #FAF6EC 0%, #FAF6EC 100%)",
       },
       fontFamily: {
         // Using CSS custom properties set in globals.css / :root

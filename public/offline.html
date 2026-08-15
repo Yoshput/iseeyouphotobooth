@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Tidak Ada Koneksi — Optik I See You</title>
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep:   #1B4332;
+      --green-bright: #2FA84F;
+      --mist:         #F3F8F4;
+      --line:         #E3ECE6;
+      --ink:          #16241C;
+    }
+
+    body {
+      min-height: 100dvh;
+      background: var(--mist);
+      color: var(--ink);
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+      text-align: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 2rem;
+      padding: 3rem 2.5rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(27, 67, 50, 0.10);
+    }
+
+    .icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: var(--mist);
+      border: 1.5px solid var(--line);
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-wrap svg {
+      color: var(--green-deep);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--green-deep);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 0.8125rem;
+      color: rgba(22, 36, 28, 0.6);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--green-bright);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.85rem 2rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      width: 100%;
+    }
+
+    .btn:hover { background: var(--green-deep); }
+    .btn:active { transform: scale(0.97); }
+
+    .brand {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .brand img {
+      height: 28px;
+      width: auto;
+      opacity: 0.6;
+    }
+
+    .status {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: rgba(22, 36, 28, 0.35);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon-wrap">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <line x1="1" y1="1" x2="23" y2="23"/>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+        <path d="M10.71 5.05A16 16 0 0 1 22.56 9"/>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+        <line x1="12" y1="20" x2="12.01" y2="20"/>
+      </svg>
+    </div>
+
+    <h1>Tidak Ada Koneksi Internet</h1>
+    <p>
+      Halaman ini membutuhkan koneksi internet.<br />
+      Pastikan WiFi atau data seluler kamu aktif, lalu coba lagi.
+    </p>
+
+    <button class="btn" onclick="tryReload()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+      Coba Lagi
+    </button>
+
+    <div class="brand">
+      <img src="/logo.png" alt="Optik I See You" onerror="this.style.display='none'" />
+    </div>
+
+    <p class="status" id="conn-status">Memeriksa koneksi...</p>
+  </div>
+
+  <script>
+    function tryReload() {
+      window.location.reload();
+    }
+
+    function updateStatus() {
+      const el = document.getElementById("conn-status");
+      if (navigator.onLine) {
+        el.textContent = "Koneksi tersedia — memuat ulang...";
+        setTimeout(() => window.location.reload(), 800);
+      } else {
+        el.textContent = "Masih offline. Tunggu sebentar...";
+      }
+    }
+
+    window.addEventListener("online", updateStatus);
+    updateStatus();
+  </script>
+</body>
+</html>

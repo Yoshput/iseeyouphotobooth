@@ -80,7 +80,7 @@ export default function LandingPage() {
 
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-[85dvh] flex items-center px-6 md:px-12 lg:px-20 pt-20 pb-12">
-        <div className="mx-auto w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div className="mx-auto w-full max-w-6xl grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-12 lg:gap-16 items-center">
 
           {/* ── LEFT: Eyebrow + Heading + CTA ── */}
           <div className="flex flex-col items-start text-left justify-center">
@@ -96,27 +96,26 @@ export default function LandingPage() {
               </span>
 
               {/* Live badge */}
-              <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/25 bg-white/70 px-3.5 py-1 shadow-sm backdrop-blur-sm w-fit">
+              <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/25 bg-white/80 px-3.5 py-1 shadow-sm backdrop-blur-sm w-fit">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-isy-green-bright" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-isy-green-bright">AR Live · Gratis</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-isy-green-bright">AR TRY-ON EKSKLUSIF</span>
               </div>
             </div>
 
-            {/* Main headline — most dominant element */}
+            {/* Main headline — clean 2-line layout without awkward line wraps */}
             <div ref={tagRef}>
-              <h1 className="font-serif font-black leading-[1.05] text-isy-green-deep"
-                  style={{ fontSize: "clamp(2.4rem, 5.5vw, 4rem)" }}>
-                Coba Kacamata
-                <br />
-                <span className="text-isy-green-bright">Tanpa Ribet</span>
+              <h1 className="font-serif font-black leading-[1.12] text-isy-green-deep tracking-tight"
+                  style={{ fontSize: "clamp(1.9rem, 3.6vw, 3.1rem)" }}>
+                <span className="block whitespace-nowrap">Selamat Datang,</span>
+                <span className="text-isy-green-bright italic whitespace-nowrap block">di Optik I See You</span>
               </h1>
-              <p className="mt-4 text-[13px] text-isy-ink/55 leading-relaxed max-w-[320px] font-medium">
-                Coba langsung koleksi kacamata I See You di wajah kamu secara real-time — gratis, tanpa install apapun.
+              <p className="mt-4 text-[13px] text-isy-ink/60 leading-relaxed max-w-[360px] font-medium">
+                Coba langsung koleksi kacamata, softlens, dan aksesoris I See You — try-on real-time di wajah kamu, tanpa install apapun.
               </p>
             </div>
 
             {/* CTA */}
-            <div ref={ctaRef} className="mt-8 w-full max-w-[380px] space-y-4">
+            <div ref={ctaRef} className="mt-8 w-full max-w-[420px] space-y-4">
               {/* Primary CTA — single dominant button */}
               <button
                 onClick={start}
@@ -129,17 +128,25 @@ export default function LandingPage() {
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <Link
                   href="/katalog"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/60 backdrop-blur-md px-5 py-2.5 text-[12px] font-semibold text-isy-ink/60 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white/80 hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
+                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/80 backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-isy-ink/70 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                   Katalog Frame
+                </Link>
+
+                <Link
+                  href="/softlens"
+                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/80 backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-isy-ink/70 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+                  Softlens
                 </Link>
 
                 <a
                   href={PRICE_LIST_LENSA_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/60 backdrop-blur-md px-5 py-2.5 text-[12px] font-semibold text-isy-ink/60 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white/80 hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
+                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/80 backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-isy-ink/70 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                   Pricelist Lensa
@@ -190,16 +197,16 @@ export default function LandingPage() {
               }}
             />
 
-            {/* Prominent Floating Glasses */}
+            {/* Prominent Floating Glasses with full temple arms */}
             <FloatingGlasses
               items={[
                 {
-                  src: "/glasses/square-frame.png",
-                  alt: "Frame Hitam — Optik I See You",
+                  src: "/glasses/hero-glasses-black.png",
+                  alt: "Frame Hitam dengan Gagang Penuh — Optik I See You",
                 },
                 {
-                  src: "/glasses/caramel-frame.png",
-                  alt: "Frame Tortoise Caramel — Optik I See You",
+                  src: "/glasses/hero-glasses-champagne.png",
+                  alt: "Frame Crystal Champagne Blush dengan Gagang Penuh — Optik I See You",
                 },
               ]}
               width={540}
@@ -213,7 +220,7 @@ export default function LandingPage() {
                 href={konsultasiWhatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Hubungi kami via WhatsApp untuk konsultasi gratis"
+                aria-label="Hubungi kami via WhatsApp untuk konsultasi"
                 title="Chat WhatsApp CS"
                 className="relative flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group"
               >
@@ -374,7 +381,7 @@ export default function LandingPage() {
             onClick={start}
             className="mt-12 w-full rounded-2xl bg-isy-green-bright py-5 text-base font-black uppercase tracking-[0.12em] text-white shadow-xl shadow-isy-green-bright/30 transition-all hover:bg-isy-green-deep active:scale-[0.97]"
           >
-            Mulai Sekarang — Gratis
+            Mulai Try-On Sekarang
           </button>
         </div>
       </section>

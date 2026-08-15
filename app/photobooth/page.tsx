@@ -1092,7 +1092,7 @@ const showToast = useCallback((msg: string) => {
     setScanComplete(true);
   }}
   onFaceCountChange={handleFaceCountChange}
-  ipdScaleRef={(glasses as any).ipdScaleRef ?? 1.5}
+  ipdScaleRef={(glasses as any).ipdScaleRef ?? 1.0}
   onLandmarksChange={(lm) => {
   if (!arEnabled || !aiMode || !lm) return;
   // Once locked, skip re-classification until explicitly reset

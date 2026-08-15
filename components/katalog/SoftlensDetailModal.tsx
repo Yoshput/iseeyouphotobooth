@@ -64,7 +64,7 @@ export default function SoftlensDetailModal({ product, isOpen = true, onClose, o
               {product.name}
             </h2>
             <div className="mt-1 flex items-baseline gap-1.5">
-              <span className="font-serif text-xl font-black text-isy-green-bright">
+              <span className="text-xl font-black text-isy-green-bright tracking-tight">
                 {product.priceFormatted}
               </span>
               <span className="text-[10px] text-isy-ink/40 font-semibold">

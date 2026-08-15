@@ -217,7 +217,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Luxury Round",
         recommendedFor: ["Square", "Oblong", "Diamond"],
         description: "Finishing platinum matte ultralight untuk kenyamanan dan gengsi ekstra.",
-        glassesId: "round-gold",
+        glassesId: "round-frame",
       },
     ],
   },
@@ -281,7 +281,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Sunglasses Square",
         recommendedFor: ["Oval", "Round", "Heart"],
         description: "Kacamata hitam gaya klasik dengan lensa dark smoke anti-glare & proteksi UV400 maksimal.",
-        glassesId: "square-frame", // sunglasses-classic mapped to square-frame (closest style)
+        glassesId: "sunglasses-black",
       },
       {
         id: "shades-2",
@@ -293,7 +293,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Sunglasses Aviator",
         recommendedFor: ["Square", "Oval", "Diamond"],
         description: "Siluet modern dengan aksen warna amber gold yang elegan untuk penampilan outdoor stylish.",
-        glassesId: "aviator-frame", // sunglasses-modern mapped to aviator-frame (closest style)
+        glassesId: "sunglasses-black",
       },
     ],
   },
