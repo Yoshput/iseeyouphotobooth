@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import CustomCursor from "@/components/ui/CustomCursor";
 import PWARegister from "@/components/ui/PWARegister";
 import PWAInstallPrompt from "@/components/ui/PWAInstallPrompt";
+import PWASplashScreen from "@/components/pwa/PWASplashScreen";
 import "./globals.css";
 
 /**
@@ -75,8 +76,8 @@ export const viewport: Viewport = {
   userScalable: false,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#1B4332" },
-    { media: "(prefers-color-scheme: dark)",  color: "#1B4332" },
+    { media: "(prefers-color-scheme: light)", color: "#FAF6EC" },
+    { media: "(prefers-color-scheme: dark)",  color: "#116B3C" },
   ],
 };
 
@@ -99,19 +100,22 @@ export default function RootLayout({
         {/* PWA Icons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/icon-180.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         {/* iOS PWA splash color */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="I See You" />
         <meta name="mobile-web-app-capable" content="yes" />
 
         {/* MS Tile (Windows / Edge) */}
-        <meta name="msapplication-TileColor" content="#1B4332" />
+        <meta name="msapplication-TileColor" content="#FAF6EC" />
         <meta name="msapplication-TileImage" content="/icon-192.png" />
       </head>
       <body className="overscroll-none bg-isy-ivory font-sans antialiased">
+        {/* Luxury Brand Opening Splash Screen */}
+        <PWASplashScreen />
+
         <CustomCursor />
         {children}
 

@@ -328,7 +328,9 @@ export default function ThermalPrintModal({
                 value={selectedQzPrinter}
                 onChange={(e) => {
                   setSelectedQzPrinter(e.target.value);
-                  localStorage.setItem("isy_thermal_printer", e.target.value);
+                  try {
+                    localStorage.setItem("isy_thermal_printer", e.target.value);
+                  } catch {}
                 }}
                 className="w-full rounded-xl border border-isy-line bg-white px-3.5 py-2.5 text-xs font-semibold text-isy-ink focus:border-isy-green-bright focus:outline-none"
               >

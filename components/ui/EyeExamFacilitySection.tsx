@@ -277,25 +277,19 @@ export default function EyeExamFacilitySection() {
                   </span>
                 </div>
 
-                {/* Name & Description */}
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-green-bright">
-                    {item.subtitle}
-                  </span>
-                  <h3 className="font-serif text-lg font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
+                {/* Name Only */}
+                <div className="pt-1">
+                  <h3 className="font-serif text-xl font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
                     {item.name}
                   </h3>
-                  <p className="text-xs text-isy-ink/65 leading-relaxed font-normal line-clamp-3 pt-1">
-                    {item.shortDesc}
-                  </p>
                 </div>
               </div>
 
               {/* Bottom Card Action */}
-              <div className="mt-5 pt-4 border-t border-isy-line/60 flex items-center justify-between">
-                <span className="text-[11px] font-bold text-isy-green-deep group-hover:text-isy-green-bright flex items-center gap-1 transition-colors">
-                  <span>Lihat Penjelasan Lengkap</span>
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
+              <div className="mt-6 pt-4 border-t border-isy-line/60 flex items-center justify-between">
+                <span className="text-xs font-bold text-isy-green-deep group-hover:text-isy-green-bright flex items-center gap-1.5 transition-colors">
+                  <span>Lihat Detail</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </span>
                 <span className="h-2 w-2 rounded-full bg-isy-green-bright/30 group-hover:bg-isy-green-bright transition-colors" />
               </div>
