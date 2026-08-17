@@ -19,6 +19,7 @@ import BranchCarousel from "@/components/ui/BranchCarousel";
 import FloatingGlasses from "@/components/ui/FloatingGlasses";
 import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
 import LandingVideoShowcase from "@/components/ui/LandingVideoShowcase";
+import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import Link from "next/link";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
@@ -410,6 +411,9 @@ export default function LandingPage() {
           <BranchCarousel />
         </div>
       </section>
+
+      {/* ═══ FAQ & LOCAL SEO INFO SECTION ═══ */}
+      <LocalFaqSection />
 
       {/* ═══ FOOTER — Dark green, two-column layout ═══ */}
       <footer className="w-full" style={{ background: "#1a4a2e" }}>
