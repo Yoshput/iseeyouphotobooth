@@ -126,6 +126,60 @@ export default function RootLayout({
         {/* MS Tile (Windows / Edge) */}
         <meta name="msapplication-TileColor" content="#FAF6EC" />
         <meta name="msapplication-TileImage" content="/icon-192.png" />
+
+        {/* Schema.org Structured Data (LocalBusiness / Optician / WebSite) for Google Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Optician",
+                  "@id": "https://optikiseeyou.com/#organization",
+                  name: "Optik I See You",
+                  alternateName: [
+                    "I See You Glasses",
+                    "Optik I See You Purwokerto",
+                    "optikiseeyou",
+                    "Optik I See You Cilacap",
+                    "Optik I See You Wonosobo",
+                    "Optik I See You Purbalingga",
+                  ],
+                  url: "https://www.optikiseeyou.com",
+                  logo: "https://www.optikiseeyou.com/icon-512.png",
+                  image: "https://www.optikiseeyou.com/hero-bg.jpg",
+                  description:
+                    "Optik modern terpercaya dengan layanan periksa mata, teknologi AR Try-On kacamata real-time, photobooth cetak instan, dan katalog softlens lengkap di Purwokerto, Wonosobo, Cilacap, dan Purbalingga.",
+                  telephone: "+62895415614261",
+                  priceRange: "$$",
+                  sameAs: [
+                    "https://www.instagram.com/iseeyou.glasses",
+                    "https://www.tiktok.com/@iseeyouglasses",
+                  ],
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: "Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang",
+                    addressLocality: "Purwokerto, Banyumas",
+                    addressRegion: "Jawa Tengah",
+                    postalCode: "53124",
+                    addressCountry: "ID",
+                  },
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://optikiseeyou.com/#website",
+                  url: "https://www.optikiseeyou.com",
+                  name: "Optik I See You",
+                  alternateName: ["I See You Glasses", "optikiseeyou"],
+                  publisher: {
+                    "@id": "https://optikiseeyou.com/#organization",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="overscroll-none bg-isy-ivory font-sans antialiased">
         {/* Luxury Brand Opening Splash Screen */}
