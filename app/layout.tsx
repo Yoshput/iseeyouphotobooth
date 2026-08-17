@@ -25,12 +25,22 @@ export const metadata: Metadata = {
   description:
     "Coba kacamata online dengan AR real-time, photobooth seru, dan katalog softlens lengkap di Optik I See You Purwokerto. Tersedia 4 cabang: Purwokerto, Wonosobo, Cilacap, & Purbalingga.",
   keywords: [
+    "optik i see you",
+    "optik i see you purwokerto",
+    "optik i see you purbalingga",
+    "optik i see you wonosobo",
+    "optik i see you cilacap",
     "optik purwokerto",
+    "optik purbalingga",
+    "optik wonosobo",
+    "optik cilacap",
     "kacamata purwokerto",
+    "kacamata purbalingga",
+    "kacamata wonosobo",
+    "kacamata cilacap",
     "ar try-on kacamata",
     "photobooth purwokerto",
     "softlens purwokerto",
-    "optik i see you",
     "periksa mata purwokerto",
     "katalog frame kacamata",
   ],
@@ -58,7 +68,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Optik I See You — AR Try-On Kacamata & Katalog Softlens",
     description:
-      "Coba langsung koleksi kacamata & softlens I See You di wajah kamu secara real-time. Layanan optik modern & photobooth seru di Purwokerto.",
+      "Coba langsung koleksi kacamata & softlens I See You di wajah kamu secara real-time. Layanan optik modern & photobooth seru di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
     url: "https://optikiseeyou.com",
     siteName: "Optik I See You",
     locale: "id_ID",
@@ -76,7 +86,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Optik I See You — AR Try-On Kacamata & Katalog Softlens",
     description:
-      "Coba langsung kacamata & softlens di wajahmu dengan teknologi AR real-time. Kunjungi Optik I See You Purwokerto.",
+      "Coba langsung kacamata & softlens di wajahmu dengan teknologi AR real-time. Kunjungi Optik I See You Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
     images: ["/hero-bg.jpg"],
   },
 };
@@ -127,7 +137,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#FAF6EC" />
         <meta name="msapplication-TileImage" content="/icon-192.png" />
 
-        {/* Schema.org Structured Data (LocalBusiness / Optician / WebSite) for Google Search */}
+        {/* Schema.org Structured Data (Multi-Branch LocalBusiness / Optician / WebSite) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -141,10 +151,10 @@ export default function RootLayout({
                   alternateName: [
                     "I See You Glasses",
                     "Optik I See You Purwokerto",
-                    "optikiseeyou",
-                    "Optik I See You Cilacap",
-                    "Optik I See You Wonosobo",
                     "Optik I See You Purbalingga",
+                    "Optik I See You Wonosobo",
+                    "Optik I See You Cilacap",
+                    "optikiseeyou",
                   ],
                   url: "https://www.optikiseeyou.com",
                   logo: "https://www.optikiseeyou.com/icon-512.png",
@@ -165,6 +175,85 @@ export default function RootLayout({
                     postalCode: "53124",
                     addressCountry: "ID",
                   },
+                  geo: {
+                    "@type": "GeoCoordinates",
+                    latitude: -7.392899,
+                    longitude: 109.249667,
+                  },
+                  department: [
+                    {
+                      "@type": "Optician",
+                      name: "Optik I See You — Cabang Purwokerto",
+                      telephone: "+62895415614261",
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: "Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang, Kec. Sumbang",
+                        addressLocality: "Purwokerto, Banyumas",
+                        addressRegion: "Jawa Tengah",
+                        postalCode: "53124",
+                        addressCountry: "ID",
+                      },
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: -7.392899,
+                        longitude: 109.249667,
+                      },
+                    },
+                    {
+                      "@type": "Optician",
+                      name: "Optik I See You — Cabang Purbalingga",
+                      telephone: "+6282234862322",
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: "Jl. Onje No.1, Purbalingga Lor, Kec. Purbalingga",
+                        addressLocality: "Purbalingga",
+                        addressRegion: "Jawa Tengah",
+                        postalCode: "53311",
+                        addressCountry: "ID",
+                      },
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: -7.388426,
+                        longitude: 109.364487,
+                      },
+                    },
+                    {
+                      "@type": "Optician",
+                      name: "Optik I See You — Cabang Wonosobo",
+                      telephone: "+628977129039",
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: "Jl. Jenderal Soedirman, Sumberan Selatan, Wonosobo Bar., Kec. Wonosobo",
+                        addressLocality: "Wonosobo",
+                        addressRegion: "Jawa Tengah",
+                        postalCode: "56311",
+                        addressCountry: "ID",
+                      },
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: -7.364198,
+                        longitude: 109.900669,
+                      },
+                    },
+                    {
+                      "@type": "Optician",
+                      name: "Optik I See You — Cabang Cilacap",
+                      telephone: "+6285135930533",
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: "Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Rawagaru, Sidanegara, Kec. Cilacap Tengah",
+                        addressLocality: "Cilacap",
+                        addressRegion: "Jawa Tengah",
+                        postalCode: "53223",
+                        addressCountry: "ID",
+                      },
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: -7.702595,
+                        longitude: 109.01627,
+                      },
+                    },
+                  ],
                 },
                 {
                   "@type": "WebSite",
