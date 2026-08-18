@@ -25,7 +25,7 @@ import { FRAME_LAYOUTS, type FrameLayout } from "@/lib/frameLayouts";
 import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, getCompatibleThemes, type FrameTheme } from "@/lib/frameCompositor";
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
-import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
+import { csWhatsappUrl, SHOPEE_STORE_URL, TOKOPEDIA_STORE_URL } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
@@ -305,12 +305,50 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
           <h3 className="font-serif text-lg font-black text-isy-green-deep">Bagikan Hasil</h3>
           <button onClick={onClose} className="flex h-7 w-7 items-center justify-center rounded-full bg-isy-mist text-isy-ink/60 hover:bg-isy-line transition-colors"></button>
         </div>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
           {[
-            { icon: <span className="text-2xl">📸</span>, label: "Unduh Strip", fn: downloadStrip },
-            { icon: <span className="text-2xl">🎬</span>, label: "Unduh GIF", fn: downloadGif, disabled: !gifUrl },
-            { icon: <Image src="/logo/Logo-Whatsapp.png" alt="WhatsApp" width={32} height={32} className="h-8 w-8 object-contain" />, label: "WhatsApp", fn: shareWA },
-            { icon: <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={32} height={32} className="h-8 w-8 object-contain" />, label: "Shopee Store", fn: () => window.open(SHOPEE_STORE_URL, "_blank") },
+            {
+              icon: (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              ),
+              label: "Unduh Foto",
+              fn: downloadStrip,
+            },
+            {
+              icon: (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+                  <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+                  <line x1="7" y1="2" x2="7" y2="22"/>
+                  <line x1="17" y1="2" x2="17" y2="22"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <line x1="2" y1="7" x2="7" y2="7"/>
+                  <line x1="2" y1="17" x2="7" y2="17"/>
+                  <line x1="17" y1="17" x2="22" y2="17"/>
+                  <line x1="17" y1="7" x2="22" y2="7"/>
+                </svg>
+              ),
+              label: "Unduh GIF",
+              fn: downloadGif,
+              disabled: !gifUrl,
+            },
+            {
+              icon: <Image src="/logo/Logo-Whatsapp.png" alt="WhatsApp" width={32} height={32} className="h-8 w-8 object-contain" />,
+              label: "WhatsApp",
+              fn: shareWA,
+            },
+            {
+              icon: <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={32} height={32} className="h-8 w-8 object-contain" />,
+              label: "Shopee",
+              fn: () => window.open(SHOPEE_STORE_URL, "_blank"),
+            },
+            {
+              icon: <Image src="/logo/Logo-Tokopedia.png" alt="Tokopedia" width={32} height={32} className="h-8 w-8 object-contain" />,
+              label: "Tokopedia",
+              fn: () => window.open(TOKOPEDIA_STORE_URL, "_blank"),
+            },
           ].map(({ icon, label, fn, disabled }) => (
             <button key={label} onClick={fn} disabled={disabled}
               className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-isy-line bg-isy-mist p-3.5 text-xs font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white transition-all active:scale-95 disabled:opacity-40 shadow-xs">
@@ -323,7 +361,11 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
           onClick={shareIG}
           className="flex w-full items-center justify-center gap-2 rounded-2xl border border-isy-line bg-isy-mist py-3 text-xs font-extrabold text-isy-green-deep hover:border-isy-green-bright hover:bg-white transition-all active:scale-95"
         >
-          <span>✨</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
           <span>Share ke Instagram Story</span>
         </button>
       </div>
@@ -432,7 +474,7 @@ function StripPreview({
       <div className="flex flex-1 flex-col items-center justify-center gap-3 py-8">
         <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-isy-green-bright border-t-transparent" />
         <p className="text-sm font-bold text-isy-green-deep">{isArMode ? "Membuat foto Try On…" : "Membuat foto strip & GIF animasi…"}</p>
-        <p className="text-[11px] text-isy-ink/50">Sabar sebentar ✨</p>
+        <p className="text-[11px] text-isy-ink/50">Memproses komposisi terbaik...</p>
       </div>
     );
   }
@@ -458,7 +500,7 @@ function StripPreview({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
-            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-bright">Kustomisasi Foto 🎨</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-deep">Kustomisasi Foto</span>
           </div>
           <div className="flex rounded-full border border-isy-line bg-isy-mist p-0.5">
             <button onClick={() => setActiveTab("strip")} className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all ${activeTab === "strip" ? "bg-white text-isy-green-deep shadow-sm" : "text-isy-ink/50"}`}>Foto</button>
@@ -473,7 +515,8 @@ function StripPreview({
             {COLOR_FILTERS.map((f) => (
               <button key={f.id} onClick={() => onSelectFilter(f.id)}
                 className={`flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[10px] font-bold transition-all active:scale-95 whitespace-nowrap ${f.id === selectedFilter ? "border-isy-green-bright bg-isy-green-bright text-white shadow-sm" : "border-isy-line bg-white text-isy-ink/75 hover:border-isy-green-bright/50"}`}>
-                <span>{f.emoji}</span><span>{f.name}</span>
+                <span className="h-2.5 w-2.5 rounded-full border border-black/15 shadow-inner" style={{ backgroundColor: f.colorDot }} />
+                <span>{f.name}</span>
               </button>
             ))}
           </div>
@@ -530,7 +573,7 @@ function StripPreview({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
-            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-bright">Hasil Photobooth 📸</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-isy-green-deep">Hasil Photobooth</span>
           </div>
           <div className="flex rounded-full border border-isy-line bg-isy-mist p-0.5">
             <button onClick={() => setActiveTab("strip")} className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all ${activeTab === "strip" ? "bg-white text-isy-green-deep shadow-sm" : "text-isy-ink/50"}`}>Foto</button>
@@ -574,7 +617,12 @@ function StripPreview({
           )}
 
           <button onClick={onOpenThermalPrint} className="flex items-center justify-center gap-1.5 rounded-xl bg-isy-green-deep py-3 text-xs font-extrabold uppercase tracking-wider text-white shadow-md hover:bg-isy-green-bright active:scale-[0.97]">
-            Cetak 🖨️
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Cetak
           </button>
 
           <button onClick={onOpenShareModal} className="flex items-center justify-center gap-1.5 rounded-xl border border-isy-green-bright bg-white py-3 text-xs font-bold text-isy-green-deep shadow-sm hover:bg-isy-mist active:scale-[0.97]">
@@ -692,38 +740,38 @@ export default function PhotoboothPage() {
  const [scanComplete, setScanComplete] = useState(false);
  const [soundEnabled, setSoundEnabled] = useState(true);
 
- const glasses = manifest[glassesIndex];
- const faceTrackerRef = useRef<FaceTrackerHandle>(null);
+  const glasses = manifest[glassesIndex];
+  const faceTrackerRef = useRef<FaceTrackerHandle>(null);
 
- // Mode chosen on /start ("Scan AR Kacamata" vs "Photobooth") arrives
- // as ?mode=ar / ?mode=photobooth (or ?ai=1 / ?ai=0). Read via window.location.
- useEffect(() => {
- const params = new URLSearchParams(window.location.search);
- const modeParam = params.get("mode");
- const aiParam = params.get("ai");
- const glassesParam = params.get("glasses");
+  useEffect(() => {
+    const isTryOnRoute = typeof window !== "undefined" && window.location.pathname.includes("/try-on");
+    const params = new URLSearchParams(window.location.search);
+    const modeParam = params.get("mode");
+    const aiParam = params.get("ai");
+    const glassesParam = params.get("glasses");
 
- if (glassesParam) {
- const idx = manifest.findIndex((g) => g.id === glassesParam);
- if (idx >= 0) setGlassesIndex(idx);
- }
+    if (glassesParam) {
+      const idx = manifest.findIndex((g) => g.id === glassesParam);
+      if (idx >= 0) setGlassesIndex(idx);
+    }
 
- if (modeParam === "ar" || aiParam === "1") {
- setAiMode(true);
- setArEnabled(true);
- setLayout(FRAME_LAYOUTS[0]);
- setPhase("ready");
- } else if (modeParam === "photobooth" || aiParam === "0") {
- setAiMode(false);
- setArEnabled(false);
- setPhase("frame-select");
- }
- }, []);
- const flashRef = useRef<HTMLDivElement>(null);
+    if (isTryOnRoute || modeParam === "ar" || aiParam === "1") {
+      setAiMode(true);
+      setArEnabled(true);
+      setLayout(FRAME_LAYOUTS[0]);
+      setPhase("ready");
+    } else {
+      setAiMode(false);
+      setArEnabled(false);
+      setPhase("frame-select");
+    }
+  }, []);
 
- const shooting = phase === "ready" || phase === "countdown" || phase === "flash" || phase === "between";
- const showShutter = phase === "ready";
- const rightActive = phase !== "frame-select";
+  const flashRef = useRef<HTMLDivElement>(null);
+
+  const shooting = phase === "ready" || phase === "countdown" || phase === "flash" || phase === "between";
+  const showShutter = phase === "ready";
+  const rightActive = phase !== "frame-select";
 
 const showToast = useCallback((msg: string) => {
  setToast(msg);
@@ -795,9 +843,9 @@ const showToast = useCallback((msg: string) => {
     if (!compositeUrl) return;
     const res = await downloadOrShareImage(compositeUrl, `iseeyou-foto-${Date.now()}.jpg`, "Optik I See You — Photo");
     if (res.method === "share") {
-      showToast("Berhasil dibagikan / tersimpan ke Galeri! 📸");
+      showToast("Berhasil dibagikan / tersimpan ke Galeri!");
     } else {
-      showToast("Foto berhasil tersimpan! 📸");
+      showToast("Foto berhasil tersimpan!");
     }
   }, [compositeUrl, showToast]);
 
@@ -805,9 +853,9 @@ const showToast = useCallback((msg: string) => {
     if (!gifUrl) return;
     const res = await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
     if (res.method === "share") {
-      showToast("GIF berhasil dibagikan / tersimpan! 🎬");
+      showToast("GIF berhasil dibagikan / tersimpan!");
     } else {
-      showToast("GIF animasi berhasil tersimpan! 🎬");
+      showToast("GIF animasi berhasil tersimpan!");
     }
   }, [gifUrl, showToast]);
 
@@ -1054,10 +1102,10 @@ const showToast = useCallback((msg: string) => {
 
  {/* ══ LEFT — Camera Panel ══════════════════════════════════════════════ */}
  <div className="
- relative flex flex-col overflow-hidden bg-isy-mist
- h-[55vw] min-h-[280px] max-h-[440px] shrink-0
- lg:h-full lg:w-[56%] lg:max-h-none lg:min-h-0 lg:border-r lg:border-isy-line
- ">
+  relative flex flex-col overflow-hidden bg-isy-mist
+  h-[48vh] min-h-[320px] max-h-[58vh] shrink-0
+  lg:h-full lg:w-[56%] lg:max-h-none lg:min-h-0 lg:border-r lg:border-isy-line
+  ">
  {rightActive && (
  <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-3 pt-3 lg:hidden">
  <BackBtn onClick={goHome} />
@@ -1269,16 +1317,28 @@ const showToast = useCallback((msg: string) => {
  Lipstik
  </button>
  <button
-   onClick={() => setSoundEnabled((v) => !v)}
-   className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 ${
-     soundEnabled
-       ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
-       : "bg-gray-100 text-gray-400 border border-gray-200"
-   }`}
-   title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
- >
-   {soundEnabled ? "🔊 Suara ON" : "🔇 Mute"}
- </button>
+    onClick={() => setSoundEnabled((v) => !v)}
+    className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 ${
+      soundEnabled
+        ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
+        : "bg-gray-100 text-gray-400 border border-gray-200"
+    }`}
+    title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+  >
+    {soundEnabled ? (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </svg>
+    ) : (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+    )}
+    <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
+  </button>
  </div>
  <TimerChips
  value={timerSec}
@@ -1314,7 +1374,7 @@ const showToast = useCallback((msg: string) => {
  Ganti Layout
  </button>
  ) : (
- <span className="text-[11px] font-bold text-isy-green-bright">✨ Try-On 1x Foto</span>
+ <span className="text-[11px] font-bold text-isy-green-bright">Try-On 1x Foto</span>
  )}
  <button onClick={handleRetake} className="text-isy-ink/40 hover:text-red-500 transition-colors">
  Ulangi

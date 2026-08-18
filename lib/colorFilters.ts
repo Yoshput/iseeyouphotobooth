@@ -6,7 +6,7 @@
 export interface ColorFilter {
   id: string;
   name: string;
-  emoji: string;
+  colorDot: string;
   cssFilter: string;
   drawOverlay?: (ctx: CanvasRenderingContext2D, width: number, height: number) => void;
 }
@@ -15,19 +15,19 @@ export const COLOR_FILTERS: ColorFilter[] = [
   {
     id: "normal",
     name: "Original",
-    emoji: "🌈",
+    colorDot: "#2FA84F",
     cssFilter: "none",
   },
   {
     id: "bw-noir",
     name: "B&W Noir",
-    emoji: "⬛",
+    colorDot: "#1A1A1A",
     cssFilter: "grayscale(100%) contrast(125%) brightness(95%)",
   },
   {
     id: "vintage-warm",
     name: "Vintage 90s",
-    emoji: "📜",
+    colorDot: "#C69C6D",
     cssFilter: "sepia(35%) contrast(110%) brightness(102%) saturate(115%)",
     drawOverlay: (ctx, width, height) => {
       ctx.save();
@@ -39,7 +39,7 @@ export const COLOR_FILTERS: ColorFilter[] = [
   {
     id: "soft-film",
     name: "Soft Film",
-    emoji: "🌸",
+    colorDot: "#EC4899",
     cssFilter: "contrast(95%) brightness(108%) saturate(85%) hue-rotate(-5deg)",
     drawOverlay: (ctx, width, height) => {
       ctx.save();
@@ -51,7 +51,7 @@ export const COLOR_FILTERS: ColorFilter[] = [
   {
     id: "emerald-monochrome",
     name: "ISY Emerald",
-    emoji: "💚",
+    colorDot: "#0A482A",
     cssFilter: "grayscale(100%) contrast(115%) brightness(98%)",
     drawOverlay: (ctx, width, height) => {
       ctx.save();
@@ -64,7 +64,7 @@ export const COLOR_FILTERS: ColorFilter[] = [
   {
     id: "cyber-vivid",
     name: "Cyber Pop",
-    emoji: "⚡",
+    colorDot: "#00B4D8",
     cssFilter: "saturate(140%) contrast(115%) brightness(102%)",
   },
 ];

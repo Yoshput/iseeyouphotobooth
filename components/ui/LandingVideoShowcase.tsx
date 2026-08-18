@@ -112,7 +112,7 @@ export default function LandingVideoShowcase() {
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setShowControls(false)}
-        className="group relative w-full aspect-[16/9] sm:aspect-[21/9] max-h-[85vh] min-h-[360px] overflow-hidden bg-black flex items-center justify-center"
+        className="group relative w-full aspect-[4/3] xs:aspect-[16/9] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[85vh] min-h-[260px] overflow-hidden bg-black flex items-center justify-center"
       >
         {/* HTML5 Video Element */}
         <video

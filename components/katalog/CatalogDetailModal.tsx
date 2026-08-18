@@ -80,7 +80,7 @@ export default function CatalogDetailModal({
                   : "text-isy-ink/60 hover:text-isy-green-deep"
               }`}
             >
-              📷 Galeri Foto ({displayImages.length})
+              Galeri Foto ({displayImages.length})
             </button>
             <button
               onClick={() => setActiveTab("specs")}
@@ -90,7 +90,7 @@ export default function CatalogDetailModal({
                   : "text-isy-ink/60 hover:text-isy-green-deep"
               }`}
             >
-              📐 Spesifikasi Detail
+              Spesifikasi Frame
             </button>
           </div>
         )}
@@ -163,14 +163,14 @@ export default function CatalogDetailModal({
           {/* Face Shape Recommendations */}
           <div className="flex flex-wrap items-center gap-1.5 pt-2">
             <span className="text-xs font-bold text-isy-ink/50">
-              Bentuk Wajah yang Cocok:
+              Bentuk Wajah:
             </span>
             {item.recommendedFor.map((shape) => (
               <span
                 key={shape}
                 className="rounded-lg bg-isy-mist px-2.5 py-1 text-xs font-extrabold text-isy-green-deep border border-isy-line"
               >
-                ✨ {shape}
+                {shape}
               </span>
             ))}
           </div>

@@ -4,8 +4,7 @@
  * FrameThemePicker.tsx
  * Full-screen branded overlay for choosing the frame theme/style.
  *
- * Dynamically re-renders theme thumbnails matching the user's selected photo layout (1, 2, 3, 4, 6 slots).
- * Filters out non-compatible themes (e.g. News Paper Editorial is only shown for 1 or 2 photo layouts).
+ * Displays realistic visual representations of all 6 themes matching the selected photo layout.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -25,7 +24,7 @@ interface FrameThemePickerProps {
   onBack: () => void;
 }
 
-// ── Dynamic Visual Theme Mockup Component ─────────────────────────────────────
+// ── Realistic Dynamic Visual Theme Mockup Component ──────────────────────────
 
 function VisualThemeMockup({
   theme,
@@ -35,17 +34,26 @@ function VisualThemeMockup({
   layout: FrameLayout;
 }) {
   const isVintageFilm = theme.id === "vintage-film-bw";
-  const isNewspaper = theme.id === "newspaper-editorial";
+  const isEmerald = theme.id === "emerald-luxury";
+  const isPastel = theme.id === "pastel-pink";
   const isFrameKoran = theme.id === "frame-koran-custom";
-  const isOpticalBlueprint = theme.id === "optical-blueprint";
-  const isLensFlareGold = theme.id === "lens-flare-gold";
+  const isSignatureISY = theme.id === "signature-isy-custom";
   const isStrip1x3 = layout.aspectRatioClass === "aspect-[1/3]";
 
   // Person SVG icon for slot placeholder
-  const PersonIcon = ({ dark }: { dark?: boolean }) => (
+  const PersonIcon = ({ color }: { color?: string }) => (
     <svg
       className={`w-3.5 h-3.5 ${
-        dark ? "text-stone-400" : isVintageFilm ? "text-white/40" : "text-isy-green-deep/30"
+        color ||
+        (isVintageFilm
+          ? "text-white/40"
+          : isEmerald
+          ? "text-[#E2B857]/50"
+          : isPastel
+          ? "text-[#EC4899]/40"
+          : isSignatureISY
+          ? "text-[#E2B857]/40"
+          : "text-isy-green-deep/30")
       }`}
       viewBox="0 0 24 24"
       fill="currentColor"
@@ -54,67 +62,14 @@ function VisualThemeMockup({
     </svg>
   );
 
-  const slotBgClass = isVintageFilm
-    ? "bg-[#222222] border-white/40 grayscale"
-    : isNewspaper
-    ? "bg-gradient-to-br from-stone-100 to-stone-200 border-[#1A1A1A]/40"
-    : "bg-gradient-to-br from-emerald-100/90 to-emerald-200/70 border-emerald-400/30";
-
-  const slotStyle = `relative rounded-[3px] flex items-center justify-center border ${slotBgClass} shadow-2xs overflow-hidden`;
-
-  if (isNewspaper) {
-    return (
-      <div className="flex h-[180px] w-full items-center justify-center py-1">
-        <div
-          className={`relative ${
-            isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
-          } h-full w-full rounded-xl border border-[#1A1A1A]/40 bg-[#F9F8F6] p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-md`}
-        >
-          {/* Outer newspaper double border */}
-          <div className="absolute inset-1 border border-[#1A1A1A]/20 pointer-events-none" />
-
-          {/* Masthead */}
-          <div className="text-center pb-1 border-b border-[#1A1A1A]/40">
-            <span className="text-[6px] font-black uppercase tracking-wider text-[#1A1A1A] block leading-none">
-              I SEE YOU GAZETTE
-            </span>
-            <span className="text-[4.5px] font-serif italic text-isy-green-deep block pt-0.5">
-              See The Moment
-            </span>
-          </div>
-
-          {/* Dynamic Slots for Newspaper (1 or 2 slots) */}
-          <div className="my-1 flex-1 flex flex-col gap-1 overflow-hidden">
-            {layout.id === "solo" ? (
-              <div className={`${slotStyle} h-full w-full`}>
-                <PersonIcon dark />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-1 h-full w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon dark /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon dark /></div>
-              </div>
-            )}
-          </div>
-
-          {/* Editorial Footer Columns */}
-          <div className="pt-0.5 border-t border-[#1A1A1A]/40 flex items-center justify-between text-[5.5px] font-mono text-[#1A1A1A]">
-            <span>VOL. 2026</span>
-            <span className="font-bold text-isy-green-deep">@iseeyou.glasses</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Frame Koran preview — use actual preview image asset
+  // 1. Frame Koran Preview — uses the exact authentic manual artwork PNG
   if (isFrameKoran) {
     return (
       <div className="flex h-[180px] w-full items-center justify-center py-1">
         <div
           className={`relative ${
             isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
-          } h-full w-full rounded-xl overflow-hidden shadow-xs transition-all duration-300 group-hover:shadow-md`}
+          } h-full w-full rounded-xl overflow-hidden shadow-xs border border-stone-300 transition-all duration-300 group-hover:shadow-md`}
         >
           <Image
             src="/frame photobooth/Frame Koran_preview.png"
@@ -128,99 +83,144 @@ function VisualThemeMockup({
     );
   }
 
-  // Optical Blueprint mockup
-  if (isOpticalBlueprint) {
+  // 2. Signature Optik I See You (Manual Design in Progress) Mockup
+  if (isSignatureISY) {
     return (
       <div className="flex h-[180px] w-full items-center justify-center py-1">
         <div
           className={`relative ${
             isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
-          } h-full w-full rounded-xl border border-[#00B4D8]/50 bg-[#0D1B2A] p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-[0_0_12px_rgba(0,180,216,0.3)]`}
+          } h-full w-full rounded-xl border border-[#E2B857]/40 bg-gradient-to-b from-[#0E3821] to-[#062013] p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-[0_0_15px_rgba(226,184,87,0.25)]`}
         >
-          {/* Blueprint grid */}
-          <div className="absolute inset-0 opacity-20" style={{
-            backgroundImage: "linear-gradient(rgba(0,180,216,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,180,216,0.3) 1px, transparent 1px)",
-            backgroundSize: "8px 8px"
-          }} />
-
-          {/* Glasses silhouette SVG */}
-          <div className="flex justify-center pt-0.5 z-10">
-            <svg viewBox="0 0 80 28" className="w-14 h-auto">
-              <ellipse cx="20" cy="14" rx="14" ry="9" fill="none" stroke="#00B4D8" strokeWidth="1.2" />
-              <ellipse cx="60" cy="14" rx="14" ry="9" fill="none" stroke="#00B4D8" strokeWidth="1.2" />
-              <path d="M34 11 Q40 6 46 11" fill="none" stroke="#00B4D8" strokeWidth="1.2" />
-              <line x1="0" y1="11" x2="6" y2="12" stroke="#00B4D8" strokeWidth="1.2" />
-              <line x1="74" y1="11" x2="80" y2="12" stroke="#00B4D8" strokeWidth="1.2" />
-            </svg>
-          </div>
-
-          {/* Slots */}
-          <div className="my-1 flex-1 flex flex-col gap-1 overflow-hidden z-10">
-            {layout.slots.slice(0, Math.min(layout.numPhotos, 4)).map((_, i) => (
-              <div key={i} className="flex-1 rounded-[2px] border border-[#00B4D8]/40 bg-[#0A2540] flex items-center justify-center">
-                <span className="text-[5px] font-mono text-[#00B4D8]/60">{String(i+1).padStart(2,"0")}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Footer */}
-          <div className="pt-0.5 border-t border-[#00B4D8]/30 z-10">
-            <span className="text-[5px] font-mono text-[#00B4D8]/70 block text-center">OPTIK I SEE YOU</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Lens Flare Gold mockup
-  if (isLensFlareGold) {
-    return (
-      <div className="flex h-[180px] w-full items-center justify-center py-1">
-        <div
-          className={`relative ${
-            isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
-          } h-full w-full rounded-xl border border-[#D4AF37]/40 bg-[#0A0A0A] p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-[0_0_12px_rgba(212,175,55,0.3)]`}
-        >
-          {/* Bokeh rings */}
-          <div className="absolute top-2 left-2 w-12 h-12 rounded-full border border-[#D4AF37]/15 pointer-events-none" />
-          <div className="absolute top-4 left-4 w-8 h-8 rounded-full border border-[#D4AF37]/10 pointer-events-none" />
-          <div className="absolute bottom-4 right-2 w-10 h-10 rounded-full border border-[#D4AF37]/15 pointer-events-none" />
-          <div className="absolute -top-2 right-3 w-14 h-14 rounded-full border border-[#D4AF37]/08 pointer-events-none" />
+          {/* Subtle gold border insets */}
+          <div className="absolute inset-1 rounded-lg border border-[#E2B857]/20 pointer-events-none" />
 
           {/* Header */}
-          <div className="text-center pb-1 border-b border-[#D4AF37]/30 z-10">
-            <span className="text-[6px] font-serif italic text-[#D4AF37] block leading-none">Optik I See You</span>
-            <span className="text-[4.5px] text-[#FFF8DC]/50 block">Est. Optical Quality</span>
+          <div className="flex items-center justify-between pb-1 border-b border-[#E2B857]/30 z-10">
+            <div className="flex items-center gap-1">
+              <div className="h-1.5 w-1.5 rounded-full bg-[#E2B857]" />
+              <span className={`${isStrip1x3 ? "text-[5.5px]" : "text-[7px]"} font-black uppercase tracking-wider text-[#E2B857]`}>
+                I SEE YOU
+              </span>
+            </div>
+            {!isStrip1x3 && (
+              <span className="text-[6px] font-extrabold uppercase text-[#E2B857]/80">SIGNATURE</span>
+            )}
           </div>
 
           {/* Slots */}
           <div className="my-1 flex-1 flex flex-col gap-1 overflow-hidden z-10">
-            {layout.slots.slice(0, Math.min(layout.numPhotos, 4)).map((_, i) => (
-              <div key={i} className="flex-1 rounded-[3px] border border-[#D4AF37]/30 bg-[#111100] flex items-center justify-center">
-                <svg className="w-3 h-3 text-[#D4AF37]/30" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                </svg>
+            {layout.id === "solo" && (
+              <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] h-full w-full">
+                <PersonIcon />
               </div>
-            ))}
+            )}
+            {layout.id === "trio_vert" && (
+              <div className="flex flex-col gap-1 h-full w-full">
+                <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+              </div>
+            )}
+            {layout.id === "trio_grid" && (
+              <div className="flex flex-col gap-1 h-full w-full">
+                <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] h-[52%] w-full"><PersonIcon /></div>
+                <div className="flex gap-1 h-[44%] w-full">
+                  <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                  <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                </div>
+              </div>
+            )}
+            {layout.id === "quartet_grid" && (
+              <div className="flex flex-col gap-1 h-full w-full">
+                <div className="flex gap-1 flex-1 w-full">
+                  <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                  <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                </div>
+                <div className="flex gap-1 flex-1 w-full">
+                  <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                  <div className="relative rounded-[3px] flex items-center justify-center border border-dashed border-[#E2B857]/40 bg-[#082916] flex-1"><PersonIcon /></div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Footer */}
-          <div className="pt-0.5 border-t border-[#D4AF37]/30 z-10">
-            <span className="text-[5px] font-serif italic text-[#D4AF37]/80 block text-center">@iseeyou.glasses</span>
+          <div className="pt-0.5 border-t border-[#E2B857]/30 text-center z-10">
+            <span className="text-[5.5px] font-serif italic text-[#E2B857]/90 tracking-wide">
+              Edisi Spesial I See You
+            </span>
           </div>
         </div>
       </div>
     );
   }
+
+  // 3. Dynamic Styling Configuration for Classic White, Emerald Luxury, Vintage Film, Pastel Cute
+  const containerClass = isVintageFilm
+    ? "bg-[#141414] border-[#333333] text-white"
+    : isEmerald
+    ? "bg-gradient-to-b from-[#0A482A] to-[#052917] border-[#14683C] text-white shadow-[0_0_12px_rgba(10,72,42,0.4)]"
+    : isPastel
+    ? "bg-gradient-to-b from-[#FFF5F7] to-[#FCE4EC] border-[#FBCFE8] text-[#831843]"
+    : "bg-gradient-to-b from-white to-[#EAF6EC]/40 border-isy-line text-isy-green-deep";
+
+  const slotBgClass = isVintageFilm
+    ? "bg-[#1C1C1C] border-[#333333]"
+    : isEmerald
+    ? "bg-[#06361E] border-[#14683C]"
+    : isPastel
+    ? "bg-[#FDF2F8] border-[#FBCFE8]"
+    : "bg-[#EEF6F0] border-[#C8E6C9]";
+
+  const headerDotColor = isVintageFilm
+    ? "bg-[#FF9900]"
+    : isEmerald
+    ? "bg-[#E2B857]"
+    : isPastel
+    ? "bg-[#EC4899]"
+    : "bg-isy-green-bright";
+
+  const headerTextColor = isVintageFilm
+    ? "text-white"
+    : isEmerald
+    ? "text-[#E2B857]"
+    : isPastel
+    ? "text-[#831843]"
+    : "text-isy-green-deep";
+
+  const headerBadgeColor = isVintageFilm
+    ? "text-[#FF9900]"
+    : isEmerald
+    ? "text-[#E2B857]"
+    : isPastel
+    ? "text-[#EC4899]"
+    : "text-isy-green-bright";
+
+  const headerBorderColor = isVintageFilm
+    ? "border-white/10"
+    : isEmerald
+    ? "border-[#E2B857]/20"
+    : isPastel
+    ? "border-[#FBCFE8]"
+    : "border-isy-line/60";
+
+  const footerTextColor = isVintageFilm
+    ? "text-[#FF9900]"
+    : isEmerald
+    ? "text-[#E2B857]"
+    : isPastel
+    ? "text-[#EC4899]"
+    : "text-isy-green-deep/70";
+
+  const slotStyle = `relative rounded-[3px] flex items-center justify-center border ${slotBgClass} shadow-2xs overflow-hidden`;
 
   return (
     <div className="flex h-[180px] w-full items-center justify-center py-1">
       <div
         className={`relative ${
           isStrip1x3 ? "aspect-[1/3] max-w-[76px]" : "aspect-[2/3] max-w-[126px]"
-        } h-full w-full rounded-xl border p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-md ${
-          isVintageFilm ? "bg-[#141414] border-[#333333]" : "bg-white border-isy-line"
-        }`}
+        } h-full w-full rounded-xl border p-2 shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group-hover:shadow-md ${containerClass}`}
       >
         {/* Vintage Film Sprocket Holes overlay on left/right */}
         {isVintageFilm && (
@@ -239,37 +239,29 @@ function VisualThemeMockup({
         )}
 
         {/* Mini Frame Header */}
-        <div
-          className={`flex items-center justify-between pb-1 ${
-            isVintageFilm ? "border-b border-white/10" : "border-b border-isy-line/60"
-          }`}
-        >
-          <span
-            className={`text-[6.5px] font-black uppercase tracking-wider ${
-              isVintageFilm ? "text-[#D4AF37]" : "text-isy-green-deep"
-            }`}
-          >
-            {isVintageFilm ? "35MM FILM" : "I SEE YOU"}
-          </span>
-          <span
-            className={`text-[6px] font-extrabold ${
-              isVintageFilm ? "text-white/60" : "text-isy-green-bright"
-            }`}
-          >
-            {isVintageFilm ? "B&W" : "AR"}
-          </span>
+        <div className={`flex items-center justify-between pb-1 border-b ${headerBorderColor}`}>
+          <div className="flex items-center gap-1">
+            <div className={`h-1.5 w-1.5 rounded-full ${headerDotColor}`} />
+            <span
+              className={`${
+                isStrip1x3 ? "text-[6px]" : "text-[7.5px]"
+              } font-black uppercase tracking-wider ${headerTextColor}`}
+            >
+              I SEE YOU
+            </span>
+          </div>
+          {!isStrip1x3 && (
+            <span className={`text-[6.5px] font-extrabold uppercase ${headerBadgeColor}`}>
+              {isVintageFilm ? "35MM" : isEmerald ? "LUXURY" : isPastel ? "CUTE" : "PHOTO"}
+            </span>
+          )}
         </div>
 
-        {/* Dynamic Slot Layout according to layout.id */}
-        <div className={`my-1 flex-1 flex flex-col gap-1 overflow-hidden ${isVintageFilm ? "px-1.5" : ""}`}>
+        {/* Slot Grid Replicas according to layout.id */}
+        <div className="my-1 flex-1 flex flex-col gap-1 overflow-hidden">
           {layout.id === "solo" && (
-            <div className={`${slotStyle} h-full w-full`}><PersonIcon /></div>
-          )}
-
-          {layout.id === "duo_vert" && (
-            <div className="flex flex-col gap-1 h-full w-full">
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
+            <div className={`${slotStyle} h-full w-full`}>
+              <PersonIcon />
             </div>
           )}
 
@@ -291,34 +283,8 @@ function VisualThemeMockup({
             </div>
           )}
 
-          {layout.id === "quartet_strip" && (
-            <div className="flex flex-col gap-1 h-full w-full">
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-            </div>
-          )}
-
           {layout.id === "quartet_grid" && (
             <div className="flex flex-col gap-1 h-full w-full">
-              <div className="flex gap-1 flex-1 w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              </div>
-              <div className="flex gap-1 flex-1 w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              </div>
-            </div>
-          )}
-
-          {layout.id === "sextet_grid" && (
-            <div className="flex flex-col gap-1 h-full w-full">
-              <div className="flex gap-1 flex-1 w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              </div>
               <div className="flex gap-1 flex-1 w-full">
                 <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
                 <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
@@ -332,16 +298,8 @@ function VisualThemeMockup({
         </div>
 
         {/* Mini Frame Footer */}
-        <div
-          className={`pt-0.5 text-center ${
-            isVintageFilm ? "border-t border-white/10" : "border-t border-isy-line/60"
-          }`}
-        >
-          <span
-            className={`text-[6px] font-extrabold ${
-              isVintageFilm ? "text-[#FF9900]" : "text-isy-green-deep/70"
-            }`}
-          >
+        <div className={`pt-0.5 text-center border-t ${headerBorderColor}`}>
+          <span className={`text-[6px] font-extrabold ${footerTextColor}`}>
             {isVintageFilm ? "'26 08 08" : "@iseeyou.glasses"}
           </span>
         </div>
@@ -363,6 +321,10 @@ function ThemeCard({
   isSelected?: boolean;
   onSelect: () => void;
 }) {
+  const isKoran = theme.id === "frame-koran-custom";
+  const isSignature = theme.id === "signature-isy-custom";
+  const isKoranNotTrio = isKoran && layout.numPhotos !== 3;
+
   return (
     <button
       id={`theme-pick-${theme.id}`}
@@ -386,12 +348,24 @@ function ThemeCard({
         </span>
       )}
 
-      {/* Retro / Custom Badge */}
-      {theme.badge && (
-        <span className="self-start rounded-full bg-isy-green-bright/10 px-2 py-0.5 text-[9px] font-black uppercase text-isy-green-bright border border-isy-green-bright/30 z-10">
-          {theme.badge}
-        </span>
-      )}
+      {/* Badge Top Left */}
+      <div className="flex items-center justify-between w-full">
+        {isKoranNotTrio ? (
+          <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[9px] font-black uppercase text-amber-700 border border-amber-500/30 z-10">
+            Tahap Update (1 & 4 Foto)
+          </span>
+        ) : isSignature ? (
+          <span className="rounded-full bg-emerald-700/10 px-2 py-0.5 text-[9px] font-black uppercase text-emerald-800 border border-emerald-700/30 z-10">
+            Tahap Update
+          </span>
+        ) : theme.badge ? (
+          <span className="rounded-full bg-isy-green-bright/10 px-2 py-0.5 text-[9px] font-black uppercase text-isy-green-bright border border-isy-green-bright/30 z-10">
+            {theme.badge}
+          </span>
+        ) : (
+          <span />
+        )}
+      </div>
 
       {/* Visual Thumbnail matching the user's selected photo count layout */}
       <VisualThemeMockup theme={theme} layout={layout} />
@@ -402,11 +376,13 @@ function ThemeCard({
           {theme.name}
         </span>
 
-        {theme.description && (
-          <span className="text-[10px] text-isy-ink/60 font-medium line-clamp-2 leading-tight">
-            {theme.description}
-          </span>
-        )}
+        <span className="text-[10px] text-isy-ink/60 font-medium line-clamp-2 leading-tight">
+          {isKoranNotTrio
+            ? "Tersedia optimal untuk 3 Foto. Format ini sedang dalam pembaruan."
+            : isSignature
+            ? "Desain manual khas I See You dalam tahap pembaruan."
+            : theme.description}
+        </span>
       </div>
     </button>
   );
@@ -423,7 +399,7 @@ export default function FrameThemePicker({
   const overlayRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  // Filter themes compatible with the user's chosen layout photo count!
+  // Available themes for user choice
   const availableThemes = useMemo(() => getCompatibleThemes(layout), [layout]);
 
   const initialThemeId = useMemo(() => {
@@ -448,16 +424,17 @@ export default function FrameThemePicker({
             y: 0,
             scale: 1,
             duration: 0.35,
-            stagger: 0.05,
+            stagger: 0.06,
             ease: "power2.out",
           }
         );
       }
     });
+
     return () => ctx.revert();
   }, [availableThemes]);
 
-  const handleChooseTheme = (themeId: string) => {
+  const handleCardClick = (themeId: string) => {
     setActiveThemeId(themeId);
     onSelect(themeId);
   };
@@ -465,78 +442,51 @@ export default function FrameThemePicker({
   return (
     <div
       ref={overlayRef}
-      className="absolute inset-0 z-40 flex flex-col overflow-hidden bg-isy-white"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md animate-in fade-in duration-200"
     >
-      {/* Brand Header */}
-      <div className="relative flex shrink-0 flex-col items-center bg-isy-green-deep px-6 pt-7 pb-5 shadow-sm">
-        <button
-          onClick={onBack}
-          className="absolute left-4 top-4 flex items-center gap-1 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white/90 hover:bg-white/20 transition-colors active:scale-95"
-        >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          >
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-          Gaya Foto
-        </button>
+      <div className="relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-3xl bg-white/95 p-6 shadow-2xl backdrop-blur-xl border border-isy-line sm:p-8 overflow-y-auto">
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between border-b border-isy-line pb-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onBack}
+              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-isy-mist text-isy-green-deep hover:bg-isy-green-bright hover:text-white transition-all active:scale-95 shadow-2xs cursor-pointer"
+              aria-label="Kembali"
+            >
+              ←
+            </button>
+            <div>
+              <h2 className="font-serif text-2xl font-black text-isy-green-deep">
+                Pilih Tema Desain Frame
+              </h2>
+              <p className="text-xs text-isy-ink/60 font-medium mt-0.5">
+                Layout: <span className="font-bold text-isy-green-deep">{layout.label} ({layout.sublabel})</span>
+              </p>
+            </div>
+          </div>
 
-        <Image
-          src="/logo.png"
-          alt="Optik I See You"
-          width={180}
-          height={70}
-          className="h-11 w-auto brightness-0 invert"
-          priority
-        />
-        <p className="mt-1 text-[10px] font-extrabold uppercase tracking-[0.2em] text-isy-green-bright">
-          AR Photobooth
-        </p>
-      </div>
-
-      {/* Grid of Theme Cards */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
-        <div className="mb-6 text-center max-w-md mx-auto space-y-1">
-          <h2 className="font-serif text-2xl font-black text-isy-green-deep tracking-tight">
-            PILIH TEMA FRAME
-          </h2>
-          <p className="text-xs text-isy-ink/65 font-medium">
-            Tema yang tersedia disesuaikan dengan pilihan layout{" "}
-            <span className="font-extrabold text-isy-green-deep">
-              {layout.label} ({layout.numPhotos} Foto)
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="rounded-full bg-isy-green-bright/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-isy-green-bright border border-isy-green-bright/20">
+              {availableThemes.length} Pilihan Tema
             </span>
-          </p>
+          </div>
         </div>
 
+        {/* Theme Cards Grid */}
         <div
           ref={cardsRef}
-          className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 max-w-4xl mx-auto pb-6 items-stretch"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-3.5 overflow-y-auto max-h-[62vh] p-1"
         >
-          {availableThemes.map((theme) => (
+          {availableThemes.map((t) => (
             <ThemeCard
-              key={theme.id}
-              theme={theme}
+              key={t.id}
+              theme={t}
               layout={layout}
-              isSelected={activeThemeId === theme.id}
-              onSelect={() => handleChooseTheme(theme.id)}
+              isSelected={activeThemeId === t.id}
+              onSelect={() => handleCardClick(t.id)}
             />
           ))}
         </div>
-      </div>
-
-      {/* Footer */}
-      <div className="flex shrink-0 items-center justify-between border-t border-isy-line bg-isy-mist px-6 py-3 text-xs text-isy-ink/60">
-        <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 rounded-full bg-isy-green-bright animate-pulse" />
-          <span className="font-bold text-isy-green-deep">@iseeyou.glasses</span>
-        </div>
-        <span className="text-[11px] font-semibold text-isy-ink/40">Optik I See You</span>
       </div>
     </div>
   );

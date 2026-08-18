@@ -31,7 +31,7 @@ export const FRAME_LAYOUTS: FrameLayout[] = [
   {
     id: "solo",
     label: "1 Foto",
-    sublabel: "Solo",
+    sublabel: "Solo Portrait",
     numPhotos: 1,
     canvasWidth: 1200,
     canvasHeight: 1800,
@@ -39,22 +39,7 @@ export const FRAME_LAYOUTS: FrameLayout[] = [
     slots: [{ x: 60, y: 220, w: 1080, h: 1380 }],
   },
 
-  // 2. Duo Vertikal (2 Foto Strip — 2×6 inch strip, ratio 1:3) ────────────────
-  {
-    id: "duo_vert",
-    label: "2 Foto",
-    sublabel: "Strip Vertikal",
-    numPhotos: 2,
-    canvasWidth: 600,
-    canvasHeight: 1800,
-    aspectRatioClass: "aspect-[1/3]",
-    slots: [
-      { x: 32, y: 160, w: 536, h: 660 },
-      { x: 32, y: 840, w: 536, h: 660 },
-    ],
-  },
-
-  // 3. Trio Vertikal (3 Foto Strip — 2×6 inch strip, ratio 1:3) ────────────────
+  // 2. Trio Vertikal (3 Foto Strip — 2×6 inch strip, ratio 1:3) ────────────────
   {
     id: "trio_vert",
     label: "3 Foto",
@@ -70,11 +55,11 @@ export const FRAME_LAYOUTS: FrameLayout[] = [
     ],
   },
 
-  // 4. Trio Grid (3 Foto Grid Kombinasi — 4×6 inch card, ratio 2:3) ────────────
+  // 3. Trio Grid (3 Foto Grid Polaroid — 4×6 inch card, ratio 2:3) ─────────────
   {
     id: "trio_grid",
     label: "3 Foto",
-    sublabel: "Grid Kombinasi",
+    sublabel: "Polaroid Trio",
     numPhotos: 3,
     canvasWidth: 1200,
     canvasHeight: 1800,
@@ -86,44 +71,11 @@ export const FRAME_LAYOUTS: FrameLayout[] = [
     ],
   },
 
-  // 5. Trio Koran Editorial (3 Foto Frame Koran — 4×6 inch card, ratio 2:3) ────
-  {
-    id: "trio_koran",
-    label: "3 Foto",
-    sublabel: "Frame Koran",
-    numPhotos: 3,
-    canvasWidth: 1200,
-    canvasHeight: 1800,
-    aspectRatioClass: "aspect-[2/3]",
-    slots: [
-      { x: 18, y: 590, w: 1164, h: 493 },
-      { x: 454, y: 1167, w: 292, h: 210 },
-      { x: 33, y: 1387, w: 370, h: 352 },
-    ],
-  },
-
-  // 5. Quartet Strip Vertikal (4 Foto Strip Klasik — 2×6 inch strip, ratio 1:3)
-  {
-    id: "quartet_strip",
-    label: "4 Foto",
-    sublabel: "Strip Klasik",
-    numPhotos: 4,
-    canvasWidth: 600,
-    canvasHeight: 1800,
-    aspectRatioClass: "aspect-[1/3]",
-    slots: [
-      { x: 32, y: 144, w: 536, h: 338 },
-      { x: 32, y: 496, w: 536, h: 338 },
-      { x: 32, y: 848, w: 536, h: 338 },
-      { x: 32, y: 1200, w: 536, h: 338 },
-    ],
-  },
-
-  // 6. Quartet Grid (4 Foto Grid 2×2 — 4×6 inch card, ratio 2:3) ─────────────
+  // 4. Quartet Grid (4 Foto Polaroid 2×2 — 4×6 inch card, ratio 2:3) ───────────
   {
     id: "quartet_grid",
     label: "4 Foto",
-    sublabel: "Grid 2×2",
+    sublabel: "Polaroid 2×2",
     numPhotos: 4,
     canvasWidth: 1200,
     canvasHeight: 1800,
@@ -133,25 +85,6 @@ export const FRAME_LAYOUTS: FrameLayout[] = [
       { x: 612, y: 204, w: 528, h: 604 },
       { x: 60, y: 832, w: 528, h: 604 },
       { x: 612, y: 832, w: 528, h: 604 },
-    ],
-  },
-
-  // 7. Sextet Grid (6 Foto Grid 2×3 — 4×6 inch card, ratio 2:3) ─────────────
-  {
-    id: "sextet_grid",
-    label: "6 Foto",
-    sublabel: "Grid 2×3",
-    numPhotos: 6,
-    canvasWidth: 1200,
-    canvasHeight: 1800,
-    aspectRatioClass: "aspect-[2/3]",
-    slots: [
-      { x: 60, y: 200, w: 530, h: 400 },
-      { x: 610, y: 200, w: 530, h: 400 },
-      { x: 60, y: 620, w: 530, h: 400 },
-      { x: 610, y: 620, w: 530, h: 400 },
-      { x: 60, y: 1040, w: 530, h: 400 },
-      { x: 610, y: 1040, w: 530, h: 400 },
     ],
   },
 ];

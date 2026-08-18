@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Try On Kacamata AR — Coba Kacamata Online",
+  title: "Try-On Kacamata AR — Coba Kacamata Online Real-Time",
   description:
     "Pilih mode AR Try-On Kacamata atau AR Photobooth interaktif langsung dari kamera ponsel atau laptopmu di Optik I See You Purwokerto.",
   alternates: {
     canonical: "https://optikiseeyou.com/start",
   },
   openGraph: {
-    title: "Try On Kacamata AR | Optik I See You",
+    title: "Try-On Kacamata AR | Optik I See You",
     description:
       "Coba berbagai model kacamata trendi secara langsung di wajahmu dengan teknologi Augmented Reality real-time.",
     url: "https://optikiseeyou.com/start",

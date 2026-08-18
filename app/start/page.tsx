@@ -59,7 +59,7 @@ export default function StartPage() {
           <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">
             {/* Mode 1: Scan AR Kacamata */}
             <button
-              onClick={() => router.push("/photobooth?mode=ar")}
+              onClick={() => router.push("/try-on")}
               className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-isy-green-bright bg-isy-green-deep p-8 text-left text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.98]"
             >
               {/* Decorative Subtle Ambient Glow */}
@@ -102,7 +102,7 @@ export default function StartPage() {
 
             {/* Mode 2: Photobooth */}
             <button
-              onClick={() => router.push("/photobooth?mode=photobooth")}
+              onClick={() => router.push("/photobooth")}
               className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-isy-line bg-white p-8 text-left text-isy-ink shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-isy-green-bright hover:shadow-xl active:scale-[0.98]"
             >
               <div className="relative z-10 space-y-4">

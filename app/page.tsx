@@ -19,6 +19,8 @@ import BranchCarousel from "@/components/ui/BranchCarousel";
 import FloatingGlasses from "@/components/ui/FloatingGlasses";
 import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
 import LandingVideoShowcase from "@/components/ui/LandingVideoShowcase";
+import AboutRefractionBookingSection from "@/components/ui/AboutRefractionBookingSection";
+import GoogleReviewsSection from "@/components/ui/GoogleReviewsSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import Link from "next/link";
@@ -27,7 +29,9 @@ import {
   BRANCHES,
   PRICE_LIST_LENSA_URL,
   SHOPEE_STORE_URL,
+  TOKOPEDIA_STORE_URL,
   konsultasiWhatsappUrl,
+  mapsDirectionsUrl,
 } from "@/lib/branches";
 
 function FeatureCard({ title, desc, accent }: { title: string; desc: string; accent: string }) {
@@ -215,8 +219,8 @@ export default function LandingPage() {
               height={270}
             />
 
-            {/* ── Prominent Floating Action Buttons (WA & Shopee) below floating glasses ── */}
-            <div className="flex flex-row items-center justify-center gap-6 mt-8 z-10">
+            {/* ── Prominent Floating Action Buttons (WA, Shopee, Tokopedia) below floating glasses ── */}
+            <div className="flex flex-row items-center justify-center gap-4 sm:gap-6 mt-8 z-10">
               {/* WhatsApp Button */}
               <a
                 href={konsultasiWhatsappUrl()}
@@ -224,15 +228,15 @@ export default function LandingPage() {
                 rel="noopener noreferrer"
                 aria-label="Hubungi kami via WhatsApp untuk konsultasi"
                 title="Chat WhatsApp CS"
-                className="relative flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group"
               >
                 <span className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping opacity-25 group-hover:opacity-40" />
                 <Image
                   src="/logo/Logo-Whatsapp.png"
                   alt="WhatsApp"
-                  width={38}
-                  height={38}
-                  className="h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                  width={34}
+                  height={34}
+                  className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
                 />
               </a>
 
@@ -243,14 +247,32 @@ export default function LandingPage() {
                 rel="noopener noreferrer"
                 aria-label="Kunjungi toko Shopee I See You"
                 title="Toko Shopee Official"
-                className="relative flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-white/85 backdrop-blur-lg border-2 border-orange-400/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-orange-500 hover:-translate-y-1.5 active:scale-95 group"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-orange-400/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-orange-500 hover:-translate-y-1.5 active:scale-95 group"
               >
                 <Image
                   src="/logo/Logo-Shoppe.png"
                   alt="Shopee"
-                  width={38}
-                  height={38}
-                  className="h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                  width={34}
+                  height={34}
+                  className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                />
+              </a>
+
+              {/* Tokopedia Button */}
+              <a
+                href={TOKOPEDIA_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Kunjungi toko Tokopedia Optik I See You"
+                title="Toko Tokopedia Official"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-[#03AC0E] hover:-translate-y-1.5 active:scale-95 group"
+              >
+                <Image
+                  src="/logo/Logo-Tokopedia.png"
+                  alt="Tokopedia"
+                  width={34}
+                  height={34}
+                  className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
                 />
               </a>
             </div>
@@ -394,6 +416,9 @@ export default function LandingPage() {
       {/* ═══ FASILITAS PEMERIKSAAN MATA ═══ */}
       <EyeExamFacilitySection />
 
+      {/* ═══ TENTANG KAMI & RESERVASI CEK MATA GRATIS ═══ */}
+      <AboutRefractionBookingSection />
+
       {/* ═══ CABANG & LOKASI ═══ */}
       <section id="lokasi" className="w-full bg-white px-6 py-16">
         <div className="mx-auto max-w-2xl">
@@ -412,27 +437,73 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ═══ GOOGLE BUSINESS REVIEWS & TESTIMONI ASLI ═══ */}
+      <GoogleReviewsSection />
+
       {/* ═══ FAQ & LOCAL SEO INFO SECTION ═══ */}
       <LocalFaqSection />
 
-      {/* ═══ FOOTER — Dark green, two-column layout ═══ */}
-      <footer className="w-full" style={{ background: "#1a4a2e" }}>
-        {/* Main footer content */}
-        <div className="mx-auto max-w-5xl px-8 md:px-16 py-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      {/* ═══ FOOTER — Luxury Emerald Multi-Column Layout ═══ */}
+      <footer className="w-full bg-[#0D2F1D] text-white border-t border-white/10">
+        {/* Top Trust Banner */}
+        <div className="border-b border-white/10 bg-black/20 px-6 py-6 sm:py-8">
+          <div className="mx-auto max-w-6xl grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-3.5">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-emerald-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+              </div>
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-white">100% Produk Original</h4>
+                <p className="text-[11px] text-white/60">Frame &amp; softlens terkurasi kualitas optik terbaik</p>
+              </div>
+            </div>
 
+            <div className="flex items-center justify-center sm:justify-start gap-3.5">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-emerald-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="22" y1="12" x2="18" y2="12"/>
+                  <line x1="6" y1="12" x2="2" y2="12"/>
+                  <line x1="12" y1="6" x2="12" y2="2"/>
+                  <line x1="12" y1="22" x2="12" y2="18"/>
+                </svg>
+              </div>
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-white">Faset Presisi CNC 0.01 mm</h4>
+                <p className="text-[11px] text-white/60">Mesin potong otomatis 3D tracing super rapi</p>
+              </div>
+            </div>
 
-          {/* LEFT — Brand + description + CTA buttons */}
-          <div className="flex flex-col gap-3">
-            {/* Logo text — persis seperti foto referensi */}
+            <div className="flex items-center justify-center sm:justify-start gap-3.5">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-emerald-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-white">Layanan Cepat &amp; Garansi</h4>
+                <p className="text-[11px] text-white/60">Pengerjaan kacamata express bisa ditunggu</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main 4-Column Footer Content */}
+        <div className="mx-auto max-w-6xl px-6 sm:px-10 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Col 1: Brand & Identity */}
+          <div className="space-y-4">
             <div className="flex flex-col" style={{ lineHeight: 1 }}>
-              {/* OPTIK — kecil, letter-spaced */}
               <span
                 style={{
                   fontFamily: "var(--font-playfair)",
                   fontSize: "11px",
-                  fontWeight: 500,
-                  letterSpacing: "0.32em",
-                  color: "rgba(255,255,255,0.85)",
+                  fontWeight: 600,
+                  letterSpacing: "0.35em",
+                  color: "#5ec97a",
                   textTransform: "uppercase",
                   marginBottom: "2px",
                   display: "block",
@@ -440,11 +511,10 @@ export default function LandingPage() {
               >
                 OPTIK
               </span>
-              {/* I SEE YOU — besar, serif bold */}
               <span
                 style={{
                   fontFamily: "var(--font-playfair)",
-                  fontSize: "30px",
+                  fontSize: "28px",
                   fontWeight: 900,
                   color: "#ffffff",
                   letterSpacing: "0.01em",
@@ -454,13 +524,12 @@ export default function LandingPage() {
               >
                 I SEE YOU
               </span>
-              {/* for every you — DM Serif italic */}
               <span
                 style={{
                   fontFamily: "var(--font-dm-serif)",
                   fontSize: "15px",
                   fontWeight: 400,
-                  color: "rgba(255,255,255,0.8)",
+                  color: "rgba(255,255,255,0.75)",
                   letterSpacing: "0.22em",
                   marginTop: "3px",
                   display: "block",
@@ -470,124 +539,156 @@ export default function LandingPage() {
               </span>
             </div>
 
-            <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.5)", maxWidth: "260px" }}>
-              AR Try-On Kacamata &amp; Photobooth berbasis kamera untuk pengalaman optik yang menyenangkan.
+            <p className="text-xs text-white/65 leading-relaxed">
+              Optik kacamata &amp; softlens estetik modern terpercaya sejak 2019 dengan 4 cabang resmi di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.
             </p>
 
-            {/* CTA Buttons — horizontal row */}
-            <div className="flex flex-wrap gap-2">
-              <a
-                href={PRICE_LIST_LENSA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/18 px-3.5 py-1.5 text-[11px] font-medium text-white/70 transition-all hover:text-white hover:border-white/30 active:scale-95"
-                style={{ background: "rgba(255,255,255,0.06)" }}
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                </svg>
-                Price List Lensa
-              </a>
-
+            <div className="flex flex-wrap gap-2 pt-2">
               <a
                 href={SHOPEE_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-orange-400/35 px-3.5 py-1.5 text-[11px] font-medium text-orange-300/80 transition-all hover:text-orange-200 active:scale-95"
-                style={{ background: "rgba(249,115,22,0.08)" }}
+                className="inline-flex items-center gap-1.5 rounded-full border border-orange-400/35 px-3 py-1 text-[11px] font-semibold text-orange-300 transition-all hover:bg-orange-500/20 active:scale-95"
               >
                 <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={12} height={12} className="h-3 w-3 object-contain" />
-                Shopee Store
+                Shopee
               </a>
-
+              <a
+                href={TOKOPEDIA_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/35 px-3 py-1 text-[11px] font-semibold text-emerald-300 transition-all hover:bg-emerald-500/20 active:scale-95"
+              >
+                <Image src="/logo/Logo-Tokopedia.png" alt="Tokopedia" width={14} height={14} className="h-3.5 w-3.5 object-contain" />
+                Tokopedia
+              </a>
               <a
                 href={konsultasiWhatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-green-400/35 px-3.5 py-1.5 text-[11px] font-medium text-green-300/80 transition-all hover:text-green-200 active:scale-95"
-                style={{ background: "rgba(34,197,94,0.08)" }}
+                className="inline-flex items-center gap-1.5 rounded-full border border-teal-400/35 px-3 py-1 text-[11px] font-semibold text-teal-300 transition-all hover:bg-teal-500/20 active:scale-95"
               >
                 <Image src="/logo/Logo-Whatsapp.png" alt="WhatsApp" width={12} height={12} className="h-3 w-3 object-contain" />
-                Konsultasi WA
+                WhatsApp
               </a>
             </div>
           </div>
 
-          {/* RIGHT — Instagram Official + Branch Grid + Photobooth CTA */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#5ec97a" }}>
-                INSTAGRAM OFFICIAL
-              </p>
-              <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>Follow 4 cabang kami</p>
-            </div>
+          {/* Col 2: Navigasi Layanan & Produk */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#5ec97a]">
+              Layanan &amp; Produk
+            </h4>
+            <ul className="space-y-2.5 text-xs text-white/70">
+              <li>
+                <Link href="/try-on" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Coba AR Try-On Kacamata
+                </Link>
+              </li>
+              <li>
+                <Link href="/katalog" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Katalog Frame Kacamata
+                </Link>
+              </li>
+              <li>
+                <Link href="/softlens" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Katalog Softlens &amp; Aksesoris
+                </Link>
+              </li>
+              <li>
+                <Link href="/photobooth" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> AR Photobooth &amp; Cetak Instan
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={PRICE_LIST_LENSA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-white flex items-center gap-1.5"
+                >
+                  <span className="text-emerald-400">›</span> Price List &amp; Jenis Lensa ↗
+                </a>
+              </li>
+              <li>
+                <a href="#fasilitas" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Fasilitas Mesin Potong Lensa
+                </a>
+              </li>
+            </ul>
+          </div>
 
-            {/* 2×2 Branch Grid — compact */}
-            <div className="grid grid-cols-2 gap-2">
+          {/* Col 3: Cabang Resmi & Alamat */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#5ec97a]">
+              4 Cabang Resmi
+            </h4>
+            <div className="space-y-3 text-xs">
+              {BRANCHES.map((b) => (
+                <div key={b.id} className="border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white">{b.city}</span>
+                    <a
+                      href={mapsDirectionsUrl(b)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-emerald-300 hover:underline"
+                    >
+                      Rute Maps ↗
+                    </a>
+                  </div>
+                  <p className="text-[11px] text-white/55 line-clamp-1 mt-0.5">{b.address}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Col 4: Instagram & Photobooth CTA */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#5ec97a]">
+              Social Media Official
+            </h4>
+            <p className="text-xs text-white/60">Ikuti info promo &amp; katalog terbaru di cabang terdekat:</p>
+
+            <div className="grid grid-cols-2 gap-1.5">
               {BRANCHES.map((b) => (
                 <a
                   key={b.id}
                   href={b.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-all hover:border-white/20 active:scale-95"
-                  style={{
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    background: "rgba(255,255,255,0.05)",
-                  }}
+                  className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-2 transition-all hover:bg-white/10 hover:border-white/20 active:scale-95"
                 >
-                  <span className="text-xs font-semibold text-white">
-                    {b.city}
-                  </span>
-                  <span className="text-[10px] font-normal" style={{ color: "#5ec97a" }}>
-                    {b.handle}
-                  </span>
+                  <p className="text-[11px] font-bold text-white">{b.city}</p>
+                  <p className="text-[9.5px] text-emerald-300 truncate">{b.handle}</p>
                 </a>
               ))}
             </div>
 
-            {/* Photobooth CTA */}
             <button
               onClick={start}
-              className="w-full rounded-lg py-3 text-xs font-semibold uppercase text-white/80 transition-all hover:text-white hover:brightness-110 active:scale-[0.97]"
-              style={{
-                border: "1px solid rgba(255,255,255,0.15)",
-                background: "rgba(255,255,255,0.06)",
-                letterSpacing: "0.1em",
-              }}
+              className="mt-2 w-full rounded-xl bg-isy-green-bright py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-emerald-500 active:scale-95"
             >
-              MULAI PHOTOBOOTH SEKARANG →
+              Mulai Photobooth AR →
             </button>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div
-          className="w-full border-t px-10 md:px-20 py-5"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
-        >
-          <div className="mx-auto max-w-5xl flex items-center justify-between flex-wrap gap-3">
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
-              Optik I See You · AR Photobooth &amp; Optical Studio
-            </p>
-            <div className="flex items-center">
-              {BRANCHES.map((b, i) => (
-                <span key={b.id} className="flex items-center">
-                  <a
-                    href={b.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs transition-colors hover:text-white/60"
-                    style={{ color: "rgba(255,255,255,0.35)" }}
-                  >
-                    {b.city}
-                  </a>
-                  {i < BRANCHES.length - 1 && (
-                    <span className="mx-2 text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>·</span>
-                  )}
-                </span>
-              ))}
+        {/* Bottom Legal & Copyright Bar */}
+        <div className="border-t border-white/10 bg-black/40 px-6 sm:px-10 py-5 text-xs text-white/50">
+          <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div>
+              <p className="text-xs font-medium text-white/70">
+                &copy; 2019 &ndash; 2026 Optik I See You. All Rights Reserved.
+              </p>
+              <p className="text-[10px] text-white/40 mt-0.5">
+                Layanan optik terpercaya, periksa mata digital, faset presisi CNC, dan AR Try-On interaktif.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 text-[11px] text-white/60">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Crafted for Every You</span>
             </div>
           </div>
         </div>

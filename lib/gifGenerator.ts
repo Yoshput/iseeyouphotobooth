@@ -182,7 +182,7 @@ export async function createAnimatedGif(
     // Tagline
     ctx.fillStyle = theme.textColor;
     ctx.font = "italic 700 20px Georgia, 'Times New Roman', serif";
-    ctx.fillText("Jadi Sahabat Mata Kamu ✨", width / 2, footerCenterY - 22);
+    ctx.fillText("Jadi Sahabat Mata Kamu", width / 2, footerCenterY - 22);
 
     // IG handle
     ctx.fillStyle = theme.igColor;

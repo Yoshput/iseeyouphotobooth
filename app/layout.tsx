@@ -94,8 +94,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#FAF6EC" },
@@ -163,9 +161,19 @@ export default function RootLayout({
                     "Optik modern terpercaya dengan layanan periksa mata, teknologi AR Try-On kacamata real-time, photobooth cetak instan, dan katalog softlens lengkap di Purwokerto, Wonosobo, Cilacap, dan Purbalingga.",
                   telephone: "+62895415614261",
                   priceRange: "$$",
+                  aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: "5.0",
+                    reviewCount: "7576",
+                    bestRating: "5",
+                    worstRating: "1",
+                  },
+                  foundingDate: "2019",
                   sameAs: [
                     "https://www.instagram.com/iseeyou.glasses",
                     "https://www.tiktok.com/@iseeyouglasses",
+                    "https://www.tokopedia.com/iseeyouglasses",
+                    "https://shopee.co.id/iseeyou.id",
                   ],
                   address: {
                     "@type": "PostalAddress",
@@ -300,6 +308,48 @@ export default function RootLayout({
                         "@type": "Answer",
                         text: "Anda cukup membuka fitur Mulai Coba AR di website optikiseeyou.com menggunakan kamera HP, laptop, atau tablet. Teknologi AR Face Landmark 3D akan memindai proporsi wajah secara real-time dan menampilkan bentuk frame kacamata secara presisi tanpa perlu instalasi aplikasi.",
                       },
+                    },
+                  ],
+                },
+                {
+                  "@type": "ItemList",
+                  "@id": "https://optikiseeyou.com/#sitelinks",
+                  name: "Navigasi Utama Optik I See You",
+                  itemListElement: [
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 1,
+                      name: "Katalog Frame Kacamata",
+                      description: "Koleksi frame kacamata premium & pilihan bentuk wajah",
+                      url: "https://www.optikiseeyou.com/katalog",
+                    },
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 2,
+                      name: "Katalog Softlens Lengkap",
+                      description: "Katalog softlens original kadar air tinggi & aksesoris",
+                      url: "https://www.optikiseeyou.com/softlens",
+                    },
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 3,
+                      name: "Coba AR Try-On Kacamata",
+                      description: "Coba kacamata langsung secara virtual di wajahmu",
+                      url: "https://www.optikiseeyou.com/try-on",
+                    },
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 4,
+                      name: "AR Photobooth & Cetak",
+                      description: "Photobooth kacamata seru dengan animasi GIF dan cetak instan",
+                      url: "https://www.optikiseeyou.com/photobooth",
+                    },
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 5,
+                      name: "4 Cabang Resmi",
+                      description: "Cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap",
+                      url: "https://www.optikiseeyou.com/#lokasi",
                     },
                   ],
                 },

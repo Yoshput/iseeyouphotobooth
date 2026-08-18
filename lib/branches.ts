@@ -101,12 +101,24 @@ export function mapsDirectionsUrl(branch: Branch) {
   return `https://www.google.com/maps/dir/?api=1&destination=${branch.lat},${branch.lng}`;
 }
 
+export function branchGoogleReviewsUrl(branch: Branch) {
+  if (branch.id === "purwokerto") {
+    return "https://www.google.com/search?q=Optik+I+See+You+Glasses+Purwokerto#lrd=0x2e655d8869c9b1bd:0x5e0b62125cb7394f,1,,,";
+  }
+  return `https://www.google.com/search?q=Optik+I+See+You+${encodeURIComponent(branch.city)}+Ulasan`;
+}
+
+export function branchGoogleMapsUrl(branch: Branch) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.name + " " + branch.city)}`;
+}
+
 /** Nomor WhatsApp Khusus Katalog & Pemesanan Frame */
 export const CATALOG_WA_NUMBER = "62895415614261";
 export const CS_WHATSAPP_NUMBER = "62895415614261";
 export const KONSULTASI_WA_NUMBER = "62895415614261";
 export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
 export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=ShopBySearch&searchKeyword=iseeyou.id";
+export const TOKOPEDIA_STORE_URL = "https://www.tokopedia.com/iseeyouglasses";
 
 export function branchWhatsappUrl(branch: Branch) {
   const num = branch.waNumber || branch.phone.replace(/[^0-9]/g, "");
@@ -130,3 +142,4 @@ export function konsultasiWhatsappUrl() {
   const message = `Halo Optik I See You, saya mau Konsultasi Gratis mengenai periksa mata & rekomendasi kacamata/lensa.`;
   return `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(message)}`;
 }
+

@@ -360,7 +360,7 @@ export default function CatalogPage() {
                   onClick={() => handleQuickTagClick(tag)}
                   className="rounded-full border border-isy-line bg-white/80 px-2.5 py-1 text-[10.5px] font-bold text-isy-green-deep hover:border-isy-green-bright hover:bg-isy-mist transition-all active:scale-95 shadow-2xs"
                 >
-                  🔍 {tag}
+                  {tag}
                 </button>
               ))}
             </div>

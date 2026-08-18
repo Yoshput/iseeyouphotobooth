@@ -293,7 +293,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         style: "Sunglasses Aviator",
         recommendedFor: ["Square", "Oval", "Diamond"],
         description: "Siluet modern dengan aksen warna amber gold yang elegan untuk penampilan outdoor stylish.",
-        glassesId: "sunglasses-black",
+        glassesId: "sunglasses-square-metal",
       },
     ],
   },

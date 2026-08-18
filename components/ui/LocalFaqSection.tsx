@@ -65,7 +65,7 @@ const FAQ_ITEMS: FaqItem[] = [
     links: [
       {
         label: "Coba Kacamata AR Sekarang →",
-        url: "/start",
+        url: "/try-on",
         external: false,
       },
       {

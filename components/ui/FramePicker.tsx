@@ -92,34 +92,8 @@ function VisualFrameMockup({ layout }: { layout: FrameLayout }) {
             </div>
           )}
 
-          {layout.id === "quartet_strip" && (
-            <div className="flex flex-col gap-1 h-full w-full">
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-            </div>
-          )}
-
           {layout.id === "quartet_grid" && (
             <div className="flex flex-col gap-1 h-full w-full">
-              <div className="flex gap-1 flex-1 w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              </div>
-              <div className="flex gap-1 flex-1 w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              </div>
-            </div>
-          )}
-
-          {layout.id === "sextet_grid" && (
-            <div className="flex flex-col gap-1 h-full w-full">
-              <div className="flex gap-1 flex-1 w-full">
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-                <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
-              </div>
               <div className="flex gap-1 flex-1 w-full">
                 <div className={`${slotStyle} flex-1`}><PersonIcon /></div>
                 <div className={`${slotStyle} flex-1`}><PersonIcon /></div>

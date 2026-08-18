@@ -38,8 +38,8 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Beranda" },
-    { href: "/photobooth?mode=ar", label: "Try On Kacamata" },
-    { href: "/photobooth?mode=photobooth", label: "Photobooth" },
+    { href: "/try-on", label: "Try On Kacamata" },
+    { href: "/photobooth", label: "Photobooth" },
     { href: "/katalog", label: "Katalog Frame" },
     { href: "/softlens", label: "Softlens" },
     { href: "/#lokasi", label: "Lokasi Cabang" },

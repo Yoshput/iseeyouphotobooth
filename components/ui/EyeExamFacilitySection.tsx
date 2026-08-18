@@ -273,7 +273,7 @@ export default function EyeExamFacilitySection() {
                   </span>
 
                   <span className="absolute bottom-3 right-3 rounded-full bg-isy-green-deep/90 text-white px-2.5 py-0.5 text-[9px] font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
-                    🔍 Klik Detail
+                    Lihat Detail
                   </span>
                 </div>
 

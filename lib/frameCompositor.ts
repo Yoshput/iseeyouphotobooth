@@ -28,7 +28,8 @@ export const FRAME_THEMES: FrameTheme[] = [
   {
     id: "classic-white",
     name: "Classic White",
-    description: "Desain khas Optik I See You dengan nuansa hijau elegan & bersih.",
+    badge: "Favorit",
+    description: "Desain khas Optik I See You dengan nuansa putih bersih & hijau elegan.",
     bgColor: "#FFFFFF",
     bgGradEnd: "#EAF6EC",
     topBarColor: "#116B3C",
@@ -41,9 +42,25 @@ export const FRAME_THEMES: FrameTheme[] = [
     supportedPhotoCounts: [1, 2, 3, 4, 6],
   },
   {
+    id: "emerald-luxury",
+    name: "Emerald Luxury",
+    badge: "Mewah · Gold",
+    description: "Tampilan deep green botol mewah dengan aksen emas yang anggun khas I See You.",
+    bgColor: "#0A482A",
+    bgGradEnd: "#052917",
+    topBarColor: "#2FA84F",
+    accentBarColor: "#E2B857",
+    textColor: "#FFFFFF",
+    igColor: "#E2B857",
+    slotBg: "#06361E",
+    slotBorder: "#14683C",
+    dotColor: "#2FA84F",
+    supportedPhotoCounts: [1, 2, 3, 4, 6],
+  },
+  {
     id: "vintage-film-bw",
     name: "Vintage Film B&W",
-    badge: "Tema Baru · 35mm",
+    badge: "Tema Retro · 35mm",
     description: "Hitam-putih analog dengan lubang sprocket roll film 35mm, grain, & stamp tanggal retro.",
     bgColor: "#141414",
     bgGradEnd: "#0A0A0A",
@@ -57,72 +74,10 @@ export const FRAME_THEMES: FrameTheme[] = [
     supportedPhotoCounts: [1, 2, 3, 4, 6],
   },
   {
-    id: "newspaper-editorial",
-    name: "News Paper Editorial",
-    badge: "Trending · 1-2 Foto",
-    description: "Khusus 1 atau 2 Foto: Sampul majalah/koran edisi khusus Optik I See You dengan headline script besar & layout majalah vintage.",
-    bgColor: "#F9F8F6",
-    bgGradEnd: "#F2F0EB",
-    topBarColor: "#116B3C",
-    accentBarColor: "#116B3C",
-    textColor: "#1A1A1A",
-    igColor: "#116B3C",
-    slotBg: "#EFECE6",
-    slotBorder: "#1A1A1A",
-    dotColor: "#D0CCC4",
-    supportedPhotoCounts: [1, 2],
-    supportedLayoutIds: ["solo", "duo_vert"],
-  },
-  {
-    id: "frame-koran-custom",
-    name: "Frame Koran I See You",
-    badge: "Edisi Khusus · 3 Foto",
-    description: "Frame Koran Klasik 'Optik i see you ?' edisi khusus dengan space foto transparan di bagian tengah & bawah.",
-    bgColor: "#F9F8F6",
-    bgGradEnd: "#F2F0EB",
-    topBarColor: "#116B3C",
-    accentBarColor: "#116B3C",
-    textColor: "#1A1A1A",
-    igColor: "#116B3C",
-    slotBg: "#FFFFFF",
-    slotBorder: "#1A1A1A",
-    dotColor: "#D0CCC4",
-    supportedLayoutIds: ["trio_koran"],
-  },
-  {
-    id: "emerald-luxury",
-    name: "Emerald Luxury",
-    description: "Tampilan deep green mewah dengan aksen emas yang anggun.",
-    bgColor: "#0A482A",
-    bgGradEnd: "#052917",
-    topBarColor: "#2FA84F",
-    accentBarColor: "#E2B857",
-    textColor: "#FFFFFF",
-    igColor: "#E2B857",
-    slotBg: "#06361E",
-    slotBorder: "#14683C",
-    dotColor: "#2FA84F",
-    supportedPhotoCounts: [1, 2, 3, 4, 6],
-  },
-  {
-    id: "vintage-warm",
-    name: "Vintage Warm",
-    description: "Warna krem hangat ala foto polaroid klasik.",
-    bgColor: "#FDF9F0",
-    bgGradEnd: "#F3ECE0",
-    topBarColor: "#8C6239",
-    accentBarColor: "#C69C6D",
-    textColor: "#4A3525",
-    igColor: "#8C6239",
-    slotBg: "#F7F0E3",
-    slotBorder: "#E2D5C3",
-    dotColor: "#8C6239",
-    supportedPhotoCounts: [1, 2, 3, 4, 6],
-  },
-  {
     id: "pastel-pink",
     name: "Pastel Cute",
-    description: "Sentuhan warna pastel manis & playful.",
+    badge: "Cute · Manis",
+    description: "Sentuhan warna pastel blush pink manis & playful ala studio estetik.",
     bgColor: "#FFF5F7",
     bgGradEnd: "#FCE4EC",
     topBarColor: "#EC4899",
@@ -135,67 +90,45 @@ export const FRAME_THEMES: FrameTheme[] = [
     supportedPhotoCounts: [1, 2, 3, 4, 6],
   },
   {
-    id: "midnight-dark",
-    name: "Midnight Dark",
-    description: "Nuansa gelap kontemporer dengan aksen neon jernih.",
-    bgColor: "#121815",
-    bgGradEnd: "#090D0B",
+    id: "frame-koran-custom",
+    name: "Frame Koran I See You",
+    badge: "Edisi Khusus · Koran",
+    description: "Frame Koran Klasik 'Optik i see you ?' edisi khusus dengan layout koran vintage karya manual.",
+    bgColor: "#F9F8F6",
+    bgGradEnd: "#F2F0EB",
+    topBarColor: "#116B3C",
+    accentBarColor: "#116B3C",
+    textColor: "#1A1A1A",
+    igColor: "#116B3C",
+    slotBg: "#FFFFFF",
+    slotBorder: "#1A1A1A",
+    dotColor: "#D0CCC4",
+    supportedPhotoCounts: [1, 2, 3, 4, 6],
+  },
+  {
+    id: "signature-isy-custom",
+    name: "Signature I See You",
+    badge: "Tahap Update",
+    description: "Desain frame khas Optik I See You spesial. Desain manual sedang dalam tahap pembaruan.",
+    bgColor: "#0E3821",
+    bgGradEnd: "#062013",
     topBarColor: "#2FA84F",
-    accentBarColor: "#10B981",
-    textColor: "#F3F4F6",
-    igColor: "#2FA84F",
-    slotBg: "#1C2420",
-    slotBorder: "#2A3630",
+    accentBarColor: "#E2B857",
+    textColor: "#FFFFFF",
+    igColor: "#E2B857",
+    slotBg: "#082916",
+    slotBorder: "#2FA84F",
     dotColor: "#2FA84F",
-    supportedPhotoCounts: [1, 2, 3, 4, 6],
-  },
-  // ── Structural Themes: Optics / Kacamata Motif ───────────────────────────
-  {
-    id: "optical-blueprint",
-    name: "Optical Blueprint",
-    badge: "Tema Baru · Teknis",
-    description: "Desain engineering blueprint optik dengan grid teknis, siluet frame kacamata, dan marker ukuran lensa.",
-    bgColor: "#0D1B2A",
-    bgGradEnd: "#071018",
-    topBarColor: "#00B4D8",
-    accentBarColor: "#0077B6",
-    textColor: "#CAF0F8",
-    igColor: "#00B4D8",
-    slotBg: "#0A2540",
-    slotBorder: "#00B4D8",
-    dotColor: "#00B4D8",
-    supportedPhotoCounts: [1, 2, 3, 4, 6],
-  },
-  {
-    id: "lens-flare-gold",
-    name: "Lens Flare Gold",
-    badge: "Tema Baru · Mewah",
-    description: "Efek bokeh lensa kamera mewah dengan cincin flare gold dan elemen resep kacamata optician.",
-    bgColor: "#0A0A0A",
-    bgGradEnd: "#1A1200",
-    topBarColor: "#B8860B",
-    accentBarColor: "#D4AF37",
-    textColor: "#FFF8DC",
-    igColor: "#D4AF37",
-    slotBg: "#111100",
-    slotBorder: "#D4AF37",
-    dotColor: "#D4AF37",
     supportedPhotoCounts: [1, 2, 3, 4, 6],
   },
 ];
 
 export function isThemeCompatibleWithLayout(theme: FrameTheme, layout: FrameLayout): boolean {
-  if (theme.supportedLayoutIds && theme.supportedLayoutIds.length > 0) {
-    return theme.supportedLayoutIds.includes(layout.id);
-  }
-  if (theme.supportedPhotoCounts && theme.supportedPhotoCounts.length > 0) {
-    return theme.supportedPhotoCounts.includes(layout.numPhotos);
-  }
   return true;
 }
 
 export function getCompatibleThemes(layout: FrameLayout): FrameTheme[] {
-  return FRAME_THEMES.filter((theme) => isThemeCompatibleWithLayout(theme, layout));
+  return FRAME_THEMES;
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -581,7 +514,7 @@ async function drawNewspaperEditorialFrame(
   ctx.font = "italic 700 16px Georgia, serif";
   ctx.fillStyle = "#1A1A1A";
   ctx.textAlign = "right";
-  ctx.fillText("Jadi Sahabat Mata Kamu ✨", width - margin, FOOTER_Y + 24);
+  ctx.fillText("Jadi Sahabat Mata Kamu", width - margin, FOOTER_Y + 24);
 
   ctx.font = "bold 14px 'Courier New', monospace";
   ctx.fillStyle = "#116B3C";
@@ -1023,7 +956,7 @@ async function drawLensFlareGoldFrame(
   ctx.font = "italic 700 24px Georgia, serif";
   ctx.fillStyle = "rgba(255, 248, 220, 0.9)";
   ctx.textAlign = "center";
-  ctx.fillText("Jadi Sahabat Mata Kamu ✨", width / 2, FOOTER_Y + 44);
+  ctx.fillText("Jadi Sahabat Mata Kamu", width / 2, FOOTER_Y + 44);
 
   ctx.font = "bold 20px 'Inter', sans-serif";
   ctx.fillStyle = "#D4AF37";
@@ -1201,7 +1134,7 @@ export async function compositeFrame(
 
   ctx.fillStyle = theme.textColor;
   ctx.font = "italic 700 36px Georgia, 'Times New Roman', serif";
-  ctx.fillText("Jadi Sahabat Mata Kamu ✨", width / 2, footerCenterY - 44);
+  ctx.fillText("Jadi Sahabat Mata Kamu", width / 2, footerCenterY - 44);
 
   ctx.fillStyle = theme.igColor;
   ctx.font = "bold 30px 'Inter', Arial, sans-serif";
