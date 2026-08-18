@@ -676,7 +676,7 @@ export default function LandingPage() {
 
         {/* Bottom Legal & Copyright Bar */}
         <div className="border-t border-white/10 bg-black/40 px-6 sm:px-10 py-5 text-xs text-white/50">
-          <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div>
               <p className="text-xs font-medium text-white/70">
                 &copy; 2019 &ndash; 2026 Optik I See You. All Rights Reserved.
@@ -686,9 +686,20 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] text-white/60">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Crafted for Every You</span>
+            {/* Legal Links */}
+            <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-white/60">
+              <Link href="/kebijakan-privasi" className="hover:text-white transition-colors">
+                Kebijakan Privasi
+              </Link>
+              <span className="text-white/20">&bull;</span>
+              <Link href="/syarat-ketentuan" className="hover:text-white transition-colors">
+                Syarat &amp; Ketentuan
+              </Link>
+              <span className="text-white/20">&bull;</span>
+              <div className="inline-flex items-center gap-1.5 text-emerald-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Crafted for Every You</span>
+              </div>
             </div>
           </div>
         </div>
