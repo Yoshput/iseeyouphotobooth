@@ -11,7 +11,7 @@
  * - Instagram 4 Cabang links (@iseeyou.glasses, @iseeyou.wonosobo, @iseeyou.cilacap, @iseeyou.purbalingga)
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
@@ -23,13 +23,13 @@ import AboutRefractionBookingSection from "@/components/ui/AboutRefractionBookin
 import GoogleReviewsSection from "@/components/ui/GoogleReviewsSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
+import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 import Link from "next/link";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
 import {
   BRANCHES,
   PRICE_LIST_LENSA_URL,
   SHOPEE_STORE_URL,
-  TOKOPEDIA_STORE_URL,
   konsultasiWhatsappUrl,
   mapsDirectionsUrl,
 } from "@/lib/branches";
@@ -58,6 +58,7 @@ function Step({ n, title, desc }: { n: number; title: string; desc: string }) {
 
 export default function LandingPage() {
   const router = useRouter();
+  const [isBranchWAModalOpen, setIsBranchWAModalOpen] = useState(false);
 
   const logoRef = useRef<HTMLDivElement>(null);
   const tagRef = useRef<HTMLDivElement>(null);
@@ -219,16 +220,15 @@ export default function LandingPage() {
               height={270}
             />
 
-            {/* ── Prominent Floating Action Buttons (WA, Shopee, Tokopedia) below floating glasses ── */}
+            {/* ── Prominent Floating Action Buttons (WA 4 Cabang, Shopee, Google Maps) below floating glasses ── */}
             <div className="flex flex-row items-center justify-center gap-4 sm:gap-6 mt-8 z-10">
-              {/* WhatsApp Button */}
-              <a
-                href={konsultasiWhatsappUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Hubungi kami via WhatsApp untuk konsultasi"
-                title="Chat WhatsApp CS"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group"
+              {/* WhatsApp 4 Cabang Button */}
+              <button
+                type="button"
+                onClick={() => setIsBranchWAModalOpen(true)}
+                aria-label="Hubungi kami via WhatsApp untuk 4 Cabang (Purwokerto, Purbalingga, Cilacap, Wonosobo)"
+                title="Chat WhatsApp 4 Cabang"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
               >
                 <span className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping opacity-25 group-hover:opacity-40" />
                 <Image
@@ -238,7 +238,7 @@ export default function LandingPage() {
                   height={34}
                   className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
                 />
-              </a>
+              </button>
 
               {/* Shopee Button */}
               <a
@@ -258,23 +258,29 @@ export default function LandingPage() {
                 />
               </a>
 
-              {/* Tokopedia Button */}
-              <a
-                href={TOKOPEDIA_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Kunjungi toko Tokopedia Optik I See You"
-                title="Toko Tokopedia Official"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-[#03AC0E] hover:-translate-y-1.5 active:scale-95 group"
+              {/* Google Maps Button — Direct Smooth Scroll to 4 Branches Section */}
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("lokasi");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  } else {
+                    router.push("#lokasi");
+                  }
+                }}
+                aria-label="Lihat Lokasi 4 Cabang Optik I See You di Google Maps"
+                title="Lihat Lokasi 4 Cabang di Google Maps"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
               >
                 <Image
-                  src="/logo/Logo-Tokopedia.png"
-                  alt="Tokopedia"
+                  src="/logo/Logo-Gmaps.png"
+                  alt="Google Maps"
                   width={34}
                   height={34}
                   className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
                 />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -553,24 +559,14 @@ export default function LandingPage() {
                 <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={12} height={12} className="h-3 w-3 object-contain" />
                 Shopee
               </a>
-              <a
-                href={TOKOPEDIA_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/35 px-3 py-1 text-[11px] font-semibold text-emerald-300 transition-all hover:bg-emerald-500/20 active:scale-95"
-              >
-                <Image src="/logo/Logo-Tokopedia.png" alt="Tokopedia" width={14} height={14} className="h-3.5 w-3.5 object-contain" />
-                Tokopedia
-              </a>
-              <a
-                href={konsultasiWhatsappUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-teal-400/35 px-3 py-1 text-[11px] font-semibold text-teal-300 transition-all hover:bg-teal-500/20 active:scale-95"
+              <button
+                type="button"
+                onClick={() => setIsBranchWAModalOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-teal-400/35 px-3 py-1 text-[11px] font-semibold text-teal-300 transition-all hover:bg-teal-500/20 active:scale-95 cursor-pointer"
               >
                 <Image src="/logo/Logo-Whatsapp.png" alt="WhatsApp" width={12} height={12} className="h-3 w-3 object-contain" />
-                WhatsApp
-              </a>
+                WhatsApp 4 Cabang
+              </button>
             </div>
           </div>
 
@@ -704,6 +700,12 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* ═══ MODAL POPUP WHATSAPP 4 CABANG ═══ */}
+      <BranchWhatsAppModal
+        isOpen={isBranchWAModalOpen}
+        onClose={() => setIsBranchWAModalOpen(false)}
+      />
     </main>
   );
 }

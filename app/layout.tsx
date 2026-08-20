@@ -172,7 +172,6 @@ export default function RootLayout({
                   sameAs: [
                     "https://www.instagram.com/iseeyou.glasses",
                     "https://www.tiktok.com/@iseeyouglasses",
-                    "https://www.tokopedia.com/iseeyouglasses",
                     "https://shopee.co.id/iseeyou.id",
                   ],
                   address: {

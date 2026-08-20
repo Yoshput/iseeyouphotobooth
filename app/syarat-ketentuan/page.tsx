@@ -147,7 +147,6 @@ export default function SyaratKetentuanPage() {
                 <li>Kasir gerai resmi cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap (Tunai, QRIS, Kartu Debit, Transfer).</li>
                 <li>Nomor WhatsApp Pemesanan Resmi (+62 895-4156-14261).</li>
                 <li>Shopee Official Store: <strong>shopee.co.id/iseeyou.id</strong></li>
-                <li>Tokopedia Official Store: <strong>tokopedia.com/iseeyouglasses</strong></li>
               </ul>
             </section>
 

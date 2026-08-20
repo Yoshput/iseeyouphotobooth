@@ -118,7 +118,6 @@ export const CS_WHATSAPP_NUMBER = "62895415614261";
 export const KONSULTASI_WA_NUMBER = "62895415614261";
 export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
 export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=ShopBySearch&searchKeyword=iseeyou.id";
-export const TOKOPEDIA_STORE_URL = "https://www.tokopedia.com/iseeyouglasses";
 
 export function branchWhatsappUrl(branch: Branch) {
   const num = branch.waNumber || branch.phone.replace(/[^0-9]/g, "");

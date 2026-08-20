@@ -25,7 +25,7 @@ import { FRAME_LAYOUTS, type FrameLayout } from "@/lib/frameLayouts";
 import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, getCompatibleThemes, type FrameTheme } from "@/lib/frameCompositor";
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
-import { csWhatsappUrl, SHOPEE_STORE_URL, TOKOPEDIA_STORE_URL } from "@/lib/branches";
+import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
 import { uploadPhotoForQR } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
@@ -343,11 +343,6 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
               icon: <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={32} height={32} className="h-8 w-8 object-contain" />,
               label: "Shopee",
               fn: () => window.open(SHOPEE_STORE_URL, "_blank"),
-            },
-            {
-              icon: <Image src="/logo/Logo-Tokopedia.png" alt="Tokopedia" width={32} height={32} className="h-8 w-8 object-contain" />,
-              label: "Tokopedia",
-              fn: () => window.open(TOKOPEDIA_STORE_URL, "_blank"),
             },
           ].map(({ icon, label, fn, disabled }) => (
             <button key={label} onClick={fn} disabled={disabled}
