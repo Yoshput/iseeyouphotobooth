@@ -375,7 +375,7 @@ export default function CatalogPage() {
                   </li>
                   <li className="flex items-center gap-2.5">
                     <span className="text-isy-green-bright font-bold">✓</span>
-                    <span>Bisa langsung coba via Try-On AR</span>
+                    <span>Order &amp; konsultasi via WhatsApp cabang</span>
                   </li>
                 </ul>
               </div>
