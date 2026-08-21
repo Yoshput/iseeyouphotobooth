@@ -64,7 +64,7 @@ export default function GoogleReviewsSection() {
       : REVIEWS.filter((r) => r.city === selectedCity);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#FAF6EC] px-6 py-20 sm:py-28 border-t border-isy-line/60">
+    <section id="testimoni" className="relative w-full overflow-hidden bg-[#FAF6EC] px-6 py-20 sm:py-28 border-t border-isy-line/60">
       <div className="mx-auto max-w-6xl relative z-10 space-y-12">
         {/* Header with Google Rating Badge */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
@@ -88,15 +88,22 @@ export default function GoogleReviewsSection() {
           </h2>
 
           {/* Rating Summary Bar */}
-          <div className="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-2xl border border-isy-line shadow-xs">
+          <a
+            href={branchGoogleReviewsUrl(BRANCHES[0])}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Buka Ulasan Google Optik I See You"
+            className="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-2xl border border-isy-line shadow-xs hover:border-isy-green-bright/60 hover:shadow-sm transition-all cursor-pointer"
+          >
             <span className="text-2xl font-black text-isy-green-deep">5.0</span>
             <div className="flex gap-1 text-amber-400 text-base">
               {"★★★★★"}
             </div>
-            <span className="text-xs text-isy-ink/60 border-l border-isy-line pl-3">
+            <span className="text-xs text-isy-ink/60 border-l border-isy-line pl-3 flex items-center gap-1.5 font-medium">
               7.576+ Ulasan Google Bintang 5
+              <span className="text-isy-green-bright text-[11px]">↗</span>
             </span>
-          </div>
+          </a>
         </div>
 
         {/* City Filter Pills */}
@@ -105,7 +112,7 @@ export default function GoogleReviewsSection() {
             <button
               key={city}
               onClick={() => setSelectedCity(city)}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                 selectedCity === city
                   ? "bg-isy-green-deep text-white shadow-sm"
                   : "bg-white text-isy-ink/60 border border-isy-line hover:text-isy-green-deep"
@@ -118,37 +125,49 @@ export default function GoogleReviewsSection() {
 
         {/* Reviews Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredReviews.map((r, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-isy-line bg-white p-5 flex flex-col justify-between space-y-4 shadow-xs transition-all hover:border-isy-green-bright/40 hover:shadow-md"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-0.5 text-amber-400 text-xs">
-                    {"★★★★★"}
+          {filteredReviews.map((r, i) => {
+            const branchObj = BRANCHES.find((b) => b.city.toLowerCase() === r.city.toLowerCase());
+            const reviewUrl = branchObj ? branchGoogleReviewsUrl(branchObj) : branchGoogleReviewsUrl(BRANCHES[0]);
+
+            return (
+              <a
+                key={i}
+                href={reviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Lihat ulasan ${r.city} langsung di Google Maps`}
+                className="group rounded-2xl border border-isy-line bg-white p-5 flex flex-col justify-between space-y-4 shadow-xs transition-all hover:border-isy-green-bright/60 hover:shadow-md hover:-translate-y-1 block cursor-pointer"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-0.5 text-amber-400 text-xs">
+                      {"★★★★★"}
+                    </div>
+                    <span className="text-[10px] font-semibold text-isy-ink/40">
+                      {r.date}
+                    </span>
                   </div>
-                  <span className="text-[10px] font-semibold text-isy-ink/40">
-                    {r.date}
+
+                  <p className="text-xs text-isy-ink/80 leading-relaxed italic">
+                    &ldquo;{r.text}&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-isy-line/60 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-bold text-isy-green-deep flex items-center gap-1">
+                      {r.name}
+                      <span className="text-[10px] text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </h4>
+                    <p className="text-[10px] text-isy-green-bright font-semibold">{r.city}</p>
+                  </div>
+                  <span className="rounded-full bg-isy-green-bright/10 px-2.5 py-0.5 text-[9.5px] font-bold text-isy-green-deep">
+                    {r.badge}
                   </span>
                 </div>
-
-                <p className="text-xs text-isy-ink/80 leading-relaxed italic">
-                  &ldquo;{r.text}&rdquo;
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-isy-line/60 flex items-center justify-between">
-                <div>
-                  <h4 className="text-xs font-bold text-isy-green-deep">{r.name}</h4>
-                  <p className="text-[10px] text-isy-green-bright font-semibold">{r.city}</p>
-                </div>
-                <span className="rounded-full bg-isy-green-bright/10 px-2.5 py-0.5 text-[9.5px] font-bold text-isy-green-deep">
-                  {r.badge}
-                </span>
-              </div>
-            </div>
-          ))}
+              </a>
+            );
+          })}
         </div>
 
         {/* Branch Direct Google Maps Links */}

@@ -9,41 +9,48 @@
 import { Suspense, useState } from "react";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
+import { downloadOrShareImage } from "@/lib/saveImage";
 
 function DownloadPortalContent() {
- const searchParams = useSearchParams();
- const router = useRouter();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
- const stripUrl = searchParams?.get("strip") || "";
- const gifUrl = searchParams?.get("gif") || "";
+  const stripUrl = searchParams?.get("strip") || "";
+  const gifUrl = searchParams?.get("gif") || "";
 
- const [activeTab, setActiveTab] = useState<"strip" | "gif">("strip");
- const [toast, setToast] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"strip" | "gif">("strip");
+  const [toast, setToast] = useState<string | null>(null);
 
- const showToast = (msg: string) => {
- setToast(msg);
- setTimeout(() => setToast(null), 3000);
- };
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  };
 
- const handleDownloadStrip = () => {
- if (!stripUrl) return;
- const a = document.createElement("a");
- a.href = stripUrl;
- a.download = `iseeyou-strip-${Date.now()}.jpg`;
- a.target = "_blank";
- a.click();
- showToast("Foto strip HD diunduh! ");
- };
+  const handleDownloadStrip = async () => {
+    if (!stripUrl) return;
+    showToast("Menyiapkan foto HD...");
+    const res = await downloadOrShareImage(
+      stripUrl,
+      `iseeyou-photobooth-${Date.now()}.jpg`,
+      "Optik I See You — Foto Strip HD"
+    );
+    if (res.success) {
+      showToast(res.method === "share" ? "Buka menu Simpan Gambar!" : "Foto berhasil disimpan!");
+    }
+  };
 
- const handleDownloadGif = () => {
- if (!gifUrl) return;
- const a = document.createElement("a");
- a.href = gifUrl;
- a.download = `iseeyou-animasi-${Date.now()}.gif`;
- a.target = "_blank";
- a.click();
- showToast("GIF animasi diunduh! ");
- };
+  const handleDownloadGif = async () => {
+    if (!gifUrl) return;
+    showToast("Menyiapkan GIF animasi...");
+    const res = await downloadOrShareImage(
+      gifUrl,
+      `iseeyou-animasi-${Date.now()}.gif`,
+      "Optik I See You — Animasi GIF"
+    );
+    if (res.success) {
+      showToast(res.method === "share" ? "Buka menu Simpan Gambar!" : "GIF berhasil disimpan!");
+    }
+  };
 
  const handleShareWA = () => {
  handleDownloadStrip();

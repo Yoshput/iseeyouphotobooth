@@ -37,12 +37,10 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { href: "/", label: "Beranda" },
-    { href: "/try-on", label: "Try On Kacamata" },
     { href: "/photobooth", label: "Photobooth" },
-    { href: "/katalog", label: "Katalog Frame" },
-    { href: "/softlens", label: "Softlens" },
-    { href: "/#lokasi", label: "Lokasi Cabang" },
+    { href: "/katalog", label: "Katalog" },
+    { href: "/#lokasi", label: "Lokasi" },
+    { href: "/#testimoni", label: "Testi" },
   ];
 
   return (
@@ -76,11 +74,41 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1.5 p-1 transition-all">
+            {/* Home Icon Button */}
+            <Link
+              href="/"
+              aria-label="Beranda"
+              title="Beranda"
+              className={`rounded-full p-2.5 transition-all duration-200 flex items-center justify-center ${
+                pathname === "/"
+                  ? "bg-isy-green-deep text-white shadow-md"
+                  : "text-isy-ink/80 hover:bg-isy-mist hover:text-isy-green-deep hover:scale-105 active:scale-95"
+              }`}
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </Link>
+
+            {/* Other Navigation Links */}
             {navLinks.map((link) => {
+              const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
               const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : (pathname ?? "").startsWith(link.href.split("?")[0]);
+                isKatalog ||
+                (link.href.startsWith("/#")
+                  ? false
+                  : (pathname ?? "").startsWith(link.href.split("?")[0]));
+
               return (
                 <Link
                   key={link.href}
@@ -118,15 +146,39 @@ export default function Navbar() {
 
         {/* Mobile Bottom Nav Bar */}
         <div className="flex md:hidden items-center justify-around border-t border-isy-line/60 bg-white/90 backdrop-blur-md px-2 py-2 overflow-x-auto text-[11px] font-bold">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="shrink-0 px-2.5 py-1 text-isy-ink/70 hover:text-isy-green-deep active:scale-95"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href="/"
+            aria-label="Beranda"
+            className={`flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+              pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-ink/70 hover:text-isy-green-deep"
+            }`}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>Home</span>
+          </Link>
+          {navLinks.map((link) => {
+            const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
+            const isActive =
+              isKatalog ||
+              (link.href.startsWith("/#")
+                ? false
+                : (pathname ?? "").startsWith(link.href.split("?")[0]));
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+                  isActive ? "bg-isy-green-deep text-white" : "text-isy-ink/70 hover:text-isy-green-deep active:scale-95"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
       </header>
 

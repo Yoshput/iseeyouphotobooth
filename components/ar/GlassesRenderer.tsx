@@ -75,7 +75,7 @@ const TAU_MS = 80;
  * (logs once every 60 frames for face slot 0 only).
  * Keep false in production.
  */
-const SCALE_DEBUG = true;
+const SCALE_DEBUG = false;
 
 const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
   function GlassesRenderer(

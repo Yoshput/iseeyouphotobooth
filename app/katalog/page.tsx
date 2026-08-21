@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/ui/Navbar";
 import FloatingSunglasses from "@/components/katalog/FloatingSunglasses";
 import CatalogConfetti from "@/components/katalog/CatalogConfetti";
@@ -312,12 +313,23 @@ export default function CatalogPage() {
             Koleksi Frame Terlengkap
           </h1>
 
-          <p className="mx-auto max-w-xl text-xs font-medium text-isy-ink/60 sm:text-sm leading-relaxed">
-            Temukan kacamata impianmu dan pesan langsung dengan spesifikasi lengkap!
-          </p>
+          {/* Main Catalog Tabs Switcher (Frame vs Softlens) */}
+          <div className="pt-2 flex justify-center">
+            <div className="inline-flex items-center rounded-full bg-isy-mist p-1 border border-isy-line shadow-xs">
+              <span className="flex items-center gap-2 rounded-full bg-isy-green-deep px-5 py-2 text-xs font-black text-white shadow-sm">
+                <span>👓 Frame Kacamata</span>
+              </span>
+              <Link
+                href="/softlens"
+                className="flex items-center gap-2 rounded-full px-5 py-2 text-xs font-bold text-isy-ink/70 hover:text-isy-green-deep hover:bg-white/80 transition-all active:scale-95"
+              >
+                <span>👁️ Softlens &amp; Aksesoris</span>
+              </Link>
+            </div>
+          </div>
 
           {/* Search Bar Input */}
-          <div className="pt-2 max-w-xl mx-auto space-y-3">
+          <div className="pt-1 max-w-xl mx-auto space-y-3">
             <div className="relative flex items-center">
               <svg
                 className="absolute left-4 h-4 w-4 text-isy-ink/40 pointer-events-none"

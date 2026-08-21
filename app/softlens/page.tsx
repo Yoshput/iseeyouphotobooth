@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/ui/Navbar";
 import SoftlensCartDrawer from "@/components/katalog/SoftlensCartDrawer";
 import ProductImageZoomModal from "@/components/katalog/ProductImageZoomModal";
@@ -487,10 +488,20 @@ export default function SoftlensCatalogPage() {
             <span className="text-isy-green-bright italic">Mewah, Elegan &amp; Nyaman</span>
           </h1>
 
-          <p className="text-xs sm:text-sm font-medium text-isy-ink/60 leading-relaxed max-w-2xl mx-auto">
-            Koleksi Softlens Exoticon, Miss ICE, Golden Eye Prestige, Russian Velvet &amp; Cairan Perawatan Steril.
-            Klik produk untuk zoom poster detail HD &amp; pesan mudah via WhatsApp CS.
-          </p>
+          {/* Main Catalog Tabs Switcher (Frame vs Softlens) */}
+          <div className="pt-2 flex justify-center">
+            <div className="inline-flex items-center rounded-full bg-isy-mist p-1 border border-isy-line shadow-xs">
+              <Link
+                href="/katalog"
+                className="flex items-center gap-2 rounded-full px-5 py-2 text-xs font-bold text-isy-ink/70 hover:text-isy-green-deep hover:bg-white/80 transition-all active:scale-95"
+              >
+                <span>👓 Frame Kacamata</span>
+              </Link>
+              <span className="flex items-center gap-2 rounded-full bg-isy-green-deep px-5 py-2 text-xs font-black text-white shadow-sm">
+                <span>👁️ Softlens &amp; Aksesoris</span>
+              </span>
+            </div>
+          </div>
 
           {/* Search bar inline di hero */}
           <div className="relative max-w-xl mx-auto">

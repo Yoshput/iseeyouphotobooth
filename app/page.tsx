@@ -44,18 +44,6 @@ function FeatureCard({ title, desc, accent }: { title: string; desc: string; acc
   );
 }
 
-function Step({ n, title, desc }: { n: number; title: string; desc: string }) {
-  return (
-    <div className="flex flex-col items-center gap-3 text-center">
-      <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-isy-green-deep text-lg font-black text-white shadow-lg">
-        {n}
-      </div>
-      <p className="text-sm font-bold text-isy-green-deep">{title}</p>
-      <p className="text-xs text-isy-ink/60 leading-relaxed max-w-[130px]">{desc}</p>
-    </div>
-  );
-}
-
 export default function LandingPage() {
   const router = useRouter();
   const [isBranchWAModalOpen, setIsBranchWAModalOpen] = useState(false);
@@ -122,43 +110,44 @@ export default function LandingPage() {
             </div>
 
             {/* CTA */}
-            <div ref={ctaRef} className="mt-8 w-full max-w-[420px] space-y-4">
-              {/* Primary CTA — single dominant button */}
+            <div ref={ctaRef} className="mt-8 w-full max-w-[420px] space-y-3">
+              {/* Primary CTA — Mulai Try-On / Photobooth */}
               <button
                 onClick={start}
-                className="w-full rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 px-6 text-[13px] font-black uppercase tracking-[0.12em] text-white shadow-lg shadow-isy-green-bright/30 transition-all hover:scale-[1.02] hover:shadow-isy-green-bright/40 active:scale-[0.97]"
+                className="w-full rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 px-6 text-[13px] font-black uppercase tracking-[0.12em] text-white shadow-lg shadow-isy-green-bright/30 transition-all hover:scale-[1.02] hover:shadow-isy-green-bright/40 active:scale-[0.97] cursor-pointer"
               >
                 Mulai Try-On / Photobooth
               </button>
 
-              {/* Secondary links — pill/bubble style, clearly clickable */}
-              <div className="flex flex-wrap items-center gap-2 mt-1">
-                <Link
-                  href="/katalog"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/80 backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-isy-ink/70 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
+              {/* Antri Cek Mata & Konsultasi Button — slightly larger & prominent */}
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("antrian-cek-mata");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  } else {
+                    router.push("#antrian-cek-mata");
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2.5 rounded-2xl border-2 border-isy-green-deep/30 bg-white/90 backdrop-blur-md py-4 px-6 text-[13.5px] font-black uppercase tracking-[0.1em] text-isy-green-deep shadow-md shadow-black/5 transition-all duration-200 hover:border-isy-green-deep hover:bg-isy-green-deep hover:text-white hover:scale-[1.02] hover:shadow-lg active:scale-[0.97] cursor-pointer group"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-isy-green-bright group-hover:text-white transition-colors"
                 >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                  Katalog Frame
-                </Link>
-
-                <Link
-                  href="/softlens"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/80 backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-isy-ink/70 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
-                  Softlens
-                </Link>
-
-                <a
-                  href={PRICE_LIST_LENSA_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-full border border-isy-green-deep/20 bg-white/80 backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-isy-ink/70 shadow-sm transition-all duration-200 hover:border-isy-green-bright hover:bg-white hover:text-isy-green-deep hover:-translate-y-0.5 hover:scale-[1.04] hover:shadow-md active:scale-95"
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  Pricelist Lensa
-                </a>
-              </div>
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span>Antri Cek Mata &amp; Konsultasi</span>
+              </button>
             </div>
           </div>
 
@@ -393,39 +382,16 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ CARA KERJA ═══ */}
-      <section className="w-full px-6 py-16">
-        <div className="mx-auto max-w-lg">
-          <div className="mb-10 text-center">
-            <span className="mb-3 inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.15em] text-isy-green-bright">
-              Cara Pakai
-            </span>
-            <h2 className="font-serif text-3xl font-black text-isy-green-deep">Gampang Banget</h2>
-            <p className="mt-2 text-sm text-isy-ink/60">3 langkah, kurang dari semenit</p>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            <Step n={1} title="Pilih Mode" desc="Scan AR atau photobooth biasa" />
-            <Step n={2} title="Foto" desc="Countdown otomatis, tinggal senyum" />
-            <Step n={3} title="Simpan" desc="Scan QR atau simpan ke galeri" />
-          </div>
-
-          <button
-            onClick={start}
-            className="mt-12 w-full rounded-2xl bg-isy-green-bright py-5 text-base font-black uppercase tracking-[0.12em] text-white shadow-xl shadow-isy-green-bright/30 transition-all hover:bg-isy-green-deep active:scale-[0.97]"
-          >
-            Mulai Try-On Sekarang
-          </button>
-        </div>
-      </section>
-
-      {/* ═══ FASILITAS PEMERIKSAAN MATA ═══ */}
-      <EyeExamFacilitySection />
-
-      {/* ═══ TENTANG KAMI & RESERVASI CEK MATA GRATIS ═══ */}
+      {/* ═══ PAGE 5: ANTRIAN CEK MATA & KONSULTASI ═══ */}
       <AboutRefractionBookingSection />
 
-      {/* ═══ CABANG & LOKASI ═══ */}
+      {/* ═══ PAGE 6: ALAT DAN FASILITAS LABORATORIUM ═══ */}
+      <EyeExamFacilitySection />
+
+      {/* ═══ PAGE 7: TESTIMONI / GOOGLE BUSINESS REVIEWS ═══ */}
+      <GoogleReviewsSection />
+
+      {/* ═══ PAGE 8: CABANG & LOKASI MAPS ═══ */}
       <section id="lokasi" className="w-full bg-white px-6 py-16">
         <div className="mx-auto max-w-2xl">
           <div className="mb-8 text-center flex flex-col items-center">
@@ -443,10 +409,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ GOOGLE BUSINESS REVIEWS & TESTIMONI ASLI ═══ */}
-      <GoogleReviewsSection />
-
-      {/* ═══ FAQ & LOCAL SEO INFO SECTION ═══ */}
+      {/* ═══ PAGE 9: FAQ & PERTANYAAN ═══ */}
       <LocalFaqSection />
 
       {/* ═══ FOOTER — Luxury Emerald Multi-Column Layout ═══ */}

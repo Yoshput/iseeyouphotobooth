@@ -46,7 +46,7 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
   };
 
   return (
-    <section id="cek-mata" className="relative w-full overflow-hidden bg-white px-6 py-20 sm:py-28 border-t border-isy-line/60">
+    <section id="antrian-cek-mata" className="relative w-full overflow-hidden bg-white px-6 py-20 sm:py-28 border-t border-isy-line/60">
       <div className="mx-auto max-w-6xl relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* LEFT 7-cols: Story & Framing */}
         <div className="lg:col-span-7 space-y-6">

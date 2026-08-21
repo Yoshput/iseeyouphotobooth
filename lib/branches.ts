@@ -102,10 +102,18 @@ export function mapsDirectionsUrl(branch: Branch) {
 }
 
 export function branchGoogleReviewsUrl(branch: Branch) {
-  if (branch.id === "purwokerto") {
-    return "https://www.google.com/search?q=Optik+I+See+You+Glasses+Purwokerto#lrd=0x2e655d8869c9b1bd:0x5e0b62125cb7394f,1,,,";
+  switch (branch.id) {
+    case "purwokerto":
+      return "https://www.google.com/search?q=Optik+I+See+You+Glasses+Purwokerto#lrd=0x2e655f4f68229ef9:0x135220f93a37d3fb,1,,,,";
+    case "wonosobo":
+      return "https://www.google.com/search?q=optik+i+see+you+glasses+wonosobo#lrd=0x2e7aa15b14af5143:0x9f777b70a532866d,1,,,,";
+    case "cilacap":
+      return "https://www.google.com/search?q=optik+i+see+you+glasses+cilacap+#lrd=0x2e6513eb264f30b7:0x46e84e0577a90d12,1,,,,";
+    case "purbalingga":
+      return "https://www.google.com/search?q=optik+i+see+you+glasses+purbalingga#lrd=0x2e6559f5fffdd7ad:0xed1c5a11a9f20422,1,,,,";
+    default:
+      return `https://www.google.com/search?q=Optik+I+See+You+${encodeURIComponent(branch.city)}+Ulasan`;
   }
-  return `https://www.google.com/search?q=Optik+I+See+You+${encodeURIComponent(branch.city)}+Ulasan`;
 }
 
 export function branchGoogleMapsUrl(branch: Branch) {

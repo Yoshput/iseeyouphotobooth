@@ -220,6 +220,6 @@ export async function createAnimatedGif(
 
   gif.finish();
   const bytes = gif.bytes();
-  const blob = new Blob([bytes.buffer as ArrayBuffer], { type: "image/gif" });
+  const blob = new Blob([bytes as BlobPart], { type: "image/gif" });
   return URL.createObjectURL(blob);
 }
