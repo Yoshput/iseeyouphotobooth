@@ -13,7 +13,7 @@ export default function StartPage() {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <button
             onClick={() => router.push("/")}
-            className="group flex items-center gap-2 rounded-full border border-isy-line bg-white/90 px-4 py-2 text-xs font-bold text-isy-green-deep shadow-sm transition-all hover:border-isy-green-bright hover:bg-isy-mist active:scale-95"
+            className="group flex items-center gap-2 rounded-full border border-isy-line bg-white/90 px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs transition-all hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 cursor-pointer"
           >
             <svg
               width="14"
@@ -28,7 +28,7 @@ export default function StartPage() {
             >
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            <span>Kembali ke Home</span>
+            <span>Kembali ke Beranda</span>
           </button>
 
           <Image

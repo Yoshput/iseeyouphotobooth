@@ -33,9 +33,7 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
     };
   }, []);
 
-  // Static map image URL via Google Maps Static API (no key needed for basic embed)
-  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${branch.lat},${branch.lng}&zoom=16&size=800x300&maptype=roadmap&markers=color:green%7C${branch.lat},${branch.lng}&scale=2`;
-  const mapsUrl = `https://www.google.com/maps?q=${branch.lat},${branch.lng}`;
+  const mapsUrl = branch.googleMapsUrl || mapsDirectionsUrl(branch);
 
   const accentColor = CITY_COLORS[branch.id] ?? "#116B3C";
 

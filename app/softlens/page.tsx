@@ -474,100 +474,130 @@ export default function SoftlensCatalogPage() {
 
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 pt-28 pb-24 space-y-12">
-        {/* HERO SECTION — badge + judul + deskripsi + search, filter pindah ke bawah */}
-        <section className="text-center space-y-5 max-w-3xl mx-auto pt-4">
-          {/* Badge brand */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-isy-green-deep shadow-xs">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
-            Optik I See You Softlens · Official Collection
+      {/* Hero Header Section */}
+      <section className="relative overflow-hidden bg-isy-white border-b border-isy-line px-6 pt-24 pb-8 sm:pb-10 text-center">
+        <div className="mx-auto max-w-4xl space-y-4 relative z-10">
+          {/* Top-Left Back Button */}
+          <div className="flex items-center justify-start">
+            <Link
+              href="/katalog"
+              className="group inline-flex items-center gap-1.5 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transition-transform group-hover:-translate-x-0.5"
+              >
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              <span>Kembali ke Pilihan Katalog</span>
+            </Link>
           </div>
 
-          <h1 className="font-serif text-4xl font-black text-isy-green-deep sm:text-6xl leading-tight">
-            Katalog Softlens<br />
-            <span className="text-isy-green-bright italic">Mewah, Elegan &amp; Nyaman</span>
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-bright">
+              Katalog Softlens &amp; Aksesoris
+            </span>
+          </div>
+
+          <h1 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl">
+            Koleksi Softlens Terlengkap
           </h1>
 
-          {/* Main Catalog Tabs Switcher (Frame vs Softlens) */}
-          <div className="pt-2 flex justify-center">
-            <div className="inline-flex items-center rounded-full bg-isy-mist p-1 border border-isy-line shadow-xs">
-              <Link
-                href="/katalog"
-                className="flex items-center gap-2 rounded-full px-5 py-2 text-xs font-bold text-isy-ink/70 hover:text-isy-green-deep hover:bg-white/80 transition-all active:scale-95"
+          {/* Search Bar Input */}
+          <div className="pt-1 max-w-xl mx-auto space-y-3">
+            <div className="relative flex items-center">
+              <svg
+                className="absolute left-4 h-4 w-4 text-isy-ink/40 pointer-events-none"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.5"
               >
-                <span>👓 Frame Kacamata</span>
-              </Link>
-              <span className="flex items-center gap-2 rounded-full bg-isy-green-deep px-5 py-2 text-xs font-black text-white shadow-sm">
-                <span>👁️ Softlens &amp; Aksesoris</span>
-              </span>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari softlens (contoh: ICE N°5, Dubai, Russian Velvet, X2)..."
+                className="w-full rounded-full border border-isy-line bg-isy-mist/70 pl-11 pr-10 py-3 text-xs font-bold text-isy-green-deep placeholder:text-isy-ink/40 focus:border-isy-green-bright focus:bg-white focus:outline-none focus:ring-2 focus:ring-isy-green-bright/20 transition-all shadow-sm"
+              />
+
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 flex h-5 w-5 items-center justify-center rounded-full bg-isy-ink/20 text-[10px] text-white hover:bg-isy-green-deep transition-colors"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* Quick Search Suggestions */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
+              <span className="text-[10px] font-extrabold text-isy-ink/40 uppercase tracking-wider">Cari cepat:</span>
+              {["ICE N°5", "Dubai", "Russian Velvet", "Natural Choco", "Cairan Steril"].map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => setSearchQuery(tag)}
+                  className="rounded-full border border-isy-line bg-white/80 px-2.5 py-1 text-[10.5px] font-bold text-isy-green-deep hover:border-isy-green-bright hover:bg-isy-mist transition-all active:scale-95 shadow-2xs cursor-pointer"
+                >
+                  {tag}
+                </button>
+              ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Search bar inline di hero */}
-          <div className="relative max-w-xl mx-auto">
-            <input
-              type="text"
-              placeholder="Cari softlens (contoh: ICE N°5, Dubai, Russian Velvet, X2)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-full border border-isy-line bg-white px-6 py-3.5 pl-12 text-xs font-semibold text-isy-ink placeholder:text-isy-ink/40 shadow-sm focus:border-isy-green-bright focus:outline-none focus:ring-2 focus:ring-isy-green-bright/20 transition-all"
-            />
-            <svg
-              className="absolute left-4 top-4 h-4 w-4 text-isy-ink/40"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* Main Content Area */}
+      <main className="mx-auto max-w-6xl px-6 py-10 space-y-10">
+        {/* Category Filter Pills */}
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {SOFTLENS_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`rounded-full px-5 py-2.5 text-xs font-extrabold transition-all active:scale-95 whitespace-nowrap cursor-pointer ${
+                selectedCategory === cat.id
+                  ? "bg-isy-green-deep text-white shadow-md"
+                  : "border border-isy-line bg-white text-isy-ink/70 hover:border-isy-green-bright hover:text-isy-green-deep"
+              }`}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-3.5 flex h-5 w-5 items-center justify-center rounded-full bg-isy-ink/15 text-isy-ink/60 hover:bg-isy-line transition-colors"
-              >
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6L6 18M6 6l12 12" /></svg>
-              </button>
-            )}
-          </div>
-        </section>
+              {cat.label}
+            </button>
+          ))}
+        </div>
 
-        {/* FILTER & SEARCH CONTROLS — section terpisah dari hero */}
-        <section className="space-y-3 max-w-4xl mx-auto">
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {SOFTLENS_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`rounded-full px-5 py-2.5 text-xs font-extrabold transition-all duration-300 ${
-                  selectedCategory === cat.id
-                    ? "bg-isy-green-deep text-white shadow-md scale-105"
-                    : "bg-white text-isy-ink/70 border border-isy-line hover:border-isy-green-bright/50 hover:text-isy-green-deep"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Color Sub-Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5">
-            <span className="text-[11px] font-bold text-isy-ink/40 uppercase tracking-wider mr-1 hidden sm:inline">Varian Warna:</span>
-            {COLOR_FILTERS.map((col) => (
-              <button
-                key={col.id}
-                onClick={() => setSelectedColor(col.id)}
-                className={`rounded-xl px-3 py-1.5 text-[11px] font-bold transition-all ${
-                  selectedColor === col.id
-                    ? "bg-isy-green-bright text-white shadow-xs"
-                    : "bg-white text-isy-ink/60 border border-isy-line hover:border-isy-green-bright/40 hover:text-isy-green-deep"
-                }`}
-              >
-                {col.label}
-              </button>
-            ))}
-          </div>
-        </section>
+        {/* Color Sub-Filter Pills */}
+        <div className="flex flex-wrap items-center justify-center gap-1.5 -mt-4">
+          <span className="text-[10px] font-extrabold text-isy-ink/40 uppercase tracking-wider mr-1 hidden sm:inline">Varian Warna:</span>
+          {COLOR_FILTERS.map((col) => (
+            <button
+              key={col.id}
+              onClick={() => setSelectedColor(col.id)}
+              className={`rounded-full px-3 py-1 text-[11px] font-bold transition-all active:scale-95 cursor-pointer ${
+                selectedColor === col.id
+                  ? "bg-isy-green-bright text-white shadow-xs"
+                  : "bg-white text-isy-ink/60 border border-isy-line hover:border-isy-green-bright/40"
+              }`}
+            >
+              {col.label}
+            </button>
+          ))}
+        </div>
 
         {/* PRODUCTS GRID */}
         <section className="space-y-6">

@@ -19,7 +19,16 @@
     "style": "Hexagonal",
     "recommendedFor": ["Square", "Oblong", "Heart", "Diamond"],
     "color": "#E8C5C8",
-    "lensType": "open"
+    "lensType": "open",
+    "model3D": {
+      "name": "Hexagonal Crystal Transparan",
+      "glbFile": "models3D/glasses_transparan.glb",
+      "fitWidthRatio": 1.52,
+      "yOffsetRatio": 0.0,
+      "frameColor": "#E8C5C8",
+      "metalColor": "#d4af37",
+      "style": "Hexagonal"
+    }
   },
   {
     "id": "round-frame",
@@ -30,7 +39,16 @@
     "style": "Oval",
     "recommendedFor": ["Square", "Oblong", "Diamond"],
     "color": "#334155",
-    "lensType": "open"
+    "lensType": "open",
+    "model3D": {
+      "name": "Oval Bulat Metal Gold",
+      "glbFile": "models3D/metal_round_glasses.glb",
+      "fitWidthRatio": 1.54,
+      "yOffsetRatio": 0.0,
+      "frameColor": "#334155",
+      "metalColor": "#c0a050",
+      "style": "Oval"
+    }
   },
   {
     "id": "cateye-pastel",
@@ -52,7 +70,16 @@
     "style": "Cat-Eye",
     "recommendedFor": ["Heart", "Oval", "Round", "Diamond", "Square"],
     "color": "#8B4513",
-    "lensType": "open"
+    "lensType": "open",
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 1.54,
+      "yOffsetRatio": 0.0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye"
+    }
   },
   {
     "id": "cateye-pastel-v2",
@@ -74,7 +101,16 @@
     "style": "Square",
     "recommendedFor": ["Round", "Oval", "Oblong"],
     "color": "#1a1a1a",
-    "lensType": "open"
+    "lensType": "open",
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 1.54,
+      "yOffsetRatio": 0.0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square"
+    }
   },
   {
     "id": "clubmaster-frame",
@@ -85,7 +121,16 @@
     "style": "Browline",
     "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
     "color": "#262626",
-    "lensType": "open"
+    "lensType": "open",
+    "model3D": {
+      "name": "Kotak Clubmaster Metal",
+      "glbFile": "models3D/glasses1/glasses01.glb",
+      "fitWidthRatio": 1.52,
+      "yOffsetRatio": 0.0,
+      "frameColor": "#262626",
+      "metalColor": "#d4af37",
+      "style": "Browline"
+    }
   },
   {
     "id": "sunglasses-black",
@@ -101,14 +146,24 @@
   },
   {
     "id": "sunglasses-square-metal",
-    "name": "Sunglasses Kotak Metal",
+    "name": "Sunglasses Aviator Gold",
     "file": "sunglasses-square-metal.png",
     "fitWidthRatio": 1.40,
     "ipdScaleRef": 0.98,
-    "style": "Sunglasses",
+    "style": "Aviator",
     "recommendedFor": [],
     "color": "#1a1a1a",
     "lensType": "tinted",
-    "excludeFromAiMatch": true
+    "excludeFromAiMatch": true,
+    "model3D": {
+      "name": "Sunglasses Aviator Gold",
+      "glbFile": "models3D/cyberpunk_johnny_silverhand_glasses.glb",
+      "fitWidthRatio": 1.56,
+      "yOffsetRatio": 0.0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "isTinted": true,
+      "style": "Aviator"
+    }
   }
 ]

@@ -27,6 +27,7 @@ import { useElementSize } from "@/hooks/useElementSize";
 import { computeGlassesAnchor } from "@/lib/landmarks";
 import { computeCoverTransform, videoPxToContainerPx } from "@/lib/videoCover";
 import GlassesRenderer, { type GlassesRendererHandle } from "./GlassesRenderer";
+import Glasses3DRenderer from "./Glasses3DRenderer";
 import FaceScanIntro from "./FaceScanIntro";
 import FaceGuideOverlay from "./FaceGuideOverlay";
 import { validateFaceGuide, type FaceGuideValidation } from "@/lib/faceGuide";
@@ -48,6 +49,16 @@ interface Props {
   scanIntro?: boolean;
   showFaceGuide?: boolean;
   faceResult?: any;
+  renderMode?: "2d" | "3d";
+  model3DSrc?: string;
+  frameWidthMm?: number;
+  bridgeMm?: number;
+  templeMm?: number;
+  frameColor?: string;
+  metalColor?: string;
+  isTinted?: boolean;
+  style?: string;
+  yOffsetRatio?: number;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
@@ -110,6 +121,16 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       scanIntro = false,
       showFaceGuide = true,
       faceResult,
+      renderMode = "2d",
+      model3DSrc,
+      frameWidthMm = 138,
+      bridgeMm = 18,
+      templeMm = 140,
+      frameColor,
+      metalColor,
+      isTinted = false,
+      style,
+      yOffsetRatio,
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
@@ -289,8 +310,8 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
     useFaceTracking(
       videoRef,
       (result, meta) => {
-        if (glassesSrc) {
-          // Pass deltaTime so GlassesRenderer uses time-based EMA
+        if (glassesSrc || renderMode === "3d") {
+          // Pass deltaTime so GlassesRenderer / Glasses3DRenderer uses time-based EMA
           rendererRef.current?.updateFromResult(result, meta.deltaTime);
         }
 
@@ -411,7 +432,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
 
         ctx.filter = "none";
 
-        if (glassesSrc) {
+        if (glassesSrc || renderMode === "3d") {
           const glCanvas = rendererRef.current?.canvas;
           if (glCanvas) {
             ctx.drawImage(glCanvas, 0, 0, width, height);
@@ -455,19 +476,45 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         />
 
         {/* Glasses overlay */}
-        {glassesSrc && size.width > 0 && size.height > 0 && (
+        {size.width > 0 && size.height > 0 && (
           <div className="absolute inset-0 -scale-x-100">
-            <GlassesRenderer
-              ref={rendererRef}
-              width={size.width}
-              height={size.height}
-              videoWidth={videoSize.width}
-              videoHeight={videoSize.height}
-              glassesSrc={glassesSrc}
-              fitWidthRatio={fitWidthRatio}
-              ipdScaleRef={ipdScaleRef}
-              maxFaces={numFaces}
-            />
+            {renderMode === "3d" ? (
+              model3DSrc ? (
+                <Glasses3DRenderer
+                  ref={rendererRef}
+                  width={size.width}
+                  height={size.height}
+                  videoWidth={videoSize.width}
+                  videoHeight={videoSize.height}
+                  model3DSrc={model3DSrc}
+                  frameWidthMm={frameWidthMm}
+                  bridgeMm={bridgeMm}
+                  templeMm={templeMm}
+                  frameColor={frameColor}
+                  metalColor={metalColor}
+                  isTinted={isTinted}
+                  style={style}
+                  fitWidthRatio={fitWidthRatio}
+                  ipdScaleRef={ipdScaleRef}
+                  yOffsetRatio={yOffsetRatio}
+                  maxFaces={numFaces}
+                />
+              ) : null
+            ) : (
+              glassesSrc ? (
+                <GlassesRenderer
+                  ref={rendererRef}
+                  width={size.width}
+                  height={size.height}
+                  videoWidth={videoSize.width}
+                  videoHeight={videoSize.height}
+                  glassesSrc={glassesSrc}
+                  fitWidthRatio={fitWidthRatio}
+                  ipdScaleRef={ipdScaleRef}
+                  maxFaces={numFaces}
+                />
+              ) : null
+            )}
           </div>
         )}
 

@@ -103,23 +103,41 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
               </p>
             </div>
 
-            <form onSubmit={handleBookingSubmit} className="space-y-3.5">
-              {/* Branch Selection */}
+            <form onSubmit={handleBookingSubmit} className="space-y-4">
+              {/* Branch Selection Cards */}
               <div>
-                <label className="block text-[11px] font-bold text-isy-ink/70 mb-1">
+                <label className="block text-[11px] font-bold text-isy-ink/70 mb-1.5">
                   Pilih Cabang Optik I See You:
                 </label>
-                <select
-                  value={selectedBranchId}
-                  onChange={(e) => setSelectedBranchId(e.target.value)}
-                  className="w-full rounded-xl border border-isy-line bg-white px-3.5 py-2.5 text-xs font-semibold text-isy-green-deep focus:border-isy-green-bright focus:outline-none shadow-2xs"
-                >
-                  {BRANCHES.map((b) => (
-                    <option key={b.id} value={b.id}>
-                      Cabang {b.city} ({b.address.split(",")[0]})
-                    </option>
-                  ))}
-                </select>
+                <div className="grid grid-cols-2 gap-2">
+                  {BRANCHES.map((b) => {
+                    const isSelected = b.id === selectedBranchId;
+                    return (
+                      <button
+                        type="button"
+                        key={b.id}
+                        onClick={() => setSelectedBranchId(b.id)}
+                        className={`p-2.5 rounded-xl border text-left flex flex-col justify-between transition-all duration-200 cursor-pointer ${
+                          isSelected
+                            ? "border-isy-green-bright bg-isy-green-bright/10 text-isy-green-deep ring-2 ring-isy-green-bright/30 shadow-xs"
+                            : "border-isy-line bg-white text-isy-ink/75 hover:border-isy-green-bright/50 hover:bg-isy-mist/30"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span className="text-xs font-black">{b.city}</span>
+                          {isSelected ? (
+                            <span className="h-2 w-2 rounded-full bg-isy-green-bright ring-2 ring-white" />
+                          ) : (
+                            <span className="h-2 w-2 rounded-full bg-isy-line" />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-isy-ink/55 truncate mt-1">
+                          {b.address.split(",")[0]}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Name Input */}
@@ -181,14 +199,19 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full rounded-2xl bg-isy-green-bright py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-isy-green-bright/25 transition-all hover:bg-emerald-600 active:scale-95 flex items-center justify-center gap-2"
-              >
-                <Image src="/logo/Logo-Whatsapp.png" alt="WA" width={14} height={14} className="h-3.5 w-3.5 object-contain" />
-                <span>Reservasi Cek Mata Gratis via WA →</span>
-              </button>
+              {/* Submit Button with Selected Branch Notice */}
+              <div className="space-y-1.5 pt-1">
+                <button
+                  type="submit"
+                  className="w-full rounded-2xl bg-isy-green-bright py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-isy-green-bright/25 transition-all hover:bg-emerald-600 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Image src="/logo/Logo-Whatsapp.png" alt="WA" width={16} height={16} className="h-4 w-4 object-contain" />
+                  <span>Kirim Reservasi ke Cabang {selectedBranch.city} →</span>
+                </button>
+                <p className="text-[10px] text-center text-isy-ink/50">
+                  Pesan otomatis terkirim ke CS WhatsApp Cabang {selectedBranch.city} ({selectedBranch.phone})
+                </p>
+              </div>
             </form>
           </div>
         </div>

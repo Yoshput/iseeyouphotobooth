@@ -12,7 +12,7 @@
  * - FRAME THEMES: 5 Theme choices (Classic White, Emerald Luxury, Vintage, Pastel, Midnight)
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
@@ -48,11 +48,32 @@ type BoothPhase =
 type UploadPhase = "idle" | "uploading" | "done" | "error" | "no-key";
 type ResultTab = "strip" | "gif";
 
+interface Model3DMeta {
+  glbFile?: string;
+  frameWidthMm?: number;
+  bridgeMm?: number;
+  templeMm?: number;
+  frameColor?: string;
+  metalColor?: string;
+  isTinted?: boolean;
+  style?: string;
+  name?: string;
+  fitWidthRatio?: number;
+  yOffsetRatio?: number;
+}
+
 interface GlassesMeta {
- id: string; name: string; file: string;
- fitWidthRatio: number; style: string;
- recommendedFor: string[]; color: string;
- lensType?: string;
+  id: string;
+  name: string;
+  file: string;
+  fitWidthRatio: number;
+  ipdScaleRef?: number;
+  style: string;
+  recommendedFor: string[];
+  color: string;
+  lensType?: string;
+  excludeFromAiMatch?: boolean;
+  model3D?: Model3DMeta;
 }
 
 const manifest = manifestRaw as GlassesMeta[];
@@ -61,12 +82,24 @@ type TimerSec = typeof TIMER_OPTIONS[number];
 
 function BackBtn({ onClick }: { onClick: () => void }) {
   return (
-    <button onClick={onClick}
-      className="flex items-center gap-1.5 rounded-full border border-isy-line bg-white/90 px-3 py-1.5 text-xs font-bold text-isy-green-deep shadow-sm hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-        <path d="M15 18l-6-6 6-6" />
+    <button
+      onClick={onClick}
+      className="group inline-flex items-center gap-1.5 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="transition-transform group-hover:-translate-x-0.5"
+      >
+        <path d="M19 12H5M12 19l-7-7 7-7" />
       </svg>
-      Kembali
+      <span>Kembali</span>
     </button>
   );
 }
@@ -723,19 +756,34 @@ export default function PhotoboothPage() {
  const [beautyMode, setBeautyMode] = useState(true);
  const [lipstickMode, setLipstickMode] = useState(false);
  const [faceResult, setFaceResult] = useState<FaceShapeResult | null>(null);
- const [faceDetected, setFaceDetected] = useState(false);
+const [faceDetected, setFaceDetected] = useState(false);
  const [toast, setToast] = useState<string | null>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
   const [thermalPrintModalOpen, setThermalPrintModalOpen] = useState(false);
- const [timerSec, setTimerSec] = useState<TimerSec>(3);
- const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
- const [uploadPhase, setUploadPhase] = useState<UploadPhase>("idle");
- const [isScanning, setIsScanning] = useState(false);
- const [scanComplete, setScanComplete] = useState(false);
- const [soundEnabled, setSoundEnabled] = useState(true);
+  const [timerSec, setTimerSec] = useState<TimerSec>(3);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [uploadPhase, setUploadPhase] = useState<UploadPhase>("idle");
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanComplete, setScanComplete] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [devNoticeModalOpen, setDevNoticeModalOpen] = useState(false);
+  const [renderMode3D, setRenderMode3D] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("mode") === "3d";
+    }
+    return false;
+  });
 
-  const glasses = manifest[glassesIndex];
+  const activeGlassesList = useMemo(() => {
+    if (renderMode3D) {
+      return manifest.filter((g) => g.id === "none" || !!g.model3D);
+    }
+    return manifest;
+  }, [renderMode3D]);
+
+  const glasses = manifest[glassesIndex] || manifest[0];
   const faceTrackerRef = useRef<FaceTrackerHandle>(null);
 
   useEffect(() => {
@@ -750,7 +798,20 @@ export default function PhotoboothPage() {
       if (idx >= 0) setGlassesIndex(idx);
     }
 
-    if (isTryOnRoute || modeParam === "ar" || aiParam === "1") {
+    if (modeParam === "3d") {
+      setRenderMode3D(true);
+      setDevNoticeModalOpen(true);
+      setAiMode(false);
+      setArEnabled(true);
+      setLayout(FRAME_LAYOUTS[0]);
+      setPhase("ready");
+      // Default to first 3D model if on "none" or 2D model
+      if (!manifest[glassesIndex]?.model3D) {
+        const first3DIdx = manifest.findIndex((g) => !!g.model3D);
+        if (first3DIdx >= 0) setGlassesIndex(first3DIdx);
+      }
+    } else if (isTryOnRoute || modeParam === "ar" || modeParam === "2d" || aiParam === "1") {
+      setRenderMode3D(false);
       setAiMode(true);
       setArEnabled(true);
       setLayout(FRAME_LAYOUTS[0]);
@@ -800,7 +861,8 @@ const showToast = useCallback((msg: string) => {
       .map((g, i) => ({ g, i }))
       .filter(({ g }) => {
         const isOpen = !g.lensType || g.lensType === "open";
-        return isOpen && Array.isArray(g.recommendedFor) && g.recommendedFor.includes(shape);
+        const matchesMode = renderMode3D ? !!g.model3D : true;
+        return matchesMode && isOpen && Array.isArray(g.recommendedFor) && g.recommendedFor.includes(shape);
       })
       .map(({ i }) => i);
 
@@ -808,10 +870,13 @@ const showToast = useCallback((msg: string) => {
       const randomIdx = candidateIndices[Math.floor(Math.random() * candidateIndices.length)];
       setGlassesIndex(randomIdx);
     } else {
-      const openIdx = manifest.findIndex((g) => (!g.lensType || g.lensType === "open") && g.id !== "none");
-      if (openIdx >= 0) setGlassesIndex(openIdx);
+      const fallbackIdx = manifest.findIndex((g) => {
+        const matchesMode = renderMode3D ? !!g.model3D : true;
+        return matchesMode && (!g.lensType || g.lensType === "open") && g.id !== "none";
+      });
+      if (fallbackIdx >= 0) setGlassesIndex(fallbackIdx);
     }
-  }, []);
+  }, [renderMode3D]);
 
   const handleFaceCountChange = (c: number) => {
     const detected = c > 0;
@@ -1122,14 +1187,24 @@ const showToast = useCallback((msg: string) => {
  <div className="relative h-full w-full overflow-hidden">
  <FaceTracker
   ref={faceTrackerRef}
-  glassesSrc={arEnabled && glasses.file ? `/glasses/${glasses.file}` : ""}
-  fitWidthRatio={glasses.fitWidthRatio}
+  glassesSrc={!renderMode3D && arEnabled && glasses.file ? `/glasses/${glasses.file}` : ""}
+  fitWidthRatio={renderMode3D && glasses?.model3D?.fitWidthRatio ? glasses.model3D.fitWidthRatio : glasses.fitWidthRatio}
   numFaces={layout.numPhotos}
   beautyMode={beautyMode}
   lipstickMode={lipstickMode}
   scanIntro={isScanning}
   showFaceGuide={false}
   faceResult={faceResult}
+  renderMode={renderMode3D && glasses?.model3D ? "3d" : "2d"}
+  model3DSrc={glasses?.model3D?.glbFile ? `/glasses/${glasses.model3D.glbFile}` : undefined}
+  frameWidthMm={glasses?.model3D?.frameWidthMm}
+  bridgeMm={glasses?.model3D?.bridgeMm}
+  templeMm={glasses?.model3D?.templeMm}
+  frameColor={glasses?.model3D?.frameColor || glasses?.color}
+  metalColor={glasses?.model3D?.metalColor}
+  isTinted={glasses?.model3D?.isTinted || glasses?.lensType === "tinted"}
+  style={glasses?.model3D?.style || glasses?.style}
+  yOffsetRatio={glasses?.model3D?.yOffsetRatio}
   onScanIntroComplete={() => {
     setIsScanning(false);
     setScanComplete(true);
@@ -1296,72 +1371,88 @@ const showToast = useCallback((msg: string) => {
  </div>
 
  <div className="flex items-center justify-between gap-2 flex-wrap">
- <div className="flex items-center gap-1.5 flex-wrap">
- <button
- onClick={() => setBeautyMode((v) => !v)}
- className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
- ${beautyMode ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40" : "border border-isy-line text-isy-ink/50"}`}
- >
- AI Mulus
- </button>
- <button
- onClick={() => setLipstickMode((v) => !v)}
- className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
- ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
- >
- Lipstik
- </button>
- <button
-    onClick={() => setSoundEnabled((v) => !v)}
-    className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 ${
-      soundEnabled
-        ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
-        : "bg-gray-100 text-gray-400 border border-gray-200"
-    }`}
-    title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+  <div className="flex items-center gap-1.5 flex-wrap">
+  <button
+  onClick={() => setBeautyMode((v) => !v)}
+  className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
+  ${beautyMode ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40" : "border border-isy-line text-isy-ink/50"}`}
   >
-    {soundEnabled ? (
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      </svg>
-    ) : (
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <line x1="23" y1="9" x2="17" y2="15"/>
-        <line x1="17" y1="9" x2="23" y2="15"/>
-      </svg>
-    )}
-    <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
+  AI Mulus
   </button>
- </div>
- <TimerChips
- value={timerSec}
- onChange={setTimerSec}
- disabled={phase !== "ready"}
- />
- </div>
+  <button
+  onClick={() => setLipstickMode((v) => !v)}
+  className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
+  ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
+  >
+  Lipstik
+  </button>
+  <button
+     onClick={() => setSoundEnabled((v) => !v)}
+     className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 ${
+       soundEnabled
+         ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
+         : "bg-gray-100 text-gray-400 border border-gray-200"
+     }`}
+     title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+   >
+     {soundEnabled ? (
+       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+         <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+       </svg>
+     ) : (
+       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+         <line x1="23" y1="9" x2="17" y2="15"/>
+         <line x1="17" y1="9" x2="23" y2="15"/>
+       </svg>
+     )}
+     <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
+   </button>
+  </div>
+  <TimerChips
+    value={timerSec}
+    onChange={setTimerSec}
+    disabled={phase !== "ready"}
+  />
+  </div>
 
- {arEnabled && (
- <div className="flex gap-1.5 overflow-x-auto pb-0.5">
- {manifest.map((g, i) => (
- <button
- key={g.id}
- onClick={() => { setGlassesIndex(i); setAiMode(false); }}
- className={`relative shrink-0 flex flex-col items-center gap-0.5 rounded-xl border px-2.5 pt-1.5 pb-1 text-[9px] font-semibold transition-all active:scale-95
- ${i === glassesIndex
- ? "border-isy-green-bright bg-isy-green-bright/10 text-isy-green-deep shadow-md"
- : "border-isy-line bg-white text-isy-ink/60 hover:border-isy-green-bright/50"}`}
- >
- {aiMode && faceResult?.recommendedGlassesId === g.id && (
- <span className="absolute -top-2 -right-1 rounded-full bg-isy-green-bright px-1 py-0.5 text-[7px] font-black text-white">AI</span>
- )}
- <div className="h-2 w-2 rounded-full border border-black/10" style={{ backgroundColor: g.color }} />
- <span className="max-w-[52px] text-center leading-tight">{g.name}</span>
- </button>
- ))}
- </div>
- )}
+  {arEnabled && (
+    <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+      {activeGlassesList.map((g) => {
+        const isSelected = glasses.id === g.id;
+        return (
+          <button
+            key={g.id}
+            onClick={() => {
+              const realIdx = manifest.findIndex((item) => item.id === g.id);
+              if (realIdx >= 0) setGlassesIndex(realIdx);
+              setAiMode(false);
+            }}
+            className={`relative shrink-0 flex flex-col items-center gap-0.5 rounded-xl border px-2.5 pt-1.5 pb-1 text-[9px] font-semibold transition-all active:scale-95 cursor-pointer
+            ${isSelected
+              ? "border-isy-green-bright bg-isy-green-bright/10 text-isy-green-deep shadow-md"
+              : "border-isy-line bg-white text-isy-ink/60 hover:border-isy-green-bright/50"}`}
+          >
+            {renderMode3D && g.model3D ? (
+              <span className="absolute -top-1.5 -left-1 rounded-full bg-emerald-700 px-1 py-0.2 text-[7px] font-black text-white shadow-2xs">
+                3D
+              </span>
+            ) : !renderMode3D && g.model3D ? (
+              <span className="absolute -top-1.5 -left-1 rounded-full bg-emerald-700/80 px-1 py-0.2 text-[7px] font-black text-white shadow-2xs">
+                3D
+              </span>
+            ) : null}
+            {aiMode && faceResult?.recommendedGlassesId === g.id && (
+              <span className="absolute -top-2 -right-1 rounded-full bg-isy-green-bright px-1 py-0.5 text-[7px] font-black text-white">AI</span>
+            )}
+            <div className="h-2 w-2 rounded-full border border-black/10" style={{ backgroundColor: g.color }} />
+            <span className="max-w-[52px] text-center leading-tight">{renderMode3D && g.model3D?.name ? g.model3D.name : g.name}</span>
+          </button>
+        );
+      })}
+    </div>
+  )}
 
  <div className="flex items-center justify-between text-xs">
  {!arEnabled ? (
@@ -1441,14 +1532,64 @@ const showToast = useCallback((msg: string) => {
           imageDataUrl={compositeUrl || photos[0]}
         />
       )}
- {toast && (
- <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-50">
- <div className="rounded-full bg-isy-green-deep px-5 py-2 text-xs font-semibold text-white shadow-lg">
- {toast}
- </div>
- </div>
- )}
- </div>
- </main>
- );
+      {/* 3D Development Notice Modal */}
+      {devNoticeModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="relative w-full max-w-md rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-isy-line text-center space-y-5 animate-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setDevNoticeModalOpen(false)}
+              className="absolute top-4 right-4 h-8 w-8 rounded-full bg-isy-mist flex items-center justify-center text-isy-ink/50 hover:text-isy-green-deep hover:bg-isy-line transition-all cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
+              <span className="text-3xl">🚧</span>
+            </div>
+
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-black uppercase tracking-wider">
+                Sedang Dalam Pengembangan
+              </span>
+              <h3 className="font-serif text-2xl font-bold text-isy-green-deep">
+                Fitur Try-On 3D Segera Hadir!
+              </h3>
+              <p className="text-xs sm:text-sm text-isy-ink/70 leading-relaxed pt-1">
+                Pengalaman fitting kacamata 3D Real-Time CAD saat ini sedang dalam proses riset &amp; kalibrasi presisi frame oleh tim *Optik I See You*.
+              </p>
+              <p className="text-xs text-isy-green-deep font-semibold bg-isy-mist/70 p-3 rounded-xl border border-isy-line">
+                ✨ Disarankan menggunakan **Try-On AR 2D &amp; Photobooth** yang sudah siap 100% dengan katalog lengkap dan cetak foto strip!
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-col gap-2.5">
+              <button
+                onClick={() => {
+                  setDevNoticeModalOpen(false);
+                  router.push("/photobooth?mode=ar");
+                }}
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-isy-green-bright text-white font-bold text-sm shadow-md shadow-isy-green-bright/25 hover:bg-isy-green-deep active:scale-[0.98] transition-all cursor-pointer"
+              >
+                <span>Buka Try-On AR 2D (Direkomendasikan)</span>
+              </button>
+              <button
+                onClick={() => setDevNoticeModalOpen(false)}
+                className="w-full py-2 text-xs font-bold text-isy-ink/50 hover:text-isy-green-deep transition-colors cursor-pointer"
+              >
+                Tetap Lanjut Preview 3D
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {toast && (
+        <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-50">
+          <div className="rounded-full bg-isy-green-deep px-5 py-2 text-xs font-semibold text-white shadow-lg">
+            {toast}
+          </div>
+        </div>
+      )}
+    </div>
+  </main>
+  );
 }

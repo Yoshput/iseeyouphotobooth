@@ -180,3 +180,21 @@ Implementasi responsive:
 ### TypeScript
 - Build: `tsc --noEmit` exit 0, zero errors.
 
+---
+
+## UPDATE — Rilis Try-On 3D Asli (Agustus 2026)
+
+**Scope:** Mode AR Try-On 3D (`components/ar/Glasses3DRenderer.tsx`, `lib/glasses3DGeometry.ts`).
+**Prinsip:** ADDITIVE ONLY. File 2D existing (`GlassesRenderer.tsx`, `landmarks.ts`, `videoCover.ts`, `mediapipe.ts`) tidak diubah logikanya sama sekali (nol regresi).
+
+### 1. Komponen & Fitur Baru
+- `components/ar/Glasses3DRenderer.tsx`: Renderer 3D dengan Three.js `PerspectiveCamera`, GLTF loader, dan dekomposisi matriks `facialTransformationMatrixes` MediaPipe (posisi, rotasi quaternion via `slerp`, dan skala fisik).
+- `lib/glasses3DGeometry.ts`: Generator geometri 3D kacamata prosedural instan dengan dimensi optik nyata (`frameWidthMm`, `bridgeMm`, `templeMm`), engsel logam, tangkai kacamata 3D ke belakang telinga, dan lensa optik fisik reflektif.
+- `components/ar/FaceTracker.tsx`: Menerima prop `renderMode: "2d" | "3d"` dan meneruskan konfigurasi 3D ke `Glasses3DRenderer`.
+- `app/photobooth/page.tsx`:
+  - Toggle chip **"Mode 3D"** di panel kontrol AR (muncul pada model yang memiliki konfigurasi `model3D`).
+  - Badge **"3D"** pada thumbnail kacamata di selector strip.
+  - Auto-fallback mulus ke 2D saat memilih model tanpa `model3D`.
+- `public/glasses/manifest.json`: Field opsional `model3D` ditambahkan untuk model hero (`square-frame`, `oval-pastel`, `round-frame`, `cateye-pastel`, `cateye-frame`, `clubmaster-frame`, `sunglasses-black`).
+
+

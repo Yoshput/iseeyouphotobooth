@@ -146,9 +146,19 @@ function CatalogItemCard({
 }
 
 export default function CatalogPage() {
+  const [viewMode, setViewMode] = useState<"choose" | "frame">("choose");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeModalItem, setActiveModalItem] = useState<CatalogItem | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("tab") === "frame" || params.get("q") || params.get("cat")) {
+        setViewMode("frame");
+      }
+    }
+  }, []);
 
   // ContactCS Modal state (poin 4)
   const [csModalOpen, setCsModalOpen] = useState(false);
@@ -302,35 +312,169 @@ export default function CatalogPage() {
       {/* Brand Green & Gold Confetti Burst on Initial Load */}
       <CatalogConfetti />
 
-      {/* Hero Header Section */}
-      <section className="relative overflow-hidden bg-isy-white border-b border-isy-line px-6 py-10 text-center">
-        <div className="mx-auto max-w-3xl space-y-4 relative z-10">
-          <span className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-bright">
-            Katalog Optik I See You
-          </span>
+      {viewMode === "choose" ? (
+        /* Gateway Mode: 2 Big Choice Cards */
+        <section className="relative overflow-hidden px-4 sm:px-6 py-10 sm:py-16 flex flex-col items-center justify-center min-h-[calc(100vh-140px)]">
+          {/* Top-Left Back Button to Home */}
+          <div className="w-full max-w-4xl mx-auto flex items-center justify-start mb-4">
+            <Link
+              href="/"
+              className="group inline-flex items-center gap-1.5 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-0.5">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              <span>Kembali ke Beranda</span>
+            </Link>
+          </div>
 
-          <h1 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl">
-            Koleksi Frame Terlengkap
-          </h1>
+          {/* Header */}
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-isy-green-deep/5 text-isy-green-deep text-xs font-bold uppercase tracking-wider mb-3">
+              <span>KATALOG OPTIK I SEE YOU</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-isy-green-deep leading-tight">
+              Mau Lihat Koleksi yang Mana?
+            </h1>
+            <p className="text-xs sm:text-base text-isy-ink/65 mt-2">
+              Pilih katalog kacamata optik atau katalog softlens natural &amp; cairan pembersih mata.
+            </p>
+          </div>
 
-          {/* Main Catalog Tabs Switcher (Frame vs Softlens) */}
-          <div className="pt-2 flex justify-center">
-            <div className="inline-flex items-center rounded-full bg-isy-mist p-1 border border-isy-line shadow-xs">
-              <span className="flex items-center gap-2 rounded-full bg-isy-green-deep px-5 py-2 text-xs font-black text-white shadow-sm">
-                <span>👓 Frame Kacamata</span>
-              </span>
+          {/* 2 Big Choice Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto w-full">
+            {/* Card 1: Katalog Frame Kacamata */}
+            <div className="group relative flex flex-col justify-between bg-white rounded-3xl p-6 sm:p-8 border-2 border-isy-line hover:border-isy-green-bright shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black uppercase tracking-wider">
+                    👓 Frame Kacamata
+                  </span>
+                  <span className="text-[11px] font-bold text-gray-400">6+ Kategori</span>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-serif font-bold text-isy-green-deep mb-2 group-hover:text-isy-green-bright transition-colors">
+                  Katalog Frame Kacamata
+                </h2>
+                <p className="text-xs sm:text-sm text-isy-ink/70 mb-6 leading-relaxed">
+                  Koleksi frame kacamata terkini: Cat Eye, Quiet Luxury, Titanium Edition, Metro Deek, Shades of Elegance, dan model trending lainnya.
+                </p>
+
+                <ul className="space-y-2.5 mb-8 text-xs sm:text-sm text-isy-ink/80">
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-isy-green-bright font-bold">✓</span>
+                    <span>Koleksi frame optik original terlengkap</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-isy-green-bright font-bold">✓</span>
+                    <span>Spesifikasi ukuran (Lebar, Bridge, Tangkai)</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-isy-green-bright font-bold">✓</span>
+                    <span>Rekomendasi kecocokan bentuk wajah</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-isy-green-bright font-bold">✓</span>
+                    <span>Bisa langsung coba via Try-On AR</span>
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                onClick={() => {
+                  setViewMode("frame");
+                  if (typeof window !== "undefined") {
+                    window.history.pushState({}, "", "/katalog?tab=frame");
+                  }
+                }}
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 sm:py-4 px-6 rounded-2xl bg-isy-green-bright text-white font-bold text-sm sm:text-base shadow-md shadow-isy-green-bright/25 hover:bg-emerald-600 active:scale-[0.98] transition-all cursor-pointer"
+              >
+                <span>Buka Katalog Frame Kacamata →</span>
+              </button>
+            </div>
+
+            {/* Card 2: Katalog Softlens & Aksesoris */}
+            <div className="group relative flex flex-col justify-between bg-gradient-to-b from-[#1A2E26] to-[#12201A] text-white rounded-3xl p-6 sm:p-8 border-2 border-[#1A2E26] hover:border-isy-green-bright shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-isy-green-bright text-white text-xs font-black uppercase tracking-wider shadow-sm">
+                    👁️ Softlens &amp; Cairan
+                  </span>
+                  <span className="text-[11px] font-bold text-amber-300/90">Estetik &amp; Nyaman</span>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">
+                  Katalog Softlens &amp; Aksesoris
+                </h2>
+                <p className="text-xs sm:text-sm text-white/70 mb-6 leading-relaxed">
+                  Koleksi softlens normal &amp; minus warna natural, cairan pembersih steril, serta aksesoris perawatan mata berkualitas.
+                </p>
+
+                <ul className="space-y-2.5 mb-8 text-xs sm:text-sm text-white/85">
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 font-bold">✓</span>
+                    <span>Softlens warna natural (Hazel, Grey, Choco, Sky)</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 font-bold">✓</span>
+                    <span>Tersedia pilihan Plano (Normal) hingga Minus</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 font-bold">✓</span>
+                    <span>Cairan pencuci &amp; tetes mata steril berkualitas</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 font-bold">✓</span>
+                    <span>Order langsung ke WhatsApp cabang terdekat</span>
+                  </li>
+                </ul>
+              </div>
+
               <Link
                 href="/softlens"
-                className="flex items-center gap-2 rounded-full px-5 py-2 text-xs font-bold text-isy-ink/70 hover:text-isy-green-deep hover:bg-white/80 transition-all active:scale-95"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 text-[#1A2E26] font-black text-sm sm:text-base shadow-lg shadow-emerald-500/25 hover:from-emerald-400 hover:to-teal-300 active:scale-[0.98] transition-all"
               >
-                <span>👁️ Softlens &amp; Aksesoris</span>
+                <span>Buka Katalog Softlens &amp; Cairan →</span>
               </Link>
             </div>
           </div>
+        </section>
+      ) : (
+        /* Frame Mode Content */
+        <>
+          {/* Hero Header Section */}
+          <section className="relative overflow-hidden bg-isy-white border-b border-isy-line px-6 pt-24 pb-8 sm:pb-10 text-center">
+            <div className="mx-auto max-w-4xl space-y-4 relative z-10">
+              <div className="flex items-center justify-start">
+                <button
+                  onClick={() => {
+                    setViewMode("choose");
+                    if (typeof window !== "undefined") {
+                      window.history.pushState({}, "", "/katalog");
+                    }
+                  }}
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-0.5">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                  <span>Kembali ke Pilihan Katalog</span>
+                </button>
+              </div>
 
-          {/* Search Bar Input */}
-          <div className="pt-1 max-w-xl mx-auto space-y-3">
-            <div className="relative flex items-center">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-bright">
+                  Katalog Optik I See You
+                </span>
+              </div>
+
+              <h1 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl">
+                Koleksi Frame Terlengkap
+              </h1>
+
+              {/* Search Bar Input */}
+              <div className="pt-1 max-w-xl mx-auto space-y-3">
+                <div className="relative flex items-center">
               <svg
                 className="absolute left-4 h-4 w-4 text-isy-ink/40 pointer-events-none"
                 fill="none"
@@ -495,6 +639,8 @@ export default function CatalogPage() {
           </div>
         )}
       </section>
+      </>
+    )}
 
       {/* Detail & Specs Modal */}
       <CatalogDetailModal
