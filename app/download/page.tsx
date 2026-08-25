@@ -47,7 +47,8 @@ function DownloadPortalContent() {
         : `/api/photo?id=${encodeURIComponent(photoId)}&type=gif`
       : directGif);
 
-  const [activeTab, setActiveTab] = useState<"strip" | "gif">("strip");
+  const defaultTab = searchParams?.get("tab") === "gif" ? "gif" : "strip";
+  const [activeTab, setActiveTab] = useState<"strip" | "gif">(defaultTab);
   const [imageError, setImageError] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 

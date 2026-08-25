@@ -1117,18 +1117,23 @@ const showToast = useCallback((msg: string) => {
     return () => { cancelled = true; };
   }, [phase]);
 
-  // Auto-upload both Photo Strip and Animated GIF to Cloudinary for QR code
+  // Auto-upload both Photo Strip and Animated GIF to Cloudflare R2 for QR code
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // Ref untuk menyimpan compositeUrl terakhir yang sukses di-upload
-  // Mencegah double-upload saat user bolak-balik Hasil ⇄ Kustomisasi tanpa ganti apapun
-  const lastUploadedCompositeRef = useRef<string | null>(null);
+  // Ref untuk menyimpan compositeUrl & gifUrl terakhir yang sukses di-upload
+  const lastUploadedRef = useRef<{ composite: string; gif: string | null } | null>(null);
 
   const doUpload = useCallback(() => {
     if (phase !== "result" || !compositeUrl) return;
-    // Skip upload jika compositeUrl tidak berubah sejak upload terakhir yang sukses
-    if (lastUploadedCompositeRef.current === compositeUrl && uploadPhase === "done") return;
+    // Skip upload jika compositeUrl dan gifUrl tidak berubah sejak upload terakhir
+    if (
+      lastUploadedRef.current?.composite === compositeUrl &&
+      lastUploadedRef.current?.gif === (gifUrl || null) &&
+      uploadPhase === "done"
+    ) {
+      return;
+    }
     setUploadPhase("uploading");
     setUploadError(null);
 
@@ -1137,7 +1142,7 @@ const showToast = useCallback((msg: string) => {
         setUploadedUrl(result.qrPageUrl);
         setQrCodeDataUrl(result.qrCodeDataUrl);
         setUploadPhase("done");
-        lastUploadedCompositeRef.current = compositeUrl;
+        lastUploadedRef.current = { composite: compositeUrl, gif: gifUrl || null };
       } else {
         console.warn("QR upload:", result.error);
         setUploadError(result.error);

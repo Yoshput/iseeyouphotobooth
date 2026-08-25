@@ -221,5 +221,9 @@ export async function createAnimatedGif(
   gif.finish();
   const bytes = gif.bytes();
   const blob = new Blob([bytes as BlobPart], { type: "image/gif" });
-  return URL.createObjectURL(blob);
+  return new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.readAsDataURL(blob);
+  });
 }
