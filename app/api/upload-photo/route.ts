@@ -70,21 +70,34 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 5. Construct public QR Landing Page URL
+    // 5. Determine fast public photo URL (uses custom domain if set, otherwise Next.js serverless proxy)
     const hostHeader = req.headers.get("x-forwarded-host") || req.headers.get("host") || "";
     const proto = req.headers.get("x-forwarded-proto") || "https";
     const origin = hostHeader ? `${proto}://${hostHeader}` : "";
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || origin || "https://optikiseeyou.com";
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || origin || "https://optikiseeyou.com").replace(/\/+$/, "");
 
-    const qrPageUrl = `${siteUrl}/download?id=${encodeURIComponent(uniqueId)}&strip=${encodeURIComponent(
-      stripResult.publicUrl
-    )}${gifResult ? `&gif=${encodeURIComponent(gifResult.publicUrl)}` : ""}`;
+    const isCustomDomain =
+      stripResult.publicUrl &&
+      !stripResult.publicUrl.includes(".r2.dev") &&
+      !stripResult.publicUrl.includes("cloudflarestorage.com");
+
+    const finalStripUrl = isCustomDomain
+      ? stripResult.publicUrl
+      : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=jpg`;
+
+    const finalGifUrl = gifResult
+      ? isCustomDomain
+        ? gifResult.publicUrl
+        : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=gif`
+      : null;
+
+    const qrPageUrl = `${siteUrl}/download?id=${encodeURIComponent(uniqueId)}`;
 
     return NextResponse.json({
       ok: true,
       photoId: uniqueId,
-      stripUrl: stripResult.publicUrl,
-      gifUrl: gifResult?.publicUrl || null,
+      stripUrl: finalStripUrl,
+      gifUrl: finalGifUrl,
       qrPageUrl,
     });
   } catch (err: unknown) {

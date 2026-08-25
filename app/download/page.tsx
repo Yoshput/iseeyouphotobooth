@@ -25,12 +25,27 @@ function DownloadPortalContent() {
     process.env.NEXT_PUBLIC_R2_PUBLIC_DOMAIN || ""
   ).replace(/\/+$/, "");
 
+  const isCustomDomain =
+    r2PublicDomain &&
+    !r2PublicDomain.includes(".r2.dev") &&
+    !r2PublicDomain.includes("cloudflarestorage.com");
+
+  // If using custom domain, load directly from CDN; otherwise stream reliably via /api/photo
   const stripUrl =
-    directStrip ||
-    (photoId && r2PublicDomain ? `${r2PublicDomain}/photos/${photoId}.jpg` : "");
+    (directStrip && !directStrip.includes(".r2.dev") ? directStrip : null) ||
+    (photoId
+      ? isCustomDomain
+        ? `${r2PublicDomain}/photos/${photoId}.jpg`
+        : `/api/photo?id=${encodeURIComponent(photoId)}&type=jpg`
+      : directStrip);
+
   const gifUrl =
-    directGif ||
-    (photoId && r2PublicDomain ? `${r2PublicDomain}/photos/${photoId}.gif` : "");
+    (directGif && !directGif.includes(".r2.dev") ? directGif : null) ||
+    (photoId
+      ? isCustomDomain
+        ? `${r2PublicDomain}/photos/${photoId}.gif`
+        : `/api/photo?id=${encodeURIComponent(photoId)}&type=gif`
+      : directGif);
 
   const [activeTab, setActiveTab] = useState<"strip" | "gif">("strip");
   const [imageError, setImageError] = useState(false);
