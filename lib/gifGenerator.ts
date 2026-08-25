@@ -11,11 +11,33 @@ import { FRAME_THEMES, type FrameTheme } from "./frameCompositor";
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    // Only set crossOrigin on external http/https URLs, NEVER on data: or blob: URIs
+    if (src.startsWith("http://") || src.startsWith("https://")) {
+      img.crossOrigin = "anonymous";
+    }
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error("Failed to load image for GIF"));
+    img.onerror = () => {
+      // Fallback without crossOrigin
+      const fallback = new Image();
+      fallback.onload = () => resolve(fallback);
+      fallback.onerror = (err) => reject(new Error("Failed to load image for GIF: " + err));
+      fallback.src = src;
+    };
     img.src = src;
   });
+}
+
+function uint8ArrayToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  const len = bytes.byteLength;
+  const chunkSize = 8192;
+  for (let i = 0; i < len; i += chunkSize) {
+    const chunk = bytes.subarray(i, Math.min(i + chunkSize, len));
+    for (let j = 0; j < chunk.length; j++) {
+      binary += String.fromCharCode(chunk[j]);
+    }
+  }
+  return btoa(binary);
 }
 
 export async function createAnimatedGif(
@@ -27,12 +49,13 @@ export async function createAnimatedGif(
   delayMs = 450,
   logoSrc = "/logo.png"
 ): Promise<string> {
-  if (!photos.length) throw new Error("No photos provided for GIF");
+  const validPhotos = photos.filter((p) => Boolean(p) && typeof p === "string");
+  if (!validPhotos.length) throw new Error("No photos provided for GIF");
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
 
   const gif = GIFEncoder();
   const theme = FRAME_THEMES.find((t) => t.id === themeId) || FRAME_THEMES[0];
@@ -56,7 +79,7 @@ export async function createAnimatedGif(
   const slotX = MARGIN;
   const slotY = HEADER_H + Math.round((height - HEADER_H - FOOTER_H - slotH) / 2);
 
-  for (const src of photos) {
+  for (const src of validPhotos) {
     const img = await loadImage(src);
 
     ctx.save();
@@ -220,10 +243,5 @@ export async function createAnimatedGif(
 
   gif.finish();
   const bytes = gif.bytes();
-  const blob = new Blob([bytes as BlobPart], { type: "image/gif" });
-  return new Promise<string>((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.readAsDataURL(blob);
-  });
+  return "data:image/gif;base64," + uint8ArrayToBase64(bytes);
 }
