@@ -35,15 +35,16 @@ import { downloadOrShareImage } from "@/lib/saveImage";
 import manifestRaw from "@/public/glasses/manifest.json";
 
 type BoothPhase =
- | "frame-select"
- | "theme-select"
- | "ready"
- | "countdown"
- | "flash"
- | "between"
- | "compositing"
- | "customize"
- | "result";
+  | "frame-select"
+  | "theme-select"
+  | "ready"
+  | "countdown"
+  | "flash"
+  | "between"
+  | "session-review"
+  | "compositing"
+  | "customize"
+  | "result";
 
 type UploadPhase = "idle" | "uploading" | "done" | "error" | "no-key";
 type ResultTab = "strip" | "gif";
@@ -825,7 +826,12 @@ const [faceDetected, setFaceDetected] = useState(false);
 
   const flashRef = useRef<HTMLDivElement>(null);
 
-  const shooting = phase === "ready" || phase === "countdown" || phase === "flash" || phase === "between";
+  const shooting =
+    phase === "ready" ||
+    phase === "countdown" ||
+    phase === "flash" ||
+    phase === "between" ||
+    phase === "session-review";
   const showShutter = phase === "ready";
   const rightActive = phase !== "frame-select";
 
@@ -934,109 +940,103 @@ const showToast = useCallback((msg: string) => {
   const handleLayoutSelect = useCallback((chosen: FrameLayout) => {
     setLayout(chosen);
     resetSession();
-    setPhase("theme-select");
+    setPhase("ready");
   }, [resetSession]);
 
- const handleRetake = useCallback(() => {
- resetSession();
- if (arEnabled) {
- setLayout(FRAME_LAYOUTS[0]);
- // Jika wajah sudah terdeteksi, langsung re-enable tombol tanpa scanning lagi
- if (faceDetected) {
- setScanComplete(true);
- }
- }
- setPhase("ready");
- }, [resetSession, arEnabled, faceDetected]);
+  const handleRetake = useCallback(() => {
+    resetSession();
+    if (arEnabled) {
+      setLayout(FRAME_LAYOUTS[0]);
+      if (faceDetected) {
+        setScanComplete(true);
+      }
+    }
+    setPhase("ready");
+  }, [resetSession, arEnabled, faceDetected]);
 
- // SELECTIVE RETAKE: Reshoot only one specific photo slot!
- const handleRetakeSingleSlot = useCallback((slotIdx: number) => {
- setSingleSlotRetake(slotIdx);
- setCurrentSlot(slotIdx);
- setPhase("countdown");
- }, []);
+  // SELECTIVE RETAKE: Reshoot only one specific photo slot!
+  const handleRetakeSingleSlot = useCallback((slotIdx: number) => {
+    setSingleSlotRetake(slotIdx);
+    setCurrentSlot(slotIdx);
+    setPhase("countdown");
+  }, []);
 
- // Handle advancing to next photo (called from "between" phase button)
- // Note: currentSlot is already set to the next target slot by handleCountdownComplete
- const handleNextPhoto = useCallback(() => {
- if (phase !== "between") return;
- // Cek apakah semua slot sudah terisi (cara aman, tidak pakai currentSlot mentah)
- const allFilled = photos.filter(Boolean).length >= layout.numPhotos;
- if (allFilled) {
-  // Semua slot terisi → compositing
-  setPhase("compositing");
- } else {
-  // Masih ada slot kosong → countdown untuk slot berikutnya
-  setPhase("countdown");
- }
- }, [phase, photos, layout.numPhotos]);
+  const handleChangeLayout = useCallback(() => {
+    resetSession();
+    if (arEnabled) {
+      setLayout(FRAME_LAYOUTS[0]);
+      setPhase("ready");
+    } else {
+      setPhase("frame-select");
+    }
+  }, [resetSession, arEnabled]);
 
- const handleChangeLayout = useCallback(() => {
- resetSession();
- if (arEnabled) {
- setLayout(FRAME_LAYOUTS[0]);
- setPhase("ready");
- } else {
- setPhase("frame-select");
- }
- }, [resetSession, arEnabled]);
+  const goHome = useCallback(() => router.push("/start"), [router]);
 
- const goHome = useCallback(() => router.push("/start"), [router]);
+  const handleCountdownComplete = useCallback(() => {
+    const dataUrl = faceTrackerRef.current?.captureFrame() ?? null;
+    if (!dataUrl) {
+      setPhase("ready");
+      return;
+    }
 
- const handleCountdownComplete = useCallback(() => {
- const dataUrl = faceTrackerRef.current?.captureFrame() ?? null;
- if (!dataUrl) {
- setPhase("ready");
- return;
- }
+    // Play Shutter Audio Effect! 📸
+    playShutterSound(soundEnabled);
 
- // Play Shutter Audio Effect! 📸
- playShutterSound(soundEnabled);
+    if (flashRef.current) {
+      gsap.fromTo(flashRef.current, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.out" });
+    }
 
- if (flashRef.current) {
- gsap.fromTo(flashRef.current, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.out" });
- }
+    const targetSlot = singleSlotRetake !== null ? singleSlotRetake : currentSlot;
 
- const targetSlot = singleSlotRetake !== null ? singleSlotRetake : currentSlot;
+    // Track the new photos state locally to check remaining slots
+    let updatedPhotos: string[] = [];
+    setPhotos((prev) => {
+      const n = [...prev];
+      n[targetSlot] = dataUrl;
+      updatedPhotos = n;
+      return n;
+    });
 
- // Track the new photos state locally to check remaining slots
- let updatedPhotos: string[] = [];
- setPhotos((prev) => {
-  const n = [...prev];
-  n[targetSlot] = dataUrl;
-  updatedPhotos = n;
-  return n;
- });
+    // If we were retaking a single slot
+    if (singleSlotRetake !== null) {
+      setSingleSlotRetake(null);
+      const allFilled = Array.from({ length: layout.numPhotos }, (_, i) => updatedPhotos[i]).every(Boolean);
+      if (allFilled) {
+        setPhase("session-review");
+      } else {
+        const nextEmpty = Array.from({ length: layout.numPhotos }, (_, i) => i).find(i => !updatedPhotos[i]) ?? currentSlot + 1;
+        setCurrentSlot(nextEmpty);
+        setPhase("between");
+      }
+      return;
+    }
 
- // If we were retaking a single slot
- if (singleSlotRetake !== null) {
-  setSingleSlotRetake(null);
-  // Check if all required photo slots are now filled
-  const allFilled = Array.from({ length: layout.numPhotos }, (_, i) => updatedPhotos[i]).every(Boolean);
-  if (allFilled) {
-   // All photos done — composite!
-   setTimeout(() => setPhase("compositing"), 400);
-  } else {
-   // Still empty slots — find next one and pause for user to continue
-   const nextEmpty = Array.from({ length: layout.numPhotos }, (_, i) => i).find(i => !updatedPhotos[i]) ?? currentSlot + 1;
-   setCurrentSlot(nextEmpty);
-   setPhase("between");
-  }
-  return;
- }
+    const nextSlot = currentSlot + 1;
 
- const nextSlot = currentSlot + 1;
+    if (nextSlot < layout.numPhotos) {
+      // Advance to next slot, enter automatic 1.2s transition pause before auto-countdown
+      setCurrentSlot(nextSlot);
+      setPhase("between");
+    } else {
+      // All photos in session completed!
+      setCurrentSlot(nextSlot);
+      if (arEnabled && layout.numPhotos === 1) {
+        setPhase("compositing");
+      } else {
+        setPhase("session-review");
+      }
+    }
+  }, [currentSlot, layout.numPhotos, singleSlotRetake, soundEnabled, arEnabled]);
 
- if (nextSlot < layout.numPhotos) {
-  // Advance to next slot, then pause for user to click "Lanjut"
-  setCurrentSlot(nextSlot);
-  setPhase("between");
- } else {
-  // Foto terakhir — tetap berhenti di "between" untuk review/retake
-  setCurrentSlot(nextSlot);
-  setPhase("between");
- }
- }, [currentSlot, layout.numPhotos, singleSlotRetake]);
+  // Auto-progress from "between" phase to next photo's countdown after 1.2s pause
+  useEffect(() => {
+    if (phase !== "between") return;
+    const timer = setTimeout(() => {
+      setPhase("countdown");
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [phase]);
 
   const handleStartSession = useCallback(() => {
     if (phase !== "ready") return;
@@ -1247,63 +1247,30 @@ const showToast = useCallback((msg: string) => {
   }}
   />
 
+  {/* "between" phase: Auto-progress banner between photo captures */}
+  {phase === "between" && (
+    <div className="absolute inset-x-4 top-16 z-30 flex flex-col items-center animate-in fade-in zoom-in-95 duration-200">
+      <div className="flex items-center gap-3 rounded-2xl bg-black/85 px-5 py-3 text-white backdrop-blur-md shadow-2xl border border-white/20">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-isy-green-bright text-xs font-black text-white animate-bounce">
+          ✓
+        </span>
+        <div className="text-left">
+          <p className="text-xs font-black text-isy-green-bright">
+            Foto {currentSlot} dari {layout.numPhotos} Tersimpan!
+          </p>
+          <p className="text-[11px] font-semibold text-white/90">
+            Bersiap untuk Foto ke-{currentSlot + 1}...
+          </p>
+        </div>
+      </div>
+    </div>
+  )}
+
  <div ref={flashRef} className="pointer-events-none absolute inset-0 bg-white" style={{ opacity: 0 }} aria-hidden />
 
  {phase === "countdown" && (
     <Countdown from={timerSec} duration={1} soundEnabled={soundEnabled} onComplete={handleCountdownComplete} />
  )}
-
- {/* "between" phase: Preview foto yang baru diambil + tombol Retake + Lanjut */}
- {phase === "between" && (() => {
-  const allFilled = photos.filter(Boolean).length >= layout.numPhotos;
-  // Foto yang baru selesai = slot sebelum currentSlot
-  const justTakenIdx = currentSlot - 1;
-  const justTakenPhoto = justTakenIdx >= 0 ? photos[justTakenIdx] : null;
-  return (
-   <div className="absolute inset-0 z-30 flex flex-col items-end justify-end bg-black/60 backdrop-blur-[2px]">
-    {/* Preview foto yang baru diambil */}
-    {justTakenPhoto && (
-     <div className="absolute inset-x-4 top-4 bottom-[180px] flex items-center justify-center">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-       src={justTakenPhoto}
-       alt="Foto yang baru diambil"
-       className="h-full max-h-full w-auto rounded-2xl border-4 border-white shadow-2xl object-contain"
-      />
-      {/* Badge nomor foto */}
-      <span className="absolute top-2 left-2 rounded-full bg-black/60 backdrop-blur-sm px-2.5 py-1 text-[10px] font-black text-white">
-       Foto {justTakenIdx + 1}
-      </span>
-     </div>
-    )}
-
-    {/* Action bar */}
-    <div className="w-full flex flex-col items-center gap-2.5 px-4 pb-4 pt-3 bg-gradient-to-t from-black/80 to-transparent">
-     <p className="text-xs font-semibold text-white/80">
-      {allFilled ? "Semua foto selesai! Mau lanjut atau foto ulang?" : `Foto ${photos.filter(Boolean).length}/${layout.numPhotos} selesai`}
-     </p>
-     <div className="flex w-full max-w-[340px] gap-2.5">
-      {/* Retake tombol */}
-      <button
-       onClick={() => handleRetakeSingleSlot(justTakenIdx >= 0 ? justTakenIdx : 0)}
-       className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-2 border-white/40 bg-black/50 py-3.5 text-sm font-black text-white backdrop-blur-sm hover:bg-black/70 active:scale-[0.97] transition-all"
-      >
-       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" /></svg>
-       Retake
-      </button>
-      {/* Lanjut / Selesai tombol */}
-      <button
-       onClick={handleNextPhoto}
-       className="group relative flex-[2] overflow-hidden rounded-2xl bg-isy-green-bright py-3.5 text-sm font-black uppercase tracking-[0.12em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.55)] transition-all hover:bg-isy-green-deep active:scale-[0.97]"
-      >
-       <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
-       <span className="relative">{allFilled ? "Selesai, Lanjut →" : "Lanjut →"}</span>
-      </button>
-     </div>
-    </div>
-   </div>
-  );
- })()}
 
  {/* Capture button area — anchored at bottom of camera */}
  {shooting && phase === "ready" && (
@@ -1503,18 +1470,112 @@ const showToast = useCallback((msg: string) => {
  </div>
 
  {/* Overlays */}
- {phase === "frame-select" && <FramePicker onSelect={handleLayoutSelect} onBack={goHome} />}
- {phase === "theme-select" && (
- <FrameThemePicker
- layout={layout}
- selectedThemeId={themeId}
- onSelect={(tId) => {
- setThemeId(tId);
- setPhase("ready");
- }}
- onBack={() => setPhase("frame-select")}
- />
- )}
+      {phase === "frame-select" && <FramePicker onSelect={handleLayoutSelect} onBack={goHome} />}
+      {phase === "theme-select" && (
+        <FrameThemePicker
+          layout={layout}
+          selectedThemeId={themeId}
+          onSelect={(tId) => {
+            setThemeId(tId);
+            setPhase("compositing");
+          }}
+          onBack={() => setPhase(photos.filter(Boolean).length >= layout.numPhotos ? "session-review" : "frame-select")}
+        />
+      )}
+
+      {/* "session-review" phase: Pop-up modal after all photos are auto-captured */}
+      {phase === "session-review" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-xl rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-isy-line text-center space-y-4 animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="space-y-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black uppercase tracking-wider">
+                🎉 Sesi Foto Selesai ({layout.numPhotos} Foto)
+              </span>
+              <h3 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
+                Semua Foto Berhasil Diambil!
+              </h3>
+              <p className="text-xs sm:text-sm text-isy-ink/70 max-w-md mx-auto">
+                Pilih <strong className="text-isy-green-deep">Ulang Foto</strong> pada foto tertentu jika ingin mengganti pose, atau lanjutkan ke pemilihan tema frame:
+              </p>
+            </div>
+
+            {/* Photo Preview Grid with Individual Retake Buttons */}
+            <div className={`grid gap-3 my-2 max-h-[46vh] overflow-y-auto p-1 ${
+              layout.numPhotos === 1 ? "grid-cols-1 max-w-[220px] mx-auto" :
+              layout.numPhotos === 2 ? "grid-cols-2 max-w-md mx-auto" :
+              layout.numPhotos === 3 ? "grid-cols-3" : "grid-cols-2 sm:grid-cols-4"
+            }`}>
+              {photos.slice(0, layout.numPhotos).map((photoSrc, idx) => (
+                <div
+                  key={idx}
+                  className="relative flex flex-col rounded-2xl overflow-hidden border-2 border-isy-line bg-white shadow-xs transition-all hover:border-isy-green-bright/60"
+                >
+                  <div className="relative aspect-[3/4] overflow-hidden bg-black/5">
+                    {photoSrc ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={photoSrc} alt={`Foto ${idx + 1}`} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-xs text-gray-400">
+                        Slot {idx + 1}
+                      </div>
+                    )}
+                    <span className="absolute top-1.5 left-1.5 rounded-full bg-black/70 backdrop-blur-sm px-2 py-0.5 text-[9px] font-black text-white">
+                      Foto {idx + 1}
+                    </span>
+                  </div>
+
+                  {/* Single Slot Retake Button */}
+                  <button
+                    onClick={() => {
+                      unlockAudio();
+                      handleRetakeSingleSlot(idx);
+                    }}
+                    className="w-full flex items-center justify-center gap-1 py-2 px-1 bg-isy-mist hover:bg-isy-green-bright hover:text-white text-isy-green-deep text-[11px] font-black transition-all border-t border-isy-line active:scale-95 cursor-pointer"
+                    title={`Ambil ulang Foto ${idx + 1} saja`}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" />
+                    </svg>
+                    <span>Ulang Foto {idx + 1}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* 2 Primary Actions: Retake All vs Lanjut */}
+            <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              {/* Retake All Photos */}
+              <button
+                onClick={() => {
+                  unlockAudio();
+                  resetSession();
+                  setCurrentSlot(0);
+                  setPhase("countdown");
+                }}
+                className="flex-1 inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl border-2 border-isy-line bg-isy-mist hover:bg-white text-isy-green-deep font-black text-xs sm:text-sm active:scale-95 transition-all shadow-xs cursor-pointer"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" />
+                </svg>
+                <span>Ulang Semua Foto</span>
+              </button>
+
+              {/* Lanjut Pilih Tema Frame */}
+              <button
+                onClick={() => setPhase("theme-select")}
+                className="group relative flex-[1.3] overflow-hidden rounded-2xl bg-isy-green-bright py-3.5 px-6 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 hover:bg-isy-green-deep active:scale-95 transition-all cursor-pointer"
+              >
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
+                <span className="relative flex items-center justify-center gap-1.5">
+                  <span>Pilih Tema Frame →</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
  {shareModalOpen && compositeUrl && (
  <ShareModal compositeUrl={compositeUrl} gifUrl={gifUrl} onClose={() => setShareModalOpen(false)} onToast={showToast} />
  )}

@@ -6,7 +6,6 @@ import type { NextConfig } from "next";
  * output: 'export'  →  full static HTML/JS/CSS, zero Node.js server at runtime.
  */
 const nextConfig: NextConfig = {
-  output: "export",
   images: {
     unoptimized: true,
   },

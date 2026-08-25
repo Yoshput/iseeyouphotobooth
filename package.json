@@ -11,6 +11,7 @@
     "preview": "npm run build && npm run serve"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1117.0",
     "@mediapipe/tasks-vision": "^0.10.14",
     "@types/canvas-confetti": "^1.9.0",
     "@types/qrcode": "^1.5.6",
