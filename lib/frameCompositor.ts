@@ -266,6 +266,78 @@ function drawCoverImage(
   ctx.restore();
 }
 
+const trimmedCanvasCache = new Map<string, HTMLCanvasElement>();
+
+function getTrimmedCanvas(img: HTMLImageElement | null, cacheKey: string): HTMLCanvasElement | null {
+  if (!img || !img.width || !img.height) return null;
+  if (trimmedCanvasCache.has(cacheKey)) {
+    return trimmedCanvasCache.get(cacheKey)!;
+  }
+
+  const tmpCanvas = document.createElement("canvas");
+  tmpCanvas.width = img.naturalWidth || img.width;
+  tmpCanvas.height = img.naturalHeight || img.height;
+  const tmpCtx = tmpCanvas.getContext("2d", { willReadFrequently: true });
+  if (!tmpCtx) return null;
+
+  tmpCtx.drawImage(img, 0, 0);
+  const imgData = tmpCtx.getImageData(0, 0, tmpCanvas.width, tmpCanvas.height);
+  const data = imgData.data;
+  const w = tmpCanvas.width;
+  const h = tmpCanvas.height;
+
+  let minX = w, minY = h, maxX = 0, maxY = 0;
+  let hasPixels = false;
+
+  for (let y = 0; y < h; y += 2) {
+    for (let x = 0; x < w; x += 2) {
+      const alphaIndex = (y * w + x) * 4 + 3;
+      if (data[alphaIndex] > 20) {
+        hasPixels = true;
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+
+  if (!hasPixels || maxX <= minX || maxY <= minY) {
+    trimmedCanvasCache.set(cacheKey, tmpCanvas);
+    return tmpCanvas;
+  }
+
+  const pad = 4;
+  const cropX = Math.max(0, minX - pad);
+  const cropY = Math.max(0, minY - pad);
+  const cropW = Math.min(w - cropX, (maxX - minX) + pad * 2);
+  const cropH = Math.min(h - cropY, (maxY - minY) + pad * 2);
+
+  const croppedCanvas = document.createElement("canvas");
+  croppedCanvas.width = cropW;
+  croppedCanvas.height = cropH;
+  const cropCtx = croppedCanvas.getContext("2d")!;
+  cropCtx.drawImage(tmpCanvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+
+  trimmedCanvasCache.set(cacheKey, croppedCanvas);
+  return croppedCanvas;
+}
+
+function drawProportionalLogo(
+  ctx: CanvasRenderingContext2D,
+  logoCanvasOrImg: HTMLCanvasElement | HTMLImageElement | null,
+  centerX: number,
+  centerY: number,
+  maxW: number,
+  maxH: number
+) {
+  if (!logoCanvasOrImg || !logoCanvasOrImg.width || !logoCanvasOrImg.height) return;
+  const s = Math.min(maxW / logoCanvasOrImg.width, maxH / logoCanvasOrImg.height);
+  const lw = Math.round(logoCanvasOrImg.width * s);
+  const lh = Math.round(logoCanvasOrImg.height * s);
+  ctx.drawImage(logoCanvasOrImg, centerX - lw / 2, centerY - lh / 2, lw, lh);
+}
+
 function drawEmptySlot(
   ctx: CanvasRenderingContext2D,
   slot: PhotoSlot,
@@ -378,18 +450,20 @@ async function drawVintageFilmStripFrame(
   });
   ctx.restore();
 
-  // 6. Header / Logo Branding in Retro Gold/White
+  // 6. Header / Logo Branding in Retro White
   const HEADER_H = 130;
   try {
-    const logo = await loadImage(logoSrc);
+    let logo: HTMLImageElement;
+    try {
+      logo = await loadImage("/logo/LOGO ISY PUTIH-02.png");
+    } catch {
+      logo = await loadImage(logoSrc);
+    }
     const maxW = 260, maxH = 90;
     const s = Math.min(maxW / logo.width, maxH / logo.height);
     const lw = logo.width * s;
     const lh = logo.height * s;
-    ctx.save();
-    ctx.filter = "brightness(0) invert(1)"; // White logo on dark film
     ctx.drawImage(logo, (width - lw) / 2, 20, lw, lh);
-    ctx.restore();
   } catch {
     ctx.save();
     ctx.font = "800 42px Georgia, serif";
@@ -1290,20 +1364,16 @@ export async function compositeFrame(
   // Header area
   const HEADER_H = 148;
   try {
-    const logo = await loadImage(logoSrc);
-    const maxW = 300, maxH = 120;
-    const s = Math.min(maxW / logo.width, maxH / logo.height);
-    const lw = logo.width * s;
-    const lh = logo.height * s;
-
-    if (theme.id === "emerald-luxury" || theme.id === "midnight-dark") {
-      ctx.save();
-      ctx.filter = "brightness(0) invert(1)";
-      ctx.drawImage(logo, (width - lw) / 2, 14 + (HEADER_H - 14 - lh) / 2, lw, lh);
-      ctx.restore();
-    } else {
-      ctx.drawImage(logo, (width - lw) / 2, 14 + (HEADER_H - 14 - lh) / 2, lw, lh);
+    const isDark = theme.id === "emerald-luxury" || theme.id === "midnight-dark" || theme.id === "vintage-film-bw";
+    const actualLogoSrc = isDark ? "/logo/LOGO ISY PUTIH-02.png" : logoSrc;
+    let logo: HTMLImageElement;
+    try {
+      logo = await loadImage(actualLogoSrc);
+    } catch {
+      logo = await loadImage(logoSrc);
     }
+    const trimmedLogo = getTrimmedCanvas(logo, actualLogoSrc);
+    drawProportionalLogo(ctx, trimmedLogo || logo, width / 2, 14 + (HEADER_H - 14) / 2, 380, 110);
   } catch {
     ctx.save();
     ctx.font = "800 52px Georgia, serif";
@@ -1366,17 +1436,11 @@ export async function compositeFrame(
 
   ctx.fillStyle = theme.textColor;
   ctx.font = "italic 700 36px Georgia, 'Times New Roman', serif";
-  ctx.fillText("Jadi Sahabat Mata Kamu", width / 2, footerCenterY - 44);
+  ctx.fillText("for every you", width / 2, footerCenterY - 20);
 
   ctx.fillStyle = theme.igColor;
   ctx.font = "bold 30px 'Inter', Arial, sans-serif";
-  ctx.fillText("@iseeyou.glasses", width / 2, footerCenterY + 4);
-
-  ctx.fillStyle = theme.textColor;
-  ctx.font = "22px 'Inter', Arial, sans-serif";
-  ctx.globalAlpha = 0.75;
-  ctx.fillText("Optik I See You · Purwokerto", width / 2, footerCenterY + 48);
-  ctx.globalAlpha = 1;
+  ctx.fillText("@iseeyou.glasses", width / 2, footerCenterY + 24);
 
   // Bottom accent bars
   ctx.fillStyle = theme.accentBarColor;
@@ -1493,7 +1557,7 @@ export async function compositeArTryOnFrame(
   ctx.fillStyle = "#116B3C";
   ctx.font = "bold 18px 'Inter', sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("@iseeyou.glasses · Optik I See You Purwokerto", width / 2, footerY);
+  ctx.fillText("@iseeyou.glasses · for every you", width / 2, footerY);
   ctx.restore();
 
   // Bottom accent bar
