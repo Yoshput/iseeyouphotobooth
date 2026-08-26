@@ -40,6 +40,33 @@ function VisualThemeMockup({
   const isSignatureISY = theme.id === "signature-isy-custom";
   const isStrip1x3 = layout.aspectRatioClass === "aspect-[1/3]";
 
+  // 4 new PNG-overlay frames — show actual PNG as thumbnail
+  const pngOverlayFrames: Record<string, { src: string; aspect: string; maxW: string }> = {
+    "frame-4-pink":  { src: "/frame photobooth/frame 4 pink.png",  aspect: "aspect-[4/5]", maxW: "max-w-[144px]" },
+    "frame-hijau-3": { src: "/frame photobooth/frame hijau 3.png", aspect: "aspect-[1/2]", maxW: "max-w-[80px]"  },
+    "frame-pink-3":  { src: "/frame photobooth/frame pink 3.png",  aspect: "aspect-[1/2]", maxW: "max-w-[80px]"  },
+    "frame-putih-4": { src: "/frame photobooth/frame putih 4.png", aspect: "aspect-[4/5]", maxW: "max-w-[144px]" },
+  };
+  const pngMeta = pngOverlayFrames[theme.id];
+  if (pngMeta) {
+    return (
+      <div className="flex h-[180px] w-full items-center justify-center py-1">
+        <div
+          className={`relative ${pngMeta.aspect} ${pngMeta.maxW} h-full w-full rounded-xl overflow-hidden shadow-xs border border-stone-200 transition-all duration-300 group-hover:shadow-md`}
+        >
+          <Image
+            src={pngMeta.src}
+            alt={theme.name}
+            fill
+            className="object-cover"
+            sizes="144px"
+          />
+        </div>
+      </div>
+    );
+  }
+
+
   // Person SVG icon for slot placeholder
   const PersonIcon = ({ color }: { color?: string }) => (
     <svg
@@ -457,10 +484,10 @@ export default function FrameThemePicker({
             </button>
             <div>
               <h2 className="font-serif text-2xl font-black text-isy-green-deep">
-                Pilih Tema Desain Frame
+                Pilih Template Desain Frame
               </h2>
               <p className="text-xs text-isy-ink/60 font-medium mt-0.5">
-                Layout: <span className="font-bold text-isy-green-deep">{layout.label} ({layout.sublabel})</span>
+                Layout: <span className="font-bold text-isy-green-deep">{layout.label} ({layout.sublabel})</span> · Pilih template sebelum mulai foto
               </p>
             </div>
           </div>

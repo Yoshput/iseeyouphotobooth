@@ -61,6 +61,12 @@ interface Model3DMeta {
   name?: string;
   fitWidthRatio?: number;
   yOffsetRatio?: number;
+  /** Per-model pivot origin correction (Three.js units) */
+  pivotOffset?: { x: number; y: number; z: number };
+  /** Per-model rotation fine-tune in degrees */
+  rotationOffsetDeg?: { x: number; y: number; z: number };
+  /** Temple fade start fraction 0–1 */
+  templeFadeStart?: number;
 }
 
 interface GlassesMeta {
@@ -769,13 +775,7 @@ const [faceDetected, setFaceDetected] = useState(false);
   const [scanComplete, setScanComplete] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [devNoticeModalOpen, setDevNoticeModalOpen] = useState(false);
-  const [renderMode3D, setRenderMode3D] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("mode") === "3d";
-    }
-    return false;
-  });
+  const [renderMode3D, setRenderMode3D] = useState<boolean>(false);
 
   const activeGlassesList = useMemo(() => {
     if (renderMode3D) {
@@ -800,17 +800,13 @@ const [faceDetected, setFaceDetected] = useState(false);
     }
 
     if (modeParam === "3d") {
-      setRenderMode3D(true);
+      // 3D feature is closed / in repair - fallback to 2D AR and show dev notice modal
+      setRenderMode3D(false);
       setDevNoticeModalOpen(true);
-      setAiMode(false);
+      setAiMode(true);
       setArEnabled(true);
       setLayout(FRAME_LAYOUTS[0]);
       setPhase("ready");
-      // Default to first 3D model if on "none" or 2D model
-      if (!manifest[glassesIndex]?.model3D) {
-        const first3DIdx = manifest.findIndex((g) => !!g.model3D);
-        if (first3DIdx >= 0) setGlassesIndex(first3DIdx);
-      }
     } else if (isTryOnRoute || modeParam === "ar" || modeParam === "2d" || aiParam === "1") {
       setRenderMode3D(false);
       setAiMode(true);
@@ -940,8 +936,12 @@ const showToast = useCallback((msg: string) => {
   const handleLayoutSelect = useCallback((chosen: FrameLayout) => {
     setLayout(chosen);
     resetSession();
-    setPhase("ready");
-  }, [resetSession]);
+    const compatible = getCompatibleThemes(chosen);
+    if (!compatible.some((t) => t.id === themeId)) {
+      setThemeId(compatible[0]?.id || "classic-white");
+    }
+    setPhase("theme-select");
+  }, [resetSession, themeId]);
 
   const handleRetake = useCallback(() => {
     resetSession();
@@ -1210,6 +1210,9 @@ const showToast = useCallback((msg: string) => {
   isTinted={glasses?.model3D?.isTinted || glasses?.lensType === "tinted"}
   style={glasses?.model3D?.style || glasses?.style}
   yOffsetRatio={glasses?.model3D?.yOffsetRatio}
+  pivotOffset={glasses?.model3D?.pivotOffset}
+  rotationOffsetDeg={glasses?.model3D?.rotationOffsetDeg}
+  templeFadeStart={glasses?.model3D?.templeFadeStart}
   onScanIntroComplete={() => {
     setIsScanning(false);
     setScanComplete(true);
@@ -1428,9 +1431,15 @@ const showToast = useCallback((msg: string) => {
 
  <div className="flex items-center justify-between text-xs">
  {!arEnabled ? (
- <button onClick={handleChangeLayout} className="text-isy-ink/40 hover:text-isy-green-deep transition-colors">
- Ganti Layout
- </button>
+   <div className="flex items-center gap-2">
+     <button onClick={handleChangeLayout} className="font-semibold text-isy-ink/50 hover:text-isy-green-deep transition-colors">
+       Ganti Layout
+     </button>
+     <span className="text-isy-ink/30">•</span>
+     <button onClick={() => setPhase("theme-select")} className="font-semibold text-isy-green-bright hover:text-isy-green-deep transition-colors">
+       Ganti Template
+     </button>
+   </div>
  ) : (
  <span className="text-[11px] font-bold text-isy-green-bright">Try-On 1x Foto</span>
  )}
@@ -1482,7 +1491,11 @@ const showToast = useCallback((msg: string) => {
           selectedThemeId={themeId}
           onSelect={(tId) => {
             setThemeId(tId);
-            setPhase("compositing");
+            if (photos.filter(Boolean).length >= layout.numPhotos) {
+              setPhase("compositing");
+            } else {
+              setPhase("ready");
+            }
           }}
           onBack={() => setPhase(photos.filter(Boolean).length >= layout.numPhotos ? "session-review" : "frame-select")}
         />
@@ -1501,7 +1514,7 @@ const showToast = useCallback((msg: string) => {
                 Semua Foto Berhasil Diambil!
               </h3>
               <p className="text-xs sm:text-sm text-isy-ink/70 max-w-md mx-auto">
-                Pilih <strong className="text-isy-green-deep">Ulang Foto</strong> pada foto tertentu jika ingin mengganti pose, atau lanjutkan ke pemilihan tema frame:
+                Pilih <strong className="text-isy-green-deep">Ulang Foto</strong> pada foto tertentu jika ingin mengganti pose, atau langsung lihat hasil cetak frame kamu:
               </p>
             </div>
 
@@ -1548,8 +1561,8 @@ const showToast = useCallback((msg: string) => {
               ))}
             </div>
 
-            {/* 2 Primary Actions: Retake All vs Lanjut */}
-            <div className="pt-2 flex flex-col sm:flex-row gap-3">
+            {/* Actions: Retake All vs Ganti Tema vs Lanjut */}
+            <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
               {/* Retake All Photos */}
               <button
                 onClick={() => {
@@ -1558,22 +1571,33 @@ const showToast = useCallback((msg: string) => {
                   setCurrentSlot(0);
                   setPhase("countdown");
                 }}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl border-2 border-isy-line bg-isy-mist hover:bg-white text-isy-green-deep font-black text-xs sm:text-sm active:scale-95 transition-all shadow-xs cursor-pointer"
+                className="flex-1 inline-flex items-center justify-center gap-1.5 py-3.5 px-3 rounded-2xl border-2 border-isy-line bg-isy-mist hover:bg-white text-isy-green-deep font-black text-xs sm:text-sm active:scale-95 transition-all shadow-xs cursor-pointer"
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" />
                 </svg>
-                <span>Ulang Semua Foto</span>
+                <span>Ulang Semua</span>
               </button>
 
-              {/* Lanjut Pilih Tema Frame */}
+              {/* Ganti Tema Frame */}
               <button
                 onClick={() => setPhase("theme-select")}
-                className="group relative flex-[1.3] overflow-hidden rounded-2xl bg-isy-green-bright py-3.5 px-6 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 hover:bg-isy-green-deep active:scale-95 transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-1.5 py-3.5 px-3.5 rounded-2xl border border-isy-green-bright/40 bg-white hover:bg-isy-mist text-isy-green-deep font-bold text-xs sm:text-sm active:scale-95 transition-all shadow-xs cursor-pointer"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+                </svg>
+                <span>Ganti Tema</span>
+              </button>
+
+              {/* Lanjut Lihat Hasil */}
+              <button
+                onClick={() => setPhase("compositing")}
+                className="group relative flex-[1.4] overflow-hidden rounded-2xl bg-isy-green-bright py-3.5 px-5 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 hover:bg-isy-green-deep active:scale-95 transition-all cursor-pointer"
               >
                 <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
                 <span className="relative flex items-center justify-center gap-1.5">
-                  <span>Pilih Tema Frame →</span>
+                  <span>Lanjut, Lihat Hasil →</span>
                 </span>
               </button>
             </div>
@@ -1581,9 +1605,9 @@ const showToast = useCallback((msg: string) => {
         </div>
       )}
 
- {shareModalOpen && compositeUrl && (
- <ShareModal compositeUrl={compositeUrl} gifUrl={gifUrl} onClose={() => setShareModalOpen(false)} onToast={showToast} />
- )}
+      {shareModalOpen && compositeUrl && (
+        <ShareModal compositeUrl={compositeUrl} gifUrl={gifUrl} onClose={() => setShareModalOpen(false)} onToast={showToast} />
+      )}
       {giantQRModalOpen && uploadedUrl && (
         <GiantQRModal
           uploadedUrl={uploadedUrl}
@@ -1639,10 +1663,13 @@ const showToast = useCallback((msg: string) => {
                 <span>Buka Try-On AR 2D (Direkomendasikan)</span>
               </button>
               <button
-                onClick={() => setDevNoticeModalOpen(false)}
+                onClick={() => {
+                  setDevNoticeModalOpen(false);
+                  router.push("/try-on");
+                }}
                 className="w-full py-2 text-xs font-bold text-isy-ink/50 hover:text-isy-green-deep transition-colors cursor-pointer"
               >
-                Tetap Lanjut Preview 3D
+                Kembali ke Menu
               </button>
             </div>
           </div>

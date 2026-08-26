@@ -5,16 +5,13 @@
  * Gateway selector between Try-On 2D (Photobooth & Strip) and Try-On 3D (Virtual Reality CAD).
  */
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Sparkles, Camera, Eye, CheckCircle2, Glasses, ShieldCheck, Wrench, X } from "lucide-react";
+import { ArrowLeft, Sparkles, Camera, Eye, CheckCircle2, Glasses, ShieldCheck } from "lucide-react";
 
 export default function TryOnGatewayPage() {
-  const [show3DModal, setShow3DModal] = useState(false);
-
   return (
-    <main className="min-h-screen bg-[#FDFBF7] text-[#1A2E26] flex flex-col justify-between selection:bg-[#2FA84F]/20">
+    <main className="min-h-screen bg-white text-[#1A2E26] flex flex-col justify-between selection:bg-[#2FA84F]/20">
       {/* Top Navbar */}
       <header className="w-full border-b border-[#E7E2D9] bg-white/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
@@ -114,54 +111,52 @@ export default function TryOnGatewayPage() {
             </Link>
           </div>
 
-          {/* Card 2: Try-On 3D (Virtual Reality Optical Mode) */}
-          <div className="group relative flex flex-col justify-between bg-gradient-to-b from-[#1A2E26] to-[#12201A] text-white rounded-3xl p-6 sm:p-8 border-2 border-[#1A2E26] hover:border-amber-400 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+          {/* Card 2: Try-On 3D (Virtual Reality Optical Mode) - Dalam Tahap Perbaikan */}
+          <div className="relative flex flex-col justify-between bg-gradient-to-b from-[#1A2E26]/90 to-[#12201A]/95 text-white rounded-3xl p-6 sm:p-8 border-2 border-[#1A2E26] shadow-md opacity-90">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-black uppercase tracking-wider shadow-sm">
-                  <Wrench className="w-3.5 h-3.5" />
-                  Tahap Pengembangan
+                  <Eye className="w-3.5 h-3.5" />
+                  Mode 3D CAD
                 </span>
-                <span className="text-[11px] font-bold text-amber-300/90 bg-amber-950/60 px-2.5 py-0.5 rounded-full border border-amber-500/30">
-                  Coming Soon
+                <span className="text-[11px] font-bold text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/30">
+                  🚧 Tahap Perbaikan
                 </span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-2">
                 Try-On 3D Virtual Fitting
               </h2>
               <p className="text-xs sm:text-sm text-white/70 mb-6 leading-relaxed">
-                Pengalaman fitting kacamata 3D nyata dengan geometri CAD, tangkai kacamata melengkung ke telinga, dan refleksi kilau studio HDRI.
+                Fitur fitting kacamata 3D Real-Time CAD saat ini sedang dalam proses perbaikan &amp; kalibrasi presisi frame oleh tim Optik I See You.
               </p>
 
               {/* Feature Checklist */}
               <ul className="space-y-2.5 mb-8 text-xs sm:text-sm text-white/85">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-amber-400/70 shrink-0" />
                   <span>Model 3D CAD nyata (Aviator, Clubmaster, Round, Acetate)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-amber-400/70 shrink-0" />
                   <span>Rotasi kepala 3D penuh (tengok kiri/kanan, dongak/nunduk)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-amber-400/70 shrink-0" />
                   <span>Tangkai kacamata 3D melengkung pas di samping telinga</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-amber-400/70 shrink-0" />
                   <span>Refleksi pencahayaan studio &amp; lensa transparan jernih</span>
                 </li>
               </ul>
             </div>
 
-            <button
-              onClick={() => setShow3DModal(true)}
-              className="w-full inline-flex items-center justify-center gap-2 py-3.5 sm:py-4 px-6 rounded-2xl bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/40 font-bold text-sm sm:text-base active:scale-[0.98] transition-all cursor-pointer"
+            <div
+              className="w-full inline-flex items-center justify-center gap-2 py-3.5 sm:py-4 px-6 rounded-2xl bg-white/10 text-white/60 font-bold text-sm sm:text-base border border-white/10 cursor-not-allowed select-none"
             >
-              <Wrench className="w-4 h-4" />
-              <span>Coba Fitur 3D (Dalam Pengembangan)</span>
-            </button>
+              <span>🚧 Sedang Dalam Perbaikan (Segera Hadir)</span>
+            </div>
           </div>
         </div>
 
@@ -175,55 +170,6 @@ export default function TryOnGatewayPage() {
           <div>Tanpa Download Aplikasi (Langsung di Browser)</div>
         </div>
       </section>
-
-      {/* ── 3D Development Notice Modal ─────────────────────────────────────── */}
-      {show3DModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-isy-line text-center space-y-5 animate-in zoom-in-95 duration-200">
-            <button
-              onClick={() => setShow3DModal(false)}
-              className="absolute top-4 right-4 h-8 w-8 rounded-full bg-isy-mist flex items-center justify-center text-isy-ink/50 hover:text-isy-green-deep hover:bg-isy-line transition-all"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            <div className="mx-auto w-16 h-16 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
-              <Wrench className="w-8 h-8 animate-bounce" />
-            </div>
-
-            <div className="space-y-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-black uppercase tracking-wider">
-                🚧 Sedang Dalam Pengembangan
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-isy-green-deep">
-                Fitur Try-On 3D Segera Hadir!
-              </h3>
-              <p className="text-xs sm:text-sm text-isy-ink/70 leading-relaxed pt-1">
-                Pengalaman fitting kacamata **3D Real-Time CAD** saat ini sedang dalam tahap riset &amp; kalibrasi presisi frame oleh tim *Optik I See You*.
-              </p>
-              <p className="text-xs text-isy-green-deep font-semibold bg-isy-mist/70 p-3 rounded-xl border border-isy-line">
-                ✨ Silakan gunakan **Try-On AR 2D &amp; Photobooth** yang sudah siap 100% dengan katalog lengkap dan foto strip!
-              </p>
-            </div>
-
-            <div className="pt-2 flex flex-col gap-2.5">
-              <Link
-                href="/photobooth?mode=ar"
-                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-[#2FA84F] text-white font-bold text-sm shadow-md shadow-[#2FA84F]/25 hover:bg-[#25873F] active:scale-[0.98] transition-all"
-              >
-                <Camera className="w-4 h-4" />
-                <span>Buka Try-On AR 2D Sekarang</span>
-              </Link>
-              <button
-                onClick={() => setShow3DModal(false)}
-                className="w-full py-2.5 text-xs font-bold text-isy-ink/50 hover:text-isy-green-deep transition-colors"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Footer minimal */}
       <footer className="py-4 text-center text-[11px] text-[#1A2E26]/40 border-t border-[#E7E2D9]">

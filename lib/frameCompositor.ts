@@ -121,15 +121,90 @@ export const FRAME_THEMES: FrameTheme[] = [
     dotColor: "#2FA84F",
     supportedPhotoCounts: [1, 2, 3, 4, 6],
   },
+  {
+    id: "frame-4-pink",
+    name: "The Moment Pink",
+    badge: "Baru · 4 Foto",
+    description: "Frame playful pink 'The Moment with Optik I See You' bergaya kawaii dengan 4 foto grid.",
+    bgColor: "#FFB6C1",
+    bgGradEnd: "#FF69B4",
+    topBarColor: "#FF1493",
+    accentBarColor: "#FF69B4",
+    textColor: "#fff",
+    igColor: "#FF1493",
+    slotBg: "#FFE4E1",
+    slotBorder: "#FF69B4",
+    dotColor: "#FF1493",
+    supportedPhotoCounts: [4],
+    supportedLayoutIds: ["quartet_grid"],
+  },
+  {
+    id: "frame-hijau-3",
+    name: "Capturing Moments Hijau",
+    badge: "Baru · 3 Foto",
+    description: "Frame elegan dark green 'Capturing Moments with Optik I See You' dengan 3 foto vertikal strip.",
+    bgColor: "#1A5C35",
+    bgGradEnd: "#0D3D21",
+    topBarColor: "#2FA84F",
+    accentBarColor: "#E8D5B7",
+    textColor: "#FFFFFF",
+    igColor: "#E8D5B7",
+    slotBg: "#0D3D21",
+    slotBorder: "#2FA84F",
+    dotColor: "#E8D5B7",
+    supportedPhotoCounts: [3],
+    supportedLayoutIds: ["trio_vert"],
+  },
+  {
+    id: "frame-pink-3",
+    name: "Capturing Moments Pink",
+    badge: "Baru · 3 Foto",
+    description: "Frame girly pink 'Capturing Moments with Optik I See You' dengan 3 foto vertikal strip.",
+    bgColor: "#FF85B3",
+    bgGradEnd: "#FF4499",
+    topBarColor: "#FF1493",
+    accentBarColor: "#FFE4F0",
+    textColor: "#FFFFFF",
+    igColor: "#FF1493",
+    slotBg: "#FFB6C1",
+    slotBorder: "#FF69B4",
+    dotColor: "#FF1493",
+    supportedPhotoCounts: [3],
+    supportedLayoutIds: ["trio_vert"],
+  },
+  {
+    id: "frame-putih-4",
+    name: "Boarding Pass ISY",
+    badge: "Baru · 4 Foto",
+    description: "Frame unik bergaya boarding pass 'Flight of Love – RSM → ISY by Optik I See You' dengan 4 foto grid.",
+    bgColor: "#F5F5F0",
+    bgGradEnd: "#E8E8E0",
+    topBarColor: "#1A3C1A",
+    accentBarColor: "#2FA84F",
+    textColor: "#1A1A1A",
+    igColor: "#1A3C1A",
+    slotBg: "#F0F0E8",
+    slotBorder: "#2FA84F",
+    dotColor: "#1A3C1A",
+    supportedPhotoCounts: [4],
+    supportedLayoutIds: ["quartet_grid"],
+  },
 ];
 
 export function isThemeCompatibleWithLayout(theme: FrameTheme, layout: FrameLayout): boolean {
+  if (theme.supportedLayoutIds && theme.supportedLayoutIds.length > 0) {
+    return theme.supportedLayoutIds.includes(layout.id);
+  }
+  if (theme.supportedPhotoCounts && theme.supportedPhotoCounts.length > 0) {
+    return theme.supportedPhotoCounts.includes(layout.numPhotos);
+  }
   return true;
 }
 
 export function getCompatibleThemes(layout: FrameLayout): FrameTheme[] {
-  return FRAME_THEMES;
+  return FRAME_THEMES.filter((t) => isThemeCompatibleWithLayout(t, layout));
 }
+
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -529,6 +604,83 @@ async function drawNewspaperEditorialFrame(
   ctx.fillStyle = "#116B3C";
   ctx.fillRect(16, height - 22, width - 32, 6);
 }
+
+/**
+ * Generic PNG-overlay frame renderer with chroma-key blue removal.
+ *
+ * The frame PNGs use solid blue (#0000FF) as placeholder slots for photos.
+ * Strategy:
+ *   1. Load frame PNG into a temp off-screen canvas
+ *   2. Remove all "blue" pixels (R<80, G<80, B>170) -> transparent
+ *   3. Fill main canvas white
+ *   4. Draw user photos at the slot positions (underneath)
+ *   5. Draw the chroma-keyed frame on top
+ *
+ * @param slots      Array of {x,y,w,h} in the PNG's own pixel space
+ * @param frameSrc   Path to the frame PNG relative to /public
+ */
+async function drawPngOverlayFrame(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  photos: string[],
+  colorFilterId: string | undefined,
+  frameSrc: string,
+  slots: PhotoSlot[]
+) {
+  // 1. Load original frame PNG and chroma-key it (blue -> transparent)
+  let chromaKeyedFrame: HTMLCanvasElement | null = null;
+  try {
+    const frameImg = await loadImage(frameSrc);
+
+    // Render frame into temp canvas at original resolution
+    const tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = frameImg.naturalWidth || width;
+    tmpCanvas.height = frameImg.naturalHeight || height;
+    const tmpCtx = tmpCanvas.getContext("2d", { willReadFrequently: true })!;
+    tmpCtx.drawImage(frameImg, 0, 0);
+
+    // Pixel-level chroma key: turn blue areas transparent
+    const imgData = tmpCtx.getImageData(0, 0, tmpCanvas.width, tmpCanvas.height);
+    const d = imgData.data;
+    for (let p = 0; p < d.length; p += 4) {
+      const r = d[p], g = d[p + 1], b = d[p + 2];
+      // Blue chroma key: low red, low green, high blue
+      if (r < 80 && g < 80 && b > 170) {
+        d[p + 3] = 0; // fully transparent
+      }
+    }
+    tmpCtx.putImageData(imgData, 0, 0);
+    chromaKeyedFrame = tmpCanvas;
+  } catch (err) {
+    console.warn(`drawPngOverlayFrame: failed to load/process ${frameSrc}:`, err);
+  }
+
+  // 2. White base
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, width, height);
+
+  // 3. Draw user photos into each slot (will show through the transparent holes)
+  for (let i = 0; i < slots.length; i++) {
+    const slot = slots[i];
+    if (photos[i]) {
+      try {
+        const img = await loadImage(photos[i]);
+        drawCoverImage(ctx, img, slot, colorFilterId || "normal", 12);
+      } catch {
+        drawEmptySlot(ctx, slot, i, FRAME_THEMES[0], 12);
+      }
+    } else {
+      drawEmptySlot(ctx, slot, i, FRAME_THEMES[0], 12);
+    }
+  }
+
+  // 4. Composite the chroma-keyed frame on top
+  if (chromaKeyedFrame) {
+    ctx.drawImage(chromaKeyedFrame, 0, 0, width, height);
+  }
+}
+
 
 /**
  * Custom renderer for "Frame Koran Optik I See You" (Frame Koran.png overlay)
@@ -1026,6 +1178,86 @@ export async function compositeFrame(
   if (themeId === "lens-flare-gold") {
     await drawLensFlareGoldFrame(ctx, width, height, layout, photos, logoSrc);
     return canvas.toDataURL("image/jpeg", 0.93);
+  }
+
+  // ── 4 New PNG Overlay Frames ──────────────────────────────────────────────
+
+  // Frame 4 Pink — "The Moment Pink" (2160×2700, 4-foto grid 2×2)
+  // Blue scan: x=178..1981 y=473..1248 (row1) y=1313..2088 (row2)
+  // Mid-gap X is approx 1080 (center of 2160). Left col: x=178, right col: x=1090 approx
+  if (themeId === "frame-4-pink") {
+    const fw = 2160, fh = 2700;
+    const fc = document.createElement("canvas");
+    fc.width = fw; fc.height = fh;
+    const fctx = fc.getContext("2d")!;
+    // Row 1: y=473 h=775 | Row 2: y=1313 h=775
+    // Col Left: x=178 w=882 | Col Right: x=1100 w=881 (gap X=1060-1099)
+    await drawPngOverlayFrame(fctx, fw, fh, photos, colorFilterId,
+      "/frame photobooth/frame 4 pink.png",
+      [
+        { x: 178,  y: 473,  w: 882, h: 775 },
+        { x: 1100, y: 473,  w: 881, h: 775 },
+        { x: 178,  y: 1313, w: 882, h: 775 },
+        { x: 1100, y: 1313, w: 881, h: 775 },
+      ]
+    );
+    return fc.toDataURL("image/jpeg", 0.93);
+  }
+
+  // Frame Hijau 3 — "Capturing Moments Hijau" (1886×4000, 3-foto strip vertikal)
+  // Blue scan pixel-accurate: x=462 w=961 | y1=780 y2=1516 y3=2251 h=688
+  if (themeId === "frame-hijau-3") {
+    const fw = 1886, fh = 4000;
+    const fc = document.createElement("canvas");
+    fc.width = fw; fc.height = fh;
+    const fctx = fc.getContext("2d")!;
+    await drawPngOverlayFrame(fctx, fw, fh, photos, colorFilterId,
+      "/frame photobooth/frame hijau 3.png",
+      [
+        { x: 462, y: 780,  w: 961, h: 688 },
+        { x: 462, y: 1516, w: 961, h: 688 },
+        { x: 462, y: 2251, w: 961, h: 688 },
+      ]
+    );
+    return fc.toDataURL("image/jpeg", 0.93);
+  }
+
+  // Frame Pink 3 — "Capturing Moments Pink" (1886×4000, 3-foto strip vertikal)
+  // Same layout as hijau 3
+  if (themeId === "frame-pink-3") {
+    const fw = 1886, fh = 4000;
+    const fc = document.createElement("canvas");
+    fc.width = fw; fc.height = fh;
+    const fctx = fc.getContext("2d")!;
+    await drawPngOverlayFrame(fctx, fw, fh, photos, colorFilterId,
+      "/frame photobooth/frame pink 3.png",
+      [
+        { x: 462, y: 780,  w: 961, h: 688 },
+        { x: 462, y: 1516, w: 961, h: 688 },
+        { x: 462, y: 2251, w: 961, h: 688 },
+      ]
+    );
+    return fc.toDataURL("image/jpeg", 0.93);
+  }
+
+  // Frame Putih 4 — "Boarding Pass ISY" (2160×2700, 4-foto grid 2×2)
+  // Blue scan: x=92..2066 y=879..1599 (row1) y=1647..2367 (row2)
+  // Total w=1974 → split: left x=92 w=927, right x=1140 w=927 (gap ~121px)
+  if (themeId === "frame-putih-4") {
+    const fw = 2160, fh = 2700;
+    const fc = document.createElement("canvas");
+    fc.width = fw; fc.height = fh;
+    const fctx = fc.getContext("2d")!;
+    await drawPngOverlayFrame(fctx, fw, fh, photos, colorFilterId,
+      "/frame photobooth/frame putih 4.png",
+      [
+        { x: 92,   y: 879,  w: 966, h: 720 },
+        { x: 1100, y: 879,  w: 966, h: 720 },
+        { x: 92,   y: 1647, w: 966, h: 720 },
+        { x: 1100, y: 1647, w: 966, h: 720 },
+      ]
+    );
+    return fc.toDataURL("image/jpeg", 0.93);
   }
 
   // Background

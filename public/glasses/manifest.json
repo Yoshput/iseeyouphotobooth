@@ -23,11 +23,15 @@
     "model3D": {
       "name": "Hexagonal Crystal Transparan",
       "glbFile": "models3D/glasses_transparan.glb",
-      "fitWidthRatio": 1.52,
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#E8C5C8",
       "metalColor": "#d4af37",
-      "style": "Hexagonal"
+      "style": "Hexagonal",
+      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
+      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "templeFadeStart": 0.65
     }
   },
   {
@@ -43,11 +47,15 @@
     "model3D": {
       "name": "Oval Bulat Metal Gold",
       "glbFile": "models3D/metal_round_glasses.glb",
-      "fitWidthRatio": 1.54,
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#334155",
       "metalColor": "#c0a050",
-      "style": "Oval"
+      "style": "Oval",
+      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
+      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "templeFadeStart": 0.65
     }
   },
   {
@@ -74,11 +82,15 @@
     "model3D": {
       "name": "Sunglasses Bellagio Havana",
       "glbFile": "models3D/sunglasses_v2.glb",
-      "fitWidthRatio": 1.54,
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#8B4513",
       "metalColor": "#d4af37",
-      "style": "Cat-Eye"
+      "style": "Cat-Eye",
+      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
+      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "templeFadeStart": 0.60
     }
   },
   {
@@ -105,11 +117,15 @@
     "model3D": {
       "name": "Kotak Plastik Hitam",
       "glbFile": "models3D/glasses_kotak_frame_coklat.glb",
-      "fitWidthRatio": 1.54,
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#1a1a1a",
       "metalColor": "#d4af37",
-      "style": "Square"
+      "style": "Square",
+      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
+      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "templeFadeStart": 0.65
     }
   },
   {
@@ -125,11 +141,15 @@
     "model3D": {
       "name": "Kotak Clubmaster Metal",
       "glbFile": "models3D/glasses1/glasses01.glb",
-      "fitWidthRatio": 1.52,
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#262626",
       "metalColor": "#d4af37",
-      "style": "Browline"
+      "style": "Browline",
+      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
+      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "templeFadeStart": 0.65
     }
   },
   {
@@ -158,12 +178,16 @@
     "model3D": {
       "name": "Sunglasses Aviator Gold",
       "glbFile": "models3D/cyberpunk_johnny_silverhand_glasses.glb",
-      "fitWidthRatio": 1.56,
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#1a1a1a",
       "metalColor": "#d4af37",
       "isTinted": true,
-      "style": "Aviator"
+      "style": "Aviator",
+      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
+      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "templeFadeStart": 0.60
     }
   }
 ]

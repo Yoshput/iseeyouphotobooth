@@ -50,12 +50,12 @@ export default function Navbar() {
           visible ? "translate-y-0" : "-translate-y-full"
         } ${
           scrolled
-            ? "bg-white/60 backdrop-blur-2xl border-b border-white/30 shadow-lg shadow-black/5 py-2.5"
-            : "bg-white/95 backdrop-blur-md border-b border-isy-line/60 py-3.5"
+            ? "bg-[#FAF6EC]/92 backdrop-blur-2xl border-b border-isy-line shadow-sm shadow-black/[0.03] py-2.5"
+            : "bg-[#FAF6EC]/95 backdrop-blur-md border-b border-isy-line/70 py-3.5"
         }`}
         style={{
-          WebkitBackdropFilter: scrolled ? "blur(28px) saturate(200%)" : "blur(12px)",
-          backdropFilter: scrolled ? "blur(28px) saturate(200%)" : "blur(12px)",
+          WebkitBackdropFilter: scrolled ? "blur(28px) saturate(180%)" : "blur(16px)",
+          backdropFilter: scrolled ? "blur(28px) saturate(180%)" : "blur(16px)",
         }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -83,7 +83,7 @@ export default function Navbar() {
                 className={`rounded-full p-2.5 transition-all duration-200 flex items-center justify-center ${
                   pathname === "/"
                     ? "bg-isy-green-deep text-white shadow-md"
-                    : "text-isy-ink/80 hover:bg-isy-mist hover:text-isy-green-deep hover:scale-105 active:scale-95"
+                    : "text-isy-green-deep/80 hover:bg-[#F2ECE0] hover:text-isy-green-deep hover:scale-105 active:scale-95"
                 }`}
               >
                 <svg
@@ -117,7 +117,7 @@ export default function Navbar() {
                     className={`rounded-full px-4 py-2 text-xs font-bold transition-all duration-200 ${
                       isActive
                         ? "bg-isy-green-deep text-white shadow-md"
-                        : "text-isy-ink/80 hover:bg-isy-mist hover:text-isy-green-deep hover:scale-105 active:scale-95"
+                        : "text-isy-green-deep/80 hover:bg-[#F2ECE0] hover:text-isy-green-deep hover:scale-105 active:scale-95"
                     }`}
                   >
                     {link.label}
@@ -129,7 +129,7 @@ export default function Navbar() {
 
           {/* Right: "For Every You" logo + CTA */}
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <p className="hidden lg:block text-base tracking-[0.2em] text-black font-normal select-none transition-transform hover:scale-105" style={{ fontFamily: 'var(--font-dm-serif)' }}>
+            <p className="hidden lg:block text-base tracking-[0.2em] text-isy-green-deep/90 font-serif italic select-none transition-transform hover:scale-105" style={{ fontFamily: 'var(--font-dm-serif)' }}>
               for every you
             </p>
             <Link
@@ -147,12 +147,12 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Bottom Nav Bar */}
-        <div className="flex md:hidden items-center justify-around border-t border-isy-line/60 bg-white/90 backdrop-blur-md px-2 py-2 overflow-x-auto text-[11px] font-bold">
+        <div className="flex md:hidden items-center justify-around border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 overflow-x-auto text-[11px] font-bold">
           <Link
             href="/"
             aria-label="Beranda"
             className={`flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors ${
-              pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-ink/70 hover:text-isy-green-deep"
+              pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep"
             }`}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
@@ -174,7 +174,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`shrink-0 px-2.5 py-1 rounded-full transition-colors ${
-                  isActive ? "bg-isy-green-deep text-white" : "text-isy-ink/70 hover:text-isy-green-deep active:scale-95"
+                  isActive ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
                 }`}
               >
                 {link.label}

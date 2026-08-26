@@ -59,6 +59,12 @@ interface Props {
   isTinted?: boolean;
   style?: string;
   yOffsetRatio?: number;
+  /** Per-model origin correction passed to Glasses3DRenderer */
+  pivotOffset?: { x: number; y: number; z: number };
+  /** Per-model rotation correction in degrees passed to Glasses3DRenderer */
+  rotationOffsetDeg?: { x: number; y: number; z: number };
+  /** Temple fade start fraction 0–1 (0.65 = fade at 65% of temple length) */
+  templeFadeStart?: number;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
@@ -131,6 +137,9 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       isTinted = false,
       style,
       yOffsetRatio,
+      pivotOffset,
+      rotationOffsetDeg,
+      templeFadeStart,
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
@@ -498,6 +507,9 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
                   ipdScaleRef={ipdScaleRef}
                   yOffsetRatio={yOffsetRatio}
                   maxFaces={numFaces}
+                  pivotOffset={pivotOffset}
+                  rotationOffsetDeg={rotationOffsetDeg}
+                  templeFadeStart={templeFadeStart}
                 />
               ) : null
             ) : (

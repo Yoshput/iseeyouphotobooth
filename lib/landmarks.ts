@@ -8,47 +8,50 @@ export const LANDMARK = {
   LEFT_EYE_OUTER:  33,
   RIGHT_EYE_OUTER: 263,
   NOSE_BRIDGE:     168, // between the eyes, where glasses "sit"
+  LEFT_EYE_INNER:  133,  // inner corner left eye
+  RIGHT_EYE_INNER: 362,  // inner corner right eye
+  LEFT_PUPIL:      468,  // left iris center (if using iris model)
+  RIGHT_PUPIL:     473,  // right iris center
+  LEFT_EYE_TOP:    159,  // top lid left eye
+  RIGHT_EYE_TOP:   386,  // top lid right eye
+  NOSE_TIP:        4,    // tip of nose
+  UPPER_LIP:       13,   // center upper lip
+  FOREHEAD:        10,
+  CHIN:            152,
 } as const;
 
 // ---------------------------------------------------------------------------
 // IPD reference constant
 // ---------------------------------------------------------------------------
 /**
- * "Standard" inter-pupillary distance in normalized X units at a comfortable
- * selfie distance (~50 cm from a typical laptop/tablet camera).
- *
- * Measured empirically on a 16:9 feed:  outer-eye-corner span ≈ 21-22% of
- * frame width.  We use 0.215 as the calibration anchor.
- *
- * Formula for glasses width on canvas:
- *   glassesWidthPx = (ipdNorm / REFERENCE_IPD_NORM) * REFERENCE_IPD_NORM
- *                    * ipdScaleRef * fitWidthRatio * videoWidth * coverScale
- *
- * Simplified:
- *   glassesWidthPx = ipdPx * ipdScaleRef * fitWidthRatio
- * where ipdPx is already scaled by the cover transform.
+ * Standard outer-eye-corner span in normalized X at selfie distance.
+ * MediaPipe lm[33]→lm[263] horizontal distance ≈ 0.215–0.24 of frame width.
+ * We do NOT use this as a divisor — raw ipdNorm is already the correct scale driver.
  */
 export const REFERENCE_IPD_NORM = 0.215;
 
-/** Safety clamp — units: CSS pixels (Three.js world units = 1 CSS pixel in this setup).
- *  With the corrected formula (ipdPx × ipdScaleRef), typical output at normal
- *  selfie distance is 150–400px, so these bounds catch genuine outliers only. */
-export const GLASSES_SCALE_MIN = 40;   // 40px — face at extreme edge, still visible
-export const GLASSES_SCALE_MAX = 600;  // 600px — face pressed very close, still sane
+/**
+ * Safety clamp — units: CSS pixels.
+ * At typical selfie distance face width ≈ 40-75% of frame → scale 80-600px.
+ */
+export const GLASSES_SCALE_MIN = 50;   // face at edge, still meaningful
+export const GLASSES_SCALE_MAX = 700;  // face very close, still sane
 
 /**
- * Proportional downward offset applied to the nose-bridge Y anchor so that
- * the glasses sit on the nose rather than floating above the eyebrows.
+ * Y_OFFSET_FACTOR: How far below the nose-bridge anchor the glasses sit.
  *
- * The offset is expressed as a multiple of ipdNorm (the inter-pupillary
- * distance in normalized X units).  Because ipdNorm shrinks as the face
- * moves further from the camera, the pixel-level shift stays visually
- * consistent at every distance:
+ * MediaPipe lm[168] is the nasal bone (between brows, above nose tip).
+ * For glasses to sit ON the nose (not float above eyebrows), we need to
+ * push DOWN by ~25-30% of the inter-eye span.
  *
- *   offsetNorm = ipdNorm × Y_OFFSET_FACTOR
+ * Calibration basis (Transitions virtual try-on reference):
+ *  - Glasses rim top should align with the lower edge of the eyebrows.
+ *  - Glasses optical center should be at the pupil level.
+ *  - Nose pad should rest on the nose bridge (lm[168] → lm[6] level).
  *
- * Tune this value up (e.g. 0.20) to push the glasses lower, or down
- * (e.g. 0.05) to push them higher.
+ * ipdNorm ≈ 0.215 at normal distance.
+ * offsetNorm = ipdNorm × 0.22 ≈ 0.047 → ~5% of frame width downward.
+ * This keeps glasses correctly on the nose at all face distances.
  */
 export const Y_OFFSET_FACTOR = 0.12;
 
@@ -98,7 +101,7 @@ export function computeGlassesAnchor(
   const ipdNorm = Math.abs(rightEye.x - leftEye.x);
 
   // Apply a proportional downward offset so the glasses rest on the nose
-  // instead of floating above the eyebrows.  The offset scales with ipdNorm
+  // instead of floating above the eyebrows. The offset scales with ipdNorm
   // so it remains consistent regardless of face distance from the camera.
   const centerY = nose.y + ipdNorm * Y_OFFSET_FACTOR;
 
