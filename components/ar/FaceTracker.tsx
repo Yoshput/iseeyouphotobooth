@@ -204,18 +204,20 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       let active = true;
       let stream: MediaStream | null = null;
 
-      async function waitForEnoughData(video: HTMLVideoElement, timeoutMs = 5000): Promise<boolean> {
-        if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) return true;
+      async function waitForEnoughData(video: HTMLVideoElement, timeoutMs = 1500): Promise<boolean> {
+        if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && video.videoWidth > 0) return true;
         return new Promise((resolve) => {
           const timer = setTimeout(() => {
-            video.removeEventListener("canplaythrough", onReady);
+            video.removeEventListener("canplay", onReady);
+            video.removeEventListener("loadeddata", onReady);
             resolve(false); // timeout — proceed anyway
           }, timeoutMs);
           const onReady = () => {
             clearTimeout(timer);
             resolve(true);
           };
-          video.addEventListener("canplaythrough", onReady, { once: true });
+          video.addEventListener("canplay", onReady, { once: true });
+          video.addEventListener("loadeddata", onReady, { once: true });
         });
       }
 
@@ -354,7 +356,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           );
         }
 
-        if (curr > prev && ringContainerRef.current) {
+        if (scanIntro && curr > prev && ringContainerRef.current) {
           const video     = videoRef.current;
           const container = containerRef.current;
           if (video && container) {
@@ -477,11 +479,15 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         {/* Video layer */}
         <video
           ref={videoRef}
-          onLoadedMetadata={handleLoadedMetadata}
-          style={{ filter: previewFilterStyle }}
-          className="absolute inset-0 h-full w-full object-cover -scale-x-100 transition-all duration-300"
+          autoPlay
           playsInline
           muted
+          onLoadedMetadata={handleLoadedMetadata}
+          onLoadedData={handleLoadedMetadata}
+          onCanPlay={handleLoadedMetadata}
+          onPlaying={handleLoadedMetadata}
+          style={{ filter: previewFilterStyle }}
+          className="absolute inset-0 h-full w-full object-cover -scale-x-100 transition-all duration-300"
         />
 
         {/* Glasses overlay */}

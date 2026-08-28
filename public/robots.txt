@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /_next/
-Disallow: /api/
 
 Sitemap: https://optikiseeyou.com/sitemap.xml
 Host: https://optikiseeyou.com

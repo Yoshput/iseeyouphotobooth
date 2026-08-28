@@ -586,7 +586,12 @@ export default function LandingPage() {
               {BRANCHES.map((b) => (
                 <div key={b.id} className="border-b border-white/5 pb-2 last:border-0 last:pb-0">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-white">{b.city}</span>
+                    <Link
+                      href={`/cabang/${b.id}`}
+                      className="font-bold text-white hover:text-emerald-400 transition-colors"
+                    >
+                      Optik I See You {b.city}
+                    </Link>
                     <a
                       href={mapsDirectionsUrl(b)}
                       target="_blank"

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { BRANCHES } from "@/lib/branches";
 
 export const dynamic = "force-static";
 
@@ -10,7 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://optikiseeyou.com";
   const lastModified = new Date();
 
-  return [
+  // Core main pages
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
       lastModified,
@@ -57,13 +59,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/kebijakan-privasi`,
       lastModified,
       changeFrequency: "monthly",
-      priority: 0.5,
+      priority: 0.3,
     },
     {
       url: `${baseUrl}/syarat-ketentuan`,
       lastModified,
       changeFrequency: "monthly",
-      priority: 0.5,
+      priority: 0.3,
     },
   ];
+
+  // 4 Branch dedicated pages
+  const branchRoutes: MetadataRoute.Sitemap = BRANCHES.map((b) => ({
+    url: `${baseUrl}/cabang/${b.id}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.9,
+  }));
+
+  return [...staticRoutes, ...branchRoutes];
 }

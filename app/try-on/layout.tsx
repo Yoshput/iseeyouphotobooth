@@ -28,5 +28,32 @@ export default function TryOnLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Beranda",
+        item: "https://optikiseeyou.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Virtual Try-On AR",
+        item: "https://optikiseeyou.com/try-on",
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }

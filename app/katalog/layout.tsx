@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Katalog Frame Kacamata — Koleksi Mewah & Elegan",
   description:
-    "Jelajahi koleksi frame kacamata premium Optik I See You: Quiet Luxury, Cat Eye, Metro Geek, Shades Edition, dan Titanium Series di Purwokerto.",
+    "Jelajahi koleksi frame kacamata premium Optik I See You: Quiet Luxury, Cat Eye, Metro Geek, Shades Edition, dan Titanium Series di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
   alternates: {
     canonical: "https://optikiseeyou.com/katalog",
   },
@@ -28,5 +28,32 @@ export default function KatalogLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Beranda",
+        item: "https://optikiseeyou.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Katalog Frame",
+        item: "https://optikiseeyou.com/katalog",
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }

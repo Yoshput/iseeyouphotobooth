@@ -300,31 +300,41 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
           )}
 
           {/* CTA Buttons */}
-          <div className="mx-6 mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <a
-              href={mapsDirectionsUrl(branch)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 rounded-2xl py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg transition-all hover:opacity-90 active:scale-[0.97]"
-              style={{ background: `linear-gradient(135deg, ${accentColor}, #2FA84F)` }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <polygon points="3 11 22 2 13 21 11 13 3 11" />
-              </svg>
-              Rute di Google Maps
-            </a>
+          <div className="mx-6 mb-6 space-y-2.5">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <a
+                href={mapsDirectionsUrl(branch)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2.5 rounded-2xl py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-md transition-all hover:opacity-90 active:scale-[0.97]"
+                style={{ background: `linear-gradient(135deg, ${accentColor}, #2FA84F)` }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                </svg>
+                Rute di Google Maps
+              </a>
+
+              <a
+                href={branchWhatsappUrl(branch)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-2xl border-2 bg-white py-3.5 text-xs font-black shadow-sm transition-all hover:bg-isy-mist active:scale-[0.97]"
+                style={{ borderColor: accentColor, color: accentColor }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 3C8.82 3 3 8.82 3 16c0 2.36.64 4.57 1.76 6.48L3 29l6.73-1.73A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm6.12 18.08c-.26.73-1.51 1.4-2.08 1.48-.57.08-1.1.36-3.71-.77-3.14-1.36-5.15-4.52-5.3-4.73-.15-.21-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.58-.38.78-.38h.56c.18 0 .43-.07.67.51.25.6.84 2.06.92 2.21.08.14.13.31.03.5-.1.19-.14.31-.28.47-.15.16-.3.36-.43.48-.14.12-.29.25-.12.5.16.24.72 1.19 1.55 1.92 1.07.95 1.97 1.24 2.21 1.38.24.13.38.11.52-.07.14-.18.59-.69.75-.93.16-.23.32-.19.54-.11.22.08 1.39.66 1.63.78.24.12.4.18.46.28.06.1.06.56-.2 1.29z"/>
+                </svg>
+                <span>WhatsApp ({branch.phone})</span>
+              </a>
+            </div>
 
             <a
-              href={branchWhatsappUrl(branch)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-2xl border-2 bg-white py-4 text-xs font-black shadow-md transition-all hover:bg-isy-mist active:scale-[0.97]"
-              style={{ borderColor: accentColor, color: accentColor }}
+              href={`/cabang/${branch.id}`}
+              className="flex items-center justify-center gap-2 rounded-2xl bg-isy-green-deep/10 hover:bg-isy-green-deep hover:text-white border border-isy-line/80 py-3 text-xs font-bold text-isy-green-deep transition-all active:scale-[0.98]"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M16 3C8.82 3 3 8.82 3 16c0 2.36.64 4.57 1.76 6.48L3 29l6.73-1.73A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm6.12 18.08c-.26.73-1.51 1.4-2.08 1.48-.57.08-1.1.36-3.71-.77-3.14-1.36-5.15-4.52-5.3-4.73-.15-.21-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.58-.38.78-.38h.56c.18 0 .43-.07.67.51.25.6.84 2.06.92 2.21.08.14.13.31.03.5-.1.19-.14.31-.28.47-.15.16-.3.36-.43.48-.14.12-.29.25-.12.5.16.24.72 1.19 1.55 1.92 1.07.95 1.97 1.24 2.21 1.38.24.13.38.11.52-.07.14-.18.59-.69.75-.93.16-.23.32-.19.54-.11.22.08 1.39.66 1.63.78.24.12.4.18.46.28.06.1.06.56-.2 1.29z"/>
-              </svg>
-              <span>WA {branch.city} ({branch.phone})</span>
+              <span>Buka Halaman Khusus Cabang {branch.city}</span>
+              <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>

@@ -135,7 +135,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#FAF6EC" />
         <meta name="msapplication-TileImage" content="/icon-192.png" />
 
-        {/* Schema.org Structured Data (Multi-Branch LocalBusiness / Optician / WebSite) */}
+        {/* Schema.org Structured Data (Multi-Branch Organization / WebSite / Sitelinks / FAQ) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -143,7 +143,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@graph": [
                 {
-                  "@type": "Optician",
+                  "@type": "Organization",
                   "@id": "https://optikiseeyou.com/#organization",
                   name: "Optik I See You",
                   alternateName: [
@@ -154,12 +154,12 @@ export default function RootLayout({
                     "Optik I See You Cilacap",
                     "optikiseeyou",
                   ],
-                  url: "https://www.optikiseeyou.com",
-                  logo: "https://www.optikiseeyou.com/icon-512.png",
-                  image: "https://www.optikiseeyou.com/hero-bg.jpg",
+                  url: "https://optikiseeyou.com",
+                  logo: "https://optikiseeyou.com/logo.png",
+                  image: "https://optikiseeyou.com/hero-bg.jpg",
                   description:
-                    "Optik modern terpercaya dengan layanan periksa mata, teknologi AR Try-On kacamata real-time, photobooth cetak instan, dan katalog softlens lengkap di Purwokerto, Wonosobo, Cilacap, dan Purbalingga.",
-                  telephone: "+62895415614261",
+                    "Optik modern terpercaya dengan layanan periksa mata komputerisasi, teknologi AR Try-On kacamata real-time, photobooth cetak instan, dan katalog softlens lengkap di Purwokerto, Wonosobo, Cilacap, dan Purbalingga.",
+                  telephone: "+62895-4156-14261",
                   priceRange: "$$",
                   aggregateRating: {
                     "@type": "AggregateRating",
@@ -174,6 +174,15 @@ export default function RootLayout({
                     "https://www.tiktok.com/@iseeyouglasses",
                     "https://shopee.co.id/iseeyou.id",
                   ],
+                  contactPoint: [
+                    {
+                      "@type": "ContactPoint",
+                      telephone: "+62895-4156-14261",
+                      contactType: "customer service",
+                      areaServed: "ID",
+                      availableLanguage: "Indonesian",
+                    },
+                  ],
                   address: {
                     "@type": "PostalAddress",
                     streetAddress: "Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang",
@@ -182,94 +191,23 @@ export default function RootLayout({
                     postalCode: "53124",
                     addressCountry: "ID",
                   },
-                  geo: {
-                    "@type": "GeoCoordinates",
-                    latitude: -7.392899,
-                    longitude: 109.249667,
-                  },
-                  department: [
-                    {
-                      "@type": "Optician",
-                      name: "Optik I See You — Cabang Purwokerto",
-                      telephone: "+62895415614261",
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: "Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang, Kec. Sumbang",
-                        addressLocality: "Purwokerto, Banyumas",
-                        addressRegion: "Jawa Tengah",
-                        postalCode: "53124",
-                        addressCountry: "ID",
-                      },
-                      geo: {
-                        "@type": "GeoCoordinates",
-                        latitude: -7.392899,
-                        longitude: 109.249667,
-                      },
-                    },
-                    {
-                      "@type": "Optician",
-                      name: "Optik I See You — Cabang Purbalingga",
-                      telephone: "+6282234862322",
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: "Jl. Onje No.1, Purbalingga Lor, Kec. Purbalingga",
-                        addressLocality: "Purbalingga",
-                        addressRegion: "Jawa Tengah",
-                        postalCode: "53311",
-                        addressCountry: "ID",
-                      },
-                      geo: {
-                        "@type": "GeoCoordinates",
-                        latitude: -7.388426,
-                        longitude: 109.364487,
-                      },
-                    },
-                    {
-                      "@type": "Optician",
-                      name: "Optik I See You — Cabang Wonosobo",
-                      telephone: "+628977129039",
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: "Jl. Jenderal Soedirman, Sumberan Selatan, Wonosobo Bar., Kec. Wonosobo",
-                        addressLocality: "Wonosobo",
-                        addressRegion: "Jawa Tengah",
-                        postalCode: "56311",
-                        addressCountry: "ID",
-                      },
-                      geo: {
-                        "@type": "GeoCoordinates",
-                        latitude: -7.364198,
-                        longitude: 109.900669,
-                      },
-                    },
-                    {
-                      "@type": "Optician",
-                      name: "Optik I See You — Cabang Cilacap",
-                      telephone: "+6285135930533",
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: "Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Rawagaru, Sidanegara, Kec. Cilacap Tengah",
-                        addressLocality: "Cilacap",
-                        addressRegion: "Jawa Tengah",
-                        postalCode: "53223",
-                        addressCountry: "ID",
-                      },
-                      geo: {
-                        "@type": "GeoCoordinates",
-                        latitude: -7.702595,
-                        longitude: 109.01627,
-                      },
-                    },
-                  ],
                 },
                 {
                   "@type": "WebSite",
                   "@id": "https://optikiseeyou.com/#website",
-                  url: "https://www.optikiseeyou.com",
+                  url: "https://optikiseeyou.com",
                   name: "Optik I See You",
                   alternateName: ["I See You Glasses", "optikiseeyou"],
                   publisher: {
                     "@id": "https://optikiseeyou.com/#organization",
+                  },
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: {
+                      "@type": "EntryPoint",
+                      urlTemplate: "https://optikiseeyou.com/katalog?search={search_term_string}",
+                    },
+                    "query-input": "required name=search_term_string",
                   },
                 },
                 {
@@ -320,35 +258,35 @@ export default function RootLayout({
                       position: 1,
                       name: "Katalog Frame Kacamata",
                       description: "Koleksi frame kacamata premium & pilihan bentuk wajah",
-                      url: "https://www.optikiseeyou.com/katalog",
+                      url: "https://optikiseeyou.com/katalog",
                     },
                     {
                       "@type": "SiteNavigationElement",
                       position: 2,
                       name: "Katalog Softlens Lengkap",
                       description: "Katalog softlens original kadar air tinggi & aksesoris",
-                      url: "https://www.optikiseeyou.com/softlens",
+                      url: "https://optikiseeyou.com/softlens",
                     },
                     {
                       "@type": "SiteNavigationElement",
                       position: 3,
                       name: "Coba AR Try-On Kacamata",
                       description: "Coba kacamata langsung secara virtual di wajahmu",
-                      url: "https://www.optikiseeyou.com/try-on",
+                      url: "https://optikiseeyou.com/try-on",
                     },
                     {
                       "@type": "SiteNavigationElement",
                       position: 4,
                       name: "AR Photobooth & Cetak",
                       description: "Photobooth kacamata seru dengan animasi GIF dan cetak instan",
-                      url: "https://www.optikiseeyou.com/photobooth",
+                      url: "https://optikiseeyou.com/photobooth",
                     },
                     {
                       "@type": "SiteNavigationElement",
                       position: 5,
                       name: "4 Cabang Resmi",
                       description: "Cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap",
-                      url: "https://www.optikiseeyou.com/#lokasi",
+                      url: "https://optikiseeyou.com/#lokasi",
                     },
                   ],
                 },

@@ -1,4 +1,18 @@
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
+import * as THREE from "three";
+
+/**
+ * Extracts pure rotation quaternion from MediaPipe facialTransformationMatrixes 4x4 data.
+ * The matrixData is a 16-element column-major float array representing 6DOF head pose.
+ */
+export function quaternionFromFacialMatrix(matrixData: number[]): THREE.Quaternion {
+  const m = new THREE.Matrix4().fromArray(matrixData);
+  const q = new THREE.Quaternion();
+  const pos = new THREE.Vector3();
+  const scale = new THREE.Vector3();
+  m.decompose(pos, q, scale);
+  return q;
+}
 
 /**
  * MediaPipe Face Landmarker index reference (478-point map).
