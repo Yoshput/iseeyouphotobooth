@@ -26,7 +26,7 @@ import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, getCompatibleTheme
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
 import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
-import { uploadPhotoForQR } from "@/lib/uploadImage";
+import { uploadPhotoForQR, generateInstantQR, generatePhotoId } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
 import ContactCSModal from "@/components/ui/ContactCSModal";
@@ -239,82 +239,130 @@ function QRBox({
   onDownload: () => void;
   onRetry?: () => void;
 }) {
-  if (phase === "idle") return null;
+  if (phase === "idle" && !qrCodeDataUrl && !uploadedUrl) return null;
 
-  if (phase === "uploading") {
+  // Always show QR code immediately if available!
+  if (qrCodeDataUrl || uploadedUrl) {
+    const qrDisplaySrc =
+      qrCodeDataUrl ||
+      `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&color=116B3C&data=${encodeURIComponent(
+        uploadedUrl || ""
+      )}`;
+
+    const isUploading = phase === "uploading";
+    const isError = phase === "error";
+
     return (
-      <div className="flex items-center gap-3 rounded-2xl border border-isy-green-bright/25 bg-isy-mist p-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white shadow">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-isy-green-bright border-t-transparent" />
-        </div>
-        <div>
-          <p className="text-xs font-bold text-isy-green-deep">Mengunggah Foto…</p>
-          <p className="mt-0.5 text-[10px] leading-tight text-isy-ink/55">Menyiapkan QR untuk download di HP.</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (phase === "done" && (qrCodeDataUrl || uploadedUrl)) {
-    const qrDisplaySrc = qrCodeDataUrl || `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&color=116B3C&data=${encodeURIComponent(uploadedUrl || "")}`;
-    return (
-      <div className="flex items-center justify-between gap-3 rounded-2xl border border-isy-green-bright/40 bg-gradient-to-br from-[#E8F5E9] to-white p-3 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="relative h-[60px] w-[60px] shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={qrDisplaySrc} alt="QR Code" className="h-full w-full rounded-xl border-2 border-white bg-white object-contain shadow-md" />
-            <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-isy-green-bright text-[8px] text-white">✓</span>
+      <div className="flex flex-col gap-2 rounded-2xl border border-isy-green-bright/40 bg-gradient-to-br from-[#E8F5E9] to-white p-3 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="relative h-[64px] w-[64px] shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={qrDisplaySrc}
+                alt="QR Code"
+                className="h-full w-full rounded-xl border-2 border-white bg-white object-contain shadow-md"
+              />
+              {isUploading ? (
+                <span
+                  className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-[9px] text-white animate-pulse"
+                  title="Sinkronisasi Cloud"
+                >
+                  ⚡
+                </span>
+              ) : isError ? (
+                <span
+                  className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] text-white"
+                  title="Upload Lambat"
+                >
+                  !
+                </span>
+              ) : (
+                <span
+                  className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-isy-green-bright text-[8px] text-white"
+                  title="Tersimpan di Cloud"
+                >
+                  ✓
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <p className="text-xs font-black text-isy-green-deep">Scan &amp; Unduh di HP</p>
+              {isUploading ? (
+                <p className="text-[10px] leading-tight text-amber-700 font-medium flex items-center gap-1">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500 animate-ping" />
+                  Bisa langsung di-scan di HP!
+                </p>
+              ) : isError ? (
+                <p className="text-[10px] leading-tight text-red-600 font-medium">
+                  Sinyal lambat. Bisa simpan manual.
+                </p>
+              ) : (
+                <p className="text-[10px] leading-tight text-isy-ink/60">Arahkan kamera HP ke QR ini.</p>
+              )}
+            </div>
           </div>
-          <div className="flex flex-col gap-0.5">
-            <p className="text-xs font-black text-isy-green-deep">Scan &amp; Unduh di HP</p>
-            <p className="text-[10px] leading-tight text-isy-ink/60">Arahkan kamera HP ke QR ini.</p>
-          </div>
-        </div>
 
-        {/* Event Mode Giant QR Button */}
-        <button
-          onClick={onOpenGiantQR}
-          className="flex shrink-0 flex-col items-center gap-1 rounded-xl bg-isy-green-bright px-3 py-2 text-[10px] font-black text-white shadow hover:bg-isy-green-deep active:scale-95 transition-all"
-        >
-          <span>Perbesar</span>
-          <span className="text-[8px] font-medium opacity-80">Event Mode</span>
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-2 rounded-2xl border border-dashed border-red-200 bg-red-50/50 p-3">
-      <div className="flex items-start gap-2.5">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-red-100 text-sm">⚠️</div>
-        <div className="min-w-0 flex-1">
-          <p className="text-xs font-bold text-red-900 leading-snug">
-            {phase === "no-key" ? "Setup Cloudinary Diperlukan" : "Upload QR Gagal"}
-          </p>
-          <p className="mt-0.5 text-[10px] text-red-700/80 leading-relaxed break-words line-clamp-2">
-            {uploadError || "Pastikan Cloudinary preset di-set Unsigned & ENV Vercel terpasang."}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2 pt-1">
-        {onRetry && (
+          {/* Event Mode Giant QR Button */}
           <button
-            onClick={onRetry}
-            className="rounded-lg bg-red-600 px-3 py-1.5 text-[10px] font-bold text-white shadow active:scale-95 transition-all"
+            onClick={onOpenGiantQR}
+            className="flex shrink-0 flex-col items-center gap-1 rounded-xl bg-isy-green-bright px-3 py-2 text-[10px] font-black text-white shadow hover:bg-isy-green-deep active:scale-95 transition-all cursor-pointer"
           >
-            Coba Lagi
+            <span>Perbesar</span>
+            <span className="text-[8px] font-medium opacity-80">Event Mode</span>
           </button>
+        </div>
+
+        {isError && (
+          <div className="flex items-center gap-2 pt-1 border-t border-isy-line/50">
+            {onRetry && (
+              <button
+                onClick={onRetry}
+                className="rounded-lg bg-amber-600 px-3 py-1 text-[10px] font-bold text-white shadow active:scale-95 transition-all cursor-pointer"
+              >
+                Coba Sinkron Ulang
+              </button>
+            )}
+            <button
+              onClick={onDownload}
+              className="rounded-lg bg-isy-green-bright px-3 py-1 text-[10px] font-bold text-white shadow active:scale-95 transition-all cursor-pointer"
+            >
+              Simpan ke Galeri
+            </button>
+          </div>
         )}
-        <button
-          onClick={onDownload}
-          className="rounded-lg bg-isy-green-bright px-3 py-1.5 text-[10px] font-bold text-white shadow active:scale-95 transition-all"
-        >
-          Simpan Langsung
-        </button>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (phase === "no-key") {
+    return (
+      <div className="flex flex-col gap-2 rounded-2xl border border-dashed border-red-200 bg-red-50/50 p-3">
+        <div className="flex items-start gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-red-100 text-sm">⚠️</div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-bold text-red-900 leading-snug">
+              Setup Cloudinary Diperlukan
+            </p>
+            <p className="mt-0.5 text-[10px] text-red-700/80 leading-relaxed break-words line-clamp-2">
+              {uploadError || "Pastikan Cloudinary preset di-set Unsigned & ENV Vercel terpasang."}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 pt-1">
+          <button
+            onClick={onDownload}
+            className="rounded-lg bg-isy-green-bright px-3 py-1.5 text-[10px] font-bold text-white shadow active:scale-95 transition-all cursor-pointer"
+          >
+            Simpan Langsung
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
@@ -769,9 +817,13 @@ const [faceDetected, setFaceDetected] = useState(false);
   const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
   const [thermalPrintModalOpen, setThermalPrintModalOpen] = useState(false);
   const [timerSec, setTimerSec] = useState<TimerSec>(3);
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
-  const [uploadPhase, setUploadPhase] = useState<UploadPhase>("idle");
   const [isScanning, setIsScanning] = useState(false);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string | null>(null);
+  const [uploadPhase, setUploadPhase] = useState<UploadPhase>("idle");
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const currentPhotoIdRef = useRef<string | null>(null);
+  const lastUploadedRef = useRef<{ composite: string; gif: string | null } | null>(null);
   const [scanComplete, setScanComplete] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [devNoticeModalOpen, setDevNoticeModalOpen] = useState(false);
@@ -923,17 +975,21 @@ const showToast = useCallback((msg: string) => {
     }
   }, [gifUrl, showToast]);
 
- const resetSession = useCallback(() => {
- setScanComplete(false);
- setIsScanning(false);
- setPhotos([]);
- setCurrentSlot(0);
- setSingleSlotRetake(null);
- setCompositeUrl(null);
- setGifUrl(null);
- setUploadedUrl(null);
- setUploadPhase("idle");
- }, []);
+  const resetSession = useCallback(() => {
+    setScanComplete(false);
+    setIsScanning(false);
+    setPhotos([]);
+    setCurrentSlot(0);
+    setSingleSlotRetake(null);
+    setCompositeUrl(null);
+    setGifUrl(null);
+    setUploadedUrl(null);
+    setQrCodeDataUrl(null);
+    setUploadError(null);
+    setUploadPhase("idle");
+    currentPhotoIdRef.current = null;
+    lastUploadedRef.current = null;
+  }, []);
 
   const handleLayoutSelect = useCallback((chosen: FrameLayout) => {
     setLayout(chosen);
@@ -1079,6 +1135,18 @@ const showToast = useCallback((msg: string) => {
     if (phase !== "compositing") return;
     let cancelled = false;
 
+    // Generate Instant QR Code ID at the earliest possible moment (0 ms delay)
+    if (!currentPhotoIdRef.current) {
+      const newId = generatePhotoId();
+      currentPhotoIdRef.current = newId;
+      generateInstantQR(newId).then(({ qrPageUrl, qrCodeDataUrl: qrData }) => {
+        if (!cancelled) {
+          setUploadedUrl(qrPageUrl);
+          setQrCodeDataUrl(qrData);
+        }
+      }).catch((err) => console.warn("Instant QR error:", err));
+    }
+
     if (arEnabled && photos[0]) {
       compositeArTryOnFrame(photos[0], glasses?.name).then((url) => {
         if (!cancelled) {
@@ -1117,15 +1185,9 @@ const showToast = useCallback((msg: string) => {
     }).catch((err) => console.warn("GIF generation error:", err));
 
     return () => { cancelled = true; };
-  }, [phase]);
+  }, [phase, arEnabled, photos, glasses?.name, layout, themeId, colorFilterId]);
 
-  // Auto-upload both Photo Strip and Animated GIF to Cloudflare R2 for QR code
-  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-
-  // Ref untuk menyimpan compositeUrl & gifUrl terakhir yang sukses di-upload
-  const lastUploadedRef = useRef<{ composite: string; gif: string | null } | null>(null);
-
+  // Decoupled Background Upload to Cloudflare R2 / Cloudinary
   const doUpload = useCallback(() => {
     if (phase !== "result" || !compositeUrl) return;
     // Skip upload jika compositeUrl dan gifUrl tidak berubah sejak upload terakhir
@@ -1136,22 +1198,36 @@ const showToast = useCallback((msg: string) => {
     ) {
       return;
     }
+
+    if (!currentPhotoIdRef.current) {
+      currentPhotoIdRef.current = generatePhotoId();
+    }
+    const targetId = currentPhotoIdRef.current;
+
+    // Ensure instant QR is generated immediately if not already set
+    if (!qrCodeDataUrl) {
+      generateInstantQR(targetId).then(({ qrPageUrl, qrCodeDataUrl: qrData }) => {
+        setUploadedUrl(qrPageUrl);
+        setQrCodeDataUrl(qrData);
+      }).catch((err) => console.warn("Instant QR fallback error:", err));
+    }
+
     setUploadPhase("uploading");
     setUploadError(null);
 
-    uploadPhotoForQR(compositeUrl, gifUrl).then((result) => {
+    uploadPhotoForQR(compositeUrl, gifUrl, targetId).then((result) => {
       if (result.ok) {
         setUploadedUrl(result.qrPageUrl);
         setQrCodeDataUrl(result.qrCodeDataUrl);
         setUploadPhase("done");
         lastUploadedRef.current = { composite: compositeUrl, gif: gifUrl || null };
       } else {
-        console.warn("QR upload:", result.error);
+        console.warn("QR background upload:", result.error);
         setUploadError(result.error);
         setUploadPhase("error");
       }
     });
-  }, [phase, compositeUrl, gifUrl, uploadPhase]);
+  }, [phase, compositeUrl, gifUrl, uploadPhase, qrCodeDataUrl]);
 
   useEffect(() => {
     if (phase !== "result" || !compositeUrl) return;
@@ -1215,6 +1291,7 @@ const showToast = useCallback((msg: string) => {
   pivotOffset={glasses?.model3D?.pivotOffset}
   rotationOffsetDeg={glasses?.model3D?.rotationOffsetDeg}
   templeFadeStart={glasses?.model3D?.templeFadeStart}
+  trackingEnabled={phase === "ready" || phase === "countdown" || phase === "flash" || phase === "between" || phase === "session-review"}
   onScanIntroComplete={() => {
     setIsScanning(false);
     setScanComplete(true);

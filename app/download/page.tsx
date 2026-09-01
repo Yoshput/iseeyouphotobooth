@@ -20,6 +20,13 @@ function DownloadPortalContent() {
   const directStrip = searchParams?.get("strip") || "";
   const directGif = searchParams?.get("gif") || "";
 
+  const defaultTab = searchParams?.get("tab") === "gif" ? "gif" : "strip";
+  const [activeTab, setActiveTab] = useState<"strip" | "gif">(defaultTab);
+  const [imageError, setImageError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
   // Derive R2 public domain if photoId is used
   const r2PublicDomain = (
     process.env.NEXT_PUBLIC_R2_PUBLIC_DOMAIN || ""
@@ -31,30 +38,38 @@ function DownloadPortalContent() {
     !r2PublicDomain.includes("cloudflarestorage.com");
 
   // If using custom domain, load directly from CDN; otherwise stream reliably via /api/photo
+  const retryParam = retryCount > 0 ? `&_r=${retryCount}` : "";
   const stripUrl =
     (directStrip && !directStrip.includes(".r2.dev") ? directStrip : null) ||
     (photoId
       ? isCustomDomain
-        ? `${r2PublicDomain}/photos/${photoId}.jpg`
-        : `/api/photo?id=${encodeURIComponent(photoId)}&type=jpg`
+        ? `${r2PublicDomain}/photos/${photoId}.jpg${retryCount > 0 ? `?_r=${retryCount}` : ""}`
+        : `/api/photo?id=${encodeURIComponent(photoId)}&type=jpg${retryParam}`
       : directStrip);
 
   const gifUrl =
     (directGif && !directGif.includes(".r2.dev") ? directGif : null) ||
     (photoId
       ? isCustomDomain
-        ? `${r2PublicDomain}/photos/${photoId}.gif`
-        : `/api/photo?id=${encodeURIComponent(photoId)}&type=gif`
+        ? `${r2PublicDomain}/photos/${photoId}.gif${retryCount > 0 ? `?_r=${retryCount}` : ""}`
+        : `/api/photo?id=${encodeURIComponent(photoId)}&type=gif${retryParam}`
       : directGif);
-
-  const defaultTab = searchParams?.get("tab") === "gif" ? "gif" : "strip";
-  const [activeTab, setActiveTab] = useState<"strip" | "gif">(defaultTab);
-  const [imageError, setImageError] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleImageError = () => {
+    if (photoId && retryCount < 5) {
+      setIsRetrying(true);
+      setTimeout(() => {
+        setRetryCount((prev) => prev + 1);
+        setIsRetrying(false);
+      }, 1400);
+    } else {
+      setImageError(true);
+    }
   };
 
   const handleDownloadStrip = async () => {
@@ -105,6 +120,45 @@ function DownloadPortalContent() {
       window.open("https://www.instagram.com/iseeyou.glasses/", "_blank");
     }
   };
+
+  // ── Syncing / Retrying Screen (when scanned instantaneously) ─────────────
+  if (isRetrying) {
+    return (
+      <main className="flex min-h-dvh flex-col items-center justify-center p-6 text-center bg-[#FDFBF7] text-isy-ink selection:bg-isy-green-bright/20">
+        <div className="w-full max-w-sm rounded-3xl bg-white p-6 sm:p-8 shadow-xl border border-isy-line text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">
+          <Link href="/" className="inline-block">
+            <Image
+              src="/logo.png"
+              alt="Optik I See You"
+              width={140}
+              height={52}
+              className="h-8 w-auto mx-auto object-contain"
+              priority
+            />
+          </Link>
+
+          <div className="mx-auto w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-isy-green-deep shadow-2xs">
+            <div className="h-6 w-6 animate-spin rounded-full border-3 border-isy-green-bright border-t-transparent" />
+          </div>
+
+          <div className="space-y-1.5">
+            <h2 className="font-serif text-lg font-bold text-isy-green-deep">
+              Menyiapkan Foto HD Anda…
+            </h2>
+            <p className="text-xs text-isy-ink/70 leading-relaxed">
+              Foto baru saja selesai diambil dan sedang disinkronkan ke cloud. Mohon tunggu sebentar…
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <div className="h-1.5 w-full bg-isy-mist rounded-full overflow-hidden">
+              <div className="h-full bg-isy-green-bright rounded-full animate-pulse w-3/4" />
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   // ── Expired / 404 Not Found Screen ─────────────────────────────────────────
   if ((!stripUrl && !gifUrl) || imageError) {
@@ -225,7 +279,7 @@ function DownloadPortalContent() {
             <img
               src={stripUrl}
               alt="Foto Strip Optik I See You"
-              onError={() => setImageError(true)}
+              onError={handleImageError}
               className="max-h-[420px] w-full object-contain rounded-xl shadow"
             />
           ) : (

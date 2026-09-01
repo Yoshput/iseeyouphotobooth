@@ -65,6 +65,7 @@ interface Props {
   rotationOffsetDeg?: { x: number; y: number; z: number };
   /** Temple fade start fraction 0–1 (0.65 = fade at 65% of temple length) */
   templeFadeStart?: number;
+  trackingEnabled?: boolean;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
@@ -89,29 +90,25 @@ function triggerScanRing(
       position: absolute;
       pointer-events: none;
       border-radius: 50%;
-      border: 3px solid ${RING_COLOR};
-      box-shadow: 0 0 12px 2px ${RING_COLOR}40;
+      border: 2px solid ${RING_COLOR};
+      transform: translate(-50%, -50%) scale(0.6);
+      opacity: 0.9;
+      transition: transform 0.65s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.65s ease;
+      box-shadow: 0 0 16px ${RING_COLOR}55;
     `;
     container.appendChild(ring);
   }
 
-  ring.style.left = `${cx - r}px`;
-  ring.style.top  = `${cy - r}px`;
+  ring.style.left   = `${cx}px`;
+  ring.style.top    = `${cy}px`;
   ring.style.width  = `${r * 2}px`;
   ring.style.height = `${r * 2}px`;
 
-  gsap.killTweensOf(ring);
-  gsap.fromTo(
-    ring,
-    { opacity: 1, scale: 1 },
-    {
-      opacity: 0,
-      scale: 1.12,
-      duration: 0.4,
-      ease: "power2.out",
-      onComplete: () => ring?.remove(),
-    }
-  );
+  requestAnimationFrame(() => {
+    if (!ring) return;
+    ring.style.transform = "translate(-50%, -50%) scale(1.15)";
+    ring.style.opacity   = "0";
+  });
 }
 
 const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
@@ -125,7 +122,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       beautyMode = false,
       lipstickMode = false,
       scanIntro = false,
-      showFaceGuide = true,
+      showFaceGuide = false,
       faceResult,
       renderMode = "2d",
       model3DSrc,
@@ -136,10 +133,11 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       metalColor,
       isTinted = false,
       style,
-      yOffsetRatio,
+      yOffsetRatio = 0,
       pivotOffset,
       rotationOffsetDeg,
-      templeFadeStart,
+      templeFadeStart = 0.65,
+      trackingEnabled = true,
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
@@ -225,13 +223,13 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         setCameraError(null);
         let gotStream = false;
 
-        // Tier 1: Full HD
+        // Tier 1: 4K / 2K / Full HD Crisp Camera Sensor Resolution
         try {
           stream = await navigator.mediaDevices.getUserMedia({
             video: {
               facingMode: "user",
-              width: { ideal: 1920, min: 1280 },
-              height: { ideal: 1080, min: 720 },
+              width: { ideal: 3840, min: 1920 },
+              height: { ideal: 2160, min: 1080 },
               frameRate: { ideal: 30 },
             },
             audio: false,
@@ -239,7 +237,23 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           gotStream = true;
         } catch { /* fall through */ }
 
-        // Tier 2: HD
+        // Tier 2: Full HD (1080p)
+        if (!gotStream) {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                facingMode: "user",
+                width: { ideal: 1920, min: 1280 },
+                height: { ideal: 1080, min: 720 },
+                frameRate: { ideal: 30 },
+              },
+              audio: false,
+            });
+            gotStream = true;
+          } catch { /* fall through */ }
+        }
+
+        // Tier 3: Standard HD
         if (!gotStream) {
           try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -254,7 +268,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           } catch { /* fall through */ }
         }
 
-        // Tier 3: Any front camera (very restrictive devices / old iOS)
+        // Tier 4: Any front camera (very restrictive devices / old iOS)
         if (!gotStream) {
           try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -397,25 +411,48 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
 
         prevFaceCountRef.current = curr;
       },
-      { numFaces, enabled: cameraReady }
+      { numFaces, enabled: cameraReady && trackingEnabled }
     );
 
-    // ── Exposed captureFrame ──────────────────────────────────────────────
+    // ── Exposed captureFrame (Full Native Sensor Resolution - Razor Sharp) ───
     useImperativeHandle(ref, () => ({
       captureFrame() {
         const video     = videoRef.current;
         const container = containerRef.current;
         if (!video || !video.videoWidth || !container) return null;
 
-        const { width, height } = container.getBoundingClientRect();
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const out = document.createElement("canvas");
-        out.width  = Math.round(width * dpr);
-        out.height = Math.round(height * dpr);
-        const ctx  = out.getContext("2d")!;
-        ctx.scale(dpr, dpr);
+        const { width: containerW, height: containerH } = container.getBoundingClientRect();
+        const containerRatio = (containerW && containerH) ? containerW / containerH : (3 / 4);
 
-        ctx.translate(width, 0);
+        // Capture directly from full sensor resolution (preserving crystal-clear 1080p/4K details)
+        const sensorW = video.videoWidth;
+        const sensorH = video.videoHeight;
+
+        let targetW = sensorW;
+        let targetH = Math.round(targetW / containerRatio);
+
+        if (targetH > sensorH) {
+          targetH = sensorH;
+          targetW = Math.round(targetH * containerRatio);
+        }
+
+        // Guarantee at least 1440px resolution on the shorter axis for print-grade clarity
+        const minShortAxis = 1440;
+        if (Math.min(targetW, targetH) < minShortAxis) {
+          const upScale = minShortAxis / Math.max(1, Math.min(targetW, targetH));
+          targetW = Math.round(targetW * upScale);
+          targetH = Math.round(targetH * upScale);
+        }
+
+        const out = document.createElement("canvas");
+        out.width  = targetW;
+        out.height = targetH;
+        const ctx  = out.getContext("2d", { willReadFrequently: true })!;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
+        // Mirror horizontally (natural selfie reflection)
+        ctx.translate(targetW, 0);
         ctx.scale(-1, 1);
 
         let filterStr = "contrast(1.06) brightness(1.05) saturate(1.15)";
@@ -431,8 +468,8 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         const t = computeCoverTransform(
           video.videoWidth,
           video.videoHeight,
-          width,
-          height
+          targetW,
+          targetH
         );
 
         ctx.save();
@@ -446,11 +483,12 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         if (glassesSrc || renderMode === "3d") {
           const glCanvas = rendererRef.current?.canvas;
           if (glCanvas) {
-            ctx.drawImage(glCanvas, 0, 0, width, height);
+            ctx.drawImage(glCanvas, 0, 0, targetW, targetH);
           }
         }
 
-        return out.toDataURL("image/jpeg", 0.95);
+        // Return pristine 96% JPEG (crystal-clear, uncompressed visual look)
+        return out.toDataURL("image/jpeg", 0.96);
       },
     }));
 

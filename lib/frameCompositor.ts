@@ -224,6 +224,8 @@ function drawCoverImage(
   radius = 16
 ) {
   ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
   ctx.beginPath();
   ctx.roundRect(slot.x, slot.y, slot.w, slot.h, radius);
   ctx.clip();
@@ -1221,13 +1223,13 @@ export async function compositeFrame(
   // Custom theme branch: Vintage Film Strip B&W
   if (themeId === "vintage-film-bw") {
     await drawVintageFilmStripFrame(ctx, width, height, layout, photos, logoSrc);
-    return canvas.toDataURL("image/jpeg", 0.93);
+    return canvas.toDataURL("image/jpeg", 0.96);
   }
 
   // Custom theme branch: News Paper Editorial
   if (themeId === "newspaper-editorial") {
     await drawNewspaperEditorialFrame(ctx, width, height, layout, photos, colorFilterId, logoSrc);
-    return canvas.toDataURL("image/jpeg", 0.93);
+    return canvas.toDataURL("image/jpeg", 0.96);
   }
 
   // Custom theme branch: Frame Koran Custom PNG Overlay (Fixed 1200x1800 ratio to prevent squishing)
@@ -1239,19 +1241,19 @@ export async function compositeFrame(
     koranCanvas.height = koranHeight;
     const koranCtx = koranCanvas.getContext("2d")!;
     await drawFrameKoranCustomOverlay(koranCtx, koranWidth, koranHeight, layout, photos, colorFilterId);
-    return koranCanvas.toDataURL("image/jpeg", 0.93);
+    return koranCanvas.toDataURL("image/jpeg", 0.96);
   }
 
   // Custom theme branch: Optical Blueprint
   if (themeId === "optical-blueprint") {
     await drawOpticalBlueprintFrame(ctx, width, height, layout, photos, logoSrc);
-    return canvas.toDataURL("image/jpeg", 0.93);
+    return canvas.toDataURL("image/jpeg", 0.96);
   }
 
   // Custom theme branch: Lens Flare Gold
   if (themeId === "lens-flare-gold") {
     await drawLensFlareGoldFrame(ctx, width, height, layout, photos, logoSrc);
-    return canvas.toDataURL("image/jpeg", 0.93);
+    return canvas.toDataURL("image/jpeg", 0.96);
   }
 
   // ── 4 New PNG Overlay Frames ──────────────────────────────────────────────
@@ -1275,7 +1277,7 @@ export async function compositeFrame(
         { x: 1100, y: 1313, w: 881, h: 775 },
       ]
     );
-    return fc.toDataURL("image/jpeg", 0.93);
+    return fc.toDataURL("image/jpeg", 0.96);
   }
 
   // Frame Hijau 3 — "Capturing Moments Hijau" (1886×4000, 3-foto strip vertikal)
@@ -1293,7 +1295,7 @@ export async function compositeFrame(
         { x: 462, y: 2251, w: 961, h: 688 },
       ]
     );
-    return fc.toDataURL("image/jpeg", 0.93);
+    return fc.toDataURL("image/jpeg", 0.96);
   }
 
   // Frame Pink 3 — "Capturing Moments Pink" (1886×4000, 3-foto strip vertikal)
@@ -1311,7 +1313,7 @@ export async function compositeFrame(
         { x: 462, y: 2251, w: 961, h: 688 },
       ]
     );
-    return fc.toDataURL("image/jpeg", 0.93);
+    return fc.toDataURL("image/jpeg", 0.96);
   }
 
   // Frame Putih 4 — "Boarding Pass ISY" (2160×2700, 4-foto grid 2×2)
@@ -1331,7 +1333,7 @@ export async function compositeFrame(
         { x: 1100, y: 1647, w: 966, h: 720 },
       ]
     );
-    return fc.toDataURL("image/jpeg", 0.93);
+    return fc.toDataURL("image/jpeg", 0.96);
   }
 
   // Background
@@ -1448,7 +1450,7 @@ export async function compositeFrame(
   ctx.fillStyle = theme.topBarColor;
   ctx.fillRect(0, height - 10, width, 10);
 
-  return canvas.toDataURL("image/jpeg", 0.93);
+  return canvas.toDataURL("image/jpeg", 0.96);
 }
 
 /**

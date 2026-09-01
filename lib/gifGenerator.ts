@@ -745,18 +745,19 @@ export async function createAnimatedGif(
   photos: string[],
   themeId = "classic-white",
   colorFilterId = "normal",
-  width = 540,
-  height = 720,
+  width = 450,
+  height = 600,
   delayMs = 450,
   logoSrc = "/logo.png"
 ): Promise<string> {
-  const validPhotos = photos.filter((p) => Boolean(p) && typeof p === "string");
-  if (!validPhotos.length) throw new Error("No photos provided for GIF");
+  const validPhotos = photos.filter((p) => Boolean(p) && typeof p === "string" && p.startsWith("data:"));
+  if (!validPhotos.length) throw new Error("No valid photos provided for GIF");
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) throw new Error("Unable to create canvas 2d context for GIF");
 
   const gif = GIFEncoder();
   const theme = FRAME_THEMES.find((t) => t.id === themeId) || FRAME_THEMES[0];
@@ -786,42 +787,56 @@ export async function createAnimatedGif(
     theme.id === "frame-hijau-3";
 
   const genericLogo = isDarkTheme ? (whiteLogo || greenLogo) : (greenLogo || whiteLogo);
+  let framesWritten = 0;
 
   for (const src of validPhotos) {
-    const img = await loadImage(src);
+    try {
+      const img = await loadImage(src);
 
-    ctx.save();
-    ctx.clearRect(0, 0, width, height);
+      ctx.save();
+      ctx.clearRect(0, 0, width, height);
 
-    // Dispatch to dedicated custom frame renderer if matching
-    if (theme.id === "frame-4-pink") {
-      drawGifFrame4Pink(ctx, width, height, img, filter, whiteLogo);
-    } else if (theme.id === "frame-hijau-3") {
-      drawGifFrameHijau3(ctx, width, height, img, filter, whiteLogo);
-    } else if (theme.id === "frame-pink-3") {
-      drawGifFramePink3(ctx, width, height, img, filter, whiteLogo);
-    } else if (theme.id === "frame-putih-4") {
-      drawGifFramePutih4(ctx, width, height, img, filter, greenLogo);
-    } else if (theme.id === "frame-koran-custom") {
-      drawGifFrameKoran(ctx, width, height, img, filter, greenLogo);
-    } else {
-      drawGenericGifFrame(ctx, width, height, img, filter, theme, genericLogo);
+      // Dispatch to dedicated custom frame renderer if matching
+      if (theme.id === "frame-4-pink") {
+        drawGifFrame4Pink(ctx, width, height, img, filter, whiteLogo);
+      } else if (theme.id === "frame-hijau-3") {
+        drawGifFrameHijau3(ctx, width, height, img, filter, whiteLogo);
+      } else if (theme.id === "frame-pink-3") {
+        drawGifFramePink3(ctx, width, height, img, filter, whiteLogo);
+      } else if (theme.id === "frame-putih-4") {
+        drawGifFramePutih4(ctx, width, height, img, filter, greenLogo);
+      } else if (theme.id === "frame-koran-custom") {
+        drawGifFrameKoran(ctx, width, height, img, filter, greenLogo);
+      } else {
+        drawGenericGifFrame(ctx, width, height, img, filter, theme, genericLogo);
+      }
+
+      ctx.restore();
+
+      // Quantize RGBA frame data into GIF palette (128 colors for fast CPU & crisp mobile look)
+      const imgData = ctx.getImageData(0, 0, width, height);
+      const data = imgData.data;
+
+      const palette = quantize(data, 128);
+      const index = applyPalette(data, palette);
+
+      gif.writeFrame(index, width, height, {
+        palette,
+        delay: delayMs,
+        repeat: 0,
+      });
+      framesWritten++;
+    } catch (frameErr) {
+      console.warn("Skipping failed GIF frame:", frameErr);
     }
+  }
 
-    ctx.restore();
+  // Cleanup canvas memory
+  canvas.width = 0;
+  canvas.height = 0;
 
-    // Quantize RGBA frame data into GIF palette
-    const imgData = ctx.getImageData(0, 0, width, height);
-    const data = imgData.data;
-
-    const palette = quantize(data, 256);
-    const index = applyPalette(data, palette);
-
-    gif.writeFrame(index, width, height, {
-      palette,
-      delay: delayMs,
-      repeat: 0,
-    });
+  if (framesWritten === 0) {
+    throw new Error("Failed to render any frames for GIF");
   }
 
   gif.finish();
