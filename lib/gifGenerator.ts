@@ -744,16 +744,20 @@ function drawGenericGifFrame(
   ctx.fillRect(0, height - 6, width, 6);
 }
 
+// Global cache for logo assets
+let cachedWhiteLogo: HTMLImageElement | null = null;
+let cachedGreenLogo: HTMLImageElement | null = null;
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Main Exported Function: createAnimatedGif
+// Main Exported Function: createAnimatedGif (Ultra-Fast & Optimized for All Devices)
 // ─────────────────────────────────────────────────────────────────────────────
 export async function createAnimatedGif(
   photos: string[],
   themeId = "classic-white",
   colorFilterId = "normal",
-  width = 540,
-  height = 720,
-  delayMs = 450,
+  width = 360,
+  height = 480,
+  delayMs = 420,
   logoSrc = "/logo.png"
 ): Promise<string> {
   const validPhotos = photos.filter((p) => Boolean(p) && typeof p === "string" && p.startsWith("data:"));
@@ -765,25 +769,32 @@ export async function createAnimatedGif(
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
   if (!ctx) throw new Error("Unable to create canvas 2d context for GIF");
 
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
   const gif = GIFEncoder();
   const theme = FRAME_THEMES.find((t) => t.id === themeId) || FRAME_THEMES[0];
   const filter = COLOR_FILTERS.find((f) => f.id === colorFilterId) || COLOR_FILTERS[0];
 
-  // Pre-load official white and green logos
-  let whiteLogo: HTMLImageElement | null = null;
-  let greenLogo: HTMLImageElement | null = null;
-
-  try {
-    whiteLogo = await loadImage(WHITE_LOGO_SRC);
-  } catch {
-    whiteLogo = null;
+  // Pre-load official white and green logos once
+  if (!cachedWhiteLogo) {
+    try {
+      cachedWhiteLogo = await loadImage(WHITE_LOGO_SRC);
+    } catch {
+      cachedWhiteLogo = null;
+    }
   }
 
-  try {
-    greenLogo = await loadImage(GREEN_LOGO_SRC);
-  } catch {
-    greenLogo = null;
+  if (!cachedGreenLogo) {
+    try {
+      cachedGreenLogo = await loadImage(GREEN_LOGO_SRC);
+    } catch {
+      cachedGreenLogo = null;
+    }
   }
+
+  const whiteLogo = cachedWhiteLogo;
+  const greenLogo = cachedGreenLogo;
 
   const isDarkTheme =
     theme.id === "emerald-luxury" ||
@@ -794,9 +805,13 @@ export async function createAnimatedGif(
 
   const genericLogo = isDarkTheme ? (whiteLogo || greenLogo) : (greenLogo || whiteLogo);
   let framesWritten = 0;
+  let sharedPalette: number[][] | null = null;
 
   for (const src of validPhotos) {
     try {
+      // Yield to event loop to keep UI 60fps on mobile/tablets
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
       const img = await loadImage(src);
 
       ctx.save();
@@ -819,15 +834,18 @@ export async function createAnimatedGif(
 
       ctx.restore();
 
-      // Quantize RGBA frame data into GIF palette (128 colors for fast CPU & crisp mobile look)
       const imgData = ctx.getImageData(0, 0, width, height);
       const data = imgData.data;
 
-      const palette = quantize(data, 128);
-      const index = applyPalette(data, palette);
+      // Compute shared palette on first frame for instant encoding and zero frame-to-frame color jitter
+      if (!sharedPalette) {
+        sharedPalette = quantize(data, 64);
+      }
+
+      const index = applyPalette(data, sharedPalette);
 
       gif.writeFrame(index, width, height, {
-        palette,
+        palette: sharedPalette,
         delay: delayMs,
         repeat: 0,
       });
@@ -837,7 +855,7 @@ export async function createAnimatedGif(
     }
   }
 
-  // Cleanup canvas memory
+  // Cleanup canvas memory immediately
   canvas.width = 0;
   canvas.height = 0;
 

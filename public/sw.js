@@ -56,17 +56,27 @@ self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Only handle same-origin requests
-  if (url.origin !== location.origin) return;
+  // 1. Only handle GET requests and same-origin requests (ignore POST/PUT/DELETE)
+  if (request.method !== "GET" || url.origin !== location.origin) return;
+
+  // 2. Bypass Service Worker cache completely for API routes and video media
+  if (
+    url.pathname.startsWith("/api/") ||
+    url.pathname.endsWith(".mp4") ||
+    url.pathname.endsWith(".webm")
+  ) {
+    return;
+  }
 
   // Navigation requests (page loads): Network First → Offline fallback
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          // Cache successful page responses
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          if (response.ok && response.status !== 206) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
           return response;
         })
         .catch(() =>
@@ -91,8 +101,10 @@ self.addEventListener("fetch", (event) => {
         (cached) =>
           cached ||
           fetch(request).then((response) => {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+            if (response.ok && response.status !== 206) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+            }
             return response;
           })
       )
@@ -104,7 +116,7 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(request)
       .then((response) => {
-        if (response.ok) {
+        if (response.ok && response.status !== 206) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         }
