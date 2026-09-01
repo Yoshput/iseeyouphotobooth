@@ -829,6 +829,9 @@ const [faceDetected, setFaceDetected] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [devNoticeModalOpen, setDevNoticeModalOpen] = useState(false);
   const [renderMode3D, setRenderMode3D] = useState<boolean>(false);
+  const [cameraFacing, setCameraFacing] = useState<"user" | "environment">("user");
+  const [availableCameras, setAvailableCameras] = useState<MediaDeviceInfo[]>([]);
+  const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
 
   const activeGlassesList = useMemo(() => {
     if (renderMode3D) {
@@ -839,6 +842,44 @@ const [faceDetected, setFaceDetected] = useState(false);
 
   const glasses = manifest[glassesIndex] || manifest[0];
   const faceTrackerRef = useRef<FaceTrackerHandle>(null);
+
+  useEffect(() => {
+    async function loadCameras() {
+      try {
+        if (typeof navigator !== "undefined" && navigator.mediaDevices?.enumerateDevices) {
+          const devs = await navigator.mediaDevices.enumerateDevices();
+          const vDevs = devs.filter((d) => d.kind === "videoinput");
+          setAvailableCameras(vDevs);
+        }
+      } catch (err) {
+        console.warn("Could not enumerate cameras:", err);
+      }
+    }
+    loadCameras();
+    navigator.mediaDevices?.addEventListener?.("devicechange", loadCameras);
+    return () => {
+      navigator.mediaDevices?.removeEventListener?.("devicechange", loadCameras);
+    };
+  }, []);
+
+  const handleSwitchCamera = useCallback(() => {
+    if (availableCameras.length > 1) {
+      const currentIdx = availableCameras.findIndex((c) => c.deviceId === selectedCameraId);
+      const nextIdx = (currentIdx + 1) % availableCameras.length;
+      const nextCam = availableCameras[nextIdx];
+      setSelectedCameraId(nextCam.deviceId);
+      const isBack =
+        nextCam.label.toLowerCase().includes("back") ||
+        nextCam.label.toLowerCase().includes("rear") ||
+        nextCam.label.toLowerCase().includes("environment");
+      setCameraFacing(isBack ? "environment" : "user");
+      showToast(`Kamera: ${nextCam.label || `Kamera ${nextIdx + 1}`}`);
+    } else {
+      const nextFacing = cameraFacing === "user" ? "environment" : "user";
+      setCameraFacing(nextFacing);
+      showToast(nextFacing === "user" ? "Kamera Depan" : "Kamera Belakang / Luar");
+    }
+  }, [availableCameras, selectedCameraId, cameraFacing]);
 
   useEffect(() => {
     const isTryOnRoute = typeof window !== "undefined" && window.location.pathname.includes("/try-on");
@@ -1284,6 +1325,8 @@ const showToast = useCallback((msg: string) => {
   numFaces={layout.numPhotos}
   beautyMode={beautyMode}
   lipstickMode={lipstickMode}
+  facingMode={cameraFacing}
+  deviceId={selectedCameraId || undefined}
   scanIntro={isScanning}
   showFaceGuide={false}
   faceResult={faceResult}
@@ -1472,6 +1515,20 @@ const showToast = useCallback((msg: string) => {
      )}
      <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
    </button>
+    <button
+      onClick={handleSwitchCamera}
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
+        cameraFacing === "environment"
+          ? "bg-isy-green-bright/15 text-isy-green-deep border-isy-green-bright/40"
+          : "border-isy-line text-isy-ink/60 bg-white"
+      }`}
+      title="Ganti Kamera (Depan, Belakang, atau Webcam Eksternal)"
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+      </svg>
+      <span>{cameraFacing === "user" ? "Ganti Kamera" : "Kamera Belakang"}</span>
+    </button>
   </div>
   <TimerChips
     value={timerSec}

@@ -66,6 +66,8 @@ interface Props {
   /** Temple fade start fraction 0–1 (0.65 = fade at 65% of temple length) */
   templeFadeStart?: number;
   trackingEnabled?: boolean;
+  facingMode?: "user" | "environment";
+  deviceId?: string;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
@@ -138,6 +140,8 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       rotationOffsetDeg,
       templeFadeStart = 0.65,
       trackingEnabled = true,
+      facingMode = "user",
+      deviceId,
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
@@ -171,22 +175,34 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       const orig = console.error.bind(console);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       console.error = (...args: any[]) => {
-        const msg = String(args[0] ?? "");
+        const msg = args[0] ? String(args[0]) : "";
         if (
-          msg.startsWith("INFO:") ||
-          msg.includes("XNNPACK") ||
-          msg.includes("delegate for CPU") ||
-          msg.includes("TensorFlow Lite")
+          msg.includes("GL error") ||
+          msg.includes("FaceBlendshapesGraph") ||
+          msg.includes("OpenGL error checking is disabled") ||
+          msg.includes("vision_wasm_internal")
         ) {
-          console.info("[MediaPipe]", ...args);
           return;
         }
         orig(...args);
       };
-      return () => { console.error = orig; };
+      return () => {
+        console.error = orig;
+      };
     }, []);
 
-    // ── Helper: read actual video dimensions & update state ───────────────
+    // ── Video loaded metadata handler ─────────────────────────────────────
+    const handleLoadedMetadata = () => {
+      const v = videoRef.current;
+      if (!v) return;
+      const vw = v.videoWidth;
+      const vh = v.videoHeight;
+      if (vw > 0 && vh > 0) {
+        setVideoSize({ width: vw, height: vh });
+        setCameraReady(true);
+      }
+    };
+
     const readVideoDimensions = () => {
       const v = videoRef.current;
       if (!v) return;
@@ -197,7 +213,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       }
     };
 
-    // ── Camera initialization — 3-tier fallback ───────────────────────────
+    // ── Camera initialization — 3-tier fallback with deviceId / facingMode ─
     useEffect(() => {
       let active = true;
       let stream: MediaStream | null = null;
@@ -221,13 +237,18 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
 
       async function initCamera() {
         setCameraError(null);
+        setCameraReady(false);
         let gotStream = false;
+
+        const baseConstraints: MediaTrackConstraints = deviceId
+          ? { deviceId: { exact: deviceId } }
+          : { facingMode: facingMode || "user" };
 
         // Tier 1: 4K / 2K / Full HD Crisp Camera Sensor Resolution
         try {
           stream = await navigator.mediaDevices.getUserMedia({
             video: {
-              facingMode: "user",
+              ...baseConstraints,
               width: { ideal: 3840, min: 1920 },
               height: { ideal: 2160, min: 1080 },
               frameRate: { ideal: 30 },
@@ -242,7 +263,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           try {
             stream = await navigator.mediaDevices.getUserMedia({
               video: {
-                facingMode: "user",
+                ...baseConstraints,
                 width: { ideal: 1920, min: 1280 },
                 height: { ideal: 1080, min: 720 },
                 frameRate: { ideal: 30 },
@@ -258,7 +279,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           try {
             stream = await navigator.mediaDevices.getUserMedia({
               video: {
-                facingMode: "user",
+                ...baseConstraints,
                 width: { ideal: 1280 },
                 height: { ideal: 720 },
               },
@@ -268,11 +289,11 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           } catch { /* fall through */ }
         }
 
-        // Tier 4: Any front camera (very restrictive devices / old iOS)
+        // Tier 4: Any camera matching constraints
         if (!gotStream) {
           try {
             stream = await navigator.mediaDevices.getUserMedia({
-              video: { facingMode: "user" },
+              video: baseConstraints,
               audio: false,
             });
             gotStream = true;
@@ -311,7 +332,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           videoRef.current.srcObject = null;
         }
       };
-    }, []);
+    }, [deviceId, facingMode]);
 
     // ── Re-read video size on orientation change (iOS landscape quirk) ────
     useEffect(() => {
@@ -327,9 +348,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       };
     }, []);
 
-    const handleLoadedMetadata = () => {
-      readVideoDimensions();
-    };
+
 
     // ── Face tracking loop ────────────────────────────────────────────────
     useFaceTracking(
@@ -451,9 +470,12 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 
-        // Mirror horizontally (natural selfie reflection)
-        ctx.translate(targetW, 0);
-        ctx.scale(-1, 1);
+        // Mirror horizontally only for user front selfie camera
+        const isSelfie = facingMode === "user";
+        if (isSelfie) {
+          ctx.translate(targetW, 0);
+          ctx.scale(-1, 1);
+        }
 
         let filterStr = "contrast(1.03) brightness(1.01) saturate(1.08)";
         if (beautyMode && lipstickMode) {
@@ -509,6 +531,8 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       );
     }
 
+    const mirrorClass = facingMode === "user" ? "-scale-x-100" : "scale-x-100";
+
     return (
       <div
         ref={containerRef}
@@ -525,12 +549,12 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           onCanPlay={handleLoadedMetadata}
           onPlaying={handleLoadedMetadata}
           style={{ filter: previewFilterStyle }}
-          className="absolute inset-0 h-full w-full object-cover -scale-x-100 transition-all duration-300"
+          className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ${mirrorClass}`}
         />
 
         {/* Glasses overlay */}
         {size.width > 0 && size.height > 0 && (
-          <div className="absolute inset-0 -scale-x-100">
+          <div className={`absolute inset-0 ${mirrorClass}`}>
             {renderMode === "3d" ? (
               model3DSrc ? (
                 <Glasses3DRenderer
