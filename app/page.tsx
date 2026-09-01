@@ -291,19 +291,42 @@ export default function LandingPage() {
 
         {/* ── Marquee Showcase (2 Rows, Opposite Directions, Smooth Infinite Looping) ── */}
         <div className="w-full space-y-6 overflow-hidden">
-          {/* Row 1: Moving LEFTWARD (Cat Eye, New Collection, Titanium — primary clean photos only) */}
+          {/* Row 1: Moving LEFTWARD */}
           <div className="marquee-group relative w-full overflow-hidden py-1">
             <div className="animate-marquee-left flex items-center gap-6">
-              {CATALOG_COLLECTIONS.slice(0, 3)
-                .map((c) => c.coverImage)
-                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
-                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
-                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
-                .concat(CATALOG_COLLECTIONS.slice(0, 3).map((c) => c.coverImage))
+              {[
+                "/Katalog Berjalan/1.png",
+                "/katalog/The Feline Silhouette/5.png",
+                "/katalog/Cat Eye Edition/1.webp",
+                "/katalog/The Lucid Vision/14.png",
+                "/katalog/Titanium Edition/1.webp",
+              ]
+                .concat([
+                  "/Katalog Berjalan/1.png",
+                  "/katalog/The Feline Silhouette/5.png",
+                  "/katalog/Cat Eye Edition/1.webp",
+                  "/katalog/The Lucid Vision/14.png",
+                  "/katalog/Titanium Edition/1.webp",
+                ])
+                .concat([
+                  "/Katalog Berjalan/1.png",
+                  "/katalog/The Feline Silhouette/5.png",
+                  "/katalog/Cat Eye Edition/1.webp",
+                  "/katalog/The Lucid Vision/14.png",
+                  "/katalog/Titanium Edition/1.webp",
+                ])
+                .concat([
+                  "/Katalog Berjalan/1.png",
+                  "/katalog/The Feline Silhouette/5.png",
+                  "/katalog/Cat Eye Edition/1.webp",
+                  "/katalog/The Lucid Vision/14.png",
+                  "/katalog/Titanium Edition/1.webp",
+                ])
                 .map((imgSrc, index) => (
-                  <div
+                  <Link
                     key={`top-${index}`}
-                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer"
+                    href="/katalog?tab=frame"
+                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer block"
                   >
                     <Image
                       src={imgSrc}
@@ -312,24 +335,47 @@ export default function LandingPage() {
                       className="object-cover transition-transform duration-700 group-hover/card:scale-105"
                       sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
                     />
-                  </div>
+                  </Link>
                 ))}
             </div>
           </div>
 
-          {/* Row 2: Moving RIGHTWARD (Metro Deek, Quiet Luxury, Shades Of Elegance — primary clean photos only) */}
+          {/* Row 2: Moving RIGHTWARD */}
           <div className="marquee-group relative w-full overflow-hidden py-1">
             <div className="animate-marquee-right flex items-center gap-6">
-              {CATALOG_COLLECTIONS.slice(3, 6)
-                .map((c) => c.coverImage)
-                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
-                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
-                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
-                .concat(CATALOG_COLLECTIONS.slice(3, 6).map((c) => c.coverImage))
+              {[
+                "/Katalog Berjalan/2.png",
+                "/katalog/The Skena Gaze/9.png",
+                "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+                "/katalog/Metro Deek/Feed 1.webp",
+                "/katalog/Shades Of Elegance/1.webp",
+              ]
+                .concat([
+                  "/Katalog Berjalan/2.png",
+                  "/katalog/The Skena Gaze/9.png",
+                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+                  "/katalog/Metro Deek/Feed 1.webp",
+                  "/katalog/Shades Of Elegance/1.webp",
+                ])
+                .concat([
+                  "/Katalog Berjalan/2.png",
+                  "/katalog/The Skena Gaze/9.png",
+                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+                  "/katalog/Metro Deek/Feed 1.webp",
+                  "/katalog/Shades Of Elegance/1.webp",
+                ])
+                .concat([
+                  "/Katalog Berjalan/2.png",
+                  "/katalog/The Skena Gaze/9.png",
+                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+                  "/katalog/Metro Deek/Feed 1.webp",
+                  "/katalog/Shades Of Elegance/1.webp",
+                ])
                 .map((imgSrc, index) => (
-                  <div
+                  <Link
                     key={`bottom-${index}`}
-                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer"
+                    href="/katalog?tab=frame"
+                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer block"
                   >
                     <Image
                       src={imgSrc}
@@ -338,7 +384,7 @@ export default function LandingPage() {
                       className="object-cover transition-transform duration-700 group-hover/card:scale-105"
                       sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
                     />
-                  </div>
+                  </Link>
                 ))}
             </div>
           </div>
