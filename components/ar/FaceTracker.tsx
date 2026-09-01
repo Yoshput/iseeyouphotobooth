@@ -68,6 +68,7 @@ interface Props {
   trackingEnabled?: boolean;
   facingMode?: "user" | "environment";
   deviceId?: string;
+  customStream?: MediaStream | null;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
@@ -142,6 +143,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       trackingEnabled = true,
       facingMode = "user",
       deviceId,
+      customStream,
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
@@ -213,7 +215,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       }
     };
 
-    // ── Camera initialization — 3-tier fallback with deviceId / facingMode ─
+    // ── Camera initialization — 3-tier fallback with deviceId / facingMode / customStream ─
     useEffect(() => {
       let active = true;
       let stream: MediaStream | null = null;
@@ -238,6 +240,19 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       async function initCamera() {
         setCameraError(null);
         setCameraReady(false);
+
+        // If a remote / external custom stream is passed (e.g. Remote HP camera via WebRTC)
+        if (customStream) {
+          if (videoRef.current) {
+            videoRef.current.srcObject = customStream;
+            await videoRef.current.play().catch(() => {});
+            await waitForEnoughData(videoRef.current);
+            readVideoDimensions();
+            if (active) setCameraReady(true);
+          }
+          return;
+        }
+
         let gotStream = false;
 
         const baseConstraints: MediaTrackConstraints = deviceId
@@ -327,12 +342,14 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
 
       return () => {
         active = false;
-        stream?.getTracks().forEach((t) => t.stop());
+        if (!customStream) {
+          stream?.getTracks().forEach((t) => t.stop());
+        }
         if (videoRef.current) {
           videoRef.current.srcObject = null;
         }
       };
-    }, [deviceId, facingMode]);
+    }, [deviceId, facingMode, customStream]);
 
     // ── Re-read video size on orientation change (iOS landscape quirk) ────
     useEffect(() => {

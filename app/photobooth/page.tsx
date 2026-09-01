@@ -32,6 +32,7 @@ import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
 import ContactCSModal from "@/components/ui/ContactCSModal";
 import ThermalPrintModal from "@/components/ui/ThermalPrintModal";
 import { downloadOrShareImage } from "@/lib/saveImage";
+import QRCode from "qrcode";
 import manifestRaw from "@/public/glasses/manifest.json";
 
 type BoothPhase =
@@ -833,6 +834,14 @@ const [faceDetected, setFaceDetected] = useState(false);
   const [availableCameras, setAvailableCameras] = useState<MediaDeviceInfo[]>([]);
   const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
 
+  // Remote Smartphone WebRTC Camera States
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+  const [isRemoteModalOpen, setIsRemoteModalOpen] = useState(false);
+  const [remoteRoomId, setRemoteRoomId] = useState<string>("");
+  const [remoteQrUrl, setRemoteQrUrl] = useState<string | null>(null);
+  const [remoteConnected, setRemoteConnected] = useState(false);
+  const peerReceiverRef = useRef<any>(null);
+
   const activeGlassesList = useMemo(() => {
     if (renderMode3D) {
       return manifest.filter((g) => g.id === "none" || !!g.model3D);
@@ -842,6 +851,72 @@ const [faceDetected, setFaceDetected] = useState(false);
 
   const glasses = manifest[glassesIndex] || manifest[0];
   const faceTrackerRef = useRef<FaceTrackerHandle>(null);
+
+  const openRemoteCameraModal = async () => {
+    setIsRemoteModalOpen(true);
+    if (!remoteRoomId) {
+      const newRoomId = "isy-" + Math.random().toString(36).substring(2, 8);
+      setRemoteRoomId(newRoomId);
+
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://optikiseeyou.com";
+      const targetUrl = `${origin}/remote-camera?room=${newRoomId}`;
+
+      try {
+        const qr = await QRCode.toDataURL(targetUrl, { width: 320, margin: 2 });
+        setRemoteQrUrl(qr);
+      } catch (err) {
+        console.warn("QR generation failed", err);
+      }
+
+      try {
+        const { default: Peer } = await import("peerjs");
+        if (peerReceiverRef.current) {
+          peerReceiverRef.current.destroy();
+        }
+        const peer = new Peer(newRoomId, {
+          config: {
+            iceServers: [
+              { urls: "stun:stun.l.google.com:19302" },
+              { urls: "stun:stun1.l.google.com:19302" },
+            ],
+          },
+        });
+        peerReceiverRef.current = peer;
+
+        peer.on("call", (call: any) => {
+          call.answer(); // Answer the call from smartphone
+          call.on("stream", (stream: MediaStream) => {
+            setRemoteStream(stream);
+            setRemoteConnected(true);
+            setIsRemoteModalOpen(false);
+            showToast("🟢 Kamera HP Samsung Terhubung!");
+          });
+          call.on("close", () => {
+            setRemoteStream(null);
+            setRemoteConnected(false);
+            showToast("Kamera HP terputus");
+          });
+        });
+      } catch (err) {
+        console.error("Receiver PeerJS error:", err);
+      }
+    }
+  };
+
+  const disconnectRemoteCamera = () => {
+    if (remoteStream) {
+      remoteStream.getTracks().forEach((t) => t.stop());
+    }
+    if (peerReceiverRef.current) {
+      peerReceiverRef.current.destroy();
+      peerReceiverRef.current = null;
+    }
+    setRemoteStream(null);
+    setRemoteConnected(false);
+    setRemoteRoomId("");
+    setRemoteQrUrl(null);
+    showToast("Kembali ke Kamera Tablet");
+  };
 
   useEffect(() => {
     async function loadCameras() {
@@ -1327,6 +1402,7 @@ const showToast = useCallback((msg: string) => {
   lipstickMode={lipstickMode}
   facingMode={cameraFacing}
   deviceId={selectedCameraId || undefined}
+  customStream={remoteStream}
   scanIntro={isScanning}
   showFaceGuide={false}
   faceResult={faceResult}
@@ -1528,6 +1604,21 @@ const showToast = useCallback((msg: string) => {
         <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
       </svg>
       <span>{cameraFacing === "user" ? "Ganti Kamera" : "Kamera Belakang"}</span>
+    </button>
+    <button
+      onClick={remoteConnected ? disconnectRemoteCamera : openRemoteCameraModal}
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
+        remoteConnected
+          ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
+          : "border-isy-line text-isy-ink/60 bg-white hover:bg-isy-mist"
+      }`}
+      title={remoteConnected ? "Kamera HP Samsung Terhubung (Klik untuk putuskan)" : "Hubungkan Kamera HP Samsung via QR Code"}
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={remoteConnected ? "text-white" : "text-isy-green-deep"}>
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+        <line x1="12" y1="18" x2="12.01" y2="18" />
+      </svg>
+      <span>{remoteConnected ? "🟢 Kamera HP ON" : "Kamera HP (QR)"}</span>
     </button>
   </div>
   <TimerChips
@@ -1817,6 +1908,68 @@ const showToast = useCallback((msg: string) => {
                 Kembali ke Menu
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Remote Camera QR Modal */}
+      {isRemoteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200">
+          <div className="relative w-full max-w-sm rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-isy-line text-center space-y-4 animate-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setIsRemoteModalOpen(false)}
+              className="absolute top-4 right-4 h-8 w-8 rounded-full bg-isy-mist flex items-center justify-center text-isy-ink/50 hover:text-isy-green-deep hover:bg-isy-line transition-all cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <div className="space-y-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-isy-green-bright/15 text-isy-green-deep text-[11px] font-black uppercase tracking-wider">
+                📱 Kamera HP Nirkabel
+              </span>
+              <h3 className="font-serif text-xl font-bold text-isy-green-deep">
+                Scan QR dengan HP Samsung
+              </h3>
+              <p className="text-xs text-isy-ink/65">
+                Gunakan kamera belakang HP Samsung Anda sebagai kamera utama photobooth!
+              </p>
+            </div>
+
+            {/* QR Code Container */}
+            <div className="mx-auto flex flex-col items-center justify-center p-3 rounded-2xl bg-isy-mist border border-isy-line">
+              {remoteQrUrl ? (
+                <img
+                  src={remoteQrUrl}
+                  alt="Scan QR Kamera HP"
+                  className="w-52 h-52 rounded-xl shadow-xs object-contain"
+                />
+              ) : (
+                <div className="w-52 h-52 flex items-center justify-center text-xs text-isy-ink/50 animate-pulse">
+                  Menyiapkan QR Code...
+                </div>
+              )}
+            </div>
+
+            <div className="text-left bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200/60 space-y-1.5 text-[11px] text-emerald-950">
+              <p className="font-bold flex items-center gap-1.5">
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[9px] font-black text-white">1</span>
+                Buka Kamera HP Samsung ➡️ Scan QR di atas
+              </p>
+              <p className="font-bold flex items-center gap-1.5">
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[9px] font-black text-white">2</span>
+                Klik link &amp; izinkan akses kamera
+              </p>
+              <p className="text-[10px] text-emerald-800 pt-0.5">
+                ✨ Kamera HP akan otomatis terhubung ke Tablet ini dalam hitungan detik.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setIsRemoteModalOpen(false)}
+              className="w-full py-2.5 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-xs font-bold text-isy-ink/70 transition-all cursor-pointer"
+            >
+              Tutup
+            </button>
           </div>
         </div>
       )}
