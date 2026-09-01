@@ -25,6 +25,7 @@ function DownloadPortalContent() {
   const [imageError, setImageError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
+  const [gifRetry, setGifRetry] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
 
   // Derive R2 public domain if photoId is used
@@ -39,6 +40,8 @@ function DownloadPortalContent() {
 
   // If using custom domain, load directly from CDN; otherwise stream reliably via /api/photo
   const retryParam = retryCount > 0 ? `&_r=${retryCount}` : "";
+  const gifRetryParam = gifRetry > 0 ? `&_gr=${gifRetry}` : "";
+
   const stripUrl =
     (directStrip && !directStrip.includes(".r2.dev") ? directStrip : null) ||
     (photoId
@@ -51,8 +54,8 @@ function DownloadPortalContent() {
     (directGif && !directGif.includes(".r2.dev") ? directGif : null) ||
     (photoId
       ? isCustomDomain
-        ? `${r2PublicDomain}/photos/${photoId}.gif${retryCount > 0 ? `?_r=${retryCount}` : ""}`
-        : `/api/photo?id=${encodeURIComponent(photoId)}&type=gif${retryParam}`
+        ? `${r2PublicDomain}/photos/${photoId}.gif${gifRetry > 0 ? `?_gr=${gifRetry}` : ""}`
+        : `/api/photo?id=${encodeURIComponent(photoId)}&type=gif${retryParam}${gifRetryParam}`
       : directGif);
 
   const showToast = (msg: string) => {
@@ -69,6 +72,14 @@ function DownloadPortalContent() {
       }, 1400);
     } else {
       setImageError(true);
+    }
+  };
+
+  const handleGifError = () => {
+    if (photoId && gifRetry < 6) {
+      setTimeout(() => {
+        setGifRetry((prev) => prev + 1);
+      }, 1200);
     }
   };
 
@@ -287,10 +298,7 @@ function DownloadPortalContent() {
             <img
               src={gifUrl}
               alt="GIF Animasi Optik I See You"
-              onError={() => {
-                // If GIF fails, fall back to strip
-                setActiveTab("strip");
-              }}
+              onError={handleGifError}
               className="max-h-[420px] w-full object-contain rounded-xl shadow"
             />
           )}

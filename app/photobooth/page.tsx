@@ -824,6 +824,7 @@ const [faceDetected, setFaceDetected] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const currentPhotoIdRef = useRef<string | null>(null);
   const lastUploadedRef = useRef<{ composite: string; gif: string | null } | null>(null);
+  const gifGenIdRef = useRef(0);
   const [scanComplete, setScanComplete] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [devNoticeModalOpen, setDevNoticeModalOpen] = useState(false);
@@ -976,6 +977,7 @@ const showToast = useCallback((msg: string) => {
   }, [gifUrl, showToast]);
 
   const resetSession = useCallback(() => {
+    gifGenIdRef.current++;
     setScanComplete(false);
     setIsScanning(false);
     setPhotos([]);
@@ -1104,97 +1106,95 @@ const showToast = useCallback((msg: string) => {
     setPhase("countdown");
   }, [phase, resetSession]);
 
-  const handleSelectTheme = useCallback((newThemeId: string) => {
-    setThemeId(newThemeId);
-    if (photos.length) {
-      compositeFrame(layout, photos, newThemeId, colorFilterId).then((url) => {
-        setCompositeUrl(url);
-      });
-      createAnimatedGif(photos, newThemeId, colorFilterId).then((gif) => {
-        setGifUrl(gif);
-        if (currentPhotoIdRef.current) {
-          uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
-        }
-      }).catch((err) => console.warn("GIF theme update error:", err));
-    }
-  }, [layout, photos, colorFilterId]);
+  const generateGifForCurrentSession = useCallback(
+    (currentThemeId: string, currentFilterId: string) => {
+      if (!photos.length) return;
+      const myId = ++gifGenIdRef.current;
+      createAnimatedGif(photos, currentThemeId, currentFilterId)
+        .then((gif) => {
+          if (myId === gifGenIdRef.current) {
+            setGifUrl(gif);
+            if (currentPhotoIdRef.current) {
+              uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn("GIF generation error:", err);
+        });
+    },
+    [photos]
+  );
 
-  const handleSelectFilter = useCallback((newFilterId: string) => {
-    setColorFilterId(newFilterId);
-    if (photos.length) {
-      // Re-composite strip
-      compositeFrame(layout, photos, themeId, newFilterId).then((url) => {
-        setCompositeUrl(url);
-      });
-      // Re-generate GIF
-      createAnimatedGif(photos, themeId, newFilterId).then((gif) => {
-        setGifUrl(gif);
-        if (currentPhotoIdRef.current) {
-          uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
-        }
-      }).catch((err) => console.warn("GIF filter update error:", err));
-    }
-  }, [layout, photos, themeId]);
+  const handleSelectTheme = useCallback(
+    (newThemeId: string) => {
+      setThemeId(newThemeId);
+      if (photos.length) {
+        compositeFrame(layout, photos, newThemeId, colorFilterId).then((url) => {
+          setCompositeUrl(url);
+        });
+        generateGifForCurrentSession(newThemeId, colorFilterId);
+      }
+    },
+    [layout, photos, colorFilterId, generateGifForCurrentSession]
+  );
+
+  const handleSelectFilter = useCallback(
+    (newFilterId: string) => {
+      setColorFilterId(newFilterId);
+      if (photos.length) {
+        compositeFrame(layout, photos, themeId, newFilterId).then((url) => {
+          setCompositeUrl(url);
+        });
+        generateGifForCurrentSession(themeId, newFilterId);
+      }
+    },
+    [layout, photos, themeId, generateGifForCurrentSession]
+  );
 
   // Composite strip & generate animated GIF when photos are ready
   useEffect(() => {
     if (phase !== "compositing") return;
-    let cancelled = false;
 
     // Generate Instant QR Code ID at the earliest possible moment (0 ms delay)
     if (!currentPhotoIdRef.current) {
       const newId = generatePhotoId();
       currentPhotoIdRef.current = newId;
       generateInstantQR(newId).then(({ qrPageUrl, qrCodeDataUrl: qrData }) => {
-        if (!cancelled) {
-          setUploadedUrl(qrPageUrl);
-          setQrCodeDataUrl(qrData);
-        }
+        setUploadedUrl(qrPageUrl);
+        setQrCodeDataUrl(qrData);
       }).catch((err) => console.warn("Instant QR error:", err));
     }
 
     if (arEnabled && photos[0]) {
       compositeArTryOnFrame(photos[0], glasses?.name).then((url) => {
-        if (!cancelled) {
-          setCompositeUrl(url);
-          setPhase("result");
-          confetti({
-            particleCount: 80,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ["#116B3C", "#2FA84F", "#86EFAC"],
-          });
-        }
+        setCompositeUrl(url);
+        setPhase("result");
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#116B3C", "#2FA84F", "#86EFAC"],
+        });
       });
-      return () => { cancelled = true; };
+      return;
     }
 
     compositeFrame(layout, photos, themeId, colorFilterId).then((url) => {
-      if (!cancelled) {
-        setCompositeUrl(url);
-        // Masuk layar Kustomisasi dulu (bukan langsung result)
-        // Confetti tetap dimainkan saat masuk kustomisasi
-        setPhase("customize");
-        confetti({
-          particleCount: 90,
-          spread: 75,
-          origin: { y: 0.6 },
-          colors: ["#116B3C", "#2FA84F", "#86EFAC", "#FFD700"],
-        });
-      }
+      setCompositeUrl(url);
+      // Masuk layar Kustomisasi dulu (bukan langsung result)
+      setPhase("customize");
+      confetti({
+        particleCount: 90,
+        spread: 75,
+        origin: { y: 0.6 },
+        colors: ["#116B3C", "#2FA84F", "#86EFAC", "#FFD700"],
+      });
     });
 
-    createAnimatedGif(photos, themeId, colorFilterId).then((gif) => {
-      if (!cancelled) {
-        setGifUrl(gif);
-        if (currentPhotoIdRef.current) {
-          uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
-        }
-      }
-    }).catch((err) => console.warn("GIF generation error:", err));
-
-    return () => { cancelled = true; };
-  }, [phase, arEnabled, photos, glasses?.name, layout, themeId, colorFilterId]);
+    // Start background GIF encoding (runs uninterrupted through customize & result phases)
+    generateGifForCurrentSession(themeId, colorFilterId);
+  }, [phase, arEnabled, photos, glasses?.name, layout, themeId, colorFilterId, generateGifForCurrentSession]);
 
   // Decoupled Background Upload to Cloudflare R2 / Cloudinary
   const doUpload = useCallback(() => {
