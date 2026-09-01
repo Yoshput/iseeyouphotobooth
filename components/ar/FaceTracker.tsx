@@ -455,13 +455,13 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         ctx.translate(targetW, 0);
         ctx.scale(-1, 1);
 
-        let filterStr = "contrast(1.06) brightness(1.05) saturate(1.15)";
+        let filterStr = "contrast(1.03) brightness(1.01) saturate(1.08)";
         if (beautyMode && lipstickMode) {
-          filterStr = "contrast(1.08) brightness(1.08) saturate(1.3)";
+          filterStr = "contrast(1.05) brightness(1.03) saturate(1.18)";
         } else if (beautyMode) {
-          filterStr = "contrast(1.06) brightness(1.07) saturate(1.18)";
+          filterStr = "contrast(1.04) brightness(1.02) saturate(1.12)";
         } else if (lipstickMode) {
-          filterStr = "contrast(1.08) saturate(1.3)";
+          filterStr = "contrast(1.05) saturate(1.18)";
         }
         ctx.filter = filterStr;
 
@@ -492,13 +492,13 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       },
     }));
 
-    let previewFilterStyle = "contrast(1.06) brightness(1.05) saturate(1.15)";
+    let previewFilterStyle = "contrast(1.03) brightness(1.01) saturate(1.08)";
     if (beautyMode && lipstickMode) {
-      previewFilterStyle = "contrast(1.08) brightness(1.08) saturate(1.3)";
+      previewFilterStyle = "contrast(1.05) brightness(1.03) saturate(1.18)";
     } else if (beautyMode) {
-      previewFilterStyle = "contrast(1.06) brightness(1.07) saturate(1.18)";
+      previewFilterStyle = "contrast(1.04) brightness(1.02) saturate(1.12)";
     } else if (lipstickMode) {
-      previewFilterStyle = "contrast(1.08) saturate(1.3)";
+      previewFilterStyle = "contrast(1.05) saturate(1.18)";
     }
 
     if (cameraError) {

@@ -171,37 +171,37 @@ function drawGifFrame4Pink(
 
   // Clean White Outer Frame Border
   ctx.save();
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(16, 16, width - 32, height - 32);
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+  ctx.lineWidth = 2.5;
+  ctx.strokeRect(20, 20, width - 40, height - 40);
   ctx.restore();
 
   // Official White Logo in Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(whiteLogo, "white-logo");
-  const logoCenterY = Math.round(height * 0.07);
-  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 58);
+  const logoCenterY = Math.round(height * 0.075);
+  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 75);
 
   // Subtitle: Clean Spaced Typography
   ctx.save();
   ctx.fillStyle = "#FFFFFF";
-  ctx.font = "bold 11px 'Inter', sans-serif";
+  ctx.font = "bold 14px 'Inter', sans-serif";
   ctx.textAlign = "center";
-  ctx.letterSpacing = "3px";
-  ctx.fillText("T H E   M O M E N T", width / 2, logoCenterY + 38);
+  ctx.letterSpacing = "4px";
+  ctx.fillText("T H E   M O M E N T", width / 2, logoCenterY + 46);
   ctx.restore();
 
   // Central Photo Slot (4:3 ratio)
-  const slotW = Math.round(width * 0.82);
+  const slotW = Math.round(width * 0.84);
   const slotH = Math.round(slotW * 0.75);
   const slotX = Math.round((width - slotW) / 2);
   const slotY = Math.round(height * 0.17);
-  const radius = 14;
+  const radius = 18;
 
   // Soft Photo Shadow
   ctx.save();
-  ctx.shadowColor = "rgba(0, 0, 0, 0.12)";
-  ctx.shadowBlur = 14;
-  ctx.shadowOffsetY = 4;
+  ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
+  ctx.shadowBlur = 18;
+  ctx.shadowOffsetY = 6;
   ctx.fillStyle = "#FFFFFF";
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
@@ -214,34 +214,34 @@ function drawGifFrame4Pink(
   // Crisp White Border
   ctx.save();
   ctx.strokeStyle = "#FFFFFF";
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 4.5;
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
   ctx.stroke();
   ctx.restore();
 
   // Clean Footer
-  const footerY = Math.round(height * 0.86);
+  const footerY = Math.round(height * 0.865);
   ctx.save();
   ctx.textAlign = "center";
 
   // Tagline in serif
   ctx.fillStyle = "#FFFFFF";
-  ctx.font = "italic 700 18px 'Playfair Display', Georgia, serif";
+  ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
   ctx.fillText("for every you", width / 2, footerY);
 
   // Subtext
-  ctx.font = "bold 12px 'Inter', sans-serif";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("@iseeyou.glasses  ·  optikiseeyou.com", width / 2, footerY + 26);
+  ctx.font = "bold 15px 'Inter', sans-serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+  ctx.letterSpacing = "2px";
+  ctx.fillText("@iseeyou.glasses  ·  optikiseeyou.com", width / 2, footerY + 34);
 
   // Minimalist thin divider
   ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(width / 2 - 80, footerY + 44);
-  ctx.lineTo(width / 2 + 80, footerY + 44);
+  ctx.moveTo(width / 2 - 110, footerY + 54);
+  ctx.lineTo(width / 2 + 110, footerY + 54);
   ctx.stroke();
   ctx.restore();
 }
@@ -267,37 +267,37 @@ function drawGifFrameHijau3(
 
   // Subtle Gold/Cream Outer Line
   ctx.save();
-  ctx.strokeStyle = "rgba(232, 213, 183, 0.35)";
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(16, 16, width - 32, height - 32);
+  ctx.strokeStyle = "rgba(232, 213, 183, 0.4)";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(20, 20, width - 40, height - 40);
   ctx.restore();
 
   // Official White Logo in Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(whiteLogo, "white-logo");
-  const logoCenterY = Math.round(height * 0.07);
-  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 58);
+  const logoCenterY = Math.round(height * 0.075);
+  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 75);
 
   // Subtitle: "CAPTURING MOMENTS" in Cream
   ctx.save();
   ctx.textAlign = "center";
   ctx.fillStyle = "#E8D5B7";
-  ctx.font = "bold 11px 'Inter', sans-serif";
-  ctx.letterSpacing = "4px";
-  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, logoCenterY + 38);
+  ctx.font = "bold 14px 'Inter', sans-serif";
+  ctx.letterSpacing = "5px";
+  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, logoCenterY + 46);
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = Math.round(width * 0.82);
+  const slotW = Math.round(width * 0.84);
   const slotH = Math.round(slotW * 0.75);
   const slotX = Math.round((width - slotW) / 2);
   const slotY = Math.round(height * 0.17);
-  const radius = 10;
+  const radius = 14;
 
   // Photo Shadow
   ctx.save();
-  ctx.shadowColor = "rgba(0, 0, 0, 0.25)";
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 4;
+  ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+  ctx.shadowBlur = 16;
+  ctx.shadowOffsetY = 6;
   ctx.fillStyle = "#0E3821";
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
@@ -309,25 +309,25 @@ function drawGifFrameHijau3(
   // Elegant Cream Border
   ctx.save();
   ctx.strokeStyle = "#E8D5B7";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
   ctx.stroke();
   ctx.restore();
 
   // Footer: Branding
-  const footerY = Math.round(height * 0.86);
+  const footerY = Math.round(height * 0.865);
   ctx.save();
   ctx.textAlign = "center";
 
   ctx.fillStyle = "#E8D5B7";
-  ctx.font = "italic 700 18px 'Playfair Display', Georgia, serif";
+  ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
   ctx.fillText("for every you", width / 2, footerY);
 
-  ctx.font = "bold 12px 'Inter', sans-serif";
-  ctx.fillStyle = "rgba(232, 213, 183, 0.85)";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("@iseeyou.glasses", width / 2, footerY + 26);
+  ctx.font = "bold 15px 'Inter', sans-serif";
+  ctx.fillStyle = "rgba(232, 213, 183, 0.9)";
+  ctx.letterSpacing = "2px";
+  ctx.fillText("@iseeyou.glasses  ·  optikiseeyou.com", width / 2, footerY + 34);
   ctx.restore();
 }
 
@@ -352,37 +352,37 @@ function drawGifFramePink3(
 
   // White Border Outline
   ctx.save();
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(16, 16, width - 32, height - 32);
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(20, 20, width - 40, height - 40);
   ctx.restore();
 
   // Official White Logo in Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(whiteLogo, "white-logo");
-  const logoCenterY = Math.round(height * 0.07);
-  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 58);
+  const logoCenterY = Math.round(height * 0.075);
+  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 75);
 
   // Subtitle
   ctx.save();
   ctx.textAlign = "center";
   ctx.fillStyle = "#FFFFFF";
-  ctx.font = "bold 11px 'Inter', sans-serif";
-  ctx.letterSpacing = "4px";
-  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, logoCenterY + 38);
+  ctx.font = "bold 14px 'Inter', sans-serif";
+  ctx.letterSpacing = "5px";
+  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, logoCenterY + 46);
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = Math.round(width * 0.82);
+  const slotW = Math.round(width * 0.84);
   const slotH = Math.round(slotW * 0.75);
   const slotX = Math.round((width - slotW) / 2);
   const slotY = Math.round(height * 0.17);
-  const radius = 12;
+  const radius = 16;
 
   // Photo Shadow
   ctx.save();
-  ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 4;
+  ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+  ctx.shadowBlur = 16;
+  ctx.shadowOffsetY = 6;
   ctx.fillStyle = "#FFFFFF";
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
@@ -394,31 +394,31 @@ function drawGifFramePink3(
   // Crisp White Border
   ctx.save();
   ctx.strokeStyle = "#FFFFFF";
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 4.5;
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
   ctx.stroke();
   ctx.restore();
 
   // Footer: Branding
-  const footerY = Math.round(height * 0.86);
+  const footerY = Math.round(height * 0.865);
   ctx.save();
   ctx.textAlign = "center";
 
   ctx.fillStyle = "#FFFFFF";
-  ctx.font = "italic 700 18px 'Playfair Display', Georgia, serif";
+  ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
   ctx.fillText("for every you", width / 2, footerY);
 
-  ctx.font = "bold 12px 'Inter', sans-serif";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("@iseeyou.glasses  ·  optikiseeyou.com", width / 2, footerY + 26);
+  ctx.font = "bold 15px 'Inter', sans-serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+  ctx.letterSpacing = "2px";
+  ctx.fillText("@iseeyou.glasses  ·  optikiseeyou.com", width / 2, footerY + 34);
 
   ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(width / 2 - 80, footerY + 44);
-  ctx.lineTo(width / 2 + 80, footerY + 44);
+  ctx.moveTo(width / 2 - 110, footerY + 54);
+  ctx.lineTo(width / 2 + 110, footerY + 54);
   ctx.stroke();
   ctx.restore();
 }
@@ -444,32 +444,32 @@ function drawGifFramePutih4(
   // Ticket Outer Line
   ctx.save();
   ctx.strokeStyle = "#2B2B2B";
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(16, 16, width - 32, height - 32);
+  ctx.lineWidth = 2;
+  ctx.strokeRect(20, 20, width - 40, height - 40);
   ctx.restore();
 
   // Header Bar: Official Green Logo (Trimmed & Crisp) + Ticket Info
   const trimmedLogo = getTrimmedCanvas(greenLogo, "green-logo");
-  drawProportionalLogo(ctx, trimmedLogo || greenLogo, Math.round(width * 0.25), 48, Math.round(width * 0.4), 48);
+  drawProportionalLogo(ctx, trimmedLogo || greenLogo, Math.round(width * 0.25), 58, Math.round(width * 0.4), 60);
 
   ctx.save();
   ctx.textAlign = "right";
   ctx.fillStyle = "#116B3C";
-  ctx.font = "bold 11px 'Inter', sans-serif";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("BOARDING PASS  ·  FIRST CLASS", width - 28, 42);
+  ctx.font = "bold 13px 'Inter', sans-serif";
+  ctx.letterSpacing = "1.8px";
+  ctx.fillText("BOARDING PASS  ·  FIRST CLASS", width - 36, 52);
 
   ctx.fillStyle = "#555555";
-  ctx.font = "10px 'Inter', sans-serif";
-  ctx.letterSpacing = "1px";
-  ctx.fillText("FLIGHT: ISY-2026  ·  GATE: 01", width - 28, 58);
+  ctx.font = "12px 'Inter', sans-serif";
+  ctx.letterSpacing = "1.2px";
+  ctx.fillText("FLIGHT: ISY-2026  ·  GATE: 01", width - 36, 72);
 
   // Clean Header Divider
   ctx.strokeStyle = "#2B2B2B";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(24, 76);
-  ctx.lineTo(width - 24, 76);
+  ctx.moveTo(30, 94);
+  ctx.lineTo(width - 30, 94);
   ctx.stroke();
   ctx.restore();
 
@@ -477,24 +477,24 @@ function drawGifFramePutih4(
   ctx.save();
   ctx.textAlign = "center";
   ctx.fillStyle = "#1A1A1A";
-  ctx.font = "800 16px 'Inter', sans-serif";
-  ctx.letterSpacing = "3px";
-  ctx.fillText("RSM  —  ISY  ·  FLIGHT OF LOVE", width / 2, 98);
+  ctx.font = "800 20px 'Inter', sans-serif";
+  ctx.letterSpacing = "4px";
+  ctx.fillText("RSM  —  ISY  ·  FLIGHT OF LOVE", width / 2, 124);
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = Math.round(width * 0.82);
+  const slotW = Math.round(width * 0.84);
   const slotH = Math.round(slotW * 0.75);
   const slotX = Math.round((width - slotW) / 2);
   const slotY = Math.round(height * 0.17);
-  const radius = 6;
+  const radius = 8;
 
   drawPhotoInSlot(ctx, img, filter, slotX, slotY, slotW, slotH, radius);
 
   // Clean Dark Photo Border
   ctx.save();
   ctx.strokeStyle = "#1A1A1A";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
   ctx.stroke();
@@ -506,32 +506,32 @@ function drawGifFramePutih4(
   ctx.textAlign = "center";
 
   ctx.strokeStyle = "#2B2B2B";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(24, footerY);
-  ctx.lineTo(width - 24, footerY);
+  ctx.moveTo(30, footerY);
+  ctx.lineTo(width - 30, footerY);
   ctx.stroke();
 
   ctx.fillStyle = "#1A1A1A";
-  ctx.font = "bold 13px 'Inter', sans-serif";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("OPTIK I SEE YOU  ·  for every you", width / 2, footerY + 20);
+  ctx.font = "bold 16px 'Inter', sans-serif";
+  ctx.letterSpacing = "2px";
+  ctx.fillText("OPTIK I SEE YOU  ·  for every you", width / 2, footerY + 28);
 
   // Realistic Clean Barcode
-  const barW = Math.round(width * 0.55);
+  const barW = Math.round(width * 0.6);
   const barX = Math.round((width - barW) / 2);
-  const barY = footerY + 30;
-  const barH = 26;
+  const barY = footerY + 40;
+  const barH = 34;
   ctx.fillStyle = "#1A1A1A";
   for (let x = 0; x < barW; x += 4) {
     const isThick = ((x * 13) % 7 === 0) || ((x * 7) % 5 === 0);
-    const bw = isThick ? 2.5 : 1.2;
+    const bw = isThick ? 3 : 1.5;
     ctx.fillRect(barX + x, barY, bw, barH);
   }
 
-  ctx.font = "10px 'Courier New', monospace";
+  ctx.font = "12px 'Courier New', monospace";
   ctx.fillStyle = "#444444";
-  ctx.fillText("ISY - 2026 - 0826 - 47829  ·  @iseeyou.glasses", width / 2, barY + barH + 14);
+  ctx.fillText("ISY - 2026 - 0826 - 47829  ·  @iseeyou.glasses", width / 2, barY + barH + 18);
   ctx.restore();
 }
 
@@ -555,82 +555,70 @@ function drawGifFrameKoran(
 
   // Double Border
   ctx.strokeStyle = "#1A1A1A";
-  ctx.lineWidth = 2.5;
-  ctx.strokeRect(16, 16, width - 32, height - 32);
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 3;
   ctx.strokeRect(20, 20, width - 40, height - 40);
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(26, 26, width - 52, height - 52);
 
   // Official Logo in Newspaper Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(greenLogo, "green-logo");
-  drawProportionalLogo(ctx, trimmedLogo || greenLogo, width / 2, 48, Math.round(width * 0.55), 56);
+  drawProportionalLogo(ctx, trimmedLogo || greenLogo, width / 2, 60, Math.round(width * 0.55), 70);
 
   // Editorial Subhead
   ctx.save();
   ctx.textAlign = "center";
-  ctx.font = "bold 9px 'Inter', sans-serif";
+  ctx.font = "bold 12px 'Inter', sans-serif";
   ctx.fillStyle = "#555555";
-  ctx.letterSpacing = "2px";
-  ctx.fillText("DAILY PHOTO EDITION  ·  EST. 2019", width / 2, 78);
+  ctx.letterSpacing = "3px";
+  ctx.fillText("DAILY PHOTO EDITION  ·  EST. 2019", width / 2, 98);
 
   // Masthead divider lines
   ctx.strokeStyle = "#1A1A1A";
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(28, 88);
-  ctx.lineTo(width - 28, 88);
+  ctx.moveTo(34, 110);
+  ctx.lineTo(width - 34, 110);
   ctx.stroke();
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = 460;
-  const slotH = 345;
-  const slotX = (width - slotW) / 2;
-  const slotY = 106;
-  const radius = 4;
+  const slotW = Math.round(width * 0.84);
+  const slotH = Math.round(slotW * 0.75);
+  const slotX = Math.round((width - slotW) / 2);
+  const slotY = Math.round(height * 0.17);
+  const radius = 6;
 
   drawPhotoInSlot(ctx, img, filter, slotX, slotY, slotW, slotH, radius);
 
-  // Dark Newspaper Frame
+  // Clean Newspaper Photo Border
   ctx.save();
   ctx.strokeStyle = "#1A1A1A";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.roundRect(slotX, slotY, slotW, slotH, radius);
   ctx.stroke();
   ctx.restore();
 
-  // Photo Caption
-  ctx.save();
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#333333";
-  ctx.font = "italic 11px Georgia, serif";
-  ctx.fillText("Authentic smile captured at Optik I See You Photobooth.", width / 2, 468);
-  ctx.restore();
-
-  // Footer: Newspaper Columns / Headlines
-  const footerY = 495;
+  // Footer: Editorial Signoff
+  const footerY = Math.round(height * 0.85);
   ctx.save();
   ctx.textAlign = "center";
 
   ctx.strokeStyle = "#1A1A1A";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(28, footerY);
-  ctx.lineTo(width - 28, footerY);
+  ctx.moveTo(34, footerY);
+  ctx.lineTo(width - 34, footerY);
   ctx.stroke();
 
   ctx.fillStyle = "#1A1A1A";
-  ctx.font = "800 15px 'Playfair Display', Georgia, serif";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("JADI SAHABAT MATA TERBAIK KAMU", width / 2, footerY + 24);
+  ctx.font = "italic 700 22px 'Playfair Display', Georgia, serif";
+  ctx.fillText("for every you", width / 2, footerY + 30);
 
-  ctx.font = "11px 'Inter', sans-serif";
+  ctx.font = "bold 14px 'Inter', sans-serif";
   ctx.fillStyle = "#444444";
-  ctx.fillText("Periksa Mata Gratis & Koleksi Frame Kacamata Kekinian", width / 2, footerY + 44);
-
-  ctx.font = "bold 12px 'Inter', sans-serif";
-  ctx.fillStyle = "#116B3C";
-  ctx.fillText("@iseeyou.glasses", width / 2, footerY + 68);
+  ctx.letterSpacing = "2px";
+  ctx.fillText("THE I SEE YOU GAZETTE  ·  @iseeyou.glasses", width / 2, footerY + 56);
   ctx.restore();
 }
 
@@ -646,9 +634,9 @@ function drawGenericGifFrame(
   theme: FrameTheme,
   logoImg: HTMLImageElement | null
 ) {
-  const MARGIN = 36;
-  const HEADER_H = 100;
-  const FOOTER_H = 100;
+  const MARGIN = Math.round(width * 0.08);
+  const HEADER_H = Math.round(height * 0.14);
+  const FOOTER_H = Math.round(height * 0.14);
 
   const slotW = width - MARGIN * 2;
   const slotH = Math.round(slotW * 0.75);
@@ -664,10 +652,10 @@ function drawGenericGifFrame(
 
   // Dot pattern
   ctx.globalAlpha = 0.04;
-  for (let x = 16; x < width; x += 32) {
-    for (let y = 16; y < height; y += 32) {
+  for (let x = 20; x < width; x += 40) {
+    for (let y = 20; y < height; y += 40) {
       ctx.beginPath();
-      ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
       ctx.fillStyle = theme.dotColor;
       ctx.fill();
     }
@@ -676,16 +664,16 @@ function drawGenericGifFrame(
 
   // Top accent bar
   ctx.fillStyle = theme.topBarColor;
-  ctx.fillRect(0, 0, width, 6);
+  ctx.fillRect(0, 0, width, 8);
   ctx.fillStyle = theme.accentBarColor;
-  ctx.fillRect(0, 6, width, 3);
+  ctx.fillRect(0, 8, width, 4);
 
   // Header Logo / Text (Trimmed & Bold)
   if (logoImg) {
     const trimmedLogo = getTrimmedCanvas(logoImg, logoImg.src || "generic-logo");
-    drawProportionalLogo(ctx, trimmedLogo || logoImg, width / 2, HEADER_H / 2 + 4, 260, 65);
+    drawProportionalLogo(ctx, trimmedLogo || logoImg, width / 2, HEADER_H / 2 + 4, Math.round(width * 0.55), 75);
   } else {
-    ctx.font = "800 24px 'Playfair Display', Georgia, serif";
+    ctx.font = "800 30px 'Playfair Display', Georgia, serif";
     ctx.fillStyle = theme.textColor;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -694,7 +682,7 @@ function drawGenericGifFrame(
 
   // Divider line
   ctx.strokeStyle = theme.accentBarColor;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.globalAlpha = 0.4;
   ctx.beginPath();
   ctx.moveTo(MARGIN, HEADER_H);
@@ -703,21 +691,21 @@ function drawGenericGifFrame(
   ctx.globalAlpha = 1;
 
   // Draw Photo
-  drawPhotoInSlot(ctx, img, filter, slotX, slotY, slotW, slotH, 14);
+  drawPhotoInSlot(ctx, img, filter, slotX, slotY, slotW, slotH, 18);
 
   // Border stroke
   ctx.save();
   ctx.beginPath();
-  ctx.roundRect(slotX, slotY, slotW, slotH, 14);
-  ctx.strokeStyle = "rgba(255,255,255,0.4)";
-  ctx.lineWidth = 2.5;
+  ctx.roundRect(slotX, slotY, slotW, slotH, 18);
+  ctx.strokeStyle = "rgba(255,255,255,0.45)";
+  ctx.lineWidth = 3.5;
   ctx.stroke();
   ctx.restore();
 
   // Footer Text & Branding
   const FOOTER_Y = height - FOOTER_H;
   ctx.strokeStyle = theme.accentBarColor;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.globalAlpha = 0.4;
   ctx.beginPath();
   ctx.moveTo(MARGIN, FOOTER_Y);
@@ -730,18 +718,18 @@ function drawGenericGifFrame(
   const footerCenterY = FOOTER_Y + FOOTER_H / 2 - 4;
 
   ctx.fillStyle = theme.textColor;
-  ctx.font = "italic 700 18px 'Playfair Display', Georgia, serif";
-  ctx.fillText("for every you", width / 2, footerCenterY - 10);
+  ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
+  ctx.fillText("for every you", width / 2, footerCenterY - 14);
 
   ctx.fillStyle = theme.igColor;
-  ctx.font = "bold 14px 'Inter', Arial, sans-serif";
-  ctx.letterSpacing = "1.5px";
-  ctx.fillText("@iseeyou.glasses", width / 2, footerCenterY + 14);
+  ctx.font = "bold 16px 'Inter', Arial, sans-serif";
+  ctx.letterSpacing = "2px";
+  ctx.fillText("@iseeyou.glasses", width / 2, footerCenterY + 16);
 
   ctx.fillStyle = theme.accentBarColor;
-  ctx.fillRect(0, height - 9, width, 3);
+  ctx.fillRect(0, height - 12, width, 4);
   ctx.fillStyle = theme.topBarColor;
-  ctx.fillRect(0, height - 6, width, 6);
+  ctx.fillRect(0, height - 8, width, 8);
 }
 
 // Global cache for logo assets
@@ -749,14 +737,14 @@ let cachedWhiteLogo: HTMLImageElement | null = null;
 let cachedGreenLogo: HTMLImageElement | null = null;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Main Exported Function: createAnimatedGif (Ultra-Fast & Optimized for All Devices)
+// Main Exported Function: createAnimatedGif (Full HD 720x960 & Crisp 256-Color)
 // ─────────────────────────────────────────────────────────────────────────────
 export async function createAnimatedGif(
   photos: string[],
   themeId = "classic-white",
   colorFilterId = "normal",
-  width = 360,
-  height = 480,
+  width = 720,
+  height = 960,
   delayMs = 420,
   logoSrc = "/logo.png"
 ): Promise<string> {
@@ -805,11 +793,10 @@ export async function createAnimatedGif(
 
   const genericLogo = isDarkTheme ? (whiteLogo || greenLogo) : (greenLogo || whiteLogo);
   let framesWritten = 0;
-  let sharedPalette: number[][] | null = null;
 
   for (const src of validPhotos) {
     try {
-      // Yield to event loop to keep UI 60fps on mobile/tablets
+      // Yield to event loop to keep UI responsive
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       const img = await loadImage(src);
@@ -837,15 +824,12 @@ export async function createAnimatedGif(
       const imgData = ctx.getImageData(0, 0, width, height);
       const data = imgData.data;
 
-      // Compute shared palette on first frame for instant encoding and zero frame-to-frame color jitter
-      if (!sharedPalette) {
-        sharedPalette = quantize(data, 64);
-      }
-
-      const index = applyPalette(data, sharedPalette);
+      // Full 256 colors per frame for pure HD quality, completely eliminating noise / color banding
+      const palette = quantize(data, 256);
+      const index = applyPalette(data, palette);
 
       gif.writeFrame(index, width, height, {
-        palette: sharedPalette,
+        palette,
         delay: delayMs,
         repeat: 0,
       });
