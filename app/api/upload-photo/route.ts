@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
     const body: UploadPayload = await req.json();
     const { stripDataUrl, gifDataUrl, photoId } = body;
 
-    if (!stripDataUrl || typeof stripDataUrl !== "string") {
+    if (!stripDataUrl && !gifDataUrl) {
       return NextResponse.json(
-        { ok: false, error: "Parameter 'stripDataUrl' wajib diisi." },
+        { ok: false, error: "Parameter 'stripDataUrl' atau 'gifDataUrl' wajib diisi." },
         { status: 400 }
       );
     }
@@ -45,19 +45,23 @@ export async function POST(req: NextRequest) {
       photoId ||
       `isy-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
-    // 2. Decode Photo Strip (JPEG / PNG base64) to binary Buffer
-    const stripBase64 = stripDataUrl.replace(/^data:image\/\w+;base64,/, "");
-    const stripBuffer = Buffer.from(stripBase64, "base64");
-    const stripKey = `photos/${uniqueId}.jpg`;
+    // 2. Upload Photo Strip if present
+    let stripResult: { key: string; publicUrl: string } | null = null;
+    if (stripDataUrl && typeof stripDataUrl === "string") {
+      try {
+        const stripBase64 = stripDataUrl.replace(/^data:image\/\w+;base64,/, "");
+        const stripBuffer = Buffer.from(stripBase64, "base64");
+        const stripKey = `photos/${uniqueId}.jpg`;
+        stripResult = await uploadBufferToR2(stripBuffer, stripKey, "image/jpeg");
+      } catch (stripErr) {
+        console.error("Upload strip ke R2 gagal:", stripErr);
+        if (!gifDataUrl) {
+          throw stripErr;
+        }
+      }
+    }
 
-    // 3. Upload Photo Strip to Cloudflare R2
-    const stripResult = await uploadBufferToR2(
-      stripBuffer,
-      stripKey,
-      "image/jpeg"
-    );
-
-    // 4. Upload Animated GIF if present
+    // 3. Upload Animated GIF if present
     let gifResult: { key: string; publicUrl: string } | null = null;
     if (gifDataUrl && typeof gifDataUrl === "string") {
       try {
@@ -70,19 +74,21 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 5. Determine fast public photo URL (uses custom domain if set, otherwise Next.js serverless proxy)
+    // 4. Determine fast public photo URL (uses custom domain if set, otherwise Next.js serverless proxy)
     const hostHeader = req.headers.get("x-forwarded-host") || req.headers.get("host") || "";
     const proto = req.headers.get("x-forwarded-proto") || "https";
     const origin = hostHeader ? `${proto}://${hostHeader}` : "";
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || origin || "https://optikiseeyou.com").replace(/\/+$/, "");
 
     const isCustomDomain =
-      stripResult.publicUrl &&
+      stripResult?.publicUrl &&
       !stripResult.publicUrl.includes(".r2.dev") &&
       !stripResult.publicUrl.includes("cloudflarestorage.com");
 
-    const finalStripUrl = isCustomDomain
-      ? stripResult.publicUrl
+    const finalStripUrl = stripResult
+      ? isCustomDomain
+        ? stripResult.publicUrl
+        : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=jpg`
       : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=jpg`;
 
     const finalGifUrl = gifResult

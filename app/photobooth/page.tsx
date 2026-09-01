@@ -26,7 +26,7 @@ import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, getCompatibleTheme
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
 import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
-import { uploadPhotoForQR, generateInstantQR, generatePhotoId } from "@/lib/uploadImage";
+import { uploadPhotoForQR, generateInstantQR, generatePhotoId, uploadGifToR2 } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
 import ContactCSModal from "@/components/ui/ContactCSModal";
@@ -1104,31 +1104,37 @@ const showToast = useCallback((msg: string) => {
     setPhase("countdown");
   }, [phase, resetSession]);
 
- const handleSelectTheme = useCallback((newThemeId: string) => {
- setThemeId(newThemeId);
- if (photos.length) {
- compositeFrame(layout, photos, newThemeId, colorFilterId).then((url) => {
- setCompositeUrl(url);
- });
- createAnimatedGif(photos, newThemeId, colorFilterId).then((gif) => {
- setGifUrl(gif);
- }).catch((err) => console.warn("GIF theme update error:", err));
- }
- }, [layout, photos, colorFilterId]);
+  const handleSelectTheme = useCallback((newThemeId: string) => {
+    setThemeId(newThemeId);
+    if (photos.length) {
+      compositeFrame(layout, photos, newThemeId, colorFilterId).then((url) => {
+        setCompositeUrl(url);
+      });
+      createAnimatedGif(photos, newThemeId, colorFilterId).then((gif) => {
+        setGifUrl(gif);
+        if (currentPhotoIdRef.current) {
+          uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
+        }
+      }).catch((err) => console.warn("GIF theme update error:", err));
+    }
+  }, [layout, photos, colorFilterId]);
 
- const handleSelectFilter = useCallback((newFilterId: string) => {
- setColorFilterId(newFilterId);
- if (photos.length) {
- // Re-composite strip
- compositeFrame(layout, photos, themeId, newFilterId).then((url) => {
- setCompositeUrl(url);
- });
- // Re-generate GIF
- createAnimatedGif(photos, themeId, newFilterId).then((gif) => {
- setGifUrl(gif);
- }).catch((err) => console.warn("GIF filter update error:", err));
- }
- }, [layout, photos, themeId]);
+  const handleSelectFilter = useCallback((newFilterId: string) => {
+    setColorFilterId(newFilterId);
+    if (photos.length) {
+      // Re-composite strip
+      compositeFrame(layout, photos, themeId, newFilterId).then((url) => {
+        setCompositeUrl(url);
+      });
+      // Re-generate GIF
+      createAnimatedGif(photos, themeId, newFilterId).then((gif) => {
+        setGifUrl(gif);
+        if (currentPhotoIdRef.current) {
+          uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
+        }
+      }).catch((err) => console.warn("GIF filter update error:", err));
+    }
+  }, [layout, photos, themeId]);
 
   // Composite strip & generate animated GIF when photos are ready
   useEffect(() => {
@@ -1181,6 +1187,9 @@ const showToast = useCallback((msg: string) => {
     createAnimatedGif(photos, themeId, colorFilterId).then((gif) => {
       if (!cancelled) {
         setGifUrl(gif);
+        if (currentPhotoIdRef.current) {
+          uploadGifToR2(currentPhotoIdRef.current, gif).catch(() => {});
+        }
       }
     }).catch((err) => console.warn("GIF generation error:", err));
 

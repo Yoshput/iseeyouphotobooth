@@ -138,14 +138,42 @@ export async function uploadPhotoForQR(
         qrCodeDataUrl,
         provider: "cloudinary",
       };
-    } catch (cErr) {
-      console.warn("Cloudinary upload error:", cErr);
+    } catch (cErr: unknown) {
+      const msg = cErr instanceof Error ? cErr.message : "Cloudinary upload failed";
+      return { ok: false, error: msg };
     }
   }
 
   return {
     ok: false,
     error:
-      "Cloudflare R2 belum dikonfigurasi. Harap isi R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, dan R2_BUCKET_NAME di Vercel Settings -> Environment Variables.",
+      "Layanan Cloudflare R2 / Cloudinary belum siap. Silakan klik tombol 'Simpan Langsung ke Galeri'.",
   };
+}
+
+/**
+ * Upload Animated GIF independently to Cloudflare R2 in the background when ready.
+ */
+export async function uploadGifToR2(
+  photoId: string,
+  gifDataUrl: string
+): Promise<{ ok: boolean; gifUrl?: string }> {
+  if (!photoId || !gifDataUrl) return { ok: false };
+  try {
+    const res = await fetch("/api/upload-photo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        photoId,
+        gifDataUrl,
+      }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return { ok: true, gifUrl: data.gifUrl || undefined };
+    }
+  } catch (err) {
+    console.warn("Background GIF upload to R2 failed:", err);
+  }
+  return { ok: false };
 }

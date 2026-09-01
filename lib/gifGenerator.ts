@@ -178,7 +178,8 @@ function drawGifFrame4Pink(
 
   // Official White Logo in Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(whiteLogo, "white-logo");
-  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, 46, 260, 58);
+  const logoCenterY = Math.round(height * 0.07);
+  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 58);
 
   // Subtitle: Clean Spaced Typography
   ctx.save();
@@ -186,14 +187,14 @@ function drawGifFrame4Pink(
   ctx.font = "bold 11px 'Inter', sans-serif";
   ctx.textAlign = "center";
   ctx.letterSpacing = "3px";
-  ctx.fillText("T H E   M O M E N T", width / 2, 86);
+  ctx.fillText("T H E   M O M E N T", width / 2, logoCenterY + 38);
   ctx.restore();
 
   // Central Photo Slot (4:3 ratio)
-  const slotW = 460;
-  const slotH = 345;
-  const slotX = (width - slotW) / 2;
-  const slotY = 110;
+  const slotW = Math.round(width * 0.82);
+  const slotH = Math.round(slotW * 0.75);
+  const slotX = Math.round((width - slotW) / 2);
+  const slotY = Math.round(height * 0.17);
   const radius = 14;
 
   // Soft Photo Shadow
@@ -220,7 +221,7 @@ function drawGifFrame4Pink(
   ctx.restore();
 
   // Clean Footer
-  const footerY = 505;
+  const footerY = Math.round(height * 0.86);
   ctx.save();
   ctx.textAlign = "center";
 
@@ -273,7 +274,8 @@ function drawGifFrameHijau3(
 
   // Official White Logo in Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(whiteLogo, "white-logo");
-  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, 46, 260, 58);
+  const logoCenterY = Math.round(height * 0.07);
+  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 58);
 
   // Subtitle: "CAPTURING MOMENTS" in Cream
   ctx.save();
@@ -281,14 +283,14 @@ function drawGifFrameHijau3(
   ctx.fillStyle = "#E8D5B7";
   ctx.font = "bold 11px 'Inter', sans-serif";
   ctx.letterSpacing = "4px";
-  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, 86);
+  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, logoCenterY + 38);
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = 460;
-  const slotH = 345;
-  const slotX = (width - slotW) / 2;
-  const slotY = 110;
+  const slotW = Math.round(width * 0.82);
+  const slotH = Math.round(slotW * 0.75);
+  const slotX = Math.round((width - slotW) / 2);
+  const slotY = Math.round(height * 0.17);
   const radius = 10;
 
   // Photo Shadow
@@ -314,7 +316,7 @@ function drawGifFrameHijau3(
   ctx.restore();
 
   // Footer: Branding
-  const footerY = 505;
+  const footerY = Math.round(height * 0.86);
   ctx.save();
   ctx.textAlign = "center";
 
@@ -357,7 +359,8 @@ function drawGifFramePink3(
 
   // Official White Logo in Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(whiteLogo, "white-logo");
-  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, 46, 260, 58);
+  const logoCenterY = Math.round(height * 0.07);
+  drawProportionalLogo(ctx, trimmedLogo || whiteLogo, width / 2, logoCenterY, Math.round(width * 0.55), 58);
 
   // Subtitle
   ctx.save();
@@ -365,14 +368,14 @@ function drawGifFramePink3(
   ctx.fillStyle = "#FFFFFF";
   ctx.font = "bold 11px 'Inter', sans-serif";
   ctx.letterSpacing = "4px";
-  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, 86);
+  ctx.fillText("C A P T U R I N G   M O M E N T S", width / 2, logoCenterY + 38);
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = 460;
-  const slotH = 345;
-  const slotX = (width - slotW) / 2;
-  const slotY = 110;
+  const slotW = Math.round(width * 0.82);
+  const slotH = Math.round(slotW * 0.75);
+  const slotX = Math.round((width - slotW) / 2);
+  const slotY = Math.round(height * 0.17);
   const radius = 12;
 
   // Photo Shadow
@@ -398,7 +401,7 @@ function drawGifFramePink3(
   ctx.restore();
 
   // Footer: Branding
-  const footerY = 505;
+  const footerY = Math.round(height * 0.86);
   ctx.save();
   ctx.textAlign = "center";
 
@@ -447,7 +450,7 @@ function drawGifFramePutih4(
 
   // Header Bar: Official Green Logo (Trimmed & Crisp) + Ticket Info
   const trimmedLogo = getTrimmedCanvas(greenLogo, "green-logo");
-  drawProportionalLogo(ctx, trimmedLogo || greenLogo, 110, 48, 180, 48);
+  drawProportionalLogo(ctx, trimmedLogo || greenLogo, Math.round(width * 0.25), 48, Math.round(width * 0.4), 48);
 
   ctx.save();
   ctx.textAlign = "right";
@@ -480,10 +483,10 @@ function drawGifFramePutih4(
   ctx.restore();
 
   // Central Photo Slot
-  const slotW = 460;
-  const slotH = 345;
-  const slotX = (width - slotW) / 2;
-  const slotY = 114;
+  const slotW = Math.round(width * 0.82);
+  const slotH = Math.round(slotW * 0.75);
+  const slotX = Math.round((width - slotW) / 2);
+  const slotY = Math.round(height * 0.17);
   const radius = 6;
 
   drawPhotoInSlot(ctx, img, filter, slotX, slotY, slotW, slotH, radius);
@@ -498,7 +501,7 @@ function drawGifFramePutih4(
   ctx.restore();
 
   // Footer: Boarding Ticket Details & Clean Barcode
-  const footerY = 495;
+  const footerY = Math.round(height * 0.85);
   ctx.save();
   ctx.textAlign = "center";
 
@@ -512,10 +515,13 @@ function drawGifFramePutih4(
   ctx.fillStyle = "#1A1A1A";
   ctx.font = "bold 13px 'Inter', sans-serif";
   ctx.letterSpacing = "1.5px";
-  ctx.fillText("OPTIK I SEE YOU  ·  for every you", width / 2, footerY + 22);
+  ctx.fillText("OPTIK I SEE YOU  ·  for every you", width / 2, footerY + 20);
 
   // Realistic Clean Barcode
-  const barX = 140, barY = footerY + 34, barW = 260, barH = 32;
+  const barW = Math.round(width * 0.55);
+  const barX = Math.round((width - barW) / 2);
+  const barY = footerY + 30;
+  const barH = 26;
   ctx.fillStyle = "#1A1A1A";
   for (let x = 0; x < barW; x += 4) {
     const isThick = ((x * 13) % 7 === 0) || ((x * 7) % 5 === 0);
@@ -556,7 +562,7 @@ function drawGifFrameKoran(
 
   // Official Logo in Newspaper Header (Trimmed & Large)
   const trimmedLogo = getTrimmedCanvas(greenLogo, "green-logo");
-  drawProportionalLogo(ctx, trimmedLogo || greenLogo, width / 2, 48, 250, 56);
+  drawProportionalLogo(ctx, trimmedLogo || greenLogo, width / 2, 48, Math.round(width * 0.55), 56);
 
   // Editorial Subhead
   ctx.save();
@@ -745,8 +751,8 @@ export async function createAnimatedGif(
   photos: string[],
   themeId = "classic-white",
   colorFilterId = "normal",
-  width = 450,
-  height = 600,
+  width = 540,
+  height = 720,
   delayMs = 450,
   logoSrc = "/logo.png"
 ): Promise<string> {

@@ -29,7 +29,13 @@ export async function downloadImageDirectly(
       blob = new Blob([u8arr], { type: mime });
     } else {
       const res = await fetch(dataUrlOrUrl, { mode: "cors" });
+      if (!res.ok) {
+        throw new Error(`Gagal mengunduh: status server ${res.status}`);
+      }
       blob = await res.blob();
+      if (blob.size < 100) {
+        throw new Error("File belum siap atau kosong di cloud.");
+      }
     }
 
     const mimeType = filename.endsWith(".gif")
