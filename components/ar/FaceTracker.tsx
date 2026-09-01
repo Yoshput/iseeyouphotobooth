@@ -23,6 +23,7 @@ import {
 } from "react";
 import { gsap } from "gsap";
 import { useFaceTracking } from "@/hooks/useFaceTracking";
+import { useGestureTracking } from "@/hooks/useGestureTracking";
 import { useElementSize } from "@/hooks/useElementSize";
 import { computeGlassesAnchor } from "@/lib/landmarks";
 import { computeCoverTransform, videoPxToContainerPx } from "@/lib/videoCover";
@@ -69,6 +70,8 @@ interface Props {
   facingMode?: "user" | "environment";
   deviceId?: string;
   customStream?: MediaStream | null;
+  gestureEnabled?: boolean;
+  onGestureDetected?: (gesture: string) => void;
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
@@ -144,6 +147,8 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       facingMode = "user",
       deviceId,
       customStream,
+      gestureEnabled = false,
+      onGestureDetected,
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
@@ -159,6 +164,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
     const [cameraReady, setCameraReady] = useState(false);
     const [cameraError, setCameraError] = useState<string | null>(null);
     const [rawLandmarks, setRawLandmarks] = useState<Array<{ x: number; y: number; z: number }> | null>(null);
+    const [detectedGesture, setDetectedGesture] = useState<string | null>(null);
     const [guideValidation, setGuideValidation] = useState<FaceGuideValidation>(() =>
       validateFaceGuide(null)
     );
@@ -450,6 +456,16 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       { numFaces, enabled: cameraReady && trackingEnabled }
     );
 
+    // ── Hand Gesture Detection (Open_Palm ✋, Victory ✌️, Thumb_Up 👍) ───
+    useGestureTracking(videoRef, {
+      enabled: gestureEnabled && cameraReady,
+      onGesture: (gesture) => {
+        setDetectedGesture(gesture);
+        setTimeout(() => setDetectedGesture(null), 2500);
+        onGestureDetected?.(gesture);
+      },
+    });
+
     // ── Exposed captureFrame (Full Native Sensor Resolution - Razor Sharp) ───
     useImperativeHandle(ref, () => ({
       captureFrame() {
@@ -626,6 +642,20 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           className="pointer-events-none absolute inset-0"
           aria-hidden="true"
         />
+
+        {/* Hand Gesture Trigger Indicator Badge */}
+        {detectedGesture && (
+          <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-2 animate-in zoom-in-95 duration-200">
+            <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-black/80 border-2 border-isy-green-bright shadow-[0_0_25px_#2FA84F] backdrop-blur-md animate-bounce">
+              <span className="text-3xl sm:text-4xl">
+                {detectedGesture === "Victory" ? "✌️" : detectedGesture === "Thumb_Up" ? "👍" : "✋"}
+              </span>
+            </div>
+            <div className="rounded-full bg-isy-green-deep/95 border border-isy-green-bright/40 px-3.5 py-1 text-[11px] font-black text-white shadow-lg tracking-wide uppercase">
+              {detectedGesture === "Victory" ? "✌️ Pose 2 Jari Terdeteksi!" : detectedGesture === "Thumb_Up" ? "👍 Jempol Terdeteksi!" : "✋ Telapak Tangan Terdeteksi!"}
+            </div>
+          </div>
+        )}
 
         {/* Face Scan Intro Overlay */}
         {scanIntro && size.width > 0 && size.height > 0 && (

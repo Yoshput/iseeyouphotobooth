@@ -828,6 +828,7 @@ const [faceDetected, setFaceDetected] = useState(false);
   const gifGenIdRef = useRef(0);
   const [scanComplete, setScanComplete] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [gestureTriggerEnabled, setGestureTriggerEnabled] = useState(true);
   const [devNoticeModalOpen, setDevNoticeModalOpen] = useState(false);
   const [renderMode3D, setRenderMode3D] = useState<boolean>(false);
   const [cameraFacing, setCameraFacing] = useState<"user" | "environment">("user");
@@ -989,6 +990,19 @@ const [faceDetected, setFaceDetected] = useState(false);
     }
   }, []);
 
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  }, []);
+
+  const handleGestureDetected = useCallback((gesture: string) => {
+    if (phase === "ready") {
+      const icon = gesture === "Victory" ? "✌️" : gesture === "Thumb_Up" ? "👍" : "✋";
+      showToast(`${icon} Gestur ${gesture} terdeteksi! Memulai foto...`);
+      setPhase("countdown");
+    }
+  }, [phase, showToast]);
+
   const flashRef = useRef<HTMLDivElement>(null);
 
   const shooting =
@@ -999,11 +1013,6 @@ const [faceDetected, setFaceDetected] = useState(false);
     phase === "session-review";
   const showShutter = phase === "ready";
   const rightActive = phase !== "frame-select";
-
-const showToast = useCallback((msg: string) => {
- setToast(msg);
- setTimeout(() => setToast(null), 3000);
- }, []);
 
   const lastShapeRef = useRef<string | null>(null);
 
@@ -1316,6 +1325,13 @@ const showToast = useCallback((msg: string) => {
   const doUpload = useCallback(() => {
     if (phase !== "result" || !compositeUrl) return;
     // Skip upload jika compositeUrl dan gifUrl tidak berubah sejak upload terakhir
+    // NEVER upload Try-On photos to Cloudflare R2 bucket.
+    // Try-On photos are strictly for on-device fitting preview and direct local download.
+    if (arEnabled) {
+      setUploadPhase("idle");
+      return;
+    }
+
     if (
       lastUploadedRef.current?.composite === compositeUrl &&
       lastUploadedRef.current?.gif === (gifUrl || null) &&
@@ -1403,6 +1419,8 @@ const showToast = useCallback((msg: string) => {
   facingMode={cameraFacing}
   deviceId={selectedCameraId || undefined}
   customStream={remoteStream}
+  gestureEnabled={gestureTriggerEnabled && phase === "ready"}
+  onGestureDetected={handleGestureDetected}
   scanIntro={isScanning}
   showFaceGuide={false}
   faceResult={faceResult}
@@ -1567,6 +1585,22 @@ const showToast = useCallback((msg: string) => {
   ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
   >
   Lipstik
+  </button>
+  <button
+    onClick={() => {
+      const next = !gestureTriggerEnabled;
+      setGestureTriggerEnabled(next);
+      showToast(next ? "✋ Gestur Tangan Aktif: Tunjukkan telapak tangan ke kamera untuk mulai foto!" : "Gestur Tangan Dimatikan");
+    }}
+    className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 flex items-center gap-1 ${
+      gestureTriggerEnabled
+        ? "bg-amber-100 text-amber-900 border border-amber-300 shadow-xs font-black"
+        : "border border-isy-line text-isy-ink/50"
+    }`}
+    title="Nyalakan/Matikan Pemicu Foto via Gestur Tangan (✋/✌️/👍)"
+  >
+    <span>✋</span>
+    <span>{gestureTriggerEnabled ? "Gestur ON" : "Gestur"}</span>
   </button>
   <button
      onClick={() => setSoundEnabled((v) => !v)}
