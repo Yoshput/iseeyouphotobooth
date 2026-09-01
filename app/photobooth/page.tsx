@@ -995,13 +995,11 @@ const [faceDetected, setFaceDetected] = useState(false);
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  const handleGestureDetected = useCallback((gesture: string) => {
+  const handleGestureDetected = useCallback((_gesture: string) => {
     if (phase === "ready") {
-      const icon = gesture === "Victory" ? "✌️" : gesture === "Thumb_Up" ? "👍" : "✋";
-      showToast(`${icon} Gestur ${gesture} terdeteksi! Memulai foto...`);
       setPhase("countdown");
     }
-  }, [phase, showToast]);
+  }, [phase]);
 
   const flashRef = useRef<HTMLDivElement>(null);
 
@@ -1507,13 +1505,19 @@ const [faceDetected, setFaceDetected] = useState(false);
 
  {/* Capture button area — anchored at bottom of camera */}
  {shooting && phase === "ready" && (
-  <div className="absolute bottom-0 inset-x-0 z-20 flex flex-col items-center px-4 pb-4 pt-2 bg-gradient-to-t from-black/60 to-transparent">
+  <div className="absolute bottom-0 inset-x-0 z-20 flex flex-col items-center px-4 pb-4 pt-2 bg-gradient-to-t from-black/75 via-black/35 to-transparent gap-2">
+    {/* Clean Minimalist Instruction Hint */}
+    <div className="flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-md px-3.5 py-1.5 text-[11px] text-white/90 border border-white/10 shadow-sm animate-in fade-in duration-300">
+      <span className="h-1.5 w-1.5 rounded-full bg-isy-green-bright animate-ping" />
+      <span className="font-medium">Tunjukkan telapak tangan ke kamera atau tekan tombol Mulai</span>
+    </div>
+
   {/* Main capture button */}
   <button
   id="shutter-btn"
   onClick={handleStartSession}
   disabled={!showShutter || (arEnabled && !scanComplete)}
-  className="group relative w-full max-w-[320px] overflow-hidden rounded-2xl bg-isy-green-bright py-4 text-sm font-black uppercase tracking-[0.15em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.5)] transition-all hover:bg-isy-green-deep active:scale-[0.97] active:shadow-[0_2px_8px_rgba(47,168,79,0.4)] disabled:opacity-50 disabled:pointer-events-none"
+  className="group relative w-full max-w-[320px] overflow-hidden rounded-2xl bg-isy-green-bright py-3.5 text-sm font-black uppercase tracking-[0.15em] text-white shadow-[0_4px_20px_rgba(47,168,79,0.5)] transition-all hover:bg-isy-green-deep active:scale-[0.97] active:shadow-[0_2px_8px_rgba(47,168,79,0.4)] disabled:opacity-50 disabled:pointer-events-none"
   >
   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
   <span className="relative flex items-center justify-center gap-2">
@@ -1585,22 +1589,6 @@ const [faceDetected, setFaceDetected] = useState(false);
   ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
   >
   Lipstik
-  </button>
-  <button
-    onClick={() => {
-      const next = !gestureTriggerEnabled;
-      setGestureTriggerEnabled(next);
-      showToast(next ? "✋ Gestur Tangan Aktif: Tunjukkan telapak tangan ke kamera untuk mulai foto!" : "Gestur Tangan Dimatikan");
-    }}
-    className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 flex items-center gap-1 ${
-      gestureTriggerEnabled
-        ? "bg-amber-100 text-amber-900 border border-amber-300 shadow-xs font-black"
-        : "border border-isy-line text-isy-ink/50"
-    }`}
-    title="Nyalakan/Matikan Pemicu Foto via Gestur Tangan (✋/✌️/👍)"
-  >
-    <span>✋</span>
-    <span>{gestureTriggerEnabled ? "Gestur ON" : "Gestur"}</span>
   </button>
   <button
      onClick={() => setSoundEnabled((v) => !v)}
