@@ -121,7 +121,7 @@ export default function LandingVideoShowcase() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           poster="/Video Landing/web-poster.webp"
           onTimeUpdate={handleTimeUpdate}
           onClick={togglePlay}
@@ -130,7 +130,6 @@ export default function LandingVideoShowcase() {
           <source src="/Video Landing/web-optimized.mp4" type="video/mp4" />
           <source src="/Video Landing/web-optimized.webm" type="video/webm" />
           <source src="/Video Landing/web-mobile.mp4" type="video/mp4" />
-          <source src="/Video Landing/HL I SEE U LANDSCAPE.mp4" type="video/mp4" />
           Browser Anda tidak mendukung tag video HTML5.
         </video>
 

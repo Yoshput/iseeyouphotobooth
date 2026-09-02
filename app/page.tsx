@@ -241,11 +241,11 @@ export default function LandingPage() {
             <FloatingGlasses
               items={[
                 {
-                  src: "/glasses/hero-glasses-black.png",
+                  src: "/glasses/hero-glasses-black.webp",
                   alt: "Frame Hitam dengan Gagang Penuh — Optik I See You",
                 },
                 {
-                  src: "/glasses/hero-glasses-champagne.png",
+                  src: "/glasses/hero-glasses-champagne.webp",
                   alt: "Frame Crystal Champagne Blush dengan Gagang Penuh — Optik I See You",
                 },
               ]}
@@ -265,8 +265,8 @@ export default function LandingPage() {
               >
                 <span className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping opacity-25 group-hover:opacity-40" />
                 <Image
-                  src="/logo/Logo-Whatsapp.png"
-                  alt="WhatsApp"
+                  src="/logo/Logo-Whatsapp.webp"
+                  alt="Chat WhatsApp"
                   width={34}
                   height={34}
                   className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
@@ -283,8 +283,8 @@ export default function LandingPage() {
                 className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-[#E8A87C]/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-[#D4875A] hover:-translate-y-1.5 active:scale-95 group"
               >
                 <Image
-                  src="/logo/Logo-Shoppe.png"
-                  alt="Shopee"
+                  src="/logo/Logo-Shoppe.webp"
+                  alt="Official Store Shopee"
                   width={34}
                   height={34}
                   className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
@@ -307,8 +307,8 @@ export default function LandingPage() {
                 className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-isy-green-bright/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-isy-green-bright hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
               >
                 <Image
-                  src="/logo/Logo-Gmaps.png"
-                  alt="Google Maps"
+                  src="/logo/Logo-Gmaps.webp"
+                  alt="Petunjuk Lokasi Google Maps"
                   width={34}
                   height={34}
                   className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"

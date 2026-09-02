@@ -142,12 +142,14 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
 
               {/* Name Input */}
               <div>
-                <label className="block text-[11px] font-bold text-isy-ink/70 mb-1">
+                <label htmlFor="booking-name" className="block text-[11px] font-bold text-isy-ink/70 mb-1">
                   Nama Lengkap:
                 </label>
                 <input
+                  id="booking-name"
                   type="text"
                   required
+                  aria-label="Nama Lengkap"
                   placeholder="Contoh: Rina Melati"
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
@@ -157,11 +159,13 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
 
               {/* Phone / WA */}
               <div>
-                <label className="block text-[11px] font-bold text-isy-ink/70 mb-1">
+                <label htmlFor="booking-phone" className="block text-[11px] font-bold text-isy-ink/70 mb-1">
                   Nomor WhatsApp:
                 </label>
                 <input
+                  id="booking-phone"
                   type="tel"
+                  aria-label="Nomor WhatsApp"
                   placeholder="08xxxxxxxxxx"
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
@@ -172,21 +176,25 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
               {/* Visit Time */}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-[11px] font-bold text-isy-ink/70 mb-1">
+                  <label htmlFor="booking-date" className="block text-[11px] font-bold text-isy-ink/70 mb-1">
                     Tanggal Rencana:
                   </label>
                   <input
+                    id="booking-date"
                     type="date"
+                    aria-label="Tanggal Rencana Kunjungan"
                     value={bookingDate}
                     onChange={(e) => setBookingDate(e.target.value)}
                     className="w-full rounded-xl border border-isy-line bg-white px-3 py-2 text-xs text-isy-ink focus:border-isy-green-bright focus:outline-none shadow-2xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-isy-ink/70 mb-1">
+                  <label htmlFor="booking-time" className="block text-[11px] font-bold text-isy-ink/70 mb-1">
                     Pilihan Waktu:
                   </label>
                   <select
+                    id="booking-time"
+                    aria-label="Pilihan Waktu Kunjungan"
                     value={bookingTime}
                     onChange={(e) => setBookingTime(e.target.value)}
                     className="w-full rounded-xl border border-isy-line bg-white px-2.5 py-2 text-xs text-isy-ink focus:border-isy-green-bright focus:outline-none shadow-2xs"
@@ -205,7 +213,7 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
                   type="submit"
                   className="w-full rounded-2xl bg-isy-green-bright py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-isy-green-bright/25 transition-all hover:bg-emerald-600 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Image src="/logo/Logo-Whatsapp.png" alt="WA" width={16} height={16} className="h-4 w-4 object-contain" />
+                  <Image src="/logo/Logo-Whatsapp.webp" alt="WhatsApp Icon" width={16} height={16} className="h-4 w-4 object-contain" />
                   <span>Kirim Reservasi ke Cabang {selectedBranch.city} →</span>
                 </button>
                 <p className="text-[10px] text-center text-isy-ink/50">

@@ -31,9 +31,9 @@ export const BRANCHES: Branch[] = [
     instagram: "https://www.instagram.com/iseeyou.glasses/",
     handle: "@iseeyou.glasses",
     images: [
-      "/lokasi/purwokerto/IMG_1543.JPG",
-      "/lokasi/purwokerto/IMG_1544.JPG",
-      "/lokasi/purwokerto/IMG_1546.JPG",
+      "/lokasi/purwokerto/IMG_1543.webp",
+      "/lokasi/purwokerto/IMG_1544.webp",
+      "/lokasi/purwokerto/IMG_1546.webp",
     ],
   },
   {
@@ -51,9 +51,9 @@ export const BRANCHES: Branch[] = [
     instagram: "https://www.instagram.com/iseeyou.wonosobo/",
     handle: "@iseeyou.wonosobo",
     images: [
-      "/lokasi/wonosobo/IMG_4474.jpg",
-      "/lokasi/wonosobo/IMG_4475.jpg",
-      "/lokasi/wonosobo/IMG_4476.jpg",
+      "/lokasi/wonosobo/IMG_4474.webp",
+      "/lokasi/wonosobo/IMG_4475.webp",
+      "/lokasi/wonosobo/IMG_4476.webp",
     ],
   },
   {
@@ -71,9 +71,9 @@ export const BRANCHES: Branch[] = [
     instagram: "https://www.instagram.com/iseeyou.cilacap/",
     handle: "@iseeyou.cilacap",
     images: [
-      "/lokasi/cilacap/IMG_6716.jpg",
-      "/lokasi/cilacap/IMG_7453.jpg",
-      "/lokasi/cilacap/IMG_7455.jpg",
+      "/lokasi/cilacap/IMG_6716.webp",
+      "/lokasi/cilacap/IMG_7453.webp",
+      "/lokasi/cilacap/IMG_7455.webp",
     ],
   },
   {
@@ -95,9 +95,9 @@ export const BRANCHES: Branch[] = [
     instagram: "https://www.instagram.com/iseeyou.purbalingga/",
     handle: "@iseeyou.purbalingga",
     images: [
-      "/lokasi/purbalingga/IMG_8525.jpg",
-      "/lokasi/purbalingga/IMG_8526.jpg",
-      "/lokasi/purbalingga/IMG_8533.jpg",
+      "/lokasi/purbalingga/IMG_8525.webp",
+      "/lokasi/purbalingga/IMG_8526.webp",
+      "/lokasi/purbalingga/IMG_8533.webp",
     ],
   },
 ];

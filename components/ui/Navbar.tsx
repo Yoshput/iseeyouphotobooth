@@ -64,7 +64,7 @@ export default function Navbar() {
           <div className="flex items-center gap-6 sm:gap-8">
             <Link href="/" className="flex items-center gap-3 group shrink-0">
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Optik I See You"
                 width={130}
                 height={50}

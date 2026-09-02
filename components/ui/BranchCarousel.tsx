@@ -493,19 +493,23 @@ export default function BranchCarousel() {
       </div>
 
       {/* Navigation Dots */}
-      <div className="mt-5 flex justify-center items-center gap-2">
+      <div className="mt-5 flex justify-center items-center gap-1">
         {BRANCHES.map((b, i) => (
           <button
             key={b.id}
             onClick={() => goTo(i)}
             aria-label={`Ke cabang ${b.city}`}
-            className="rounded-full transition-all duration-300"
-            style={{
-              width: i === index ? "2rem" : "0.5rem",
-              height: "0.5rem",
-              background: i === index ? accentColor : "#D1D5DB",
-            }}
-          />
+            className="flex items-center justify-center p-2 min-w-[36px] min-h-[36px] cursor-pointer"
+          >
+            <span
+              className="block rounded-full transition-all duration-300"
+              style={{
+                width: i === index ? "2rem" : "0.5rem",
+                height: "0.5rem",
+                background: i === index ? accentColor : "#D1D5DB",
+              }}
+            />
+          </button>
         ))}
       </div>
 
