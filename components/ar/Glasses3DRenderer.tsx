@@ -144,7 +144,9 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
     const cameraRef   = useRef<THREE.OrthographicCamera | null>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const modelsRef   = useRef<THREE.Group[]>([]);
+    const originalModelsRef = useRef<THREE.Group[]>([]);
     const emaSlots    = useRef<Face3DEMASlot[]>([]);
+    const ewaWarmupRef = useRef<number[]>([]);
 
     useEffect(() => {
       if (!canvasRef.current || width === 0 || height === 0) return;
@@ -180,7 +182,8 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
 
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       pmremGenerator.compileEquirectangularShader();
-      const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+      const roomEnv = new RoomEnvironment();
+      const envTexture = pmremGenerator.fromScene(roomEnv, 0.04).texture;
       scene.environment = envTexture;
 
       scene.add(new THREE.AmbientLight(0xffffff, 1.4));
@@ -192,6 +195,7 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
       const slots:  Face3DEMASlot[] = [];
       for (let i = 0; i < maxFaces; i++) {
         slots.push(make3DSlot());
+        ewaWarmupRef.current.push(0);
         const g = new THREE.Group(); g.visible = false; scene.add(g); models.push(g);
       }
       modelsRef.current = models;
@@ -275,6 +279,7 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
             wrapper.rotation.z += THREE.MathUtils.degToRad(rotationOffsetDeg.z ?? 0);
           }
 
+          originalModelsRef.current.push(wrapper);
           modelsRef.current.forEach((m, idx) => {
             scene.remove(m);
             const clone = wrapper.clone(true);
@@ -290,6 +295,21 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
       renderer.render(scene, camera);
 
       return () => {
+        originalModelsRef.current.forEach(wrapper => {
+          wrapper.traverse((obj) => {
+            if ((obj as THREE.Mesh).isMesh) {
+              const mesh = obj as THREE.Mesh;
+              mesh.geometry?.dispose();
+              if (Array.isArray(mesh.material)) {
+                mesh.material.forEach(m => m.dispose());
+              } else {
+                mesh.material?.dispose();
+              }
+            }
+          });
+        });
+        originalModelsRef.current = [];
+
         modelsRef.current.forEach((m) => {
           scene.remove(m);
           m.traverse((obj) => {
@@ -299,6 +319,7 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
             else if (mat) (mat as THREE.Material).dispose();
           });
         });
+        roomEnv.dispose();
         pmremGenerator.dispose();
         envTexture.dispose();
         renderer.dispose();
@@ -326,6 +347,7 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
           if (!landmarks) {
             if (model) model.visible = false;
             if (emaSlots.current[i]) emaSlots.current[i] = make3DSlot();
+            if (ewaWarmupRef.current[i] !== undefined) ewaWarmupRef.current[i] = 0;
             return;
           }
           if (!emaSlots.current[i]) emaSlots.current[i] = make3DSlot();
@@ -374,7 +396,13 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
           model.position.set(smoothX, smoothY, 0);
           model.quaternion.copy(smoothQ);
           model.scale.set(smoothScale, smoothScale, smoothScale);
-          model.visible = true;
+          
+          ewaWarmupRef.current[i] = (ewaWarmupRef.current[i] || 0) + 1;
+          if (ewaWarmupRef.current[i] < 5) {
+            model.visible = false;
+          } else {
+            model.visible = true;
+          }
         });
 
         renderer.render(scene, camera);

@@ -66,8 +66,52 @@ export default function LandingPage() {
 
   const start = () => router.push("/start");
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://optikiseeyou.com/#faq",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Di mana saja lokasi cabang Optik I See You di Jawa Tengah?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Optik I See You memiliki 4 cabang resmi: 1) Purwokerto (Jl. Sunan Ampel No.5, Sumbang), 2) Purbalingga (Jl. Onje No.1, Purbalingga Lor), 3) Wonosobo (Jl. Jenderal Soedirman, Sumberan Selatan), dan 4) Cilacap (Jl. Rinjani Depan Perum GRP No.2 Ruko No.3)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Apakah periksa mata di Optik I See You Purwokerto & cabang lainnya gratis?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ya, Optik I See You menyediakan layanan Konsultasi & Cek Mata Gratis dengan Autorefractor digital komputerisasi dan Trial Lens Set oleh tenaga refraksi berpengalaman."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Berapa lama proses pembuatan kacamata faset otomatis di Optik I See You?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Dengan dukungan Mesin Pemotong Lensa CNC Otomatis berteknologi 3D Frame Tracing di lab optik kami, pembuatan kacamata resep standar dapat diselesaikan secara Express (bisa ditunggu)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Bagaimana cara mencoba kacamata secara online dengan AR Try-On di optikiseeyou.com?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Anda cukup membuka fitur Mulai Coba AR di website optikiseeyou.com menggunakan kamera HP, laptop, atau tablet. Teknologi AR Face Landmark 3D akan memindai proporsi wajah secara real-time dan menampilkan bentuk frame kacamata secara presisi tanpa perlu instalasi aplikasi."
+        }
+      }
+    ]
+  };
+
   return (
     <main className="relative w-full overflow-x-hidden bg-isy-gradient">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <Navbar />
 
       {/* Soft glow background */}
@@ -217,7 +261,7 @@ export default function LandingPage() {
                 onClick={() => setIsBranchWAModalOpen(true)}
                 aria-label="Hubungi kami via WhatsApp untuk 4 Cabang (Purwokerto, Purbalingga, Cilacap, Wonosobo)"
                 title="Chat WhatsApp 4 Cabang"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-isy-green-bright/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-isy-green-bright hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
               >
                 <span className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping opacity-25 group-hover:opacity-40" />
                 <Image
@@ -236,7 +280,7 @@ export default function LandingPage() {
                 rel="noopener noreferrer"
                 aria-label="Kunjungi toko Shopee I See You"
                 title="Toko Shopee Official"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-orange-400/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-orange-500 hover:-translate-y-1.5 active:scale-95 group"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-[#E8A87C]/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-[#D4875A] hover:-translate-y-1.5 active:scale-95 group"
               >
                 <Image
                   src="/logo/Logo-Shoppe.png"
@@ -260,7 +304,7 @@ export default function LandingPage() {
                 }}
                 aria-label="Lihat Lokasi 4 Cabang Optik I See You di Google Maps"
                 title="Lihat Lokasi 4 Cabang di Google Maps"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-emerald-500/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-isy-green-bright/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-isy-green-bright hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
               >
                 <Image
                   src="/logo/Logo-Gmaps.png"
@@ -296,31 +340,30 @@ export default function LandingPage() {
             <div className="animate-marquee-left flex items-center gap-6">
               {[
                 "/Katalog Berjalan/1.png",
-                "/katalog/The Feline Silhouette/5.png",
+                "/katalog/The Feline Silhouette/6.png",
+                "/katalog/The Feline Silhouette/7.png",
+                "/katalog/The Lucid Vision/15.png",
+                "/katalog/The Lucid Vision/16.png",
                 "/katalog/Cat Eye Edition/1.webp",
-                "/katalog/The Lucid Vision/14.png",
-                "/katalog/Titanium Edition/1.webp",
+                "/katalog/Titanium Edition/2.webp",
               ]
                 .concat([
                   "/Katalog Berjalan/1.png",
-                  "/katalog/The Feline Silhouette/5.png",
+                  "/katalog/The Feline Silhouette/6.png",
+                  "/katalog/The Feline Silhouette/7.png",
+                  "/katalog/The Lucid Vision/15.png",
+                  "/katalog/The Lucid Vision/16.png",
                   "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/The Lucid Vision/14.png",
-                  "/katalog/Titanium Edition/1.webp",
+                  "/katalog/Titanium Edition/2.webp",
                 ])
                 .concat([
                   "/Katalog Berjalan/1.png",
-                  "/katalog/The Feline Silhouette/5.png",
+                  "/katalog/The Feline Silhouette/6.png",
+                  "/katalog/The Feline Silhouette/7.png",
+                  "/katalog/The Lucid Vision/15.png",
+                  "/katalog/The Lucid Vision/16.png",
                   "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/The Lucid Vision/14.png",
-                  "/katalog/Titanium Edition/1.webp",
-                ])
-                .concat([
-                  "/Katalog Berjalan/1.png",
-                  "/katalog/The Feline Silhouette/5.png",
-                  "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/The Lucid Vision/14.png",
-                  "/katalog/Titanium Edition/1.webp",
+                  "/katalog/Titanium Edition/2.webp",
                 ])
                 .map((imgSrc, index) => (
                   <Link
@@ -345,31 +388,30 @@ export default function LandingPage() {
             <div className="animate-marquee-right flex items-center gap-6">
               {[
                 "/Katalog Berjalan/2.png",
-                "/katalog/The Skena Gaze/9.png",
-                "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                "/katalog/Metro Deek/Feed 1.webp",
-                "/katalog/Shades Of Elegance/1.webp",
+                "/katalog/The Skena Gaze/10.png",
+                "/katalog/The Skena Gaze/11.png",
+                "/katalog/The Skena Gaze/12.png",
+                "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
+                "/katalog/Shades Of Elegance/2.webp",
+                "/katalog/New Collection/1.webp",
               ]
                 .concat([
                   "/Katalog Berjalan/2.png",
-                  "/katalog/The Skena Gaze/9.png",
-                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
-                  "/katalog/Shades Of Elegance/1.webp",
+                  "/katalog/The Skena Gaze/10.png",
+                  "/katalog/The Skena Gaze/11.png",
+                  "/katalog/The Skena Gaze/12.png",
+                  "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
+                  "/katalog/Shades Of Elegance/2.webp",
+                  "/katalog/New Collection/1.webp",
                 ])
                 .concat([
                   "/Katalog Berjalan/2.png",
-                  "/katalog/The Skena Gaze/9.png",
-                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
-                  "/katalog/Shades Of Elegance/1.webp",
-                ])
-                .concat([
-                  "/Katalog Berjalan/2.png",
-                  "/katalog/The Skena Gaze/9.png",
-                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
-                  "/katalog/Shades Of Elegance/1.webp",
+                  "/katalog/The Skena Gaze/10.png",
+                  "/katalog/The Skena Gaze/11.png",
+                  "/katalog/The Skena Gaze/12.png",
+                  "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
+                  "/katalog/Shades Of Elegance/2.webp",
+                  "/katalog/New Collection/1.webp",
                 ])
                 .map((imgSrc, index) => (
                   <Link
@@ -563,7 +605,7 @@ export default function LandingPage() {
                 href={SHOPEE_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-orange-400/35 px-3 py-1 text-[11px] font-semibold text-orange-300 transition-all hover:bg-orange-500/20 active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#E8A87C]/35 px-3 py-1 text-[11px] font-semibold text-orange-300 transition-all hover:bg-[#D4875A]/20 active:scale-95"
               >
                 <Image src="/logo/Logo-Shoppe.png" alt="Shopee" width={12} height={12} className="h-3 w-3 object-contain" />
                 Shopee
@@ -571,7 +613,7 @@ export default function LandingPage() {
               <button
                 type="button"
                 onClick={() => setIsBranchWAModalOpen(true)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-teal-400/35 px-3 py-1 text-[11px] font-semibold text-teal-300 transition-all hover:bg-teal-500/20 active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-isy-green-bright/35 px-3 py-1 text-[11px] font-semibold text-teal-300 transition-all hover:bg-isy-green-bright/20 active:scale-95 cursor-pointer"
               >
                 <Image src="/logo/Logo-Whatsapp.png" alt="WhatsApp" width={12} height={12} className="h-3 w-3 object-contain" />
                 WhatsApp 4 Cabang
@@ -677,7 +719,7 @@ export default function LandingPage() {
 
             <button
               onClick={start}
-              className="mt-2 w-full rounded-xl bg-isy-green-bright py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-emerald-500 active:scale-95"
+              className="mt-2 w-full rounded-xl bg-isy-green-bright py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-isy-green-bright active:scale-95"
             >
               Mulai Photobooth AR →
             </button>

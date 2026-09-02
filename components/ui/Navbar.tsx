@@ -146,43 +146,44 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Bottom Nav Bar */}
-        <div className="flex md:hidden items-center justify-around border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 overflow-x-auto text-[11px] font-bold">
-          <Link
-            href="/"
-            aria-label="Beranda"
-            className={`flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors ${
-              pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep"
-            }`}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            <span>Home</span>
-          </Link>
-          {navLinks.map((link) => {
-            const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
-            const isActive =
-              isKatalog ||
-              (link.href.startsWith("/#")
-                ? false
-                : (pathname ?? "").startsWith(link.href.split("?")[0]));
-
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`shrink-0 px-2.5 py-1 rounded-full transition-colors ${
-                  isActive ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
       </header>
+
+      {/* Mobile Bottom Nav Bar */}
+      <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center justify-around border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto text-[11px] font-bold">
+        <Link
+          href="/"
+          aria-label="Beranda"
+          className={`flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+            pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep"
+          }`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <span>Home</span>
+        </Link>
+        {navLinks.map((link) => {
+          const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
+          const isActive =
+            isKatalog ||
+            (link.href.startsWith("/#")
+              ? false
+              : (pathname ?? "").startsWith(link.href.split("?")[0]));
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+                isActive ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
+              }`}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
+      </div>
 
       {/* Spacer so content doesn't hide under fixed navbar */}
       <div className="h-16 sm:h-20" aria-hidden="true" />

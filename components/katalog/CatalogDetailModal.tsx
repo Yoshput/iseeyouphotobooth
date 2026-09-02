@@ -9,11 +9,13 @@ import { csWhatsappUrl } from "@/lib/branches";
 interface CatalogDetailModalProps {
   item: CatalogItem | null;
   onClose: () => void;
+  onOpenContactCS?: (item: CatalogItem) => void;
 }
 
 export default function CatalogDetailModal({
   item,
   onClose,
+  onOpenContactCS,
 }: CatalogDetailModalProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"gallery" | "specs">("gallery");
@@ -178,21 +180,42 @@ export default function CatalogDetailModal({
 
         {/* Action Button */}
         <div className="pt-4 border-t border-isy-line">
-          <a
-            href={csWhatsappUrl(item.name)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-isy-green-deep py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-bright transition-all active:scale-95"
-          >
-            <Image
-              src="/logo/Logo-Whatsapp.png"
-              alt="WhatsApp"
-              width={20}
-              height={20}
-              className="h-5 w-5 object-contain"
-            />
-            Tanya Stok & Pesan via WhatsApp
-          </a>
+          {onOpenContactCS ? (
+            <button
+              type="button"
+              onClick={() => {
+                const currentItem = item;
+                onClose();
+                onOpenContactCS(currentItem);
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-isy-green-deep py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-bright transition-all active:scale-95 cursor-pointer"
+            >
+              <Image
+                src="/logo/Logo-Whatsapp.png"
+                alt="WhatsApp"
+                width={20}
+                height={20}
+                className="h-5 w-5 object-contain"
+              />
+              Tanya Stok & Pesan via WhatsApp (4 Cabang)
+            </button>
+          ) : (
+            <a
+              href={csWhatsappUrl(item.name)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-isy-green-deep py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-bright transition-all active:scale-95"
+            >
+              <Image
+                src="/logo/Logo-Whatsapp.png"
+                alt="WhatsApp"
+                width={20}
+                height={20}
+                className="h-5 w-5 object-contain"
+              />
+              Tanya Stok & Pesan via WhatsApp
+            </a>
+          )}
         </div>
       </div>
     </div>

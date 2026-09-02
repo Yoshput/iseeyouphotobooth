@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CartItem } from "@/lib/softlens";
 
 // ─── Branch Data ───────────────────────────────────────────────────────────────
@@ -68,6 +68,22 @@ export default function SoftlensOrderModal({
   const [phone, setPhone] = useState("");
   const [selectedBranch, setSelectedBranch] = useState<BranchId | null>(null);
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  /* Animate in & Focus */
+  useEffect(() => {
+    if (isOpen) {
+      const t = requestAnimationFrame(() => setMounted(true));
+      const sw = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = sw + 'px';
+      document.body.style.overflow = "hidden";
+      return () => cancelAnimationFrame(t);
+    } else {
+      setMounted(false);
+      document.body.style.paddingRight = '';
+      document.body.style.overflow = "";
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

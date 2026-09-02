@@ -216,44 +216,6 @@ export default function RootLayout({
                   },
                 },
                 {
-                  "@type": "FAQPage",
-                  "@id": "https://optikiseeyou.com/#faq",
-                  mainEntity: [
-                    {
-                      "@type": "Question",
-                      name: "Di mana saja lokasi cabang Optik I See You di Jawa Tengah?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Optik I See You memiliki 4 cabang resmi: 1) Purwokerto (Jl. Sunan Ampel No.5, Sumbang), 2) Purbalingga (Jl. Onje No.1, Purbalingga Lor), 3) Wonosobo (Jl. Jenderal Soedirman, Sumberan Selatan), dan 4) Cilacap (Jl. Rinjani Depan Perum GRP No.2 Ruko No.3).",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "Apakah periksa mata di Optik I See You Purwokerto & cabang lainnya gratis?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Ya, Optik I See You menyediakan layanan Konsultasi & Cek Mata Gratis dengan Autorefractor digital komputerisasi dan Trial Lens Set oleh tenaga refraksi berpengalaman.",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "Berapa lama proses pembuatan kacamata faset otomatis di Optik I See You?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Dengan dukungan Mesin Pemotong Lensa CNC Otomatis berteknologi 3D Frame Tracing di lab optik kami, pembuatan kacamata resep standar dapat diselesaikan secara Express (bisa ditunggu).",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "Bagaimana cara mencoba kacamata secara online dengan AR Try-On di optikiseeyou.com?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Anda cukup membuka fitur Mulai Coba AR di website optikiseeyou.com menggunakan kamera HP, laptop, atau tablet. Teknologi AR Face Landmark 3D akan memindai proporsi wajah secara real-time dan menampilkan bentuk frame kacamata secara presisi tanpa perlu instalasi aplikasi.",
-                      },
-                    },
-                  ],
-                },
-                {
                   "@type": "ItemList",
                   "@id": "https://optikiseeyou.com/#sitelinks",
                   name: "Navigasi Utama Optik I See You",
@@ -300,7 +262,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="overscroll-none bg-isy-ivory font-sans antialiased">
+      <body className="overscroll-none bg-isy-ivory font-sans antialiased pb-16 md:pb-0">
         {/* Luxury Brand Opening Splash Screen */}
         <PWASplashScreen />
 

@@ -485,6 +485,10 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           targetW = Math.round(targetH * containerRatio);
         }
 
+        const MAX_DIM = 3840;
+        targetW = Math.min(targetW, MAX_DIM);
+        targetH = Math.min(targetH, MAX_DIM);
+
         // Guarantee at least 1440px resolution on the shorter axis for print-grade clarity
         const minShortAxis = 1440;
         if (Math.min(targetW, targetH) < minShortAxis) {
@@ -496,7 +500,7 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
         const out = document.createElement("canvas");
         out.width  = targetW;
         out.height = targetH;
-        const ctx  = out.getContext("2d", { willReadFrequently: true })!;
+        const ctx  = out.getContext("2d")!;
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 

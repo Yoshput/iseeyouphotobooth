@@ -1,59 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "AR Photobooth Online — Foto Kacamata & Cetak Strip",
-  description:
-    "AR Photobooth seru dari Optik I See You Purwokerto! Foto dengan frame kacamata AR, filter aesthetic, animasi GIF, dan cetak foto strip instan.",
-  alternates: {
-    canonical: "https://optikiseeyou.com/photobooth",
-  },
+  title: 'AR Photobooth Kacamata | Optik I See You',
+  description: 'Coba fitur AR Photobooth unik dari Optik I See You! Foto bersama frame kacamata favoritmu dengan berbagai template seru. Gratis, langsung di browser.',
   openGraph: {
-    title: "AR Photobooth Online | Optik I See You",
-    description:
-      "Foto bareng teman dengan kacamata AR favoritmu, pilih layout strip aesthetic, dan download langsung ke smartphone.",
-    url: "https://optikiseeyou.com/photobooth",
-    images: [
-      {
-        url: "/hero-bg.jpg",
-        width: 1280,
-        height: 853,
-        alt: "AR Photobooth Optik I See You",
-      },
-    ],
+    title: 'AR Photobooth Kacamata | Optik I See You',
+    description: 'Foto seru dengan frame kacamata AR langsung dari browser!',
+    url: 'https://optikiseeyou.com/photobooth',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'AR Photobooth Optik I See You' }],
   },
+  alternates: { canonical: 'https://optikiseeyou.com/photobooth' },
 };
 
-export default function PhotoboothLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Beranda",
-        item: "https://optikiseeyou.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "AR Photobooth",
-        item: "https://optikiseeyou.com/photobooth",
-      },
-    ],
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      {children}
-    </>
-  );
+export default function PhotoboothLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
 }

@@ -38,7 +38,10 @@ export function getGestureRecognizer(): Promise<GestureRecognizer> {
         numHands: 1,
       });
     }
-  })();
+  })().catch((err) => {
+    recognizerPromise = null;
+    throw err;
+  });
 
   return recognizerPromise;
 }

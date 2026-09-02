@@ -27,6 +27,7 @@ const config: Config = {
         // Using CSS custom properties set in globals.css / :root
         sans:  ["var(--font-inter)",     "Inter",            "system-ui", "sans-serif"],
         serif: ["var(--font-playfair)",  "Playfair Display", "Georgia",   "serif"],
+        'dm-serif': ['var(--font-dm-serif)', 'Georgia', 'serif'],
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgba(0, 0, 0, 0.06)",

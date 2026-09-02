@@ -1,59 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Katalog Softlens & Cairan Pembersih — Optik I See You",
-  description:
-    "Katalog softlens warna natural & glam, minus plano hingga -10.00, silinder, serta cairan pembersih ICE, X2, & Pure N'Soft resmi di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
-  alternates: {
-    canonical: "https://optikiseeyou.com/softlens",
-  },
+  title: 'Katalog Softlens Terlengkap | Optik I See You',
+  description: 'Beli softlens original dengan warna terlengkap. Hadir brand Dreamcon, Kitty Kawaii, X2, Geo, dan banyak lagi. Pengiriman cepat & konsultasi gratis di 4 cabang.',
+  keywords: ['softlens purwokerto', 'beli softlens original', 'softlens murah purwokerto', 'optik i see you softlens', 'katalog softlens'],
   openGraph: {
-    title: "Katalog Softlens & Aksesoris | Optik I See You",
-    description:
-      "Koleksi softlens nyaman kadar air tinggi dan aksesoris perawatan mata higienis. Order langsung ke WhatsApp CS Optik I See You.",
-    url: "https://optikiseeyou.com/softlens",
-    images: [
-      {
-        url: "/logo.png",
-        width: 800,
-        height: 800,
-        alt: "Katalog Softlens Optik I See You",
-      },
-    ],
+    title: 'Katalog Softlens | Optik I See You',
+    description: 'Temukan softlens warna favoritmu dari brand-brand terpercaya.',
+    url: 'https://optikiseeyou.com/softlens',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Katalog Softlens Optik I See You' }],
   },
+  alternates: { canonical: 'https://optikiseeyou.com/softlens' },
 };
 
-export default function SoftlensLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Beranda",
-        item: "https://optikiseeyou.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Katalog Softlens",
-        item: "https://optikiseeyou.com/softlens",
-      },
-    ],
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      {children}
-    </>
-  );
+export default function SoftlensLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
 }

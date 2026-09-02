@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/ui/Navbar";
@@ -145,20 +146,16 @@ function CatalogItemCard({
   );
 }
 
-export default function CatalogPage() {
-  const [viewMode, setViewMode] = useState<"choose" | "frame">("choose");
+
+
+function CatalogPageContent() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab") ?? "choose";
+  const initialViewMode = tabParam === "frame" || searchParams.get("q") || searchParams.get("cat") ? "frame" : "choose";
+  const [viewMode, setViewMode] = useState<"choose" | "frame">(initialViewMode);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeModalItem, setActiveModalItem] = useState<CatalogItem | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("tab") === "frame" || params.get("q") || params.get("cat")) {
-        setViewMode("frame");
-      }
-    }
-  }, []);
 
   // ContactCS Modal state (poin 4)
   const [csModalOpen, setCsModalOpen] = useState(false);
@@ -637,6 +634,7 @@ export default function CatalogPage() {
       <CatalogDetailModal
         item={activeModalItem}
         onClose={() => setActiveModalItem(null)}
+        onOpenContactCS={openCSModal}
       />
 
       {/* Contact CS Modal — Poin 4 */}
@@ -647,5 +645,13 @@ export default function CatalogPage() {
         productName={csModalItem?.name}
       />
     </main>
+  );
+}
+
+export default function CatalogPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-isy-ivory flex items-center justify-center">Loading...</div>}>
+      <CatalogPageContent />
+    </Suspense>
   );
 }
