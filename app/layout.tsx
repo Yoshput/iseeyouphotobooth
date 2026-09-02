@@ -19,13 +19,14 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://optikiseeyou.com"),
   title: {
-    default: "Optik I See You — AR Try-On Kacamata, Photobooth & Softlens",
+    default: "Optik I See You — Kacamata, Softlens & AR Photobooth Purwokerto",
     template: "%s | Optik I See You",
   },
   description:
-    "Coba kacamata online dengan AR real-time, photobooth seru, dan katalog softlens lengkap di Optik I See You Purwokerto. Tersedia 4 cabang: Purwokerto, Wonosobo, Cilacap, & Purbalingga.",
+    "Pusat kacamata & softlens kekinian di Purwokerto, Purbalingga, Wonosobo, dan Cilacap. Nikmati periksa mata gratis, coba frame via AR Try-On real-time, dan photobooth seru di Optik I See You.",
   keywords: [
     "optik i see you",
+    "optik i see you glasses",
     "optik i see you purwokerto",
     "optik i see you purbalingga",
     "optik i see you wonosobo",
@@ -143,9 +144,10 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@graph": [
                 {
-                  "@type": "Organization",
+                  "@type": ["Organization", "Optician", "LocalBusiness"],
                   "@id": "https://optikiseeyou.com/#organization",
                   name: "Optik I See You",
+                  legalName: "Optik I See You Glasses",
                   alternateName: [
                     "I See You Glasses",
                     "Optik I See You Purwokerto",
@@ -164,13 +166,16 @@ export default function RootLayout({
                   aggregateRating: {
                     "@type": "AggregateRating",
                     ratingValue: "5.0",
-                    reviewCount: "7576",
+                    reviewCount: "7581",
                     bestRating: "5",
                     worstRating: "1",
                   },
                   foundingDate: "2019",
                   sameAs: [
                     "https://www.instagram.com/iseeyou.glasses",
+                    "https://www.instagram.com/iseeyou.wonosobo",
+                    "https://www.instagram.com/iseeyou.cilacap",
+                    "https://www.instagram.com/iseeyou.purbalingga",
                     "https://www.tiktok.com/@iseeyouglasses",
                     "https://shopee.co.id/iseeyou.id",
                   ],
