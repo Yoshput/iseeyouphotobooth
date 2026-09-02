@@ -339,31 +339,31 @@ export default function LandingPage() {
           <div className="marquee-group relative w-full overflow-hidden py-1">
             <div className="animate-marquee-left flex items-center gap-6">
               {[
-                "/Katalog Berjalan/1.png",
                 "/katalog/The Feline Silhouette/6.png",
-                "/katalog/The Feline Silhouette/7.png",
-                "/katalog/The Lucid Vision/15.png",
-                "/katalog/The Lucid Vision/16.png",
                 "/katalog/Cat Eye Edition/1.webp",
-                "/katalog/Titanium Edition/2.webp",
+                "/katalog/The Lucid Vision/14.png",
+                "/katalog/Titanium Edition/1.webp",
+                "/katalog/The Feline Silhouette/8.png",
+                "/katalog/The Lucid Vision/15.png",
+                "/katalog/Shades Of Elegance/1.webp",
               ]
                 .concat([
-                  "/Katalog Berjalan/1.png",
                   "/katalog/The Feline Silhouette/6.png",
-                  "/katalog/The Feline Silhouette/7.png",
-                  "/katalog/The Lucid Vision/15.png",
-                  "/katalog/The Lucid Vision/16.png",
                   "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/Titanium Edition/2.webp",
+                  "/katalog/The Lucid Vision/14.png",
+                  "/katalog/Titanium Edition/1.webp",
+                  "/katalog/The Feline Silhouette/8.png",
+                  "/katalog/The Lucid Vision/15.png",
+                  "/katalog/Shades Of Elegance/1.webp",
                 ])
                 .concat([
-                  "/Katalog Berjalan/1.png",
                   "/katalog/The Feline Silhouette/6.png",
-                  "/katalog/The Feline Silhouette/7.png",
-                  "/katalog/The Lucid Vision/15.png",
-                  "/katalog/The Lucid Vision/16.png",
                   "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/Titanium Edition/2.webp",
+                  "/katalog/The Lucid Vision/14.png",
+                  "/katalog/Titanium Edition/1.webp",
+                  "/katalog/The Feline Silhouette/8.png",
+                  "/katalog/The Lucid Vision/15.png",
+                  "/katalog/Shades Of Elegance/1.webp",
                 ])
                 .map((imgSrc, index) => (
                   <Link
@@ -387,31 +387,31 @@ export default function LandingPage() {
           <div className="marquee-group relative w-full overflow-hidden py-1">
             <div className="animate-marquee-right flex items-center gap-6">
               {[
-                "/Katalog Berjalan/2.png",
+                "/katalog/The Skena Gaze/9.png",
                 "/katalog/The Skena Gaze/10.png",
-                "/katalog/The Skena Gaze/11.png",
+                "/katalog/The Skena Gaze/13.png",
                 "/katalog/The Skena Gaze/12.png",
-                "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
-                "/katalog/Shades Of Elegance/2.webp",
                 "/katalog/New Collection/1.webp",
+                "/katalog/Shades Of Elegance/2.webp",
+                "/katalog/The Lucid Vision/16.png",
               ]
                 .concat([
-                  "/Katalog Berjalan/2.png",
+                  "/katalog/The Skena Gaze/9.png",
                   "/katalog/The Skena Gaze/10.png",
-                  "/katalog/The Skena Gaze/11.png",
+                  "/katalog/The Skena Gaze/13.png",
                   "/katalog/The Skena Gaze/12.png",
-                  "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
-                  "/katalog/Shades Of Elegance/2.webp",
                   "/katalog/New Collection/1.webp",
+                  "/katalog/Shades Of Elegance/2.webp",
+                  "/katalog/The Lucid Vision/16.png",
                 ])
                 .concat([
-                  "/Katalog Berjalan/2.png",
+                  "/katalog/The Skena Gaze/9.png",
                   "/katalog/The Skena Gaze/10.png",
-                  "/katalog/The Skena Gaze/11.png",
+                  "/katalog/The Skena Gaze/13.png",
                   "/katalog/The Skena Gaze/12.png",
-                  "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
-                  "/katalog/Shades Of Elegance/2.webp",
                   "/katalog/New Collection/1.webp",
+                  "/katalog/Shades Of Elegance/2.webp",
+                  "/katalog/The Lucid Vision/16.png",
                 ])
                 .map((imgSrc, index) => (
                   <Link
