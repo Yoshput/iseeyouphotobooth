@@ -340,30 +340,30 @@ export default function LandingPage() {
             <div className="animate-marquee-left flex items-center gap-6">
               {[
                 "/Katalog Berjalan/1.webp",
-                "/katalog/Cat Eye Edition/1.webp",
                 "/katalog/The Feline Silhouette/5-thumb.webp",
-                "/katalog/Titanium Edition/1.webp",
                 "/katalog/The Lucid Vision/14-thumb.webp",
-                "/katalog/Shades Edition/1.webp",
-                "/katalog/Metro Deek/Feed 1.webp",
+                "/katalog/The Skena Gaze/9-thumb.webp",
+                "/katalog/The Onyx Enigma/21-thumb.webp",
+                "/katalog/Cat Eye Edition/1.webp",
+                "/katalog/Titanium Edition/1.webp",
               ]
                 .concat([
                   "/Katalog Berjalan/1.webp",
-                  "/katalog/Cat Eye Edition/1.webp",
                   "/katalog/The Feline Silhouette/5-thumb.webp",
-                  "/katalog/Titanium Edition/1.webp",
                   "/katalog/The Lucid Vision/14-thumb.webp",
-                  "/katalog/Shades Edition/1.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
+                  "/katalog/The Skena Gaze/9-thumb.webp",
+                  "/katalog/The Onyx Enigma/21-thumb.webp",
+                  "/katalog/Cat Eye Edition/1.webp",
+                  "/katalog/Titanium Edition/1.webp",
                 ])
                 .concat([
                   "/Katalog Berjalan/1.webp",
-                  "/katalog/Cat Eye Edition/1.webp",
                   "/katalog/The Feline Silhouette/5-thumb.webp",
-                  "/katalog/Titanium Edition/1.webp",
                   "/katalog/The Lucid Vision/14-thumb.webp",
-                  "/katalog/Shades Edition/1.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
+                  "/katalog/The Skena Gaze/9-thumb.webp",
+                  "/katalog/The Onyx Enigma/21-thumb.webp",
+                  "/katalog/Cat Eye Edition/1.webp",
+                  "/katalog/Titanium Edition/1.webp",
                 ])
                 .map((imgSrc, index) => (
                   <Link
@@ -388,30 +388,27 @@ export default function LandingPage() {
             <div className="animate-marquee-right flex items-center gap-6">
               {[
                 "/Katalog Berjalan/2.webp",
-                "/katalog/The Skena Gaze/9-thumb.webp",
-                "/katalog/New Collection/1.webp",
+                "/katalog/Metro Deek/Feed 1.webp",
                 "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
                 "/katalog/Shades Of Elegance/1.webp",
-                "/katalog/Metro Deek/Feed 2.webp",
-                "/katalog/The Skena Gaze/13-thumb.webp",
+                "/katalog/Shades Edition/1.webp",
+                "/katalog/New Collection/1.webp",
               ]
                 .concat([
                   "/Katalog Berjalan/2.webp",
-                  "/katalog/The Skena Gaze/9-thumb.webp",
-                  "/katalog/New Collection/1.webp",
+                  "/katalog/Metro Deek/Feed 1.webp",
                   "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
                   "/katalog/Shades Of Elegance/1.webp",
-                  "/katalog/Metro Deek/Feed 2.webp",
-                  "/katalog/The Skena Gaze/13-thumb.webp",
+                  "/katalog/Shades Edition/1.webp",
+                  "/katalog/New Collection/1.webp",
                 ])
                 .concat([
                   "/Katalog Berjalan/2.webp",
-                  "/katalog/The Skena Gaze/9-thumb.webp",
-                  "/katalog/New Collection/1.webp",
+                  "/katalog/Metro Deek/Feed 1.webp",
                   "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
                   "/katalog/Shades Of Elegance/1.webp",
-                  "/katalog/Metro Deek/Feed 2.webp",
-                  "/katalog/The Skena Gaze/13-thumb.webp",
+                  "/katalog/Shades Edition/1.webp",
+                  "/katalog/New Collection/1.webp",
                 ])
                 .map((imgSrc, index) => (
                   <Link

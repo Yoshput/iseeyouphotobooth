@@ -180,6 +180,7 @@ function CatalogPageContent() {
     "The Feline Silhouette",
     "The Skena Gaze",
     "The Lucid Vision",
+    "The Onyx Enigma",
     "Cat Eye Edition",
     "Quiet Luxury",
     "Titanium",
