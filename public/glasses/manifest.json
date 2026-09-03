@@ -132,7 +132,7 @@
     "id": "clubmaster-frame",
     "name": "Kotak Clubmaster",
     "file": "clubmaster-frame.png",
-    "fitWidthRatio": 1.45,
+    "fitWidthRatio": 1.74,
     "ipdScaleRef": 1.02,
     "style": "Browline",
     "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
@@ -141,7 +141,7 @@
     "model3D": {
       "name": "Kotak Clubmaster Metal",
       "glbFile": "models3D/glasses1/glasses01.glb",
-      "fitWidthRatio": 2.8,
+      "fitWidthRatio": 3.32,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
       "frameColor": "#262626",

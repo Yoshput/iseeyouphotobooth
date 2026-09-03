@@ -211,15 +211,20 @@ function DownloadPortalContent() {
               onClick={() => router.push("/photobooth")}
               className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-2xl bg-isy-green-bright text-white font-bold text-xs shadow-md hover:bg-isy-green-deep active:scale-95 transition-all cursor-pointer"
             >
-              <span>📸 Coba Photobooth Baru</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                <circle cx="12" cy="13" r="3" />
+              </svg>
+              <span>Coba Photobooth Baru</span>
             </button>
             <Link
               href="/"
-              className="w-full py-2.5 text-xs font-bold text-isy-ink/50 hover:text-isy-green-deep transition-colors"
+              className="w-full py-2.5 text-xs font-bold text-isy-ink/60 hover:text-isy-green-deep transition-colors text-center"
             >
               Kembali ke Beranda
             </Link>
           </div>
+
         </div>
       </main>
     );
@@ -227,7 +232,30 @@ function DownloadPortalContent() {
 
   // ── Normal Active Download Screen ──────────────────────────────────────────
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center p-4 sm:p-6 bg-[#FDFBF7] text-isy-ink selection:bg-isy-green-bright/20">
+    <main className="relative flex min-h-dvh flex-col items-center justify-center p-4 sm:p-6 bg-[#FDFBF7] text-isy-ink selection:bg-isy-green-bright/20">
+      {/* Top Left: Back to Home Button */}
+      <div className="w-full max-w-sm mb-3 flex items-center justify-start">
+        <Link
+          href="/"
+          className="group inline-flex items-center gap-2 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="transition-transform group-hover:-translate-x-0.5"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          <span>Kembali ke Beranda</span>
+        </Link>
+      </div>
+
       <div className="w-full max-w-sm rounded-3xl bg-white p-5 sm:p-7 shadow-xl border border-isy-line text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">
         {/* Brand Header */}
         <div className="space-y-2">
@@ -246,16 +274,20 @@ function DownloadPortalContent() {
               Hasil Foto Photobooth
             </h1>
             <p className="text-[11px] text-isy-ink/60">
-              Download langsung foto HD & animasi GIF ke galeri HP kamu
+              Download langsung foto HD &amp; animasi GIF ke galeri HP kamu
             </p>
           </div>
         </div>
 
         {/* 7 Days Expiry Notice Pill */}
         <div className="flex items-center justify-center gap-1.5 rounded-full bg-amber-50 border border-amber-200/80 px-3 py-1 text-[10px] font-semibold text-amber-800">
-          <span>⏰</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-amber-700 shrink-0">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
           <span>Foto cloud aktif 7 hari. Segera simpan ke galeri!</span>
         </div>
+
 
         {/* Tab Switcher: Strip vs GIF */}
         {gifUrl && (

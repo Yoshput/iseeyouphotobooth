@@ -455,9 +455,10 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       { numFaces, enabled: cameraReady && trackingEnabled }
     );
 
-    // ── Silent Hand Gesture Detection (Open_Palm, Victory, Thumb_Up) ───
+    // ── Hand Gesture Detection (Open_Palm, Victory, Thumb_Up, etc.) ───
     useGestureTracking(videoRef, {
       enabled: gestureEnabled && cameraReady,
+      minConfidence: 0.38,
       onGesture: (gesture) => {
         onGestureDetected?.(gesture);
       },

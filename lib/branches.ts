@@ -117,7 +117,8 @@ export function branchGoogleReviewsUrl(branch: Branch) {
     case "wonosobo":
       return "https://www.google.com/search?q=optik+i+see+you+wonosobo#lrd=0x2e7aa15b14af5143:0x9f777b70a532866d,1,,,,";
     case "cilacap":
-      return "https://www.google.com/search?q=optik+i+see+you+glasses+cilacap#lrd=0x2e6513eb264f30b7:0x46e84e0577a90d12,1,,,,";
+      return "https://www.google.com/search?q=optik+i+see+you+glasses+cilacap#lrd=0x2e6513eb264f30b7:0x16e841e0577a90d1,1,,,";
+
     case "purbalingga":
       return "https://www.google.com/search?q=optik+i+see+you+glasses+purbalingga#lrd=0x2e6559f5fffdd7ad:0xed1c5a11a9f20422,1,,,,";
     default:

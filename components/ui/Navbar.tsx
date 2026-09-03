@@ -39,9 +39,12 @@ export default function Navbar() {
   const navLinks = [
     { href: "/photobooth", label: "Photobooth" },
     { href: "/katalog", label: "Katalog" },
+    { href: "/blog", label: "Blog" },
+    { href: "/quiz", label: "Quiz Frame" },
+    { href: "/testimoni", label: "Testimoni" },
     { href: "/#lokasi", label: "Lokasi" },
-    { href: "/#testimoni", label: "Testimoni" },
   ];
+
 
   return (
     <>
@@ -110,21 +113,28 @@ export default function Navbar() {
                     ? false
                     : (pathname ?? "").startsWith(link.href.split("?")[0]));
 
+                // Quiz gets a special sparkle badge
+                const isQuiz = link.href === "/quiz";
+
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`rounded-full px-4 py-2 text-xs font-bold transition-all duration-200 ${
+                    className={`relative rounded-full px-4 py-2 text-xs font-bold transition-all duration-200 ${
                       isActive
                         ? "bg-isy-green-deep text-white shadow-md"
                         : "text-isy-green-deep/80 hover:bg-[#F2ECE0] hover:text-isy-green-deep hover:scale-105 active:scale-95"
                     }`}
                   >
+                    {isQuiz && !isActive && (
+                      <span className="absolute top-1.5 right-2 h-1.5 w-1.5 rounded-full bg-isy-green-bright" />
+                    )}
                     {link.label}
                   </Link>
                 );
               })}
             </nav>
+
           </div>
 
           {/* Right: "For Every You" logo + CTA */}
@@ -148,8 +158,9 @@ export default function Navbar() {
 
       </header>
 
-      {/* Mobile Bottom Nav Bar */}
-      <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center justify-around border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto text-[11px] font-bold">
+      {/* Mobile Bottom Nav Bar — scrollable for all links */}
+      <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto gap-1 text-[11px] font-bold scrollbar-none">
+        {/* Home */}
         <Link
           href="/"
           aria-label="Beranda"
@@ -163,6 +174,10 @@ export default function Navbar() {
           </svg>
           <span>Home</span>
         </Link>
+
+        {/* Divider */}
+        <span className="shrink-0 h-4 w-px bg-isy-line/80 mx-0.5" />
+
         {navLinks.map((link) => {
           const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
           const isActive =
@@ -171,19 +186,26 @@ export default function Navbar() {
               ? false
               : (pathname ?? "").startsWith(link.href.split("?")[0]));
 
+          const isQuiz = link.href === "/quiz";
+
           return (
             <Link
               key={link.href}
               href={link.href}
-              className={`shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+              className={`relative shrink-0 px-2.5 py-1 rounded-full transition-colors ${
                 isActive ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
               }`}
             >
+              {isQuiz && !isActive && (
+                <span className="absolute top-1 right-1.5 h-1.5 w-1.5 rounded-full bg-isy-green-bright" />
+              )}
               {link.label}
             </Link>
           );
         })}
       </div>
+
+
 
       {/* Spacer so content doesn't hide under fixed navbar */}
       <div className="h-16 sm:h-20" aria-hidden="true" />

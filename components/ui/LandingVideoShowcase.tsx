@@ -23,6 +23,45 @@ export default function LandingVideoShowcase() {
   const [showControls, setShowControls] = useState(false);
   const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  const [isInView, setIsInView] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen for responsive video payload
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // IntersectionObserver: Only load & play video when near viewport, pause when off-screen
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          if (videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().catch(() => {});
+          }
+        } else {
+          // Pause when scrolled out of view to save battery & mobile CPU
+          if (videoRef.current && !videoRef.current.paused) {
+            videoRef.current.pause();
+          }
+        }
+      },
+      { rootMargin: "300px 0px 300px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // Play / Pause toggle
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -82,10 +121,10 @@ export default function LandingVideoShowcase() {
     }, 2800);
   };
 
-  // Sync autoplay state
+  // Sync autoplay state when video becomes in view
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !isInView) return;
 
     video.play().catch(() => {
       video.muted = true;
@@ -103,7 +142,7 @@ export default function LandingVideoShowcase() {
       video.removeEventListener("play", handlePlay);
       video.removeEventListener("pause", handlePause);
     };
-  }, []);
+  }, [isInView]);
 
   return (
     <section className="relative w-full overflow-hidden bg-black">
@@ -114,24 +153,36 @@ export default function LandingVideoShowcase() {
         onMouseLeave={() => setShowControls(false)}
         className="group relative w-full aspect-[4/3] xs:aspect-[16/9] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[85vh] min-h-[260px] overflow-hidden bg-black flex items-center justify-center"
       >
-        {/* HTML5 Video Element */}
+        {/* HTML5 Video Element with Lazy In-View Loading */}
         <video
           ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload={isInView ? "metadata" : "none"}
           poster="/Video Landing/web-poster.webp"
           onTimeUpdate={handleTimeUpdate}
           onClick={togglePlay}
           className="h-full w-full object-cover cursor-pointer select-none"
         >
-          <source src="/Video Landing/web-optimized.mp4" type="video/mp4" />
-          <source src="/Video Landing/web-optimized.webm" type="video/webm" />
-          <source src="/Video Landing/web-mobile.mp4" type="video/mp4" />
+          {isInView && (
+            isMobile ? (
+              <>
+                <source src="/Video Landing/web-mobile.mp4" type="video/mp4" />
+                <source src="/Video Landing/web-optimized.mp4" type="video/mp4" />
+              </>
+            ) : (
+              <>
+                <source src="/Video Landing/web-optimized.mp4" type="video/mp4" />
+                <source src="/Video Landing/web-optimized.webm" type="video/webm" />
+                <source src="/Video Landing/web-mobile.mp4" type="video/mp4" />
+              </>
+            )
+          )}
           Browser Anda tidak mendukung tag video HTML5.
         </video>
+
 
         {/* Big Center Play Overlay Button when Paused */}
         {!isPlaying && (

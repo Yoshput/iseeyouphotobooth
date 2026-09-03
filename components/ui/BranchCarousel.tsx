@@ -433,8 +433,9 @@ export default function BranchCarousel() {
               src={branch.images[photoIndex]}
               alt={`${branch.name}`}
               fill
+              sizes="(max-width: 768px) 100vw, 650px"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              priority
+              loading="lazy"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-xs text-isy-ink/40">

@@ -9,59 +9,19 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { BRANCHES, branchGoogleReviewsUrl } from "@/lib/branches";
 
-interface ReviewItem {
-  name: string;
-  city: string;
-  rating: number;
-  date: string;
-  text: string;
-  badge: string;
-}
-
-const REVIEWS: ReviewItem[] = [
-  {
-    name: "Anindya Putri S.",
-    city: "Purwokerto",
-    rating: 5,
-    date: "1 minggu lalu",
-    text: "Pelayanan di Optik I See You Purwokerto ramah banget! Cek mata gratisnya detail dan teliti pakai alat komputer. Pilihan framenya estetik dan kekinian, pengerjaan kacamata juga super cepat bisa ditunggu.",
-    badge: "Local Guide",
-  },
-  {
-    name: "Rizky Dwi Pratama",
-    city: "Purbalingga",
-    rating: 5,
-    date: "2 minggu lalu",
-    text: "Optik paling recommended di Purbalingga. Stafnya sabar pas bantuin milih frame yang cocok sama bentuk muka. Lensanya jernih banget dan harganya sangat transparan.",
-    badge: "Pembeli Terverifikasi",
-  },
-  {
-    name: "Nabila Zahra",
-    city: "Wonosobo",
-    rating: 5,
-    date: "3 minggu lalu",
-    text: "Koleksi softlens di cabang Wonosobo lengkap pol! Selalu repurchase di sini karena original dan nyaman dipakai seharian. Suasana tokonya estetik dan bersih.",
-    badge: "Pelanggan Setia",
-  },
-  {
-    name: "Dimas Arya Kusuma",
-    city: "Cilacap",
-    rating: 5,
-    date: "1 bulan lalu",
-    text: "Cabang Cilacap tempatnya nyaman, alat cek matanya modern banget. Hasil faset kacamata rapi dan presisi. Mantap I See You!",
-    badge: "Local Guide",
-  },
-];
+import { TESTIMONIALS } from "@/lib/testimonials";
 
 export default function GoogleReviewsSection() {
   const [selectedCity, setSelectedCity] = useState<string>("Semua");
 
   const filteredReviews =
     selectedCity === "Semua"
-      ? REVIEWS
-      : REVIEWS.filter((r) => r.city === selectedCity);
+      ? TESTIMONIALS.slice(0, 8)
+      : TESTIMONIALS.filter((r) => r.branch.toLowerCase() === selectedCity.toLowerCase());
+
 
   return (
     <section id="testimoni" className="relative w-full overflow-hidden bg-[#FAF6EC] px-6 py-20 sm:py-28 border-t border-isy-line/60">
@@ -126,29 +86,29 @@ export default function GoogleReviewsSection() {
         {/* Reviews Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredReviews.map((r, i) => {
-            const branchObj = BRANCHES.find((b) => b.city.toLowerCase() === r.city.toLowerCase());
+            const branchObj = BRANCHES.find((b) => b.city.toLowerCase() === r.branch.toLowerCase());
             const reviewUrl = branchObj ? branchGoogleReviewsUrl(branchObj) : branchGoogleReviewsUrl(BRANCHES[0]);
 
             return (
               <a
-                key={i}
+                key={r.id || i}
                 href={reviewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={`Lihat ulasan ${r.city} langsung di Google Maps`}
+                title={`Lihat ulasan ${r.branch} langsung di Google Maps`}
                 className="group rounded-2xl border border-isy-line bg-white p-5 flex flex-col justify-between space-y-4 shadow-xs transition-all hover:border-isy-green-bright/60 hover:shadow-md hover:-translate-y-1 block cursor-pointer"
               >
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between">
                     <div className="flex gap-0.5 text-amber-400 text-xs">
-                      {"★★★★★"}
+                      {"★".repeat(r.rating || 5)}
                     </div>
                     <span className="text-[10px] font-semibold text-isy-ink/40">
                       {r.date}
                     </span>
                   </div>
 
-                  <p className="text-xs text-isy-ink/80 leading-relaxed italic">
+                  <p className="text-xs text-isy-ink/80 leading-relaxed italic line-clamp-4">
                     &ldquo;{r.text}&rdquo;
                   </p>
                 </div>
@@ -159,16 +119,17 @@ export default function GoogleReviewsSection() {
                       {r.name}
                       <span className="text-[10px] text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
                     </h4>
-                    <p className="text-[10px] text-isy-green-bright font-semibold">{r.city}</p>
+                    <p className="text-[10px] text-isy-green-bright font-semibold">{r.branch}</p>
                   </div>
                   <span className="rounded-full bg-isy-green-bright/10 px-2.5 py-0.5 text-[9.5px] font-bold text-isy-green-deep">
-                    {r.badge}
+                    {r.badge || "Google Review"}
                   </span>
                 </div>
               </a>
             );
           })}
         </div>
+
 
         {/* Branch Direct Google Maps Links */}
         <div className="rounded-2xl bg-white border border-isy-line p-6 text-center space-y-3">
@@ -188,6 +149,11 @@ export default function GoogleReviewsSection() {
                 <span className="text-[10px] text-isy-green-bright">↗</span>
               </a>
             ))}
+          </div>
+          <div className="text-center mt-4 pt-4 border-t border-isy-line/60">
+            <Link href="/testimoni" className="inline-flex items-center gap-2 text-sm font-bold text-isy-green-bright hover:text-isy-green-deep transition-colors">
+              Lihat Semua Review →
+            </Link>
           </div>
         </div>
       </div>

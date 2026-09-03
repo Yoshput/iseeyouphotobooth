@@ -198,3 +198,41 @@ export function speakCountdownNumber(num: number, enabled: boolean = true) {
     // Ignore audio error
   }
 }
+
+/**
+ * Plays an instant melodic chime when a hand gesture is recognized.
+ */
+export function playGestureTriggerSound(enabled: boolean = true) {
+  if (!enabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    // Dual-tone high chime (880Hz then 1320Hz)
+    const osc1 = ctx.createOscillator();
+    const g1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(880, now);
+    g1.gain.setValueAtTime(0.3, now);
+    g1.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc1.connect(g1);
+    g1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.12);
+
+    const osc2 = ctx.createOscillator();
+    const g2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.setValueAtTime(1320, now + 0.07);
+    g2.gain.setValueAtTime(0.35, now + 0.07);
+    g2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc2.connect(g2);
+    g2.connect(ctx.destination);
+    osc2.start(now + 0.07);
+    osc2.stop(now + 0.22);
+  } catch {
+    // Ignore audio error
+  }
+}
+

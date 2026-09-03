@@ -195,6 +195,9 @@ export default function LandingPage() {
             </div>
           </div>
 
+
+
+
           {/* ── RIGHT: Floating Glasses Showcase ── */}
           <div className="flex flex-col items-center justify-center relative py-6 md:py-10 w-full">
 
@@ -472,6 +475,30 @@ export default function LandingPage() {
 
       {/* ═══ PAGE 6: ALAT DAN FASILITAS LABORATORIUM ═══ */}
       <EyeExamFacilitySection />
+
+      {/* ═══ QUIZ CTA SECTION ═══ */}
+      <section className="w-full bg-gradient-to-br from-[#0D2F1D] to-isy-green-deep px-6 py-20 text-center relative overflow-hidden">
+        {/* Glow effect */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[500px] rounded-full bg-isy-green-bright/20 blur-[100px]" />
+        
+        <div className="mx-auto max-w-2xl relative z-10">
+          <span className="mb-4 inline-block rounded-full bg-isy-green-bright/20 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-emerald-300 border border-isy-green-bright/30">
+            Temukan Kacamata Kamu
+          </span>
+          <h2 className="font-serif text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+            Cari Tahu <span className="text-isy-green-bright italic">Frame DNA</span> Kamu!
+          </h2>
+          <p className="text-white/70 text-base md:text-lg mb-10 max-w-lg mx-auto">
+            Quiz 5 menit untuk temukan frame yang cocok sama bentuk wajah dan kepribadian kamu.
+          </p>
+          <Link
+            href="/quiz"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-isy-green-bright to-emerald-500 px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/30 transition-all hover:scale-105 active:scale-95"
+          >
+            Mulai Quiz Frame DNA →
+          </Link>
+        </div>
+      </section>
 
       {/* ═══ PAGE 7: TESTIMONI / GOOGLE BUSINESS REVIEWS ═══ */}
       <GoogleReviewsSection />

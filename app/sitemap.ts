@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/branches";
+import { BLOG_POSTS } from "@/lib/blog";
 
 export const dynamic = "force-static";
 
@@ -67,7 +68,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/quiz`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/testimoni`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
+
 
   // 4 Branch dedicated pages
   const branchRoutes: MetadataRoute.Sitemap = BRANCHES.map((b) => ({
@@ -77,5 +97,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  return [...staticRoutes, ...branchRoutes];
+  // Blog post pages
+  const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.updatedAt),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...branchRoutes, ...blogRoutes];
 }

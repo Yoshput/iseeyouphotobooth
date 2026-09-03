@@ -17,6 +17,14 @@ export default function PWASplashScreen() {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
+    // Only show splash screen if launched as an installed standalone PWA
+    const isStandalone =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(display-mode: standalone)").matches ||
+        (navigator as unknown as { standalone?: boolean }).standalone === true);
+
+    if (!isStandalone) return;
+
     // Check if splash was already shown in this session
     try {
       const alreadyShown = sessionStorage.getItem("isy_splash_shown");
@@ -43,6 +51,7 @@ export default function PWASplashScreen() {
       clearTimeout(hideTimer);
     };
   }, []);
+
 
   if (!show) return null;
 

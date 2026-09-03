@@ -834,6 +834,7 @@ const [faceDetected, setFaceDetected] = useState(false);
   const [cameraFacing, setCameraFacing] = useState<"user" | "environment">("user");
   const [availableCameras, setAvailableCameras] = useState<MediaDeviceInfo[]>([]);
   const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
+  const [userScaleMultiplier, setUserScaleMultiplier] = useState<number>(1.0);
 
   // Remote Smartphone WebRTC Camera States
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
@@ -995,13 +996,8 @@ const [faceDetected, setFaceDetected] = useState(false);
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  const handleGestureDetected = useCallback((_gesture: string) => {
-    if (phase === "ready") {
-      setPhase("countdown");
-    }
-  }, [phase]);
-
   const flashRef = useRef<HTMLDivElement>(null);
+
 
   const shooting =
     phase === "ready" ||
@@ -1229,6 +1225,26 @@ const [faceDetected, setFaceDetected] = useState(false);
     setPhase("countdown");
   }, [phase, resetSession]);
 
+  const handleGestureDetected = useCallback((gesture: string) => {
+    if (phase === "ready") {
+      unlockAudio();
+      resetSession();
+      setCurrentSlot(0);
+      setPhase("countdown");
+
+      const label =
+        gesture === "Open_Palm"
+          ? "✋ Telapak Tangan"
+          : gesture === "Victory"
+          ? "✌️ Peace"
+          : gesture === "Thumb_Up"
+          ? "👍 Jempol"
+          : "✋ Raise Hand";
+      showToast(`${label} Terdeteksi! Bersiap...`);
+    }
+  }, [phase, resetSession, showToast]);
+
+
   const generateGifForCurrentSession = useCallback(
     (currentThemeId: string, currentFilterId: string) => {
       if (!photos.length) return;
@@ -1441,7 +1457,7 @@ const [faceDetected, setFaceDetected] = useState(false);
     setScanComplete(true);
   }}
   onFaceCountChange={handleFaceCountChange}
-  ipdScaleRef={(glasses as any).ipdScaleRef ?? 1.0}
+  ipdScaleRef={((glasses as any).ipdScaleRef ?? 1.0) * userScaleMultiplier}
   onLandmarksChange={(lm) => {
   if (!arEnabled || !aiMode || !lm) return;
   // Once locked, skip re-classification until explicitly reset
@@ -1684,6 +1700,42 @@ const [faceDetected, setFaceDetected] = useState(false);
           </button>
         );
       })}
+    </div>
+  )}
+
+  {arEnabled && (
+    <div className="flex items-center justify-between py-1.5 px-2.5 bg-isy-mist/60 rounded-xl border border-isy-line/80 shadow-2xs">
+      <span className="text-[10px] font-bold text-isy-ink/70 uppercase tracking-wider">Ukuran Frame:</span>
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          onClick={() => setUserScaleMultiplier((prev) => Math.max(0.85, parseFloat((prev - 0.05).toFixed(2))))}
+          className="h-6 w-6 rounded-lg bg-white border border-isy-line flex items-center justify-center text-xs font-black text-isy-green-deep hover:bg-isy-green-bright hover:text-white transition-all cursor-pointer active:scale-90 shadow-2xs"
+          title="Perkecil Ukuran"
+        >
+          -
+        </button>
+        <span className="text-[11px] font-black text-isy-green-deep min-w-[36px] text-center">
+          {Math.round(userScaleMultiplier * 100)}%
+        </span>
+        <button
+          type="button"
+          onClick={() => setUserScaleMultiplier((prev) => Math.min(1.4, parseFloat((prev + 0.05).toFixed(2))))}
+          className="h-6 w-6 rounded-lg bg-white border border-isy-line flex items-center justify-center text-xs font-black text-isy-green-deep hover:bg-isy-green-bright hover:text-white transition-all cursor-pointer active:scale-90 shadow-2xs"
+          title="Perbesar Ukuran"
+        >
+          +
+        </button>
+        {userScaleMultiplier !== 1.0 && (
+          <button
+            type="button"
+            onClick={() => setUserScaleMultiplier(1.0)}
+            className="text-[9px] font-bold text-isy-ink/50 hover:text-isy-green-deep underline ml-1 cursor-pointer"
+          >
+            Reset
+          </button>
+        )}
+      </div>
     </div>
   )}
 

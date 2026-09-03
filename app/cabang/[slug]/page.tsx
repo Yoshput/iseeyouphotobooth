@@ -341,20 +341,43 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
         aria-label="Breadcrumb"
         className="pt-24 pb-4 px-6 md:px-12 lg:px-20 border-b border-isy-line bg-white/60 backdrop-blur-md"
       >
-        <div className="mx-auto max-w-6xl flex items-center gap-2 text-xs text-isy-ink/60">
-          <Link href="/" className="hover:text-isy-green-deep transition-colors font-medium">
-            Beranda
+        <div className="mx-auto max-w-6xl flex flex-wrap items-center justify-between gap-4 text-xs text-isy-ink/60">
+          <Link
+            href="/"
+            className="group inline-flex items-center gap-2 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform group-hover:-translate-x-0.5"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span>Kembali ke Beranda</span>
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-isy-ink/30" />
-          <Link href="/#lokasi" className="hover:text-isy-green-deep transition-colors font-medium">
-            Lokasi Cabang
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-isy-ink/30" />
-          <span className="font-bold text-isy-green-deep truncate">
-            {branch.city}
-          </span>
+
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-isy-green-deep transition-colors font-medium">
+              Beranda
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-isy-ink/30" />
+            <Link href="/#lokasi" className="hover:text-isy-green-deep transition-colors font-medium">
+              Lokasi Cabang
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-isy-ink/30" />
+            <span className="font-bold text-isy-green-deep truncate">
+              {branch.city}
+            </span>
+          </div>
         </div>
       </nav>
+
 
       {/* ── HERO SECTION ───────────────────────────────────────────────────── */}
       <section className="relative px-6 md:px-12 lg:px-20 py-12 md:py-16 overflow-hidden">
