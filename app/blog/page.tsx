@@ -9,12 +9,13 @@ function getCategoryColor(category: BlogCategory) {
     case "tips-pilih-frame": return "bg-green-100 text-green-800";
     case "perawatan-softlens": return "bg-purple-100 text-purple-800";
     case "tren-gaya": return "bg-orange-100 text-orange-800";
-    case "info-cabang-promo": return "bg-red-100 text-red-800";
+    case "info-cabang-promo": return "bg-emerald-50 text-emerald-900 font-semibold border border-emerald-200/80";
     default: return "bg-gray-100 text-gray-800";
   }
 }
 
 function getCategoryLabel(category: BlogCategory) {
+  if (category === "info-cabang-promo") return "Event & Promo";
   return category.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
 
@@ -63,6 +64,14 @@ export default function BlogIndex() {
           <Link href={`/blog/${featuredArticle.slug}`} className="block group mb-16">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-isy-line transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
               <div className="md:col-span-5 relative aspect-[4/5] w-full max-w-sm mx-auto md:max-w-none rounded-2xl overflow-hidden bg-isy-mist shadow-xs">
+                {featuredArticle.videoUrl && (
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-medium tracking-wide shadow-sm">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                    Video Dokumentasi
+                  </span>
+                )}
                 <Image 
                   src={featuredArticle.coverImage} 
                   alt={featuredArticle.title}

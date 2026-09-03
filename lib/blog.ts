@@ -6,6 +6,7 @@ export type BlogPost = {
   category: BlogCategory;
   excerpt: string;
   coverImage: string;
+  videoUrl?: string;
   content: string; // HTML string
   author: string; // default: "Tim Optik I See You"
   publishedAt: string; // ISO 8601
@@ -20,6 +21,79 @@ function calculateReadingTime(content: string): number {
 }
 
 const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
+  // ── 0. EVENT BANYUMAS WEDDING EXPO - RITA SUPERMALL PURWOKERTO ────────────
+  {
+    slug: 'optik-i-see-you-banyumas-wedding-expo-rita-supermall',
+    title: 'Optik I See You Hadir di Banyumas Wedding Expo 2026: Layanan Cek Mata dan Studio Photobooth Gratis di Rita SuperMall Purwokerto',
+    category: 'info-cabang-promo',
+    excerpt: 'Mulai tanggal 4 hingga 6 September 2026, Optik I See You hadir di Ground Floor Rita SuperMall Purwokerto dalam rangka Banyumas Wedding Expo 2026. Temukan booth kami tepat di depan gerai J.CO dan samping lift utama.',
+    coverImage: '/blog/covers/cover-wedding-expo-rsm.jpg',
+    videoUrl: '/blog/rsm-wedding-expo.mp4',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-09-04T00:00:00Z',
+    updatedAt: '2026-09-04T00:00:00Z',
+    relatedCabang: 'Purwokerto',
+    content: `
+      <div class="border border-isy-line bg-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
+        <span class="text-xs uppercase tracking-widest text-isy-green-deep font-semibold block mb-2">Informasi Agenda Resmi</span>
+        <h3 class="text-xl sm:text-2xl font-dm-serif text-isy-green-deep mb-4">Banyumas Wedding Expo 2026 bersama Optik I See You</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-isy-ink/80 pt-4 border-t border-isy-line">
+          <div>
+            <p class="font-semibold text-isy-green-deep mb-1">Jadwal Pelaksanaan</p>
+            <p>Jumat – Minggu, 4 – 6 September 2026</p>
+            <p>Pukul 10.00 – 22.00 WIB</p>
+          </div>
+          <div>
+            <p class="font-semibold text-isy-green-deep mb-1">Titik Lokasi Booth</p>
+            <p>Ground Floor (GF), Rita SuperMall Purwokerto</p>
+            <p>Tepat di depan J.CO Donuts &amp; Coffee dan sebelah Lift Utama</p>
+          </div>
+        </div>
+      </div>
+
+      <p>Optik I See You secara resmi berpartisipasi dalam agenda tahunan <strong>Banyumas Wedding Expo 2026</strong> yang diselenggarakan di Ground Floor Rita SuperMall Purwokerto. Kehadiran booth ini didedikasikan untuk memberikan kemudahan akses bagi masyarakat Purwokerto, pengunjung pusat perbelanjaan, serta calon mempelai yang sedang mempersiapkan kebutuhan hari pernikahan.</p>
+
+      <p>Selama tiga hari penyelenggaraan, tim Optik I See You menghadirkan serangkaian fasilitas dan layanan penunjang tanpa dipungut biaya, disertai penawaran kurasi frame dan lensa berkualitas tinggi.</p>
+
+      <figure>
+        <img src="/blog/banyumas-wedding-expo-2026.jpg" alt="Poster Resmi Agenda Banyumas Wedding Expo 2026 di Rita SuperMall Purwokerto" />
+        <figcaption>Dokumentasi resmi penyelenggaraan Banyumas Wedding Expo 2026 di Rita SuperMall Purwokerto.</figcaption>
+      </figure>
+
+      <h2>Panduan Menuju Lokasi Booth</h2>
+      <p>Untuk memudahkan kunjungan Anda tanpa kendala di area pameran, berikut panduan letak booth Optik I See You:</p>
+      
+      <div class="bg-isy-mist/70 border border-isy-line rounded-xl p-5 sm:p-6 my-6">
+        <ul class="space-y-2 text-isy-ink/90">
+          <li><strong>Pusat Perbelanjaan:</strong> Rita SuperMall Purwokerto, Jl. Jend. Soedirman No. 296.</li>
+          <li><strong>Lantai Pameran:</strong> Ground Floor (GF).</li>
+          <li><strong>Titik Patokan Utama:</strong> Tepat berhadapan langsung dengan gerai J.CO Donuts &amp; Coffee.</li>
+          <li><strong>Titik Akses Lift:</strong> Bersebelahan persis dengan pintu lift penumpang utama lantai GF.</li>
+          <li><strong>Jam Operasional:</strong> 10.00 hingga 22.00 WIB setiap hari pameran.</li>
+        </ul>
+      </div>
+
+      <h2>Program dan Layanan Utama Booth</h2>
+      <p>Berikut rangkaian fasilitas yang dapat Anda nikmati secara langsung di booth Optik I See You selama periode expo:</p>
+
+      <h3>1. Pemeriksaan Refraksi Mata Digital Tanpa Biaya</h3>
+      <p>Pemeriksaan ketajaman penglihatan komprehensif menggunakan perangkat <em>auto-refractometer</em> terkomputerisasi. Layanan ini dipandu langsung oleh tenaga refraksionis optisien berpengalaman untuk mendeteksi minus, plus, maupun silinder secara akurat. Layanan ini terbuka bagi masyarakat umum tanpa pungutan biaya.</p>
+
+      <h3>2. Fasilitas Studio Photobooth Gratis untuk Pengunjung</h3>
+      <p>Abadikan momen kunjungan Anda bersama pasangan, keluarga, atau sahabat melalui instalasi photobooth interaktif kami. Dilengkapi pencahayaan profesional dan properti kacamata pilihan, hasil foto dapat langsung dicetak maupun diunduh dalam format digital resolusi tinggi.</p>
+
+      <h3>3. Penawaran Khusus Kurasi Frame dan Lensa Modern</h3>
+      <p>Kami menghadirkan pilihan frame unggulan yang mencakup material titanium ultra-ringan, asetat ergonomis, hingga desain modern minimalis. Pengunjung expo dapat menikmati penawaran paket khusus lensa perlindungan digital (Bluechromic dan Photochromic) yang hanya berlaku selama pameran berlangsung.</p>
+
+      <h3>4. Konsultasi Khusus Calon Mempelai (Wedding Eye-Look)</h3>
+      <p>Bagi calon pengantin yang tengah merancang penampilan pernikahan di Banyumas Wedding Expo, kami menyediakan sesi konsultasi pemilihan lensa kontak estetik yang nyaman digunakan sepanjang prosesi akad dan resepsi, serta panduan memilih siluet bingkai kacamata yang serasi dengan riasan wajah.</p>
+
+      <h2>Informasi Kunjungan</h2>
+      <p>Pameran berlangsung singkat selama tiga hari, mulai tanggal <strong>4 hingga 6 September 2026</strong>. Kami mengundang Anda untuk berkunjung dan memanfaatkan fasilitas pemeriksaan serta photobooth di Ground Floor Rita SuperMall Purwokerto.</p>
+      
+      <p>Untuk pertanyaan seputar penawaran khusus pameran atau reservasi konsultasi, Anda dapat menghubungi tim layanan pelanggan kami melalui tautan di bawah ini.</p>
+    `
+  },
   // ── 1. TIPS BENTUK WAJAH (Instagram Post Dcf4EGfD_af) ─────────────────────
   {
     slug: '5-tips-pilih-frame-bentuk-wajah',
