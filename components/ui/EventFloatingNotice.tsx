@@ -41,13 +41,18 @@ export default function EventFloatingNotice() {
 
   if (isMinimized) {
     return (
-      <aside aria-label="Agenda Pameran Optik I See You" className="fixed bottom-5 right-5 z-40">
+      <aside aria-label="Agenda Pameran Optik I See You" className="fixed bottom-[calc(4.25rem+env(safe-area-inset-bottom,0px))] md:bottom-6 right-4 md:right-6 z-40">
         <button
           onClick={handleExpand}
-          className="group inline-flex items-center gap-2.5 rounded-full border border-isy-line bg-white/95 backdrop-blur-md px-4 py-2 text-xs font-semibold text-isy-green-deep shadow-md transition-all hover:border-isy-green-bright hover:shadow-lg active:scale-95 cursor-pointer"
+          className="group inline-flex items-center gap-2.5 rounded-full border border-emerald-300/80 bg-white/95 backdrop-blur-md px-4 py-2.5 text-xs font-semibold text-isy-green-deep shadow-lg transition-all hover:border-emerald-500 hover:shadow-xl active:scale-95 cursor-pointer"
         >
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Agenda: Booth Rita SuperMall (4–6 Sep)</span>
+          {/* Glowing Green Live Beacon */}
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_8px_#10B981]" />
+          </span>
+          <span className="px-1.5 py-0.5 rounded bg-emerald-100/80 text-emerald-800 font-extrabold text-[10px] tracking-wider uppercase">Live</span>
+          <span>Booth Buka: Rita SuperMall (4–6 Sep)</span>
           <svg
             width="12"
             height="12"
@@ -69,15 +74,22 @@ export default function EventFloatingNotice() {
   return (
     <aside
       aria-label="Pengumuman Acara Rita SuperMall"
-      className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md z-40 animate-in fade-in slide-in-from-bottom-5 duration-500"
+      className="fixed bottom-[calc(4.25rem+env(safe-area-inset-bottom,0px))] md:bottom-6 inset-x-3 sm:inset-x-auto sm:right-6 sm:max-w-md z-40 animate-in fade-in slide-in-from-bottom-5 duration-500"
     >
       <div className="relative overflow-hidden rounded-2xl border border-isy-line bg-white/95 backdrop-blur-xl p-4 sm:p-5 shadow-2xl transition-all">
         {/* Header line & close button */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="inline-flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-isy-green-deep">
-              Agenda Pameran • Rita SuperMall
+        <div className="flex items-center justify-between mb-3.5">
+          <div className="flex items-center gap-2">
+            {/* Glowing Green Active Radar Beacon */}
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 shadow-[0_0_10px_#10B981,0_0_4px_#34D399]" />
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider shadow-2xs">
+              Sedang Berlangsung
+            </span>
+            <span className="text-[11px] font-medium text-isy-ink/60">
+              Rita SuperMall Purwokerto
             </span>
           </div>
 
@@ -109,6 +121,11 @@ export default function EventFloatingNotice() {
           <div className="flex gap-3.5 items-start">
             {/* Thumbnail Preview */}
             <div className="relative w-20 h-24 rounded-xl overflow-hidden flex-shrink-0 border border-isy-line bg-black/5 shadow-xs">
+              {/* Active Green Badge on thumbnail */}
+              <div className="absolute top-1.5 left-1.5 z-10 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/65 backdrop-blur-md text-[9px] font-bold text-white tracking-wide border border-white/10">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
+                Live
+              </div>
               <Image
                 src="/blog/covers/cover-wedding-expo-rsm.jpg"
                 alt="Booth Optik I See You di Rita SuperMall Purwokerto"
