@@ -23,13 +23,9 @@ export default function ShareButtons({ title, slug }: { title: string; slug: str
   };
 
   const shareWA = () => {
-    // Professional concise news brief without redundant title repetition
+    // Exact format that reliably triggers WhatsApp's rich cover preview card with thumbnail
     const text = encodeURIComponent(
-      "Agenda Resmi: Booth Optik I See You hadir di Banyumas Wedding Expo 2026 (Rita SuperMall Purwokerto).\n\n" +
-      "• Jadwal: 4 – 6 September 2026 (10.00 – 22.00 WIB)\n" +
-      "• Lokasi: Ground Floor (Depan J.CO & Samping Lift GF)\n" +
-      "• Layanan: Pemeriksaan Refraksi & Studio Photobooth Gratis\n\n" +
-      "Informasi & video dokumentasi lengkap:\n" + url
+      `*${title}*\n\nBaca informasi lengkap agenda booth di Rita SuperMall Purwokerto:\n${url}`
     );
     window.open("https://api.whatsapp.com/send?text=" + text, "_blank");
   };
