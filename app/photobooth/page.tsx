@@ -856,26 +856,34 @@ const [faceDetected, setFaceDetected] = useState(false);
 
   const openRemoteCameraModal = async () => {
     setIsRemoteModalOpen(true);
-    if (!remoteRoomId) {
-      const newRoomId = "isy-" + Math.random().toString(36).substring(2, 8);
-      setRemoteRoomId(newRoomId);
-
-      const origin = typeof window !== "undefined" ? window.location.origin : "https://optikiseeyou.com";
-      const targetUrl = `${origin}/remote-camera?room=${newRoomId}`;
-
-      try {
-        const qr = await QRCode.toDataURL(targetUrl, { width: 320, margin: 2 });
-        setRemoteQrUrl(qr);
-      } catch (err) {
-        console.warn("QR generation failed", err);
+    let activeRoomId = remoteRoomId;
+    if (!activeRoomId) {
+      if (typeof window !== "undefined") {
+        activeRoomId = localStorage.getItem("isy_photobooth_remote_room") || "";
       }
+      if (!activeRoomId) {
+        activeRoomId = "isy-" + Math.random().toString(36).substring(2, 8);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("isy_photobooth_remote_room", activeRoomId);
+        }
+      }
+      setRemoteRoomId(activeRoomId);
+    }
 
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://optikiseeyou.com";
+    const targetUrl = `${origin}/remote-camera?room=${activeRoomId}`;
+
+    try {
+      const qr = await QRCode.toDataURL(targetUrl, { width: 320, margin: 2 });
+      setRemoteQrUrl(qr);
+    } catch (err) {
+      console.warn("QR generation failed", err);
+    }
+
+    if (!peerReceiverRef.current) {
       try {
         const { default: Peer } = await import("peerjs");
-        if (peerReceiverRef.current) {
-          peerReceiverRef.current.destroy();
-        }
-        const peer = new Peer(newRoomId, {
+        const peer = new Peer(activeRoomId, {
           config: {
             iceServers: [
               { urls: "stun:stun.l.google.com:19302" },
@@ -915,8 +923,6 @@ const [faceDetected, setFaceDetected] = useState(false);
     }
     setRemoteStream(null);
     setRemoteConnected(false);
-    setRemoteRoomId("");
-    setRemoteQrUrl(null);
     showToast("Kembali ke Kamera Tablet");
   };
 
@@ -1152,6 +1158,22 @@ const [faceDetected, setFaceDetected] = useState(false);
 
   const goHome = useCallback(() => router.push("/start"), [router]);
 
+  const handleBackNav = useCallback(() => {
+    if (phase === "ready") {
+      setPhase("theme-select");
+    } else if (phase === "theme-select") {
+      setPhase("frame-select");
+    } else if (phase === "frame-select") {
+      goHome();
+    } else if (phase === "customize") {
+      setPhase("result");
+    } else if (phase === "result" || phase === "session-review") {
+      setPhase("ready");
+    } else {
+      goHome();
+    }
+  }, [phase, goHome]);
+
   const handleCountdownComplete = useCallback(() => {
     const dataUrl = faceTrackerRef.current?.captureFrame() ?? null;
     if (!dataUrl) {
@@ -1226,23 +1248,14 @@ const [faceDetected, setFaceDetected] = useState(false);
   }, [phase, resetSession]);
 
   const handleGestureDetected = useCallback((gesture: string) => {
-    if (phase === "ready") {
+    if (phase === "ready" && gestureTriggerEnabled && gesture === "Open_Palm") {
       unlockAudio();
       resetSession();
       setCurrentSlot(0);
       setPhase("countdown");
-
-      const label =
-        gesture === "Open_Palm"
-          ? "✋ Telapak Tangan"
-          : gesture === "Victory"
-          ? "✌️ Peace"
-          : gesture === "Thumb_Up"
-          ? "👍 Jempol"
-          : "✋ Raise Hand";
-      showToast(`${label} Terdeteksi! Bersiap...`);
+      showToast("✋ Telapak Tangan Terdeteksi! Bersiap...");
     }
-  }, [phase, resetSession, showToast]);
+  }, [phase, gestureTriggerEnabled, resetSession, showToast]);
 
 
   const generateGifForCurrentSession = useCallback(
@@ -1406,7 +1419,7 @@ const [faceDetected, setFaceDetected] = useState(false);
   ">
  {rightActive && (
  <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-3 pt-3 lg:hidden">
- <BackBtn onClick={goHome} />
+ <BackBtn onClick={handleBackNav} />
  <Image src="/logo.png" alt="Optik I See You" width={80} height={31} className="h-6 w-auto drop-shadow" />
  {shooting && (
  <div className="flex gap-1">
@@ -1522,10 +1535,26 @@ const [faceDetected, setFaceDetected] = useState(false);
  {/* Capture button area — anchored at bottom of camera */}
  {shooting && phase === "ready" && (
   <div className="absolute bottom-0 inset-x-0 z-20 flex flex-col items-center px-4 pb-4 pt-2 bg-gradient-to-t from-black/75 via-black/35 to-transparent gap-2">
-    {/* Clean Minimalist Instruction Hint */}
-    <div className="flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-md px-3.5 py-1.5 text-[11px] text-white/90 border border-white/10 shadow-sm animate-in fade-in duration-300">
+    {/* Clean Minimalist Instruction Hint with Quick Toggle */}
+    <div className="flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-md px-3.5 py-1.5 text-[11px] text-white/90 border border-white/10 shadow-sm animate-in fade-in duration-300">
       <span className="h-1.5 w-1.5 rounded-full bg-isy-green-bright animate-ping" />
-      <span className="font-medium">Tunjukkan telapak tangan ke kamera atau tekan tombol Mulai</span>
+      <span className="font-medium">
+        {gestureTriggerEnabled
+          ? "Tunjukkan telapak tangan ✋ ke kamera atau tekan tombol Mulai"
+          : "Tekan tombol Mulai Foto untuk mengambil gambar"}
+      </span>
+      <button
+        type="button"
+        onClick={() => setGestureTriggerEnabled((v) => !v)}
+        className={`ml-1 flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider transition-all active:scale-95 ${
+          gestureTriggerEnabled
+            ? "bg-amber-400 text-black border border-amber-300 hover:bg-amber-300"
+            : "bg-white/15 text-white/70 border border-white/20 hover:bg-white/25"
+        }`}
+        title={gestureTriggerEnabled ? "Nonaktifkan Gestur Tangan" : "Aktifkan Gestur Tangan"}
+      >
+        <span>{gestureTriggerEnabled ? "✋ Gestur ON" : "✋ Gestur OFF"}</span>
+      </button>
     </div>
 
   {/* Main capture button */}
@@ -1553,7 +1582,7 @@ const [faceDetected, setFaceDetected] = useState(false);
  <div className="flex flex-1 flex-col overflow-y-auto bg-white lg:w-[44%] lg:flex-none">
 
  <div className="hidden lg:flex shrink-0 items-center justify-between border-b border-isy-line px-5 py-3">
- <BackBtn onClick={goHome} />
+ <BackBtn onClick={handleBackNav} />
  <Image src="/logo.png" alt="Optik I See You" width={100} height={39} className="h-7 w-auto" />
  {shooting && (
  <div className="flex gap-1">
@@ -1629,6 +1658,18 @@ const [faceDetected, setFaceDetected] = useState(false);
      )}
      <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
    </button>
+    <button
+      onClick={() => setGestureTriggerEnabled((v) => !v)}
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
+        gestureTriggerEnabled
+          ? "bg-amber-500/15 text-amber-800 border-amber-500/40"
+          : "border-isy-line text-isy-ink/40 bg-white hover:bg-isy-mist"
+      }`}
+      title={gestureTriggerEnabled ? "Gestur Telapak Tangan Aktif (Klik untuk Nonaktifkan)" : "Gestur Tangan Nonaktif (Klik untuk Aktifkan)"}
+    >
+      <span className="text-[11px]">✋</span>
+      <span>{gestureTriggerEnabled ? "Gestur ON" : "Gestur OFF"}</span>
+    </button>
     <button
       onClick={handleSwitchCamera}
       className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
@@ -1877,9 +1918,7 @@ const [faceDetected, setFaceDetected] = useState(false);
               <button
                 onClick={() => {
                   unlockAudio();
-                  resetSession();
-                  setCurrentSlot(0);
-                  setPhase("countdown");
+                  handleRetake();
                 }}
                 className="flex-1 inline-flex items-center justify-center gap-1.5 py-3.5 px-3 rounded-2xl border-2 border-isy-line bg-isy-mist hover:bg-white text-isy-green-deep font-black text-xs sm:text-sm active:scale-95 transition-all shadow-xs cursor-pointer"
               >
@@ -1887,6 +1926,19 @@ const [faceDetected, setFaceDetected] = useState(false);
                   <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-4.5" />
                 </svg>
                 <span>Ulang Semua</span>
+              </button>
+
+              {/* Ganti Layout */}
+              <button
+                onClick={handleChangeLayout}
+                className="inline-flex items-center justify-center gap-1.5 py-3.5 px-3 rounded-2xl border border-isy-line bg-white hover:bg-isy-mist text-isy-ink/70 font-bold text-xs sm:text-sm active:scale-95 transition-all shadow-xs cursor-pointer"
+                title="Ganti format jumlah foto strip"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
+                  <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+                </svg>
+                <span>Ganti Layout</span>
               </button>
 
               {/* Ganti Tema Frame */}

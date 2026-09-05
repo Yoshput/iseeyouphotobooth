@@ -94,14 +94,49 @@ export async function processImageForThermal(
       const h = targetHeight;
 
       // 3. Convert to Grayscale array (float 0-255)
-      const gray = new Float32Array(w * h);
+      const rawGray = new Float32Array(w * h);
       for (let i = 0; i < data.length; i += 4) {
         // Luminance formula
-        gray[i / 4] =
+        rawGray[i / 4] =
           0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
       }
 
-      // 4. Apply Floyd-Steinberg Dithering Algorithm
+      // 4. Edge Sharpening (Unsharp Mask) + Midtone Lift + Contrast Boost
+      // Thermal paper dots bleed from heat, so lifting midtones and sharpening edges
+      // prevents human faces from becoming muddy / burnt ("gosong")
+      const gray = new Float32Array(w * h);
+      const sharpenStrength = 0.35;
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const idx = y * w + x;
+          if (x === 0 || x === w - 1 || y === 0 || y === h - 1) {
+            gray[idx] = rawGray[idx];
+            continue;
+          }
+
+          // Laplacian edge sharpening
+          const center = rawGray[idx];
+          const laplacian =
+            4 * center -
+            (rawGray[idx - 1] +
+              rawGray[idx + 1] +
+              rawGray[idx - w] +
+              rawGray[idx + w]);
+
+          let sharp = center + laplacian * sharpenStrength;
+
+          // Gamma lift for face tones (brightens midtones so skin doesn't get dark/blotchy)
+          sharp = Math.pow(Math.max(0, Math.min(255, sharp)) / 255, 0.88) * 255;
+
+          // Contrast adjustment (+18% contrast, +8 brightness lift)
+          sharp = (sharp - 128) * 1.18 + 128 + 8;
+
+          gray[idx] = Math.max(0, Math.min(255, sharp));
+        }
+      }
+
+      // 5. Apply Floyd-Steinberg Dithering Algorithm
       for (let y = 0; y < h; y++) {
         for (let x = 0; x < w; x++) {
           const idx = y * w + x;

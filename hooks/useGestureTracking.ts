@@ -12,14 +12,14 @@ interface Options {
 }
 
 /**
- * Hook for detecting hand gestures (Open_Palm ✋, Victory ✌️, Thumb_Up 👍, Pointing_Up ☝️, ILoveYou 🤟)
- * Ultra-responsive instant shutter trigger optimized for Rita Supermall live booth.
+ * Hook for detecting Open_Palm ✋ hand gesture to trigger photo shutter.
+ * Requires a steady hold (~500ms) with minConfidence 0.65 to avoid accidental triggers.
  */
 export function useGestureTracking(
   videoRef: React.RefObject<HTMLVideoElement>,
   options: Options
 ) {
-  const { enabled = false, minConfidence = 0.4, onGesture } = options;
+  const { enabled = false, minConfidence = 0.65, onGesture } = options;
   const onGestureRef = useRef(onGesture);
   onGestureRef.current = onGesture;
 
@@ -55,20 +55,13 @@ export function useGestureTracking(
 
                 let topMatch: { name: string; score: number } | null = null;
 
-                // Inspect ALL detected hands (numHands: 2)
+                // Inspect detected hands — ONLY accept Open_Palm (Telapak Tangan)
                 if (gestures && gestures.length > 0) {
                   for (const handList of gestures) {
                     if (!handList || handList.length === 0) continue;
                     for (const g of handList) {
                       const n = g.categoryName;
-                      if (
-                        g.score >= minConfidence &&
-                        (n === "Open_Palm" ||
-                          n === "Victory" ||
-                          n === "Thumb_Up" ||
-                          n === "Pointing_Up" ||
-                          n === "ILoveYou")
-                      ) {
+                      if (g.score >= minConfidence && n === "Open_Palm") {
                         if (!topMatch || g.score > topMatch.score) {
                           topMatch = { name: n, score: g.score };
                         }
@@ -81,17 +74,18 @@ export function useGestureTracking(
                   streakRef.current++;
                   const timeSinceLast = Date.now() - lastTriggerTimeRef.current;
 
-                  // Instant trigger if confidence >= 0.48, or on 2nd frame if >= 0.38
-                  const isConfidentEnough = topMatch.score >= 0.48 || streakRef.current >= 2;
+                  // Deliberate hold trigger: User must hold palm steady for ~7 frames (~450-500ms)
+                  // and high confidence (>= 0.65) to prevent accidental twitches/hair adjustments
+                  const isConfidentAndHeld = streakRef.current >= 7 && topMatch.score >= minConfidence;
 
-                  if (isConfidentEnough && timeSinceLast > 3800) {
+                  if (isConfidentAndHeld && timeSinceLast > 3800) {
                     lastTriggerTimeRef.current = Date.now();
                     streakRef.current = 0;
                     playGestureTriggerSound(true);
                     onGestureRef.current(topMatch.name);
                   }
                 } else {
-                  // Decay streak smoothly so single-frame glitch doesn't drop detection
+                  // Reset streak if palm is not visible or lost
                   if (streakRef.current > 0) {
                     streakRef.current = 0;
                   }

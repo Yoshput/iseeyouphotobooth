@@ -15,6 +15,7 @@ function RemoteCameraContent() {
   const [torchOn, setTorchOn] = useState(false);
   const [hasTorch, setHasTorch] = useState(false);
   const peerRef = useRef<any>(null);
+  const manualReconnectRef = useRef<(() => void) | null>(null);
 
   // 1. Initialize Camera on Smartphone
   useEffect(() => {
@@ -77,13 +78,94 @@ function RemoteCameraContent() {
     };
   }, [facingMode]);
 
-  // 2. Connect to Tablet via WebRTC PeerJS
+  // 2. Connect to Tablet via WebRTC PeerJS with Auto-Reconnect
   useEffect(() => {
     if (!room || !stream) return;
 
     let peer: any = null;
-    let call: any = null;
+    let currentCall: any = null;
     let isMounted = true;
+    let retryTimer: any = null;
+
+    const scheduleRetry = () => {
+      if (retryTimer || !isMounted) return;
+      retryTimer = setTimeout(() => {
+        retryTimer = null;
+        if (isMounted) {
+          makeCall();
+        }
+      }, 3000);
+    };
+
+    const makeCall = () => {
+      if (!isMounted || !peer || peer.destroyed || !stream) return;
+      if (currentCall) {
+        try { currentCall.close(); } catch (_) {}
+        currentCall = null;
+      }
+
+      try {
+        setStatus("connecting");
+        setStatusMsg("Menghubungi tablet photobooth...");
+        const call = peer.call(room, stream);
+        if (!call) return;
+        currentCall = call;
+
+        const pc: RTCPeerConnection = call.peerConnection;
+        if (pc) {
+          pc.oniceconnectionstatechange = () => {
+            if (!isMounted) return;
+            const state = pc.iceConnectionState;
+            if (state === "connected" || state === "completed") {
+              setStatus("connected");
+              setStatusMsg("Terhubung ke Tablet! Kamera HP aktif.");
+              if (retryTimer) {
+                clearTimeout(retryTimer);
+                retryTimer = null;
+              }
+            } else if (state === "disconnected" || state === "failed" || state === "closed") {
+              setStatus("connecting");
+              setStatusMsg("Koneksi terputus. Menghubungkan ulang otomatis...");
+              scheduleRetry();
+            }
+          };
+        }
+
+        call.on("close", () => {
+          if (!isMounted) return;
+          setStatus("connecting");
+          setStatusMsg("Koneksi ditutup oleh tablet. Menghubungkan ulang...");
+          scheduleRetry();
+        });
+
+        call.on("error", (err: any) => {
+          console.warn("Call error:", err);
+          if (!isMounted) return;
+          setStatus("connecting");
+          setStatusMsg("Mencari tablet photobooth...");
+          scheduleRetry();
+        });
+
+        // Set connected tentatively once peer connection starts successfully
+        setTimeout(() => {
+          if (isMounted && currentCall === call && pc?.iceConnectionState !== "failed") {
+            setStatus("connected");
+            setStatusMsg("Terhubung ke Tablet! Kamera HP aktif.");
+          }
+        }, 1200);
+      } catch (err) {
+        console.warn("Call attempt error:", err);
+        scheduleRetry();
+      }
+    };
+
+    manualReconnectRef.current = () => {
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+        retryTimer = null;
+      }
+      makeCall();
+    };
 
     async function setupPeer() {
       try {
@@ -101,33 +183,15 @@ function RemoteCameraContent() {
 
         peer.on("open", () => {
           if (!isMounted) return;
-          setStatus("connecting");
-          setStatusMsg("Memanggil Tablet Photobooth...");
-
-          // Call tablet room with video stream
-          call = peer.call(room, stream);
-
-          call.on("stream", () => {
-            // Answer stream received
-          });
-
-          call.on("close", () => {
-            if (isMounted) {
-              setStatus("connecting");
-              setStatusMsg("Koneksi ditutup. Menghubungkan ulang...");
-            }
-          });
-
-          // Connection established
-          setStatus("connected");
-          setStatusMsg("Terhubung ke Tablet! Kamera HP aktif.");
+          makeCall();
         });
 
         peer.on("error", (err: any) => {
           console.warn("Peer error:", err);
-          if (isMounted && status !== "connected") {
+          if (isMounted) {
             setStatus("connecting");
-            setStatusMsg("Mencari tablet... Pastikan tablet masih membuka halaman photobooth.");
+            setStatusMsg("Mencari tablet... Menghubungkan ulang otomatis...");
+            scheduleRetry();
           }
         });
       } catch (err) {
@@ -139,7 +203,8 @@ function RemoteCameraContent() {
 
     return () => {
       isMounted = false;
-      if (call) call.close();
+      if (retryTimer) clearTimeout(retryTimer);
+      if (currentCall) currentCall.close();
       if (peer) peer.destroy();
     };
   }, [room, stream]);
@@ -240,6 +305,18 @@ function RemoteCameraContent() {
             </svg>
             <span>{facingMode === "environment" ? "Kamera Belakang" : "Kamera Depan"}</span>
           </button>
+
+          {status !== "connected" && (
+            <button
+              onClick={() => manualReconnectRef.current?.()}
+              className="flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg border border-emerald-400 backdrop-blur-md transition-all active:scale-95 animate-pulse"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+              </svg>
+              <span>Sambung Ulang</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
