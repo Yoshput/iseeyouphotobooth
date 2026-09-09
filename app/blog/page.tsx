@@ -82,9 +82,16 @@ export default function BlogIndex() {
                 />
               </div>
               <div className="md:col-span-7 flex flex-col justify-center">
-                <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 w-fit ${getCategoryColor(featuredArticle.category)}`}>
-                  {getCategoryLabel(featuredArticle.category)}
-                </span>
+                <div className="flex items-center gap-2 mb-4 flex-wrap">
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold w-fit ${getCategoryColor(featuredArticle.category)}`}>
+                    {getCategoryLabel(featuredArticle.category)}
+                  </span>
+                  {featuredArticle.slug === 'optik-i-see-you-banyumas-wedding-expo-rita-supermall' && (
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+                      Event Selesai
+                    </span>
+                  )}
+                </div>
                 <h2 className="text-2xl sm:text-4xl font-dm-serif text-isy-green-deep mb-4 group-hover:text-isy-green-bright transition-colors leading-snug">
                   {featuredArticle.title}
                 </h2>
@@ -120,10 +127,15 @@ export default function BlogIndex() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute top-3.5 left-3.5">
+                  <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap">
                     <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${getCategoryColor(article.category)}`}>
                       {getCategoryLabel(article.category)}
                     </span>
+                    {article.slug === 'optik-i-see-you-banyumas-wedding-expo-rita-supermall' && (
+                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 shadow-sm">
+                        Event Selesai
+                      </span>
+                    )}
                   </div>
                 </div>
 

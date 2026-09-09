@@ -25,7 +25,7 @@ export default function ShareButtons({ title, slug }: { title: string; slug: str
   const shareWA = () => {
     // Exact format that reliably triggers WhatsApp's rich cover preview card with thumbnail
     const text = encodeURIComponent(
-      `*${title}*\n\nBaca informasi lengkap agenda booth di Rita SuperMall Purwokerto:\n${url}`
+      `*${title}*\n\nBaca artikel selengkapnya di Blog Optik I See You:\n${url}`
     );
     window.open("https://api.whatsapp.com/send?text=" + text, "_blank");
   };
@@ -35,7 +35,7 @@ export default function ShareButtons({ title, slug }: { title: string; slug: str
       try {
         await navigator.share({
           title,
-          text: "Informasi booth Optik I See You di Rita SuperMall Purwokerto: " + title,
+          text: title,
           url,
         });
       } catch {
@@ -136,7 +136,7 @@ export default function ShareButtons({ title, slug }: { title: string; slug: str
                 Pratinjau Stiker Instagram Story
               </span>
               <p className="text-sm font-dm-serif line-clamp-1 mb-3 px-2">
-                Banyumas Wedding Expo 2026 • Rita SuperMall
+                {title}
               </p>
 
               {/* Fake Instagram Link Sticker */}

@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Event is inactive as Banyumas Wedding Expo ended on 6 Sep 2026
+const IS_EVENT_ACTIVE = false;
+
 export default function EventFloatingNotice() {
+  if (!IS_EVENT_ACTIVE) return null;
+
   const [isVisible, setIsVisible] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
 

@@ -24,7 +24,6 @@ import GoogleReviewsSection from "@/components/ui/GoogleReviewsSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
-import EventFloatingNotice from "@/components/ui/EventFloatingNotice";
 import Link from "next/link";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
 import {
@@ -781,9 +780,6 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-
-      {/* ═══ FLOATING EVENT ANNOUNCEMENT (MINIMALIST & NON-INTRUSIVE) ═══ */}
-      <EventFloatingNotice />
 
       {/* ═══ MODAL POPUP WHATSAPP 4 CABANG ═══ */}
       <BranchWhatsAppModal

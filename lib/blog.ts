@@ -26,22 +26,38 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     slug: 'optik-i-see-you-banyumas-wedding-expo-rita-supermall',
     title: 'Optik I See You Hadir di Banyumas Wedding Expo 2026: Layanan Cek Mata dan Studio Photobooth Gratis di Rita SuperMall Purwokerto',
     category: 'info-cabang-promo',
-    excerpt: 'Mulai tanggal 4 hingga 6 September 2026, Optik I See You hadir di Ground Floor Rita SuperMall Purwokerto dalam rangka Banyumas Wedding Expo 2026. Temukan booth kami tepat di depan gerai J.CO dan samping lift utama.',
+    excerpt: 'Dokumentasi agenda Optik I See You di Banyumas Wedding Expo 2026 yang berlangsung pada 4–6 September 2026 di Ground Floor Rita SuperMall Purwokerto. Simak keseruan layanan periksa mata gratis dan instalasi photobooth interaktif kami.',
     coverImage: '/blog/covers/cover-wedding-expo-rsm.jpg',
     videoUrl: '/blog/rsm-wedding-expo.mp4',
     author: 'Tim Optik I See You',
     publishedAt: '2026-09-04T00:00:00Z',
-    updatedAt: '2026-09-04T00:00:00Z',
+    updatedAt: '2026-09-07T00:00:00Z',
     relatedCabang: 'Purwokerto',
     content: `
+      <div class="border border-amber-300 bg-amber-50/90 rounded-2xl p-5 mb-8 shadow-xs">
+        <div class="flex items-start gap-3">
+          <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full bg-amber-200 text-amber-900 font-extrabold text-[11px] uppercase tracking-wider flex-shrink-0">
+            Event Telah Berakhir
+          </span>
+          <p class="text-xs sm:text-sm text-amber-900 leading-relaxed">
+            <strong>Informasi Status:</strong> Agenda pameran dan booth Optik I See You di <strong>Banyumas Wedding Expo 2026 (Rita SuperMall Purwokerto)</strong> telah resmi selesai diselenggarakan pada <strong>4 – 6 September 2026</strong>. Artikel ini tetap diarsipkan sebagai dokumentasi agenda resmi. Bagi Anda yang ingin melakukan periksa mata gratis atau mencari kacamata, silakan kunjungi gerai cabang Optik I See You terdekat.
+          </p>
+        </div>
+      </div>
+
       <div class="border border-isy-line bg-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
-        <span class="text-xs uppercase tracking-widest text-isy-green-deep font-semibold block mb-2">Informasi Agenda Resmi</span>
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+          <span class="text-xs uppercase tracking-widest text-isy-green-deep font-semibold block">Dokumentasi Agenda Resmi</span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-bold">
+            ● Status: Telah Selesai
+          </span>
+        </div>
         <h3 class="text-xl sm:text-2xl font-dm-serif text-isy-green-deep mb-4">Banyumas Wedding Expo 2026 bersama Optik I See You</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-isy-ink/80 pt-4 border-t border-isy-line">
           <div>
             <p class="font-semibold text-isy-green-deep mb-1">Jadwal Pelaksanaan</p>
             <p>Jumat – Minggu, 4 – 6 September 2026</p>
-            <p>Pukul 10.00 – 22.00 WIB</p>
+            <p class="text-amber-800 font-semibold text-xs">(Agenda Resmi Telah Selesai)</p>
           </div>
           <div>
             <p class="font-semibold text-isy-green-deep mb-1">Titik Lokasi Booth</p>
@@ -88,10 +104,10 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h3>4. Konsultasi Khusus Calon Mempelai (Wedding Eye-Look)</h3>
       <p>Bagi calon pengantin yang tengah merancang penampilan pernikahan di Banyumas Wedding Expo, kami menyediakan sesi konsultasi pemilihan lensa kontak estetik yang nyaman digunakan sepanjang prosesi akad dan resepsi, serta panduan memilih siluet bingkai kacamata yang serasi dengan riasan wajah.</p>
 
-      <h2>Informasi Kunjungan</h2>
-      <p>Pameran berlangsung singkat selama tiga hari, mulai tanggal <strong>4 hingga 6 September 2026</strong>. Kami mengundang Anda untuk berkunjung dan memanfaatkan fasilitas pemeriksaan serta photobooth di Ground Floor Rita SuperMall Purwokerto.</p>
+      <h2>Dokumentasi &amp; Kunjungan Cabang</h2>
+      <p>Agenda pameran telah resmi berakhir pada <strong>6 September 2026</strong>. Kami mengucapkan terima kasih yang sebesar-besarnya atas antusiasme luar biasa dari seluruh masyarakat Purwokerto dan pengunjung Rita SuperMall yang telah hadir memanfaatkan fasilitas pemeriksaan mata dan photobooth kami.</p>
       
-      <p>Untuk pertanyaan seputar penawaran khusus pameran atau reservasi konsultasi, Anda dapat menghubungi tim layanan pelanggan kami melalui tautan di bawah ini.</p>
+      <p>Bagi Anda yang ingin melanjutkan konsultasi resep kacamata, penyesuaian lensa, atau mencari koleksi frame terbaru, Anda dapat langsung mengunjungi gerai cabang resmi Optik I See You terdekat atau menghubungi layanan pelanggan kami.</p>
     `
   },
   // ── 1. TIPS BENTUK WAJAH (Instagram Post Dcf4EGfD_af) ─────────────────────
