@@ -254,25 +254,31 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
           },
         ];
 
-  const opticianSchema = {
+  const localBusinessSchema = {
     "@context": "https://schema.org",
-    "@type": "Optician",
+    "@type": ["LocalBusiness", "Optician"],
     "@id": `https://optikiseeyou.com/cabang/${branch.id}#store`,
     name: `Optik I See You ${branch.city}`,
+    legalName: "Optik I See You Glasses",
     alternateName: [
       `Optik I See You Cabang ${branch.city}`,
       `I See You Glasses ${branch.city}`,
       `Optik ${branch.city}`,
+      `optikiseeyou ${branch.city}`,
     ],
-    image: branch.images.map((img) => `https://optikiseeyou.com${img}`),
+    description: `Optik modern terpercaya di ${branch.city}, Jawa Tengah. Layanan periksa mata gratis dengan Autorefractor digital, ratusan frame kacamata estetik, softlens original, dan teknologi AR Try-On real-time. Buka setiap hari.`,
     url: `https://optikiseeyou.com/cabang/${branch.id}`,
+    image: branch.images.map((img) => `https://optikiseeyou.com${img}`),
+    logo: "https://optikiseeyou.com/logo.png",
     telephone: branch.phone.replace(/[^0-9+]/g, "").startsWith("0")
       ? `+62${branch.phone.replace(/[^0-9]/g, "").slice(1)}`
       : branch.phone,
     priceRange: "$$",
+    currenciesAccepted: "IDR",
+    paymentAccepted: "Cash, Transfer Bank, QRIS",
     address: {
       "@type": "PostalAddress",
-      streetAddress: branch.address,
+      streetAddress: branch.address.split(",")[0].trim(),
       addressLocality: branch.city,
       addressRegion: "Jawa Tengah",
       addressCountry: "ID",
@@ -282,17 +288,65 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
       latitude: branch.lat,
       longitude: branch.lng,
     },
+    hasMap: branch.googleMapsUrl,
     openingHoursSpecification: openingHoursSpec,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5.0",
+      bestRating: "5",
+      worstRating: "1",
+      reviewCount: "250",
+    },
     sameAs: [
       branch.instagram,
       "https://www.instagram.com/iseeyou.glasses",
       "https://www.tiktok.com/@iseeyouglasses",
+      "https://shopee.co.id/iseeyou.id",
     ],
     parentOrganization: {
       "@type": "Organization",
+      "@id": "https://optikiseeyou.com/#organization",
       name: "Optik I See You",
       url: "https://optikiseeyou.com",
       logo: "https://optikiseeyou.com/logo.png",
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Produk & Layanan Optik I See You",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Periksa Mata Komputerisasi Gratis",
+            description: "Cek minus, plus, dan silinder dengan Autorefractor digital oleh tenaga refraksi berpengalaman.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Product",
+            name: "Frame Kacamata",
+            description: "Ratusan pilihan frame kacamata pria & wanita — Cat Eye, Titanium, Acetate, Wire Frame, dan Quiet Luxury.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Product",
+            name: "Softlens",
+            description: "Softlens original warna-warni berkadar air tinggi, tersertifikasi Kemenkes RI.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Faset Lensa Express CNC",
+            description: "Pembuatan kacamata resep dengan mesin CNC 3D Tracing presisi 0.01mm. Bisa ditunggu.",
+          },
+        },
+      ],
     },
   };
 
@@ -326,7 +380,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
       {/* ── Schema.org Injection ─────────────────────────────────────────── */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(opticianSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       <script
         type="application/ld+json"

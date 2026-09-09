@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog Kesehatan Mata & Gaya Kacamata | Optik I See You',
-  description: 'Tips perawatan mata, panduan pilih kacamata, tren frame terbaru, dan edukasi softlens dari Optik I See You — optik terpercaya di Purwokerto, Purbalingga, Wonosobo, Cilacap.',
+  title: 'Blog Kesehatan Mata & Tips Kacamata | Optik I See You',
+  description: 'Tips perawatan mata, cara pilih frame kacamata, tren frame 2026, dan edukasi softlens dari tim ahli Optik I See You. Baca artikel gratis!',
   openGraph: {
-    title: 'Blog Kesehatan Mata & Gaya Kacamata | Optik I See You',
-    description: 'Tips perawatan mata, panduan pilih kacamata, tren frame terbaru, dan edukasi softlens dari Optik I See You.',
+    title: 'Blog Kesehatan Mata & Tips Kacamata | Optik I See You',
+    description: 'Tips perawatan mata, cara pilih frame kacamata, tren frame 2026, dan edukasi softlens dari tim ahli Optik I See You.',
     url: 'https://optikiseeyou.com/blog',
     siteName: 'Optik I See You',
     images: [
@@ -13,12 +13,13 @@ export const metadata: Metadata = {
         url: '/hero-bg.jpg',
         width: 1280,
         height: 853,
-        alt: 'Blog Optik I See You',
+        alt: 'Blog Optik I See You — Tips Kacamata & Kesehatan Mata',
       },
     ],
     locale: 'id_ID',
     type: 'website',
   },
+  alternates: { canonical: 'https://optikiseeyou.com/blog' },
 };
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {

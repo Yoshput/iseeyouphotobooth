@@ -1,17 +1,16 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AR Try On Kacamata Virtual | Optik I See You',
-  description: 'Coba kacamata secara virtual dengan teknologi AR face tracking langsung di browser. Tidak perlu download app! Temukan frame yang cocok untuk wajahmu.',
-  keywords: ['try on kacamata virtual', 'AR kacamata', 'virtual try on glasses', 'coba kacamata online'],
+  title: 'Coba Kacamata Virtual AR Try-On — Tanpa Install App | Optik I See You',
+  description: 'Coba ratusan frame kacamata langsung di wajahmu secara real-time! Teknologi AR face tracking — gratis, tanpa download aplikasi. Tersedia di optikiseeyou.com.',
+  keywords: ['coba kacamata virtual', 'AR try on kacamata', 'virtual try on kacamata online', 'kacamata AR purwokerto'],
   openGraph: {
-    title: 'AR Try On Kacamata | Optik I See You',
-    description: 'Coba kacamata secara virtual dengan teknologi AR terkini!',
+    title: 'Coba Kacamata Virtual AR Try-On | Optik I See You',
+    description: 'Coba frame kacamata langsung di wajahmu dengan AR real-time. Gratis, tanpa install app!',
     url: 'https://optikiseeyou.com/try-on',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'AR Try On Kacamata Optik I See You' }],
   },
   alternates: { canonical: 'https://optikiseeyou.com/try-on' },
-  robots: { index: false }, // Halaman ini berat JS, tidak ideal untuk SEO crawl
 };
 
 export default function TryOnLayout({ children }: { children: React.ReactNode }) {

@@ -76,27 +76,70 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  // Schema.org Structured Data
+  // Schema.org Structured Data (Article + BreadcrumbList)
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    image: [`https://optikiseeyou.com${post.coverImage}`],
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt,
-    author: {
-      "@type": "Person",
-      name: post.author,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Optik I See You",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://optikiseeyou.com/logo.png",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `https://optikiseeyou.com/blog/${post.slug}#article`,
+        isPartOf: {
+          "@type": "WebPage",
+          "@id": `https://optikiseeyou.com/blog/${post.slug}`,
+        },
+        headline: post.title,
+        description: post.excerpt,
+        image: [
+          post.coverImage.startsWith("http")
+            ? post.coverImage
+            : `https://optikiseeyou.com${post.coverImage}`,
+        ],
+        datePublished: post.publishedAt,
+        dateModified: post.updatedAt,
+        mainEntityOfPage: `https://optikiseeyou.com/blog/${post.slug}`,
+        author: {
+          "@type": "Person",
+          name: post.author,
+          worksFor: {
+            "@type": "Organization",
+            name: "Optik I See You",
+            url: "https://optikiseeyou.com",
+          },
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Optik I See You",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://optikiseeyou.com/logo.png",
+          },
+        },
       },
-    },
-    description: post.excerpt,
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://optikiseeyou.com/blog/${post.slug}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Beranda",
+            item: "https://optikiseeyou.com",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog & Edukasi",
+            item: "https://optikiseeyou.com/blog",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: post.title,
+            item: `https://optikiseeyou.com/blog/${post.slug}`,
+          },
+        ],
+      },
+    ],
   };
 
   // Find related articles (same category, exclude current)

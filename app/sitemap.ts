@@ -16,75 +16,69 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
-      lastModified,
+      lastModified: new Date("2026-09-09"),
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/try-on`,
-      lastModified,
+      lastModified: new Date("2026-09-09"),
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/start`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
       url: `${baseUrl}/photobooth`,
-      lastModified,
+      lastModified: new Date("2026-09-09"),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/katalog`,
-      lastModified,
+      lastModified: new Date("2026-09-09"),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/softlens`,
-      lastModified,
-      changeFrequency: "daily",
+      lastModified: new Date("2026-09-09"),
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/download`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/kebijakan-privasi`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/syarat-ketentuan`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
       url: `${baseUrl}/blog`,
-      lastModified,
+      lastModified: new Date("2026-09-09"),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/quiz`,
-      lastModified,
+      lastModified: new Date("2026-09-01"),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/testimoni`,
-      lastModified,
+      lastModified: new Date("2026-09-09"),
       changeFrequency: "weekly",
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/cabang`,
+      lastModified: new Date("2026-09-09"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/kebijakan-privasi`,
+      lastModified: new Date("2026-08-01"),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/syarat-ketentuan`,
+      lastModified: new Date("2026-08-01"),
+      changeFrequency: "monthly",
+      priority: 0.3,
     },
   ];
 
@@ -92,7 +86,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 4 Branch dedicated pages
   const branchRoutes: MetadataRoute.Sitemap = BRANCHES.map((b) => ({
     url: `${baseUrl}/cabang/${b.id}`,
-    lastModified,
+    lastModified: new Date("2026-09-09"),
     changeFrequency: "monthly",
     priority: 0.9,
   }));

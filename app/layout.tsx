@@ -19,11 +19,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://optikiseeyou.com"),
   title: {
-    default: "Optik I See You — Kacamata, Softlens & AR Photobooth Purwokerto",
+    default: "Optik I See You — Kacamata & Softlens Terbaik di Purwokerto",
     template: "%s | Optik I See You",
   },
   description:
-    "Pusat kacamata & softlens kekinian di Purwokerto, Purbalingga, Wonosobo, dan Cilacap. Nikmati periksa mata gratis, coba frame via AR Try-On real-time, dan photobooth seru di Optik I See You.",
+    "Optik terpercaya di Purwokerto, Purbalingga, Wonosobo & Cilacap. Periksa mata gratis, ratusan frame kacamata, softlens, dan AR Try-On real-time. Temukan kacamata yang cocok untukmu!",
   keywords: [
     "optik i see you",
     "optik i see you glasses",
@@ -67,9 +67,9 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
   },
   openGraph: {
-    title: "Optik I See You — AR Try-On Kacamata & Katalog Softlens",
+    title: "Optik I See You — Kacamata, Softlens & AR Try-On Purwokerto",
     description:
-      "Coba langsung koleksi kacamata & softlens I See You di wajah kamu secara real-time. Layanan optik modern & photobooth seru di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
+      "Periksa mata GRATIS, 100+ frame kacamata, softlens original, dan coba kacamata virtual AR di wajahmu. Tersedia di Purwokerto, Purbalingga, Wonosobo & Cilacap.",
     url: "https://optikiseeyou.com",
     siteName: "Optik I See You",
     locale: "id_ID",
@@ -79,15 +79,15 @@ export const metadata: Metadata = {
         url: "/hero-bg.jpg",
         width: 1280,
         height: 853,
-        alt: "Optik I See You — AR Try-On & Photobooth",
+        alt: "Optik I See You — Kacamata & Softlens Terbaik di Purwokerto",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Optik I See You — AR Try-On Kacamata & Katalog Softlens",
+    title: "Optik I See You — Kacamata, Softlens & AR Try-On Purwokerto",
     description:
-      "Coba langsung kacamata & softlens di wajahmu dengan teknologi AR real-time. Kunjungi Optik I See You Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
+      "Periksa mata GRATIS, 100+ frame kacamata estetik, softlens original & coba virtual AR. 4 Cabang: Purwokerto, Purbalingga, Wonosobo, Cilacap.",
     images: ["/hero-bg.jpg"],
   },
 };
