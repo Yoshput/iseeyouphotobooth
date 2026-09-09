@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Quiz: Temukan Frame Kacamata Sesuai Kepribadianmu | Optik I See You',
-  description: 'Ikuti quiz singkat 4 pertanyaan dan temukan frame kacamata yang paling cocok untuk gaya hidupmu. Gratis, interaktif, dan langsung coba via AR Try-On!',
-  keywords: ['quiz frame kacamata', 'frame kacamata cocok wajah', 'rekomendasi kacamata', 'pilih kacamata berdasarkan kepribadian', 'optik i see you quiz'],
+  title: 'Quiz & Skrining Penglihatan Interaktif | Optik I See You',
+  description: 'Ikuti kuis edukasi kesehatan mata, tes skrining visual minus & silinder (kipas astigmatisme & duochrome), serta temukan karakter frame kacamata impianmu.',
+  keywords: ['quiz optik i see you', 'tes silinder online', 'tes minus mata', 'skrining penglihatan mandiri', 'kuis frame kacamata', 'kuis kesehatan mata'],
   openGraph: {
-    title: 'Quiz Frame Kacamata — Temukan Style-mu | Optik I See You',
-    description: 'Quiz cepat 4 pertanyaan untuk temukan frame kacamata terbaik sesuai kepribadian dan gaya hidupmu.',
+    title: 'Quiz & Skrining Penglihatan Interaktif | Optik I See You',
+    description: 'Asah wawasan dan periksa indikasi penglihatanmu lewat tes visual interaktif serta temukan frame kacamata yang cocok.',
     url: 'https://optikiseeyou.com/quiz',
     siteName: 'Optik I See You',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Quiz Frame Kacamata Optik I See You' }],
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Quiz & Skrining Penglihatan Optik I See You' }],
     locale: 'id_ID',
     type: 'website',
   },

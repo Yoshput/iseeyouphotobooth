@@ -140,21 +140,13 @@ export default function BlogShowcaseSection() {
           onTouchStart={() => setIsPaused(true)}
           onTouchEnd={() => setIsPaused(false)}
         >
-          {/* Top Progress Timer Bar (Like LED News Ticker Auto-Switch) */}
-          <div className="w-full h-1.5 bg-gray-100 relative overflow-hidden">
+          {/* Top Progress Timer Bar (Minimalist & Sleek) */}
+          <div className="w-full h-[2.5px] bg-gray-100 relative overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-isy-green-bright to-isy-green-deep transition-[width] ease-linear duration-75"
               style={{ width: `${progress}%` }}
             />
           </div>
-
-          {/* Pause Notification Tooltip */}
-          {isPaused && (
-            <div className="absolute top-4 right-4 z-30 hidden sm:inline-flex items-center gap-1.5 rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-[11px] font-semibold text-white shadow-md animate-in fade-in duration-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-              <span>Otomatis dijeda saat membaca</span>
-            </div>
-          )}
 
           {/* Main Slide Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch min-h-[460px]">

@@ -158,52 +158,54 @@ export default function Navbar() {
 
       </header>
 
-      {/* Mobile Bottom Nav Bar — scrollable for all links */}
-      <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto gap-1 text-[11px] font-bold scrollbar-none">
-        {/* Home */}
-        <Link
-          href="/"
-          aria-label="Beranda"
-          className={`flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors ${
-            pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep"
-          }`}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-          <span>Home</span>
-        </Link>
+      {/* Mobile Bottom Nav Bar — scrollable for all links (hidden on /quiz so it never covers interactive quiz controls) */}
+      {!pathname?.startsWith("/quiz") && (
+        <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto gap-1 text-[11px] font-bold scrollbar-none">
+          {/* Home */}
+          <Link
+            href="/"
+            aria-label="Beranda"
+            className={`flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+              pathname === "/" ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep"
+            }`}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>Home</span>
+          </Link>
 
-        {/* Divider */}
-        <span className="shrink-0 h-4 w-px bg-isy-line/80 mx-0.5" />
+          {/* Divider */}
+          <span className="shrink-0 h-4 w-px bg-isy-line/80 mx-0.5" />
 
-        {navLinks.map((link) => {
-          const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
-          const isActive =
-            isKatalog ||
-            (link.href.startsWith("/#")
-              ? false
-              : (pathname ?? "").startsWith(link.href.split("?")[0]));
+          {navLinks.map((link) => {
+            const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
+            const isActive =
+              isKatalog ||
+              (link.href.startsWith("/#")
+                ? false
+                : (pathname ?? "").startsWith(link.href.split("?")[0]));
 
-          const isQuiz = link.href === "/quiz";
+            const isQuiz = link.href === "/quiz";
 
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`relative shrink-0 px-2.5 py-1 rounded-full transition-colors ${
-                isActive ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
-              }`}
-            >
-              {isQuiz && !isActive && (
-                <span className="absolute top-1 right-1.5 h-1.5 w-1.5 rounded-full bg-isy-green-bright" />
-              )}
-              {link.label}
-            </Link>
-          );
-        })}
-      </div>
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative shrink-0 px-2.5 py-1 rounded-full transition-colors ${
+                  isActive ? "bg-isy-green-deep text-white" : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
+                }`}
+              >
+                {isQuiz && !isActive && (
+                  <span className="absolute top-1 right-1.5 h-1.5 w-1.5 rounded-full bg-isy-green-bright" />
+                )}
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
 
 
 
