@@ -99,17 +99,36 @@ export async function POST(req: NextRequest) {
 
     const qrPageUrl = `${siteUrl}/download?id=${encodeURIComponent(uniqueId)}`;
 
-    return NextResponse.json({
-      ok: true,
-      photoId: uniqueId,
-      stripUrl: finalStripUrl,
-      gifUrl: finalGifUrl,
-      qrPageUrl,
-    });
+    return NextResponse.json(
+      {
+        ok: true,
+        photoId: uniqueId,
+        stripUrl: finalStripUrl,
+        gifUrl: finalGifUrl,
+        qrPageUrl,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (err: unknown) {
     const errorMsg =
       err instanceof Error ? err.message : "Terjadi kesalahan internal saat mengunggah foto ke R2.";
     console.error("R2 Upload Route Error:", err);
-    return NextResponse.json({ ok: false, error: errorMsg }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: errorMsg },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   }
 }

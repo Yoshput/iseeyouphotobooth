@@ -1,0 +1,55 @@
+# ==============================================================================
+# Apache Production Hardening Configuration for optikiseeyou.com
+# ==============================================================================
+
+# Disable directory browsing
+Options -Indexes
+
+# ==============================================================================
+# 1. Block Access to Sensitive Files, Backups & Environment Variables
+# ==============================================================================
+<FilesMatch "^\.|\.(env.*|git.*|sql|sqlite|sqlite3|db|bak|backup|old|log|conf|ini|sh|tar|gz|zip|json|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Allow public web manifests and robots/sitemap
+<FilesMatch "^(manifest\.json|sitemap\.xml|robots\.txt)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</FilesMatch>
+
+# ==============================================================================
+# 2. Production Security Headers
+# ==============================================================================
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(self), microphone=(), geolocation=(), browsing-topics=()"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-DNS-Prefetch-Control "on"
+    Header always set Content-Security-Policy "default-src 'self' https://optikiseeyou.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https: https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com https://cdn.jsdelivr.net https://*.peerjs.com wss://*.peerjs.com https://fonts.googleapis.com https://fonts.gstatic.com data: blob:; media-src 'self' blob: data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.whatsapp.com https://wa.me; frame-ancestors 'none'; upgrade-insecure-requests;"
+</IfModule>
+
+# ==============================================================================
+# 3. Cache-Control for Sensitive Routes
+# ==============================================================================
+<IfModule mod_headers.c>
+    <LocationMatch "^/api/">
+        Header always set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+        Header always set Pragma "no-cache"
+        Header always set Expires "0"
+    </LocationMatch>
+</IfModule>

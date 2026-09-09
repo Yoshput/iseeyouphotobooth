@@ -12,6 +12,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/api/", "/remote-camera", "/download/"],
       },
     ],
     sitemap: "https://optikiseeyou.com/sitemap.xml",
