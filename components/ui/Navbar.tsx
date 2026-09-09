@@ -9,6 +9,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
+  const [isQuizPlaying, setIsQuizPlaying] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -36,6 +37,25 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Detect whether user is actively answering a quiz so bottom nav only hides during gameplay
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const checkQuizState = () => {
+      setIsQuizPlaying(document.body.getAttribute("data-quiz-playing") === "true");
+    };
+
+    checkQuizState();
+
+    const observer = new MutationObserver(checkQuizState);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-quiz-playing"],
+    });
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
   const navLinks = [
     { href: "/photobooth", label: "Photobooth" },
     { href: "/katalog", label: "Katalog" },
@@ -44,7 +64,6 @@ export default function Navbar() {
     { href: "/testimoni", label: "Testimoni" },
     { href: "/#lokasi", label: "Lokasi" },
   ];
-
 
   return (
     <>
@@ -64,7 +83,22 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
 
           {/* Left Group: Brand Logo + Navigation Links */}
-          <div className="flex items-center gap-6 sm:gap-8">
+          <div className="flex items-center gap-3 sm:gap-6 sm:gap-8">
+            {/* Mobile-Only Home Return Button on /quiz */}
+            {pathname?.startsWith("/quiz") && (
+              <Link
+                href="/"
+                aria-label="Kembali ke Beranda"
+                title="Kembali ke Beranda"
+                className="flex md:hidden items-center gap-1 px-2.5 py-1 rounded-full bg-isy-green-deep/10 text-isy-green-deep text-[11px] font-black hover:bg-isy-green-deep/20 transition-all active:scale-95 shrink-0"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span>Home</span>
+              </Link>
+            )}
+
             <Link href="/" className="flex items-center gap-3 group shrink-0">
               <Image
                 src="/logo.webp"
@@ -158,8 +192,8 @@ export default function Navbar() {
 
       </header>
 
-      {/* Mobile Bottom Nav Bar — scrollable for all links (hidden on /quiz so it never covers interactive quiz controls) */}
-      {!pathname?.startsWith("/quiz") && (
+      {/* Mobile Bottom Nav Bar — scrollable for all links (hidden only when user is actively playing a quiz) */}
+      {!isQuizPlaying && (
         <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto gap-1 text-[11px] font-bold scrollbar-none">
           {/* Home */}
           <Link

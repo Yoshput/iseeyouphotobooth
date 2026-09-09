@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Sparkles,
   ArrowRight,
+  ArrowLeft,
   Scan,
   Glasses,
   ShieldCheck,
@@ -80,6 +81,22 @@ export default function QuizPage() {
       stopSpeaking();
     };
   }, []);
+
+  // Notify Navbar to hide mobile bottom navbar ONLY during active quiz gameplay
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      if (viewMode === "playing") {
+        document.body.setAttribute("data-quiz-playing", "true");
+      } else {
+        document.body.removeAttribute("data-quiz-playing");
+      }
+    }
+    return () => {
+      if (typeof document !== "undefined") {
+        document.body.removeAttribute("data-quiz-playing");
+      }
+    };
+  }, [viewMode]);
 
   // Active question derived from shuffled session questions
   const activeQuestion: QuizQuestionItem | null =
@@ -273,6 +290,17 @@ export default function QuizPage() {
         <div className="pt-6 sm:pt-10 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
           {/* Hero Header */}
           <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+            {/* Simple Home Return Link */}
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-isy-line text-xs font-bold text-isy-green-deep hover:bg-isy-mist hover:border-isy-green-bright/40 active:scale-95 transition-all shadow-2xs cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 text-isy-green-deep" />
+                <span>Kembali ke Beranda</span>
+              </Link>
+            </div>
+
             <div className="inline-flex items-center gap-2 rounded-full bg-isy-green-deep/10 border border-isy-green-deep/20 px-4 py-1 text-xs font-black uppercase tracking-wider text-isy-green-deep mb-3 shadow-xs">
               <Award className="w-3.5 h-3.5 text-isy-green-bright" />
               <span>I See You Quiz &amp; Eye Lab</span>

@@ -52,9 +52,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/quiz`,
-      lastModified: new Date("2026-09-01"),
-      changeFrequency: "monthly",
-      priority: 0.8,
+      lastModified: new Date("2026-09-09"),
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/testimoni`,

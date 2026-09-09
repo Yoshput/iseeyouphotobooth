@@ -256,6 +256,13 @@ export default function RootLayout({
                     {
                       "@type": "SiteNavigationElement",
                       position: 5,
+                      name: "Quiz Frame & Skrining Mata",
+                      description: "Tes IQ kesehatan mata, uji minus silinder, dan analisis frame kacamata",
+                      url: "https://optikiseeyou.com/quiz",
+                    },
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 6,
                       name: "4 Cabang Resmi",
                       description: "Cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap",
                       url: "https://optikiseeyou.com/#lokasi",

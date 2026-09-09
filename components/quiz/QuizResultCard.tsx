@@ -15,6 +15,7 @@ import {
   Compass,
   ArrowRight,
   ExternalLink,
+  Home,
 } from "lucide-react";
 import { QuizModule, QuizOption } from "@/lib/quiz-data";
 import { CATALOG_COLLECTIONS, CatalogItem } from "@/lib/catalog";
@@ -466,6 +467,15 @@ export default function QuizResultCard({
           >
             Pilih Kuis Lainnya di Hub
           </button>
+
+          {/* Simple Return to Home */}
+          <Link
+            href="/"
+            className="w-full inline-flex items-center justify-center gap-1.5 py-1.5 text-xs font-bold text-isy-green-deep/70 hover:text-isy-green-deep transition-colors"
+          >
+            <Home className="w-3.5 h-3.5" />
+            <span>Kembali ke Beranda Utama</span>
+          </Link>
         </div>
       </div>
 
