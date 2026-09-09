@@ -21,7 +21,153 @@ function calculateReadingTime(content: string): number {
 }
 
 const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
-  // ── 0. EVENT BANYUMAS WEDDING EXPO - RITA SUPERMALL PURWOKERTO ────────────
+  // ── 0. GAYA & LIFESTYLE: STARTER PACK COFFEE SHOP (Instagram Post DcvcKUPj5ro) ──
+  {
+    slug: 'rekomendasi-frame-tipe-keseharian-starter-pack-coffee-shop',
+    title: 'Starter Pack Nongkrong di Coffee Shop: Rekomendasi Frame Kacamata Sesuai Tipe Keseharian Kamu',
+    category: 'tren-gaya',
+    excerpt: 'Datang ke coffee shop bukan sekadar ngopi atau nugas, tapi juga ajang show off outfit harian! Simak rekomendasi frame kacamata yang klop dengan persona kamu: Si Paling Skena, The Overworked Creative, hingga The Aesthetic Minimalist.',
+    coverImage: '/blog/lifestyle-dcvcku/slide-1.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-09-09T08:00:00Z',
+    updatedAt: '2026-09-09T08:00:00Z',
+    content: `
+      <p>Bagi generasi urban saat ini, <em>coffee shop</em> bukan lagi sekadar tempat singgah untuk menikmati secangkir kopi. Di sanalah tempat kita bekerja (*WFC*), mencari inspirasi kreatif, berdiskusi santai, hingga mengekspresikan karakter diri lewat <strong>OOTD (Outfit of the Day)</strong>. Dan di antara semua elemen fashion, kacamata adalah aksesori paling sentral yang langsung dilihat pertama kali saat berhadapan dengan orang lain.</p>
+
+      <p>Pertanyaannya: apakah kacamata yang kamu pakai saat ini sudah benar-benar merepresentasikan persona dan tipe keseharianmu? Yuk cek starter pack rekomendasi frame berikut dan temukan mana yang paling kamu banget!</p>
+
+      <!-- SLIDE 1 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Persona Guide • Slide 1</span>
+        <img src="/blog/lifestyle-dcvcku/slide-1.jpg" alt="Starter Pack Nongkrong di Coffee Shop Optik I See You" />
+        <h3>Starter Pack Nongkrong di Coffee Shop: Frame Mana yang Kamu Banget?</h3>
+        <p>Dari warna crystal clear yang modern, palet warm caramel amber, hingga siluet vintage square. Setiap model kacamata punya energi unik yang siap memperkuat karakter personalmu.</p>
+      </div>
+
+      <h2>1. Si Paling Skena 🎧 — Edgy, Modern &amp; Stand Out</h2>
+      <p>Ciri khas persona ini adalah selalu update dengan tren streetwear, suka eksplorasi musik indie, dan nggak ragu tampil beda. Datang ke coffee shop bukan cuma buat nugas, tapi sekalian <em>show off fit</em> hari ini!</p>
+
+      <!-- SLIDE 2 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Tipe Persona • Slide 2</span>
+        <img src="/blog/lifestyle-dcvcku/slide-2.jpg" alt="Si Paling Skena Frame Transparan OOTD Coffee Shop" />
+        <h3>Si Paling Skena: Frame Transparan untuk Tampilan Edgy Maksimal</h3>
+        <p><strong>Rekomendasi Frame:</strong> Pilih bingkai berbahan akrilik/asetat transparan (<em>clear crystal</em> atau <em>smoke gray</em>). Padukan dengan lensa gradasi atau <strong>lensa Photochromic</strong> yang otomatis menggelap saat nongkrong di area outdoor. Look kamu langsung terlihat effortlessly cool, edgy, dan berjiwa muda!</p>
+      </div>
+
+      <p>Frame transparan memiliki kelebihan universal: tidak menutupi riasan wajah atau garis alis, namun tetap memberikan aksen kontemporer yang sangat fotogenik untuk konten feed dan reels kamu.</p>
+
+      <h2>2. The Overworked Creative 💻 — Bold, Cerdas &amp; Anti Pusing</h2>
+      <p>Deadline menumpuk, revisi bertubi-tubi, dan laptop menyala berjam-jam ditemani segelas iced matcha latte atau americano dingin. Ini adalah potret para desainer, penulis, arsitek, dan pekerja kreatif digital.</p>
+
+      <!-- SLIDE 3 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Tipe Persona • Slide 3</span>
+        <img src="/blog/lifestyle-dcvcku/slide-3.jpg" alt="The Overworked Creative Frame Acetate Hitam Tebal" />
+        <h3>The Overworked Creative: Frame Acetate Hitam Tebal Andalan</h3>
+        <p><strong>Rekomendasi Frame:</strong> Frame <em>bold black acetate</em> tebal dengan siluet semi-kotak atau wayfarer. Kacamata ini adalah penyelamat terbaik untuk menyamarkan kantung mata lelah sehabis begadang, sekaligus memberikan impresi intelek, tegas, dan berwibawa.</p>
+      </div>
+
+      <p><strong>Tips Proteksi Mata:</strong> Jangan lupa pasangkan dengan <strong>Lensa Bluechromic Optik I See You</strong>. Lensa ini memblokir radiasi sinar biru dari layar monitor dan laptop secara maksimal, sehingga mata tidak cepat perih, tegang, atau pusing meski harus menatap layar seharian penuh.</p>
+
+      <h2>3. The Aesthetic Minimalist 🤍 — Clean, Kalem &amp; Quiet Luxury</h2>
+      <p>Prinsip hidupnya adalah <em>less is more</em>. Meja kerjanya selalu rapi teratur, menyukai warna-warna earth tone netral, dan mengutamakan kenyamanan fungsional di atas segalanya.</p>
+
+      <!-- SLIDE 4 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Tipe Persona • Slide 4</span>
+        <img src="/blog/lifestyle-dcvcku/slide-4.jpg" alt="The Aesthetic Minimalist Frame Tipis Clean Super Ringan" />
+        <h3>The Aesthetic Minimalist: Frame Tipis, Clean, dan Super Ringan</h3>
+        <p><strong>Rekomendasi Frame:</strong> Frame bermaterial titanium ultra-ringan atau kawat bundar tipis (<em>wire frame</em>) bernuansa rose gold, matte black, atau champagne. Kacamata ini hampir tidak terasa di wajah, tidak meninggalkan bekas merah di hidung, dan memancarkan aura *quiet luxury* yang elegan tanpa perlu berlebihan.</p>
+      </div>
+
+      <h2>Apapun Persona Kamu, Temukan Frame Pelengkapnya di Optik I See You</h2>
+      <p>Karakter setiap orang itu unik, dan tidak ada satu frame kacamata yang cocok untuk semua orang. Karena itulah di Optik I See You, filosofi kami adalah <em>"for every you"</em>—kami hadir menyediakan ratusan pilihan siluet frame dan teknologi lensa yang pas dengan kebutuhan mata serta gaya hidupmu.</p>
+
+      <!-- SLIDE 5 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Gerai Resmi • Slide 5</span>
+        <img src="/blog/lifestyle-dcvcku/slide-5.jpg" alt="Koleksi Lengkap Frame di Gerai Resmi Optik I See You" />
+        <h3>Apapun Persona Kamu, Temukan Frame Pelengkapnya di Optik I See You</h3>
+        <p>Mampir dan fitting langsung sepuasnya di gerai resmi Optik I See You terdekat: <strong>Purwokerto, Purbalingga, Wonosobo, dan Cilacap</strong>. Nikmati juga layanan konsultasi mata profesional dan periksa mata komputerisasi tanpa pungutan biaya!</p>
+      </div>
+
+      <p>Mau coba pasang di wajahmu sekarang juga? Buka menu <strong>AR Try-On</strong> di website ini dan temukan frame coffee shop impianmu dalam hitungan detik!</p>
+    `
+  },
+  // ── 1. EDUKASI: CONTOURING WAJAH ALAMI LEWAT KACAMATA (Instagram Post Dc0mhoAj3e2) ──
+  {
+    slug: 'kacamata-contouring-wajah-alami-ilusi-optik',
+    title: 'Kacamata Itu Contouring Wajah Alami: Trik Ilusi Optik yang Jarang Dibahas!',
+    category: 'tips-pilih-frame',
+    excerpt: 'Bukan sekadar alat bantu penglihatan, kacamata adalah teknik contouring alami tanpa sapuan makeup! Pelajari rahasia ilusi optik: dari trik hidung lebih mancung lewat bridge, pipi chubby auto-tirus dengan cat-eye, hingga melembutkan garis rahang kotak.',
+    coverImage: '/blog/edukasi-dc0mho/slide-1.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-09-08T09:00:00Z',
+    updatedAt: '2026-09-08T09:00:00Z',
+    content: `
+      <p>Banyak orang mengira bahwa mengubah proporsi wajah agar terlihat lebih tirus, mancung, atau proporsional hanya bisa dicapai lewat riasan makeup tebal seperti shading dan contouring. Padahal, ada satu rahasia estetika yang jauh lebih praktis dan bekerja secara permanen setiap kali Anda beraktivitas: <strong>kacamata adalah contouring wajah alami</strong>.</p>
+
+      <p>Dalam dunia optik dan estetika visual, bingkai kacamata memegang peranan penting sebagai garis pembagi (visual divider) yang memandu ke mana arah mata lawan bicara tertuju. Dengan memahami anatomi bingkai, Anda bisa memanfaatkan ilusi optik ini untuk menyempurnakan fitur wajah terbaik Anda.</p>
+
+      <!-- SLIDE 1 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Edukasi Visual • Slide 1</span>
+        <img src="/blog/edukasi-dc0mho/slide-1.jpg" alt="Kacamata itu Contouring Wajah Alami Trik Ilusi Optik Optik I See You" />
+        <h3>Kacamata Itu Contouring Wajah Alami: Trik Ilusi Optik yang Jarang Dibahas!</h3>
+        <p>Garis-garis anatomi pada wajah menunjukkan bagaimana posisi bingkai kacamata secara langsung mengubah persepsi simetri, panjang hidung, serta ketegasan tulang pipi dan rahang. Mari kita bedah satu per satu rahasia ilusi optiknya di bawah ini!</p>
+      </div>
+
+      <h2>1. Mau Hidung Kelihatan Lebih Mancung? Kuncinya di Bridge!</h2>
+      <p>Banyak yang belum tahu bahwa persepsi panjang dan tingginya tulang hidung sangat dipengaruhi oleh posisi <em>bridge</em> (jembatan penghubung antara lensa kanan dan kiri).</p>
+
+      <!-- SLIDE 2 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Edukasi Visual • Slide 2</span>
+        <img src="/blog/edukasi-dc0mho/slide-2.jpg" alt="Trik Kacamata Bikin Hidung Kelihatan Lebih Mancung" />
+        <h3>Kuncinya Ada di Posisi Bridge Kacamata!</h3>
+        <p><strong>Trik Rahasia:</strong> Pilih frame dengan <em>bridge</em> di posisi atas (high-bridge), jangan yang posisinya persis di tengah atau rendah. Bridge tinggi membiarkan batang hidung Anda terekspos lebih panjang dari atas ke bawah, menciptakan ilusi visual hidung yang lebih jenjang, ramping, dan mancung proporsional.</p>
+      </div>
+
+      <p>Sebaliknya, jika bridge berada terlalu rendah atau tebal tepat di tengah hidung, mata lawan bicara akan menangkap ilusi seolah-olah batang hidung terpotong menjadi lebih pendek. Maka bagi Anda yang ingin hidung terlihat lebih berdimensi tanpa contouring rumit, pilihlah frame dengan desain <em>keyhole bridge</em> atau palang atas yang ramping.</p>
+
+      <h2>2. Pipi Chubby Jadi Auto-Tirus Tanpa Shading Tebal</h2>
+      <p>Bagi pemilik pipi bulat (chubby) atau bentuk wajah bulat, sering kali muncul kekhawatiran bahwa memakai kacamata akan membuat wajah terlihat semakin lebar atau penuh.</p>
+
+      <!-- SLIDE 3 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Edukasi Visual • Slide 3</span>
+        <img src="/blog/edukasi-dc0mho/slide-3.jpg" alt="Trik Kacamata Pipi Chubby Auto Tirus Efek Cat Eye" />
+        <h3>Pipi Chubby Auto-Tirus dengan Sudut Luar yang Naik</h3>
+        <p><strong>Trik Rahasia:</strong> Lupakan shading tebal! Kenakan frame yang sudut luarnya agak ditarik naik ke atas (seperti siluet <em>cat-eye</em>, <em>butterfly</em>, atau sudut atas kotak yang tegas). Desain sudut naik ini memberikan <strong>efek lifting visual</strong> instan, menarik fokus pandangan ke bagian pelipis atas wajah dan membuat garis rahang serta pipi tampak jauh lebih ramping.</p>
+      </div>
+
+      <p>Hindari kacamata bulat tebal berukuran kecil yang garis bawahnya bersentuhan langsung dengan puncak pipi saat Anda tersenyum. Siluet <em>cat-eye</em> dengan sudut melancip lembut adalah sahabat terbaik untuk menciptakan siluet wajah tirus seketika.</p>
+
+      <h2>3. Rahang Kotak yang Tegas Jadi Lebih Lembut dan Kalem</h2>
+      <p>Memiliki bentuk wajah persegi (square face) dengan sudut rahang yang kuat dan tegas sering kali memberikan impresi yang sangat formal atau kaku jika salah memilih bingkai.</p>
+
+      <!-- SLIDE 4 SHOWCASE -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Edukasi Visual • Slide 4</span>
+        <img src="/blog/edukasi-dc0mho/slide-4.jpg" alt="Trik Kacamata untuk Rahang Kotak Menjadi Lebih Soft" />
+        <h3>Lembutkan Garis Wajah dengan Siluet Round atau Oval</h3>
+        <p><strong>Trik Rahasia:</strong> Buat Anda yang memiliki garis rahang tegas atau <em>square face</em>, hindari memilih frame kotak kaku dengan sudut 90 derajat tajam! Lembutkan fitur wajah Anda dengan memakai frame berlekuk bulat (<em>round</em>) atau oval agar keseluruhan proporsi look Anda terlihat lebih seimbang, ramah, dan santun.</p>
+      </div>
+
+      <p>Siluet bulat dengan material asetat transparan atau titanium tipis akan menetralisir kekakuan sudut rahang, memberikan keseimbangan proporsional antara dahi, pipi, dan dagu secara natural.</p>
+
+      <h2>Coba Langsung Fitting di Wajahmu Sekarang!</h2>
+      <p>Penasaran ingin melihat langsung efek contouring ini di wajah Anda? Di <strong>Optik I See You</strong>, kami menyediakan fasilitas modern untuk menemukan pasangan kacamata paling presisi:</p>
+
+      <ul>
+        <li><strong>Fitur AR Try-On Real-Time:</strong> Coba puluhan model frame langsung di depan kamera HP atau laptop Anda secara instan di website kami tanpa perlu download aplikasi.</li>
+        <li><strong>Fitting &amp; Konsultasi Langsung di 4 Cabang:</strong> Kunjungi gerai resmi kami di <strong>Purwokerto, Purbalingga, Wonosobo, dan Cilacap</strong>. Tim refraksionis optisien kami siap membantu menganalisis bentuk wajah dan merekomendasikan frame yang paling menonjolkan keunikan karakter Anda.</li>
+        <li><strong>Pemeriksaan Refraksi Digital Gratis:</strong> Dapatkan pengecekan mata akurat dengan alat komputerisasi mutakhir tanpa pungutan biaya!</li>
+      </ul>
+    `
+  },
+  // ── 1. EVENT BANYUMAS WEDDING EXPO - RITA SUPERMALL PURWOKERTO ────────────
   {
     slug: 'optik-i-see-you-banyumas-wedding-expo-rita-supermall',
     title: 'Optik I See You Hadir di Banyumas Wedding Expo 2026: Layanan Cek Mata dan Studio Photobooth Gratis di Rita SuperMall Purwokerto',
@@ -104,10 +250,53 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h3>4. Konsultasi Khusus Calon Mempelai (Wedding Eye-Look)</h3>
       <p>Bagi calon pengantin yang tengah merancang penampilan pernikahan di Banyumas Wedding Expo, kami menyediakan sesi konsultasi pemilihan lensa kontak estetik yang nyaman digunakan sepanjang prosesi akad dan resepsi, serta panduan memilih siluet bingkai kacamata yang serasi dengan riasan wajah.</p>
 
-      <h2>Dokumentasi &amp; Kunjungan Cabang</h2>
-      <p>Agenda pameran telah resmi berakhir pada <strong>6 September 2026</strong>. Kami mengucapkan terima kasih yang sebesar-besarnya atas antusiasme luar biasa dari seluruh masyarakat Purwokerto dan pengunjung Rita SuperMall yang telah hadir memanfaatkan fasilitas pemeriksaan mata dan photobooth kami.</p>
+      <h2>Galeri Dokumentasi Kemeriahan Booth di Rita SuperMall</h2>
+      <p>Berikut rangkuman dokumentasi visual keseruan booth Optik I See You selama berlangsungnya Banyumas Wedding Expo 2026 di Ground Floor Rita SuperMall Purwokerto (dikutip dari dokumentasi resmi Instagram <a href="https://www.instagram.com/p/Dc5fUQID5Jw/" target="_blank" rel="noopener noreferrer" class="text-isy-green-deep font-semibold underline">@iseeyou.glasses</a>):</p>
+
+      <!-- SLIDE 1 -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Dokumentasi 1 • Day 1 Recap</span>
+        <img src="/blog/wedding-expo/slide-1.jpg" alt="Day 1 Recap Booth Optik I See You di Rita Super Mall Purwokerto" />
+        <h3>Day 1 Recap: Rita Super Mall PWT Pecah Banget!</h3>
+        <p>Suasana semarak booth Optik I See You di Ground Floor Rita SuperMall Purwokerto sejak hari pertama pameran. Tata letak booth yang bersih, neon sign estetik (Acetate Material, Steel Material, I See You), dan deretan display kacamata modern langsung menyedot perhatian pengunjung mall.</p>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Dokumentasi 2 • Good Vibes &amp; Wedding Couple</span>
+        <img src="/blog/wedding-expo/slide-2.jpg" alt="Pengunjung dan Pengantin Kunjungi Booth Optik I See You" />
+        <h3>Good Vibes, Busy Day, Happy Faces!</h3>
+        <p>Keseruan interaksi antara tim Optik I See You dengan pengunjung expo. Kehadiran pasangan pengantin berbusana adat pernikahan tradisional yang ikut mengunjungi booth menjadi salah satu momen paling berkesan dan menambah hangat suasana expo.</p>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Dokumentasi 3 • Antrean Cek Mata Digital</span>
+        <img src="/blog/wedding-expo/slide-3.jpg" alt="Antusiasme Pengunjung Cek Mata Gratis di Booth Optik I See You" />
+        <h3>POV: Niatnya Cuma Cuci Mata, Eh Malah Nyangkut di Booth ISY</h3>
+        <p>Area pemeriksaan mata gratis menggunakan perangkat <em>auto-refractometer</em> digital terkomputerisasi dipadati pengunjung. Banyak yang awalnya hanya berniat jalan-jalan santai di mall, namun antusias memeriksakan kondisi ketajaman mata dan berkonsultasi seputar kacamata bersama tim kami.</p>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Dokumentasi 4 • Fitting Frame Aesthetic</span>
+        <img src="/blog/wedding-expo/slide-4.jpg" alt="Pengunjung Memilih dan Mencoba Frame Kacamata Aesthetic" />
+        <h3>Sibuk Milih Frame Aesthetic</h3>
+        <p>Para pengunjung asyik mencoba langsung (fitting) beragam koleksi frame kacamata unggulan. Dari bahan titanium super ringan hingga model asetat kekinian yang siap menunjang penampilan harian maupun acara spesial pernikahan.</p>
+      </div>
+
+      <!-- SLIDE 5 -->
+      <div class="slide-showcase">
+        <span class="slide-tag">Dokumentasi 5 • Studio Photobooth Interaktif</span>
+        <img src="/blog/wedding-expo/slide-5.jpg" alt="Pengunjung Berpose Seru di Photobooth Gratis Optik I See You" />
+        <h3>Keseruan Studio Photobooth Interaktif</h3>
+        <p>Instalasi studio photobooth gratis menjadi daya tarik favorit bagi pengunjung dari berbagai kalangan. Pengunjung dapat berpose seru dengan properti kacamata pilihan dan mengabadikan momen kebersamaan secara instan di area expo.</p>
+      </div>
+
+      <h2>Kunjungan Cabang &amp; Layanan Berkelanjutan</h2>
+      <p>Meskipun agenda pameran Banyumas Wedding Expo 2026 telah resmi berakhir pada <strong>6 September 2026</strong>, seluruh fasilitas dan layanan unggulan kami tetap hadir setiap hari untuk Anda.</p>
       
-      <p>Bagi Anda yang ingin melanjutkan konsultasi resep kacamata, penyesuaian lensa, atau mencari koleksi frame terbaru, Anda dapat langsung mengunjungi gerai cabang resmi Optik I See You terdekat atau menghubungi layanan pelanggan kami.</p>
+      <p>Bagi Anda yang belum sempat mampir atau ingin melanjutkan konsultasi resep kacamata, penyesuaian lensa, maupun memilih koleksi frame terbaru, Anda dapat langsung mengunjungi gerai cabang resmi Optik I See You terdekat (Purwokerto, Purbalingga, Cilacap, dan Wonosobo) atau menghubungi layanan pelanggan kami.</p>
     `
   },
   // ── 1. TIPS BENTUK WAJAH (Instagram Post Dcf4EGfD_af) ─────────────────────

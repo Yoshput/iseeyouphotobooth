@@ -14,7 +14,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import confetti from "canvas-confetti";
 import FaceTracker, { type FaceTrackerHandle } from "@/components/ar/FaceTracker";
@@ -25,7 +25,7 @@ import { FRAME_LAYOUTS, type FrameLayout } from "@/lib/frameLayouts";
 import { compositeFrame, compositeArTryOnFrame, FRAME_THEMES, getCompatibleThemes, type FrameTheme } from "@/lib/frameCompositor";
 import { COLOR_FILTERS, type ColorFilter } from "@/lib/colorFilters";
 import { detectFaceShape, SHAPE_META, type FaceShapeResult, type FaceShape } from "@/lib/faceShape";
-import { csWhatsappUrl, SHOPEE_STORE_URL } from "@/lib/branches";
+import { SHOPEE_STORE_URL } from "@/lib/branches";
 import { uploadPhotoForQR, generateInstantQR, generatePhotoId, uploadGifToR2 } from "@/lib/uploadImage";
 import { createAnimatedGif } from "@/lib/gifGenerator";
 import { playShutterSound, unlockAudio } from "@/lib/soundEffects";
@@ -464,6 +464,7 @@ function TryOnResult({
   onRetake: () => void; onDownload: () => void; onOpenShareModal: () => void;
 }) {
   const router = useRouter();
+  const [csModalOpen, setCsModalOpen] = useState(false);
   const displayUrl = compositeUrl || photoUrl;
   return (
     <div className="flex flex-col gap-4 px-4 py-4">
@@ -484,18 +485,17 @@ function TryOnResult({
         <img src={displayUrl} alt="Hasil Try On Kacamata" className="h-full max-h-[380px] w-full object-contain" />
       </div>
 
-      {/* Primary CTA: WhatsApp CS */}
-      <a
-        href={csWhatsappUrl(arGlassesName)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 text-xs font-black uppercase tracking-wider text-white shadow-xl active:scale-[0.98]"
+      {/* Primary CTA: WhatsApp CS (Pilihan 4 Cabang) */}
+      <button
+        type="button"
+        onClick={() => setCsModalOpen(true)}
+        className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 text-xs font-black uppercase tracking-wider text-white shadow-xl hover:shadow-2xl transition-all active:scale-[0.98] cursor-pointer"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
           <path d="M16 3C8.82 3 3 8.82 3 16c0 2.36.64 4.57 1.76 6.48L3 29l6.73-1.73A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm6.12 18.08c-.26.73-1.51 1.4-2.08 1.48-.57.08-1.1.36-3.71-.77-3.14-1.36-5.15-4.52-5.3-4.73-.15-.21-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.58-.38.78-.38h.56c.18 0 .43-.07.67.51.25.6.84 2.06.92 2.21.08.14.13.31.03.5-.1.19-.14.31-.28.47-.15.16-.3.36-.43.48-.14.12-.29.25-.12.5.16.24.72 1.19 1.55 1.92 1.07.95 1.97 1.24 2.21 1.38.24.13.38.11.52-.07.14-.18.59-.69.75-.93.16-.23.32-.19.54-.11.22.08 1.39.66 1.63.78.24.12.4.18.46.28.06.1.06.56-.2 1.29z"/>
         </svg>
         Tanya Ketersediaan Frame ke CS
-      </a>
+      </button>
 
       <div className="grid grid-cols-2 gap-2">
         <button onClick={onDownload} className="flex items-center justify-center gap-2 rounded-xl border border-isy-line bg-white py-3 text-xs font-bold text-isy-green-deep hover:border-isy-green-bright active:scale-95">
@@ -516,6 +516,18 @@ function TryOnResult({
           Lihat Katalog
         </button>
       </div>
+
+      {/* Modal Pilihan 4 Cabang Resmi Optik I See You */}
+      <ContactCSModal
+        isOpen={csModalOpen}
+        onClose={() => setCsModalOpen(false)}
+        productName={arGlassesName}
+        customMessage={(branchName) =>
+          arGlassesName
+            ? `Halo Optik I See You Cabang ${branchName}! 👋\nSaya baru saja mencoba frame *${arGlassesName}* di Virtual Try-On Optik I See You.\n\nBoleh tahu apakah stok frame ini masih tersedia di cabang ${branchName}? Soalnya cocok banget di wajah saya. Terima kasih! 🙏`
+            : `Halo Optik I See You Cabang ${branchName}! 👋\nSaya baru saja mencoba Virtual Try-On kacamata di website Optik I See You.\n\nBoleh tahu info ketersediaan frame kacamata di cabang ${branchName}? Terima kasih! 🙏`
+        }
+      />
     </div>
   );
 }
@@ -791,29 +803,31 @@ function StripPreview({
 }
 
 export default function PhotoboothPage() {
- const router = useRouter();
+  const router = useRouter();
+  const pathname = usePathname();
 
- const [phase, setPhase] = useState<BoothPhase>("frame-select");
- const [layout, setLayout] = useState<FrameLayout>(FRAME_LAYOUTS[0]);
- const [themeId, setThemeId] = useState<string>("classic-white");
- const [colorFilterId, setColorFilterId] = useState<string>("normal");
- const [photos, setPhotos] = useState<string[]>([]);
- const [currentSlot, setCurrentSlot] = useState(0);
- const [singleSlotRetake, setSingleSlotRetake] = useState<number | null>(null);
- const [compositeUrl, setCompositeUrl] = useState<string | null>(null);
- const [gifUrl, setGifUrl] = useState<string | null>(null);
- const [glassesIndex, setGlassesIndex] = useState(1);
- const [aiMode, setAiMode] = useState(true);
- // arEnabled = whether the AR/glasses concept exists at all this session.
- // Distinct from aiMode (which only toggles the auto-recommendation badge
- // *within* AR mode) — this is the actual "Photobooth Biasa" switch set on
- // /start.
- const [arEnabled, setArEnabled] = useState(true);
- const [beautyMode, setBeautyMode] = useState(true);
- const [lipstickMode, setLipstickMode] = useState(false);
- const [faceResult, setFaceResult] = useState<FaceShapeResult | null>(null);
-const [faceDetected, setFaceDetected] = useState(false);
- const [toast, setToast] = useState<string | null>(null);
+  const isTryOnRoute = pathname?.includes("/try-on") ?? false;
+  const [phase, setPhase] = useState<BoothPhase>(isTryOnRoute ? "ready" : "frame-select");
+  const [layout, setLayout] = useState<FrameLayout>(FRAME_LAYOUTS[0]);
+  const [themeId, setThemeId] = useState<string>("classic-white");
+  const [colorFilterId, setColorFilterId] = useState<string>("normal");
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [currentSlot, setCurrentSlot] = useState(0);
+  const [singleSlotRetake, setSingleSlotRetake] = useState<number | null>(null);
+  const [compositeUrl, setCompositeUrl] = useState<string | null>(null);
+  const [gifUrl, setGifUrl] = useState<string | null>(null);
+  const [glassesIndex, setGlassesIndex] = useState(1);
+  const [aiMode, setAiMode] = useState(isTryOnRoute);
+  // arEnabled = whether the AR/glasses concept exists at all this session.
+  // Distinct from aiMode (which only toggles the auto-recommendation badge
+  // *within* AR mode) — this is the actual "Photobooth Biasa" switch set on
+  // /start.
+  const [arEnabled, setArEnabled] = useState(isTryOnRoute);
+  const [beautyMode, setBeautyMode] = useState(true);
+  const [lipstickMode, setLipstickMode] = useState(false);
+  const [faceResult, setFaceResult] = useState<FaceShapeResult | null>(null);
+  const [faceDetected, setFaceDetected] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [giantQRModalOpen, setGiantQRModalOpen] = useState(false);
   const [thermalPrintModalOpen, setThermalPrintModalOpen] = useState(false);
@@ -995,7 +1009,7 @@ const [faceDetected, setFaceDetected] = useState(false);
       setArEnabled(false);
       setPhase("frame-select");
     }
-  }, []);
+  }, [pathname]);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -1159,6 +1173,19 @@ const [faceDetected, setFaceDetected] = useState(false);
   const goHome = useCallback(() => router.push("/start"), [router]);
 
   const handleBackNav = useCallback(() => {
+    if (arEnabled) {
+      // Jalur Khusus Try-On Kacamata AR:
+      // Dari layar hasil foto ("result" / "session-review" / "countdown") -> kembali ke kamera & katalog frame kacamata ("ready")
+      // Dari kamera ("ready") -> kembali ke menu pilihan awal Try On vs Photobooth (/start)
+      if (phase === "result" || phase === "session-review" || phase === "countdown") {
+        setPhase("ready");
+      } else {
+        goHome();
+      }
+      return;
+    }
+
+    // Jalur Normal Photobooth Cetak Strip Foto:
     if (phase === "ready") {
       setPhase("theme-select");
     } else if (phase === "theme-select") {
@@ -1172,7 +1199,7 @@ const [faceDetected, setFaceDetected] = useState(false);
     } else {
       goHome();
     }
-  }, [phase, goHome]);
+  }, [arEnabled, phase, goHome]);
 
   const handleCountdownComplete = useCallback(() => {
     const dataUrl = faceTrackerRef.current?.captureFrame() ?? null;
@@ -1834,9 +1861,9 @@ const [faceDetected, setFaceDetected] = useState(false);
  )}
  </div>
 
- {/* Overlays */}
-      {phase === "frame-select" && <FramePicker onSelect={handleLayoutSelect} onBack={goHome} />}
-      {phase === "theme-select" && (
+ {/* Overlays (Hanya untuk Photobooth Strip, bukan Try-On AR) */}
+      {!arEnabled && phase === "frame-select" && <FramePicker onSelect={handleLayoutSelect} onBack={goHome} />}
+      {!arEnabled && phase === "theme-select" && (
         <FrameThemePicker
           layout={layout}
           selectedThemeId={themeId}

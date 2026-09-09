@@ -21,6 +21,7 @@ import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
 import LandingVideoShowcase from "@/components/ui/LandingVideoShowcase";
 import AboutRefractionBookingSection from "@/components/ui/AboutRefractionBookingSection";
 import GoogleReviewsSection from "@/components/ui/GoogleReviewsSection";
+import BlogShowcaseSection from "@/components/ui/BlogShowcaseSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
@@ -343,6 +344,7 @@ export default function LandingPage() {
             <div className="animate-marquee-left flex items-center gap-6">
               {[
                 "/Katalog Berjalan/1.webp",
+                "/katalog/Clarity Series/1-thumb.webp",
                 "/katalog/The Feline Silhouette/5-thumb.webp",
                 "/katalog/The Lucid Vision/14-thumb.webp",
                 "/katalog/The Skena Gaze/9-thumb.webp",
@@ -352,6 +354,7 @@ export default function LandingPage() {
               ]
                 .concat([
                   "/Katalog Berjalan/1.webp",
+                  "/katalog/Clarity Series/1-thumb.webp",
                   "/katalog/The Feline Silhouette/5-thumb.webp",
                   "/katalog/The Lucid Vision/14-thumb.webp",
                   "/katalog/The Skena Gaze/9-thumb.webp",
@@ -361,6 +364,7 @@ export default function LandingPage() {
                 ])
                 .concat([
                   "/Katalog Berjalan/1.webp",
+                  "/katalog/Clarity Series/1-thumb.webp",
                   "/katalog/The Feline Silhouette/5-thumb.webp",
                   "/katalog/The Lucid Vision/14-thumb.webp",
                   "/katalog/The Skena Gaze/9-thumb.webp",
@@ -502,6 +506,9 @@ export default function LandingPage() {
 
       {/* ═══ PAGE 7: TESTIMONI / GOOGLE BUSINESS REVIEWS ═══ */}
       <GoogleReviewsSection />
+
+      {/* ═══ PAGE 7.5: BILLBOARD BLOG & EDUKASI SHOWCASE ═══ */}
+      <BlogShowcaseSection />
 
       {/* ═══ PAGE 8: CABANG & LOKASI MAPS ═══ */}
       <section id="lokasi" className="w-full bg-white px-6 py-16">
@@ -685,6 +692,11 @@ export default function LandingPage() {
                 <a href="#fasilitas" className="transition-colors hover:text-white flex items-center gap-1.5">
                   <span className="text-emerald-400">›</span> Fasilitas Mesin Potong Lensa
                 </a>
+              </li>
+              <li>
+                <Link href="/blog" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Blog &amp; Edukasi Kacamata
+                </Link>
               </li>
             </ul>
           </div>

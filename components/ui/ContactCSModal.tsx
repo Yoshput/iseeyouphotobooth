@@ -67,6 +67,7 @@ interface ContactCSModalProps {
   waUrl?: string;
   productName?: string;
   csName?: string;
+  customMessage?: string | ((branchName: string) => string);
 }
 
 
@@ -76,6 +77,7 @@ export default function ContactCSModal({
   onClose,
   productName,
   csName = "CS I See You",
+  customMessage,
 }: ContactCSModalProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -110,9 +112,16 @@ export default function ContactCSModal({
     if (!branchIdToUse) return;
 
     const branch = CS_BRANCHES.find((b) => b.id === branchIdToUse)!;
-    const message = productName 
-      ? `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya tentang: *${productName}*\n\nBoleh dibantu informasinya? 🙏`
-      : `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya tentang produk frame & lensa kacamata di Optik I See You.\n\nBoleh dibantu informasinya? 🙏`;
+    let message: string;
+    if (typeof customMessage === "function") {
+      message = customMessage(branch.name);
+    } else if (typeof customMessage === "string") {
+      message = customMessage;
+    } else if (productName) {
+      message = `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya ketersediaan frame: *${productName}*\n\nApakah masih tersedia di cabang ini? Boleh dibantu informasinya? 🙏`;
+    } else {
+      message = `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya tentang produk frame & lensa kacamata di Optik I See You.\n\nBoleh dibantu informasinya? 🙏`;
+    }
     const waUrl = `https://api.whatsapp.com/send/?phone=${branch.phoneWa}&text=${encodeURIComponent(message)}`;
 
     window.open(waUrl, "_blank", "noopener,noreferrer");

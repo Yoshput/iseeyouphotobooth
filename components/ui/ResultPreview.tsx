@@ -18,7 +18,7 @@ import Image from "next/image";
 import QRCode from "qrcode";
 import { gsap } from "gsap";
 import type { FrameLayout } from "@/lib/frameLayouts";
-import { csWhatsappUrl } from "@/lib/branches";
+import ContactCSModal from "@/components/ui/ContactCSModal";
 import { downloadOrShareImage } from "@/lib/saveImage";
 import {
   uploadToCloudinary,
@@ -151,6 +151,7 @@ export default function ResultPreview({
   const photoRef = useRef<HTMLDivElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [csModalOpen, setCsModalOpen] = useState(false);
 
   // ── QR / upload state ───────────────────────────────────────────────────────
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
@@ -454,21 +455,20 @@ export default function ResultPreview({
         {/* Tanya stok ke CS — only shown when a specific pair of glasses was
             tried on (AR mode), since "Photobooth Biasa" has no glasses context */}
         {glassesName && (
-          <a
+          <button
+            type="button"
             id="result-ask-cs"
-            href={csWhatsappUrl(glassesName)}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => setCsModalOpen(true)}
             className="
               flex w-full items-center justify-center gap-2.5
               rounded-2xl border-2 border-isy-green-deep bg-white py-3.5
               text-sm font-bold text-isy-green-deep
-              transition-all active:scale-[0.97] hover:bg-isy-mist
+              transition-all active:scale-[0.97] hover:bg-isy-mist cursor-pointer
             "
           >
             <IcWA />
             Tanya Stok &quot;{glassesName}&quot; ke CS
-          </a>
+          </button>
         )}
 
         {/* SECONDARY: Share row */}
@@ -567,6 +567,18 @@ export default function ResultPreview({
           Optik I See You · Purwokerto · Jadi Sahabat Mata Kamu
         </p>
       </div>
+
+      {/* Modal Pilihan 4 Cabang CS */}
+      {glassesName && (
+        <ContactCSModal
+          isOpen={csModalOpen}
+          onClose={() => setCsModalOpen(false)}
+          productName={glassesName}
+          customMessage={(branchName) =>
+            `Halo Optik I See You Cabang ${branchName}! 👋\nSaya baru saja mencoba frame *${glassesName}* di Virtual Try-On Optik I See You.\n\nBoleh tahu apakah stok frame ini masih tersedia di cabang ${branchName}? Soalnya cocok banget di wajah saya. Terima kasih! 🙏`
+          }
+        />
+      )}
     </div>
   );
 }
