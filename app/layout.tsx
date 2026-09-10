@@ -19,18 +19,20 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://optikiseeyou.com"),
   title: {
-    default: "Optik I See You — Kacamata & Softlens Terbaik di Purwokerto",
+    default: "Optik I See You — Rekomendasi Toko Kacamata Minus & Softlens Purwokerto",
     template: "%s | Optik I See You",
   },
   description:
-    "Optik terpercaya di Purwokerto, Purbalingga, Wonosobo & Cilacap. Periksa mata gratis, ratusan frame kacamata, softlens, dan AR Try-On real-time. Temukan kacamata yang cocok untukmu!",
+    "Rekomendasi optik terpercaya di Purwokerto, Purbalingga, Wonosobo & Cilacap. Periksa mata gratis, kacamata minus & silinder, ganti lensa express CNC, frame titanium, softlens original Kemenkes & AR Try-On real-time.",
   keywords: [
     "optik i see you",
-    "optik i see you glasses",
     "optik i see you purwokerto",
-    "optik i see you purbalingga",
-    "optik i see you wonosobo",
-    "optik i see you cilacap",
+    "kacamata minus purwokerto",
+    "rekomendasi optik purwokerto",
+    "biaya ganti lensa kacamata",
+    "ganti lensa kacamata",
+    "tempat periksa mata purwokerto",
+    "toko kacamata terdekat",
     "optik purwokerto",
     "optik purbalingga",
     "optik wonosobo",
@@ -39,11 +41,12 @@ export const metadata: Metadata = {
     "kacamata purbalingga",
     "kacamata wonosobo",
     "kacamata cilacap",
-    "ar try-on kacamata",
-    "photobooth purwokerto",
     "softlens purwokerto",
-    "periksa mata purwokerto",
-    "katalog frame kacamata",
+    "kacamata anti radiasi blueray",
+    "kacamata photochromic",
+    "kacamata silinder",
+    "ar try-on kacamata",
+    "periksa mata gratis",
   ],
   alternates: {
     canonical: "https://optikiseeyou.com",
@@ -265,7 +268,60 @@ export default function RootLayout({
                       position: 6,
                       name: "4 Cabang Resmi",
                       description: "Cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap",
-                      url: "https://optikiseeyou.com/#lokasi",
+                      url: "https://optikiseeyou.com/cabang",
+                    },
+                    {
+                      "@type": "SiteNavigationElement",
+                      position: 7,
+                      name: "Blog & Edukasi Kacamata",
+                      description: "Tips memilih frame kacamata, cara merawat softlens, biaya ganti lensa & kesehatan mata",
+                      url: "https://optikiseeyou.com/blog",
+                    },
+                  ],
+                },
+                {
+                  "@type": "FAQPage",
+                  "@id": "https://optikiseeyou.com/#faq",
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: "Di mana saja lokasi cabang Optik I See You?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Optik I See You memiliki 4 cabang resmi di Jawa Tengah: Purwokerto (Jl. Sunan Ampel No.5, Sumbang), Purbalingga (Jl. Onje No.1), Wonosobo (Jl. Jenderal Soedirman), dan Cilacap (Jl. Rinjani Depan Perum GRP No.2).",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Apakah periksa mata di Optik I See You gratis?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Ya, periksa mata komputerisasi menggunakan Autorefractor digital dan konsultasi resep kacamata bersama tim refraksionis berpengalaman 100% GRATIS di seluruh 4 cabang.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Berapa biaya ganti lensa kacamata di Optik I See You? Apakah bisa bawa frame sendiri?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Biaya ganti lensa kacamata mulai dari Rp100.000-an tergantung jenis lensa (Anti Radiasi Blueray, Photochromic bunglon, Bluechromic, atau Progresif). Dan ya, Anda bisa membawa frame sendiri dari rumah!",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Apakah melayani kacamata minus tinggi dan silinder?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Ya, kami melayani kacamata resep minus tinggi hingga -10.00 dan silinder (astigmatisme) dengan pilihan lensa index tipis (1.61, 1.67, 1.74) serta proses faset express CNC presisi tinggi yang bisa ditunggu.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Bagaimana cara mencoba kacamata secara online?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Anda dapat mencoba puluhan model kacamata secara langsung di wajah Anda menggunakan fitur AR Try-On real-time di website optikiseeyou.com/try-on melalui kamera HP atau laptop tanpa perlu download aplikasi.",
+                      },
                     },
                   ],
                 },

@@ -263,7 +263,7 @@ export default function EyeExamFacilitySection() {
                 <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-isy-ivory/60 to-isy-mist/40 border border-isy-line/60 flex items-center justify-center p-3 mb-5 group-hover:bg-white transition-colors">
                   <Image
                     src={item.image}
-                    alt={item.name}
+                    alt={`${item.name} - Fasilitas Periksa Mata Komputerisasi & Faset Optik I See You`}
                     fill
                     className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                   />

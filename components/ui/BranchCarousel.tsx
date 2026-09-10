@@ -292,7 +292,7 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
                       i === photoIdx ? "border-isy-green-bright ring-2 ring-isy-green-bright/30" : "border-transparent opacity-50 hover:opacity-100"
                     }`}
                   >
-                    <Image src={img} alt="" fill className="object-cover" />
+                    <Image src={img} alt={`Foto gerai ${branch.name} sudut ${i + 1}`} fill className="object-cover" />
                   </button>
                 ))}
               </div>
@@ -431,7 +431,7 @@ export default function BranchCarousel() {
           {branch.images && branch.images.length > 0 ? (
             <Image
               src={branch.images[photoIndex]}
-              alt={`${branch.name}`}
+              alt={`Toko ${branch.name} - Rekomendasi Toko Kacamata & Optik di ${branch.city}`}
               fill
               sizes="(max-width: 768px) 100vw, 650px"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"

@@ -47,7 +47,7 @@ function CatalogItemCard({
             <Image
               key={imgSrc}
               src={imgSrc}
-              alt={`${item.name} ${idx + 1}`}
+              alt={`Frame Kacamata ${item.name} model ${item.style} - Optik I See You (Foto ${idx + 1})`}
               fill
               className={`object-contain p-4 transition-all duration-700 ${
                 idx === slideIndex ? "opacity-100 scale-100" : "opacity-0 scale-105"

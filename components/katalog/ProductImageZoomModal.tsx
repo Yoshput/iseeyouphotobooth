@@ -276,7 +276,7 @@ export default function ProductImageZoomModal({
           <div className="relative w-[90vw] max-w-4xl h-[75vh]">
             <Image
               src={currentImage.src}
-              alt={currentImage.label}
+              alt={`${title} - ${currentImage.label} - Optik I See You`}
               fill
               className="object-contain drop-shadow-2xl"
               priority

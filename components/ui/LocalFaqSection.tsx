@@ -55,7 +55,31 @@ const FAQ_ITEMS: FaqItem[] = [
     category: "Layanan & Fasilitas",
     question: "Berapa lama proses pembuatan kacamata faset otomatis di Optik I See You?",
     answer:
-      "Dengan dukungan Mesin Pemotong Lensa CNC Otomatis berteknologi 3D Frame Tracing berkecepatan tinggi di lab internal kami, pembuatan kacamata resep standar dapat diselesaikan secara Express (bisa ditunggu) dengan presisi mikron yang sangat rapi.",
+      "Dengan dukungan Mesin Pemotong Lensa CNC Otomatis berteknologi 3D Frame Tracing berkecepatan tinggi di lab internal kami, pembuatan kacamata resep standar dapat diselesaikan secara Express (bisa ditunggu 20–30 menit) dengan presisi mikron yang sangat rapi.",
+  },
+  {
+    category: "Layanan & Fasilitas",
+    question: "Berapa biaya ganti lensa kacamata di Optik I See You? Apakah bisa bawa frame sendiri?",
+    answer:
+      "Biaya ganti lensa kacamata di Optik I See You sangat terjangkau, mulai dari Rp100.000-an tergantung jenis lensa yang dipilih (Lensa Standar CRMC, Anti Radiasi Blueray, Photochromic bunglon, Bluechromic 2-in-1, hingga Lensa Progresif). Dan ya! Anda bisa membawa frame kacamata sendiri dari rumah untuk diganti lensanya di seluruh cabang kami.",
+    links: [
+      {
+        label: "Konsultasi Biaya Lensa via WhatsApp",
+        url: konsultasiWhatsappUrl(),
+        external: true,
+      },
+      {
+        label: "Baca Panduan Biaya Lensa di Blog →",
+        url: "/blog/biaya-ganti-lensa-kacamata-jenis-harga",
+        external: false,
+      },
+    ],
+  },
+  {
+    category: "Layanan & Fasilitas",
+    question: "Apakah melayani kacamata minus tinggi dan silinder?",
+    answer:
+      "Tentu saja! Kami melayani pembuatan kacamata untuk resep minus tinggi (hingga -10.00 atau lebih) dan silinder (astigmatisme) menggunakan opsi lensa indeks tinggi (High Index 1.61, 1.67, 1.74) yang jauh lebih tipis, ringan, dan estetik saat terpasang di bingkai.",
   },
   {
     category: "AR Try-On & Softlens",

@@ -2,12 +2,26 @@ import type { Metadata } from 'next';
 import { SOFTLENS_PRODUCTS, SOFTLENS_FAQ } from '@/lib/softlens';
 
 export const metadata: Metadata = {
-  title: 'Katalog Softlens Terlengkap & Original Kemenkes | Optik I See You',
-  description: 'Pusat softlens original kadar air tinggi: X2, Kitty Kawaii, Dreamcon, Geo. Nyaman, steril, dan berizin resmi Kemenkes RI. Cek stok di 4 cabang Jawa Tengah!',
-  keywords: ['softlens purwokerto', 'softlens cilacap', 'softlens wonosobo', 'softlens purbalingga', 'beli softlens original', 'softlens kadar air tinggi', 'softlens kemenkes', 'optik i see you softlens'],
+  title: 'Katalog Softlens Murah & Original Kemenkes — Normal & Minus | Optik I See You',
+  description: 'Pusat softlens minus & normal original berizin Kemenkes RI: X2, Kitty Kawaii, Dreamcon, Geo. Kadar air tinggi, nyaman, steril. Panduan cara merawat softlens & cek stok di Purwokerto, Cilacap, Purbalingga, Wonosobo!',
+  keywords: [
+    'softlens purwokerto',
+    'softlens minus purwokerto',
+    'cara merawat softlens',
+    'cara pakai softlens',
+    'softlens cilacap',
+    'softlens wonosobo',
+    'softlens purbalingga',
+    'beli softlens original',
+    'softlens kadar air tinggi',
+    'softlens kemenkes',
+    'toko softlens terdekat',
+    'cairan pembersih softlens',
+    'optik i see you softlens',
+  ],
   openGraph: {
-    title: 'Katalog Softlens Terlengkap & Original Kemenkes | Optik I See You',
-    description: 'Softlens original bersertifikasi Kemenkes RI dengan kadar air tinggi & kenyamanan maksimal. Tersedia di 4 cabang resmi.',
+    title: 'Katalog Softlens Murah & Original Kemenkes — Normal & Minus | Optik I See You',
+    description: 'Softlens original bersertifikasi Kemenkes RI dengan kadar air tinggi & kenyamanan maksimal. Tersedia normal & minus di 4 cabang resmi.',
     url: 'https://optikiseeyou.com/softlens',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Katalog Softlens Optik I See You' }],
   },

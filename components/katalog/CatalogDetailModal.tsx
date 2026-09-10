@@ -104,7 +104,7 @@ export default function CatalogDetailModal({
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-isy-mist border border-isy-line/70">
               <Image
                 src={displayImages[activeImageIndex]}
-                alt={item.name}
+                alt={`Kacamata ${item.name} koleksi ${item.collection} model ${item.style} - Optik I See You`}
                 fill
                 className="object-contain p-4 transition-all duration-300"
               />
@@ -125,7 +125,7 @@ export default function CatalogDetailModal({
                   >
                     <Image
                       src={imgSrc}
-                      alt={`Thumbnail ${idx + 1}`}
+                      alt={`Detail foto frame kacamata ${item.name} sudut ${idx + 1} - Optik I See You`}
                       fill
                       className="object-contain p-1"
                     />
@@ -140,7 +140,7 @@ export default function CatalogDetailModal({
             {item.specsImage ? (
               <Image
                 src={item.specsImage}
-                alt={`Spesifikasi ${item.name}`}
+                alt={`Spesifikasi teknis dan ukuran dimensi frame ${item.name} - Optik I See You`}
                 fill
                 className="object-contain"
               />

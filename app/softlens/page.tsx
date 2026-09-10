@@ -78,7 +78,7 @@ function SoftlensPreviewModal({
             >
               <Image
                 src={displayImage}
-                alt={product.name}
+                alt={`Detail Softlens ${product.name} varian ${product.category} - Optik I See You`}
                 fill
                 className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -231,7 +231,7 @@ function LuxurySoftlensCard({
         <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-isy-mist border border-isy-line/60 p-3 mb-3 flex items-center justify-center">
           <Image
             src={product.image}
-            alt={product.name}
+            alt={`Softlens ${product.name} ${product.category} - Optik I See You`}
             fill
             className="object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 280px"

@@ -716,6 +716,101 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <p>Ingin resep mata terupdate yang akurat? Kunjungi Optik I See You untuk pemeriksaan mata gratis dengan alat komputer modern!</p>
     `
+  },
+  // ── 12. BIAYA GANTI LENSA KACAMATA (Non-Brand High Intent SEO) ───────────
+  {
+    slug: 'biaya-ganti-lensa-kacamata-jenis-harga',
+    title: 'Biaya Ganti Lensa Kacamata: Daftar Harga Lengkap, Jenis Lensa & Tips Hemat di Optik',
+    category: 'edukasi-mata',
+    excerpt: 'Berapa biaya ganti lensa kacamata di optik? Simak rincian estimasi harga lensa minus, anti radiasi blueray, photochromic, bluechromic, dan tips hemat ganti lensa bawa frame sendiri.',
+    coverImage: '/blog/covers/cover-bluechromic.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-09-10T09:00:00Z',
+    updatedAt: '2026-09-10T09:00:00Z',
+    content: `
+      <p>Sering kali kita berada di situasi di mana bingkai (frame) kacamata kesayangan masih sangat bagus, kokoh, dan cocok dengan bentuk wajah kita, tetapi lensa kacamata sudah penuh baret halus, buram, atau ukuran minus dan silinder mata sudah bertambah. Pertanyaan paling umum yang sering diajukan pelanggan adalah: <strong>Berapa sih biaya ganti lensa kacamata di optik? Dan apakah bisa hanya ganti lensa saja tanpa beli frame baru?</strong></p>
+
+      <p>Jawabannya: <strong>Bisa banget!</strong> Di Optik I See You, Anda bebas membawa frame kacamata sendiri dari rumah untuk dipasangkan lensa baru dengan ukuran resep mata yang paling terupdate.</p>
+
+      <h2>Estimasi Rincian Biaya Ganti Lensa Kacamata Sesuai Jenisnya</h2>
+      <p>Biaya ganti lensa kacamata sangat bervariasi tergantung pada fitur teknologi perlindungan yang disematkan pada lensa, indeks ketipisan, serta besarnya resep minus atau silinder Anda. Berikut rincian kisaran harga yang umum di pasaran dan gerai resmi:</p>
+
+      <div class="bg-isy-mist/70 border border-isy-line rounded-2xl p-5 my-6">
+        <ul class="space-y-3 text-isy-ink/90">
+          <li><strong>1. Lensa Standar CRMC (Anti Refleksi Dasar):</strong> Kisaran Rp100.000 – Rp150.000. Pilihan paling ekonomis dengan lapisan anti pantul standar dan perlindungan goresan dasar untuk mata normal maupun minus rendah.</li>
+          <li><strong>2. Lensa Anti Radiasi Blueray (Blue Cut):</strong> Kisaran Rp150.000 – Rp250.000. Wajib untuk mahasiswa, pekerja kantor, dan siapa saja yang menatap layar monitor atau smartphone lebih dari 6 jam sehari. Memblokir radiasi sinar biru berlebih agar mata tidak cepat lelah dan perih.</li>
+          <li><strong>3. Lensa Photochromic (Lensa Bunglon Transisi UV):</strong> Kisaran Rp200.000 – Rp350.000. Lensa pintar yang otomatis menggelap seperti kacamata hitam saat terkena sinar matahari luar ruangan dan kembali bening jernih di dalam ruangan.</li>
+          <li><strong>4. Lensa Bluechromic (Ultimate 2-in-1 Combo):</strong> Kisaran Rp300.000 – Rp450.000. Menggabungkan teknologi anti radiasi komputer dan photochromic transisi UV dalam satu pasang lensa. Sangat praktis bagi Anda yang aktif bekerja indoor dan sering beraktivitas outdoor.</li>
+          <li><strong>5. Lensa High Index Tipis (1.61 / 1.67 / 1.74):</strong> Kisaran Rp350.000 – Rp750.000+. Didesain khusus bagi pemilik minus tinggi (-4.00 ke atas) atau silinder tebal agar tepi lensa 30% hingga 50% lebih tipis, ringan, dan tidak tampak menonjol keluar dari bingkai kacamata.</li>
+          <li><strong>6. Lensa Progresif (Multifokal Tanpa Batas):</strong> Kisaran Rp350.000 – Rp800.000+. Solusi bagi usia 40 tahun ke atas yang membutuhkan penglihatan jarak jauh dan jarak baca dekat sekaligus tanpa garis batas di lensa.</li>
+        </ul>
+      </div>
+
+      <h2>Kapan Waktu yang Tepat untuk Mengganti Lensa Kacamata?</h2>
+      <ol>
+        <li><strong>Sering Mengalami Pusing di Pelipis:</strong> Jika Anda sering sakit kepala atau leher tegang saat membaca atau bekerja, otot fokus mata kemungkinan bekerja ekstra keras karena ukuran minus/silinder sudah bergeser.</li>
+        <li><strong>Lensa Penuh Baret Mikroskopis:</strong> Goresan pada lapisan coating lensa menyebabkan pembiasan cahaya tidak beraturan (glare), membuat mata silau saat berkendara di malam hari.</li>
+        <li><strong>Lapisan Coating Mulai Mengelupas:</strong> Terlihat seperti bercak pelangi atau bintik minyak yang tidak bisa hilang meski dilap dengan kain microfiber.</li>
+        <li><strong>Sudah Lebih dari 1 Tahun:</strong> Dokter mata dan optometris menganjurkan pemeriksaan refraksi berkala minimal 12 bulan sekali.</li>
+      </ol>
+
+      <h2>Kenapa Harus Ganti Lensa di Optik I See You?</h2>
+      <ul>
+        <li><strong>Periksa Mata Komputerisasi Gratis:</strong> Menggunakan mesin Autorefractor digital berakurasi tinggi tanpa biaya sepeser pun.</li>
+        <li><strong>Faset Express CNC Bisa Ditunggu:</strong> Lab internal kami dilengkapi mesin pemotong lensa 3D Tracing CNC otomatis, sehingga proses pengerjaan kacamata resep standar bisa selesai dalam 20 hingga 30 menit saja!</li>
+        <li><strong>Bisa Bawa Frame Sendiri:</strong> Anda tidak diwajibkan membeli frame baru jika bingkai lama masih nyaman dipakai.</li>
+        <li><strong>Garansi Ketepatan Resep:</strong> Kenyamanan penglihatan Anda adalah prioritas kami.</li>
+      </ul>
+
+      <p>Ingin tahu estimasi biaya presisi untuk ukuran minus dan silinder Anda? Jangan ragu untuk berkonsultasi langsung dengan tim kami di 4 cabang (Purwokerto, Purbalingga, Wonosobo, Cilacap) atau hubungi Customer Care kami via WhatsApp!</p>
+    `
+  },
+  // ── 13. REKOMENDASI OPTIK PURWOKERTO (Local Non-Brand High Intent SEO) ───
+  {
+    slug: 'rekomendasi-optik-kacamata-purwokerto-banyumas',
+    title: 'Rekomendasi Optik di Purwokerto: Tempat Bikin Kacamata Minus Terbaik, Murah & Bergaransi',
+    category: 'info-cabang-promo',
+    excerpt: 'Mencari rekomendasi optik kacamata terbaik di Purwokerto? Simak review lengkap tempat periksa mata gratis, koleksi frame estetik, dan faset lensa express di Optik I See You.',
+    coverImage: '/blog/banyumas-wedding-expo-2026.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-09-10T10:00:00Z',
+    updatedAt: '2026-09-10T10:00:00Z',
+    relatedCabang: 'Purwokerto',
+    content: `
+      <p>Menemukan optik kacamata yang tepat di Purwokerto dan sekitarnya bukanlah hal yang sepele. Sebagian besar orang menginginkan tiga hal utama: <strong>hasil pemeriksaan minus yang akurat, pilihan model bingkai yang kekinian (bukan model kuno), dan harga yang transparan serta bersahabat di kantong</strong>, terutama bagi kalangan mahasiswa dan pelajar di kota pendidikan Banyumas ini.</p>
+
+      <p>Jika Anda sedang mencari toko kacamata terdekat di Purwokerto dengan pelayanan profesional dan fasilitas modern, <strong>Optik I See You Purwokerto</strong> adalah salah satu rekomendasi teratas yang wajib Anda kunjungi.</p>
+
+      <h2>Kenapa Optik I See You Jadi Rekomendasi Favorit di Purwokerto?</h2>
+
+      <h3>1. Periksa Mata Digital Komputerisasi 100% Gratis</h3>
+      <p>Tidak perlu khawatir ada biaya tersembunyi. Di Optik I See You Purwokerto, setiap pengunjung berhak mendapatkan pemeriksaan refraksi mata komprehensif menggunakan perangkat <em>Autorefractor</em> terkomputerisasi didampingi tenaga refraksionis berpengalaman. Kami memeriksa ketajaman visus, ukuran minus (miopia), plus (hipermetropia), hingga derajat silinder (astigmatisme) secara presisi.</p>
+
+      <h3>2. Ratusan Pilihan Frame Estetik &amp; Kekinian</h3>
+      <p>Lupakan bingkai kacamata yang kaku dan membosankan! Di gerai kami, Anda akan menemukan kurasi model frame modern yang dirancang untuk mempertegas karakter wajah:</p>
+      <ul>
+        <li><strong>Titanium Series:</strong> Bobot super ringan di bawah 15 gram, anti-karat, dan tidak meninggalkan bekas merah di batang hidung.</li>
+        <li><strong>The Feline Silhouette (Cat-Eye):</strong> Memberikan efek lifting alami pada tulang pipi dan membuat wajah bulat terlihat lebih ramping.</li>
+        <li><strong>Quiet Luxury &amp; Korean Minimalist:</strong> Bingkai tipis elegan dengan warna rose gold, champagne, dan matte black yang cocok untuk outfit ngampus maupun meeting kerja.</li>
+        <li><strong>Acetate Bold (The Skena Gaze):</strong> Frame tebal retro 90-an yang sangat fotogenik dan jadi favorit anak muda skena Purwokerto.</li>
+      </ul>
+
+      <h3>3. Pengerjaan Faset Lensa Express dengan Mesin CNC 3D</h3>
+      <p>Paling malas kalau harus menunggu kacamata resep selesai berhari-hari? Di Optik I See You cabang Purwokerto, kami memiliki fasilitas workshop internal dengan mesin potong lensa CNC otomatis berbasis 3D Frame Tracing. Kacamata minus Anda bisa <strong>ditunggu dalam waktu 20–30 menit saja</strong> dengan hasil potongan bevel lensa yang sangat rapi dan presisi.</p>
+
+      <h3>4. Fitur Inovatif: Virtual AR Try-On &amp; Studio Photobooth</h3>
+      <p>Optik I See You adalah pelopor optik digital di Jawa Tengah. Sebelum datang ke toko, Anda bisa mencoba puluhan model kacamata langsung di depan kamera smartphone Anda melalui fitur <strong>AR Try-On</strong> di website kami. Dan saat mampir ke toko, abadikan foto kacamata barumu di studio Photobooth interaktif kami secara cuma-cuma!</p>
+
+      <h2>Panduan Lokasi Optik I See You Purwokerto</h2>
+      <div class="bg-isy-mist/70 border border-isy-line rounded-2xl p-5 my-6">
+        <p><strong>Alamat:</strong> Jl. Sunan Ampel No. 5, Sidamulya, Kedungmalang, Kec. Sumbang, Kabupaten Banyumas, Jawa Tengah 53124.</p>
+        <p><strong>Patokan:</strong> Berada di jalur strategis penghubung Purwokerto Kota dan kawasan kampus Unsoed, sangat mudah dijangkau dengan kendaraan roda dua maupun roda empat (tersedia area parkir yang nyaman).</p>
+        <p><strong>Jam Buka:</strong> Setiap hari (Senin – Minggu) pukul 09.00 – 21.00 WIB.</p>
+        <p><strong>WhatsApp Reservasi:</strong> 0895-4156-14261.</p>
+      </div>
+
+      <p>Selain di Purwokerto, Optik I See You juga hadir melayani Anda di 3 cabang resmi lainnya: <strong>Purbalingga (Jl. Onje No.1), Wonosobo (Jl. Jenderal Soedirman), dan Cilacap (Jl. Rinjani Depan Perum GRP No.2)</strong>. Yuk, periksakan matamu dan upgrade penampilan kacamata hari ini!</p>
+    `
   }
 ];
 

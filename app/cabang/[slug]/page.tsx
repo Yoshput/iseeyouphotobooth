@@ -56,8 +56,8 @@ export async function generateMetadata({
     };
   }
 
-  const title = `Optik I See You ${branch.city} — Periksa Mata Gratis, Kacamata & AR Try-On | ${branch.address.split(",")[0]}`;
-  const description = `Kunjungi Optik I See You cabang ${branch.city} di ${branch.address}. Layanan periksa mata digital gratis, ratusan frame kacamata estetik, softlens original, faset lensa express CNC, dan coba kacamata virtual AR. Buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
+  const title = `Rekomendasi Optik ${branch.city} — Kacamata Minus, Cek Mata Gratis & Ganti Lensa | Optik I See You`;
+  const description = `Rekomendasi optik kacamata terdekat di ${branch.city}: Optik I See You di ${branch.address}. Layanan periksa mata digital gratis, ratusan frame kacamata minus & silinder, softlens original Kemenkes, biaya ganti lensa bersahabat & faset express CNC bisa ditunggu. Buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
   const canonicalUrl = `https://optikiseeyou.com/cabang/${branch.id}`;
   const ogImage = branch.images[0] || "/hero-bg.jpg";
 
@@ -65,14 +65,18 @@ export async function generateMetadata({
     title,
     description,
     keywords: [
-      `optik i see you ${branch.city.toLowerCase()}`,
+      `rekomendasi optik ${branch.city.toLowerCase()}`,
+      `kacamata minus ${branch.city.toLowerCase()}`,
       `optik ${branch.city.toLowerCase()}`,
-      `kacamata ${branch.city.toLowerCase()}`,
       `toko kacamata ${branch.city.toLowerCase()}`,
-      `periksa mata ${branch.city.toLowerCase()}`,
+      `biaya ganti lensa kacamata ${branch.city.toLowerCase()}`,
+      `tempat periksa mata ${branch.city.toLowerCase()}`,
+      `tempat bikin kacamata ${branch.city.toLowerCase()}`,
+      `ganti lensa kacamata ${branch.city.toLowerCase()}`,
       `softlens ${branch.city.toLowerCase()}`,
       `cek mata gratis ${branch.city.toLowerCase()}`,
       `optik terdekat ${branch.city.toLowerCase()}`,
+      `optik i see you ${branch.city.toLowerCase()}`,
       `optik i see you`,
     ],
     alternates: {
