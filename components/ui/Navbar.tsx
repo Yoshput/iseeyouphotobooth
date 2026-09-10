@@ -240,6 +240,7 @@ export default function Navbar() {
           })}
         </div>
       )}
+      {!isQuizPlaying && <div className="h-14 md:hidden pointer-events-none" aria-hidden="true" />}
 
 
 

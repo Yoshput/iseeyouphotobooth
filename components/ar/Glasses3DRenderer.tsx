@@ -32,7 +32,7 @@ import {
 import { computeCoverTransform, videoPxToContainerPx } from "@/lib/videoCover";
 
 const TAU_MS = 60;
-const SCALE_DEBUG = true;
+const SCALE_DEBUG = false;
 
 interface Props {
   width: number;
@@ -161,12 +161,19 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
       camera.position.set(0, 0, 500);
       cameraRef.current = camera;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const isMobile =
+        typeof window !== "undefined" &&
+        (window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches);
+      // On mobile devices, cap DPR to 1.25 to prevent melting mobile Adreno/Mali GPUs
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2);
       let renderer: THREE.WebGLRenderer;
       try {
         renderer = new THREE.WebGLRenderer({
-          canvas, alpha: true, antialias: true,
-          powerPreference: "high-performance", preserveDrawingBuffer: true,
+          canvas,
+          alpha: true,
+          antialias: !isMobile, // Disable expensive MSAA on mobile for 2x framerate boost
+          powerPreference: "high-performance",
+          preserveDrawingBuffer: true,
         });
       } catch (err) {
         console.warn("Glasses3DRenderer WebGL init failed:", err);

@@ -115,14 +115,19 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
       );
       camera.position.z = 10;
 
+      const isMobile =
+        typeof window !== "undefined" &&
+        (window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches);
+
       const renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
         alpha: true,
-        antialias: true,
+        antialias: !isMobile, // Crisp on mobile without expensive MSAA fillrate
+        powerPreference: "high-performance",
         preserveDrawingBuffer: true,
       });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
       renderer.shadowMap.enabled = false;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.1;

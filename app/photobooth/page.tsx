@@ -1441,7 +1441,7 @@ export default function PhotoboothPage() {
  {/* ══ LEFT — Camera Panel ══════════════════════════════════════════════ */}
  <div className="
   relative flex flex-col overflow-hidden bg-isy-mist
-  h-[48vh] min-h-[320px] max-h-[58vh] shrink-0
+  h-[44dvh] min-h-[250px] max-h-[48dvh] shrink-0
   lg:h-full lg:w-[56%] lg:max-h-none lg:min-h-0 lg:border-r lg:border-isy-line
   ">
  {rightActive && (
@@ -1646,48 +1646,48 @@ export default function PhotoboothPage() {
  )}
  </div>
 
- <div className="flex items-center justify-between gap-2 flex-wrap">
-  <div className="flex items-center gap-1.5 flex-wrap">
-  <button
-  onClick={() => setBeautyMode((v) => !v)}
-  className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
-  ${beautyMode ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40" : "border border-isy-line text-isy-ink/50"}`}
-  >
-  AI Mulus
-  </button>
-  <button
-  onClick={() => setLipstickMode((v) => !v)}
-  className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95
-  ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
-  >
-  Lipstik
-  </button>
-  <button
-     onClick={() => setSoundEnabled((v) => !v)}
-     className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 ${
-       soundEnabled
-         ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
-         : "bg-gray-100 text-gray-400 border border-gray-200"
-     }`}
-     title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+ <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 scrollbar-none">
+   <div className="flex items-center gap-1.5 shrink-0">
+   <button
+   onClick={() => setBeautyMode((v) => !v)}
+   className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 shrink-0
+   ${beautyMode ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40" : "border border-isy-line text-isy-ink/50"}`}
    >
-     {soundEnabled ? (
-       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
-         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-         <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-       </svg>
-     ) : (
-       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
-         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-         <line x1="23" y1="9" x2="17" y2="15"/>
-         <line x1="17" y1="9" x2="23" y2="15"/>
-       </svg>
-     )}
-     <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
+   AI Mulus
    </button>
+   <button
+   onClick={() => setLipstickMode((v) => !v)}
+   className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 shrink-0
+   ${lipstickMode ? "bg-pink-100 text-pink-700 border border-pink-300" : "border border-isy-line text-isy-ink/50"}`}
+   >
+   Lipstik
+   </button>
+   <button
+      onClick={() => setSoundEnabled((v) => !v)}
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 shrink-0 ${
+        soundEnabled
+          ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
+          : "bg-gray-100 text-gray-400 border border-gray-200"
+      }`}
+      title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+    >
+      {soundEnabled ? (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+      ) : (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/>
+          <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      )}
+      <span>{soundEnabled ? "Suara ON" : "Mute"}</span>
+    </button>
     <button
       onClick={() => setGestureTriggerEnabled((v) => !v)}
-      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border shrink-0 ${
         gestureTriggerEnabled
           ? "bg-amber-500/15 text-amber-800 border-amber-500/40"
           : "border-isy-line text-isy-ink/40 bg-white hover:bg-isy-mist"
@@ -1699,7 +1699,7 @@ export default function PhotoboothPage() {
     </button>
     <button
       onClick={handleSwitchCamera}
-      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border shrink-0 ${
         cameraFacing === "environment"
           ? "bg-isy-green-bright/15 text-isy-green-deep border-isy-green-bright/40"
           : "border-isy-line text-isy-ink/60 bg-white"
@@ -1713,7 +1713,7 @@ export default function PhotoboothPage() {
     </button>
     <button
       onClick={remoteConnected ? disconnectRemoteCamera : openRemoteCameraModal}
-      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border ${
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-all active:scale-95 border shrink-0 ${
         remoteConnected
           ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
           : "border-isy-line text-isy-ink/60 bg-white hover:bg-isy-mist"
@@ -1727,11 +1727,13 @@ export default function PhotoboothPage() {
       <span>{remoteConnected ? "🟢 Kamera HP ON" : "Kamera HP (QR)"}</span>
     </button>
   </div>
-  <TimerChips
-    value={timerSec}
-    onChange={setTimerSec}
-    disabled={phase !== "ready"}
-  />
+  <div className="shrink-0">
+    <TimerChips
+      value={timerSec}
+      onChange={setTimerSec}
+      disabled={phase !== "ready"}
+    />
+  </div>
   </div>
 
   {arEnabled && (

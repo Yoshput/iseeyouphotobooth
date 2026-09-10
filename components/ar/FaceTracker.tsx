@@ -264,19 +264,39 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           ? { deviceId: { exact: deviceId } }
           : { facingMode: facingMode || "user" };
 
-        // Tier 1: 4K / 2K / Full HD Crisp Camera Sensor Resolution
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-              ...baseConstraints,
-              width: { ideal: 3840, min: 1920 },
-              height: { ideal: 2160, min: 1080 },
-              frameRate: { ideal: 30 },
-            },
-            audio: false,
-          });
-          gotStream = true;
-        } catch { /* fall through */ }
+        const isMobile =
+          typeof window !== "undefined" &&
+          (window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches);
+
+        // Tier 1: Crisp HD 720p on Mobile (Lightweight & 60fps smooth) / 1080p on Desktop
+        if (isMobile) {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                ...baseConstraints,
+                width: { ideal: 1280, max: 1920 },
+                height: { ideal: 720, max: 1080 },
+                frameRate: { ideal: 30, max: 30 },
+              },
+              audio: false,
+            });
+            gotStream = true;
+          } catch { /* fall through */ }
+        } else {
+          // Desktop: 2K / Full HD
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                ...baseConstraints,
+                width: { ideal: 1920, min: 1280 },
+                height: { ideal: 1080, min: 720 },
+                frameRate: { ideal: 30 },
+              },
+              audio: false,
+            });
+            gotStream = true;
+          } catch { /* fall through */ }
+        }
 
         // Tier 2: Full HD (1080p)
         if (!gotStream) {
@@ -389,8 +409,16 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
           onFaceCountChangeRef.current?.(curr);
         }
 
-        if (faces[0]) {
-          setRawLandmarks(faces[0] as Array<{ x: number; y: number; z: number }>);
+        // Only set rawLandmarks state when scanIntro is actively running, throttled to ~10-15fps
+        // to completely eliminate 60fps React component re-rendering during regular try-on
+        if (scanIntro) {
+          if (landmarkFrameRef.current % 3 === 0) {
+            if (faces[0]) {
+              setRawLandmarks(faces[0] as Array<{ x: number; y: number; z: number }>);
+            } else if (rawLandmarks) {
+              setRawLandmarks(null);
+            }
+          }
         } else if (rawLandmarks) {
           setRawLandmarks(null);
         }

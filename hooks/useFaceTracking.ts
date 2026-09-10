@@ -48,6 +48,7 @@ export function useFaceTracking(
   useEffect(() => {
     if (!enabled) return;
     let rafId: number;
+    let rvfcId: number;
     let cancelled = false;
 
     (async () => {
@@ -57,33 +58,65 @@ export function useFaceTracking(
 
       let frameCount = 0;
       let lastPerfTs = performance.now();
+      let lastDetectTs = 0;
+      // Minimum interval between inferences: ~30ms (~33 FPS) to match native camera frame rates
+      // and protect 90Hz / 120Hz mobile screens from thermal throttling.
+      const MIN_FRAME_INTERVAL = 30;
 
-      const loop = () => {
+      // Check if native requestVideoFrameCallback is supported (modern Chrome / Android)
+      const hasRVFC = typeof (video as any).requestVideoFrameCallback === "function";
+
+      const processFrame = (now: number) => {
         if (cancelled) return;
 
-        // iOS Safari: wait for HAVE_ENOUGH_DATA (4) — not just HAVE_CURRENT_DATA (2)
-        if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-          const now = performance.now();
-          // Cap deltaTime at 200ms to avoid huge alpha spike after tab focus
-          const deltaTime = Math.min(now - lastPerfTs, 200);
-          lastPerfTs = now;
+        // Ensure video has enough decoded frame data
+        if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA && video.videoWidth > 0) {
+          const elapsed = now - lastDetectTs;
+          if (elapsed >= MIN_FRAME_INTERVAL) {
+            lastDetectTs = now;
+            const deltaTime = Math.min(now - lastPerfTs, 200);
+            lastPerfTs = now;
 
-          const warmUp = frameCount < WARMUP_FRAMES;
-          frameCount++;
+            const warmUp = frameCount < WARMUP_FRAMES;
+            frameCount++;
 
-          const result = landmarker.detectForVideo(video, now);
-          onFrameRef.current(result, { deltaTime, warmUp });
+            try {
+              const result = landmarker.detectForVideo(video, now);
+              onFrameRef.current(result, { deltaTime, warmUp });
+            } catch (err) {
+              // Gracefully handle occasional dropped frame or context loss during camera switch
+            }
+          }
         }
 
-        rafId = requestAnimationFrame(loop);
+        scheduleNext();
       };
 
-      rafId = requestAnimationFrame(loop);
+      const scheduleNext = () => {
+        if (cancelled) return;
+        if (hasRVFC) {
+          rvfcId = (video as any).requestVideoFrameCallback((now: number) => {
+            processFrame(now);
+          });
+        } else {
+          rafId = requestAnimationFrame((now) => {
+            processFrame(now);
+          });
+        }
+      };
+
+      scheduleNext();
     })();
 
     return () => {
       cancelled = true;
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
+      const v = videoRef.current as any;
+      if (v && typeof v.cancelVideoFrameCallback === "function") {
+        try {
+          v.cancelVideoFrameCallback(rvfcId);
+        } catch {}
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoRef, numFaces, enabled]);
