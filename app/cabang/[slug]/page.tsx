@@ -328,6 +328,14 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             "@type": "Product",
             name: "Frame Kacamata",
             description: "Ratusan pilihan frame kacamata pria & wanita — Cat Eye, Titanium, Acetate, Wire Frame, dan Quiet Luxury.",
+            offers: {
+              "@type": "AggregateOffer",
+              priceCurrency: "IDR",
+              lowPrice: "150000",
+              highPrice: "750000",
+              offerCount: "200",
+              availability: "https://schema.org/InStock",
+            },
           },
         },
         {
@@ -336,6 +344,14 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             "@type": "Product",
             name: "Softlens",
             description: "Softlens original warna-warni berkadar air tinggi, tersertifikasi Kemenkes RI.",
+            offers: {
+              "@type": "AggregateOffer",
+              priceCurrency: "IDR",
+              lowPrice: "50000",
+              highPrice: "250000",
+              offerCount: "50",
+              availability: "https://schema.org/InStock",
+            },
           },
         },
         {
