@@ -57,12 +57,13 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { href: "/photobooth", label: "Photobooth" },
     { href: "/katalog", label: "Katalog" },
+    { href: "/softlens", label: "Softlens" },
+    { href: "/cabang", label: "4 Cabang" },
+    { href: "/photobooth", label: "Photobooth" },
     { href: "/blog", label: "Blog" },
     { href: "/quiz", label: "Quiz Frame" },
     { href: "/testimoni", label: "Testimoni" },
-    { href: "/#lokasi", label: "Lokasi" },
   ];
 
   return (
