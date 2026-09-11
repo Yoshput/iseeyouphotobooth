@@ -58,7 +58,6 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/katalog", label: "Katalog" },
-    { href: "/softlens", label: "Softlens" },
     { href: "/cabang", label: "4 Cabang" },
     { href: "/photobooth", label: "Photobooth" },
     { href: "/blog", label: "Blog" },
