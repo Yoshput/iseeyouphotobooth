@@ -1,0 +1,34 @@
+﻿# ==============================================================================
+# .vercelignore — Optik I See You Photobooth
+# Excludes heavy non-production files from Vercel build snapshots
+# ==============================================================================
+
+# Temporary & scratch development files
+scratch/
+out/
+
+# Documentation & internal developer notes
+docs/
+*.md
+
+# Server configuration (local/Nginx only)
+nginx/
+
+# Raw 3D files & textures (never served to browser)
+*.blend
+*.blend1
+*.zip
+*.c4d
+*.fbx
+*.obj
+*.hdr
+
+# Apple OS metadata & leftover raw camera files
+.DS_Store
+__MACOSX/
+*.HEIC
+*.heic
+
+# Local test & backup files
+*_backup.*
+*backup*

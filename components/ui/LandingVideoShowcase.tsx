@@ -169,14 +169,14 @@ export default function LandingVideoShowcase() {
           {isInView && (
             isMobile ? (
               <>
-                <source src="/Video Landing/web-mobile.mp4" type="video/mp4" />
-                <source src="/Video Landing/web-optimized.mp4" type="video/mp4" />
+                <source src="https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/videos/web-mobile.mp4" type="video/mp4" />
+                <source src="https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/videos/web-optimized.mp4" type="video/mp4" />
               </>
             ) : (
               <>
-                <source src="/Video Landing/web-optimized.mp4" type="video/mp4" />
-                <source src="/Video Landing/web-optimized.webm" type="video/webm" />
-                <source src="/Video Landing/web-mobile.mp4" type="video/mp4" />
+                <source src="https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/videos/web-optimized.mp4" type="video/mp4" />
+                <source src="https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/videos/web-optimized.webm" type="video/webm" />
+                <source src="https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/videos/web-mobile.mp4" type="video/mp4" />
               </>
             )
           )}

@@ -1479,7 +1479,7 @@ export default function PhotoboothPage() {
   showFaceGuide={false}
   faceResult={faceResult}
   renderMode={renderMode3D && glasses?.model3D ? "3d" : "2d"}
-  model3DSrc={glasses?.model3D?.glbFile ? `/glasses/${glasses.model3D.glbFile}` : undefined}
+  model3DSrc={glasses?.model3D?.glbFile ? (glasses.model3D.glbFile.startsWith("http") ? glasses.model3D.glbFile : `/glasses/${glasses.model3D.glbFile}`) : undefined}
   frameWidthMm={glasses?.model3D?.frameWidthMm}
   bridgeMm={glasses?.model3D?.bridgeMm}
   templeMm={glasses?.model3D?.templeMm}

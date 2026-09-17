@@ -174,7 +174,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     category: 'info-cabang-promo',
     excerpt: 'Dokumentasi agenda Optik I See You di Banyumas Wedding Expo 2026 yang berlangsung pada 4–6 September 2026 di Ground Floor Rita SuperMall Purwokerto. Simak keseruan layanan periksa mata gratis dan instalasi photobooth interaktif kami.',
     coverImage: '/blog/covers/cover-wedding-expo-rsm.jpg',
-    videoUrl: '/blog/rsm-wedding-expo.mp4',
+    videoUrl: 'https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/videos/rsm-wedding-expo.mp4',
     author: 'Tim Optik I See You',
     publishedAt: '2026-09-04T00:00:00Z',
     updatedAt: '2026-09-07T00:00:00Z',

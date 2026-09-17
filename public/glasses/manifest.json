@@ -22,7 +22,7 @@
     "lensType": "open",
     "model3D": {
       "name": "Hexagonal Crystal Transparan",
-      "glbFile": "models3D/glasses_transparan.glb",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_transparan.glb",
       "fitWidthRatio": 2.8,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
@@ -46,7 +46,7 @@
     "lensType": "open",
     "model3D": {
       "name": "Oval Bulat Metal Gold",
-      "glbFile": "models3D/metal_round_glasses.glb",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/metal_round_glasses.glb",
       "fitWidthRatio": 2.8,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
@@ -81,7 +81,7 @@
     "lensType": "open",
     "model3D": {
       "name": "Sunglasses Bellagio Havana",
-      "glbFile": "models3D/sunglasses_v2.glb",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
       "fitWidthRatio": 2.8,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
@@ -116,7 +116,7 @@
     "lensType": "open",
     "model3D": {
       "name": "Kotak Plastik Hitam",
-      "glbFile": "models3D/glasses_kotak_frame_coklat.glb",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
       "fitWidthRatio": 2.8,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
@@ -140,7 +140,7 @@
     "lensType": "open",
     "model3D": {
       "name": "Kotak Clubmaster Metal",
-      "glbFile": "models3D/glasses1/glasses01.glb",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses1/glasses01.glb",
       "fitWidthRatio": 3.32,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,
@@ -177,7 +177,7 @@
     "excludeFromAiMatch": true,
     "model3D": {
       "name": "Sunglasses Aviator Gold",
-      "glbFile": "models3D/cyberpunk_johnny_silverhand_glasses.glb",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/cyberpunk_johnny_silverhand_glasses.glb",
       "fitWidthRatio": 2.8,
       "ipdScaleRef": 1.0,
       "yOffsetRatio": 0.0,

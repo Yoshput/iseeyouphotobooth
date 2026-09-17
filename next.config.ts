@@ -12,7 +12,7 @@ const cspHeader = `
   img-src 'self' data: blob: https: https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com;
   font-src 'self' https://fonts.gstatic.com data:;
   connect-src 'self' https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com https://cdn.jsdelivr.net https://*.peerjs.com wss://*.peerjs.com https://fonts.googleapis.com https://fonts.gstatic.com https://storage.googleapis.com data: blob:;
-  media-src 'self' blob: data:;
+  media-src 'self' blob: data: https://*.r2.dev https://*.cloudflarestorage.com;
   worker-src 'self' blob:;
   object-src 'none';
   base-uri 'self';
@@ -60,6 +60,20 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev",
+      },
+      {
+        protocol: "https",
+        hostname: "*.r2.dev",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
   },
   async headers() {
     return [
