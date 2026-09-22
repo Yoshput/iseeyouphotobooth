@@ -332,6 +332,14 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             "@type": "Product",
             name: "Frame Kacamata",
             description: "Ratusan pilihan frame kacamata pria & wanita — Cat Eye, Titanium, Acetate, Wire Frame, dan Quiet Luxury.",
+            image: "https://optikiseeyou.com/katalog/Clarity%20Series/1-thumb.webp",
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "5.0",
+              reviewCount: "250",
+              bestRating: "5",
+              worstRating: "1",
+            },
             offers: {
               "@type": "AggregateOffer",
               priceCurrency: "IDR",
@@ -348,6 +356,14 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             "@type": "Product",
             name: "Softlens",
             description: "Softlens original warna-warni berkadar air tinggi, tersertifikasi Kemenkes RI.",
+            image: "https://optikiseeyou.com/Katalog%20Soflens/Assets%20Soflens/New%20More%20Dubai.webp",
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "5.0",
+              reviewCount: "250",
+              bestRating: "5",
+              worstRating: "1",
+            },
             offers: {
               "@type": "AggregateOffer",
               priceCurrency: "IDR",

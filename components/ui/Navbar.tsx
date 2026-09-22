@@ -58,11 +58,12 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/katalog", label: "Katalog" },
+    { href: "/try-on", label: "Try-On AR" },
+    { href: "/softlens", label: "Softlens" },
     { href: "/cabang", label: "4 Cabang" },
     { href: "/photobooth", label: "Photobooth" },
-    { href: "/blog", label: "Blog" },
     { href: "/quiz", label: "Quiz Frame" },
-    { href: "/testimoni", label: "Testimoni" },
+    { href: "/blog", label: "Blog" },
   ];
 
   return (
@@ -177,7 +178,7 @@ export default function Navbar() {
               for every you
             </p>
             <Link
-              href="/photobooth?mode=ar"
+              href="/try-on"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-isy-green-bright to-isy-green-deep px-4 sm:px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 transition-all hover:shadow-xl hover:scale-105 active:scale-95"
             >
               <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
