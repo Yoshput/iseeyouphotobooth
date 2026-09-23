@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/ui/Navbar";
 import {
@@ -20,16 +20,10 @@ import { speakIndonesian, stopSpeaking, unlockVoiceEngine } from "@/lib/voice";
 import {
   CheckCircle2,
   XCircle,
-  HelpCircle,
-  Sparkles,
   ArrowRight,
   ArrowLeft,
   Scan,
-  Glasses,
-  ShieldCheck,
-  Award,
   Timer,
-  Volume2,
   Compass,
 } from "lucide-react";
 
@@ -56,14 +50,14 @@ export default function QuizPage() {
   const [sessionQuestions, setSessionQuestions] = useState<QuizQuestionItem[]>([]);
   const [currentQIndex, setCurrentQIndex] = useState(0);
 
-  // Gamified interactive state
+  // Interactive diagnostic state
   const [userAnswers, setUserAnswers] = useState<Record<string, QuizOption>>({});
   const [selectedOption, setSelectedOption] = useState<QuizOption | null>(null);
   const [isAnswerConfirmed, setIsAnswerConfirmed] = useState(false);
   const [isTimedOut, setIsTimedOut] = useState(false);
   const [currentScore, setCurrentScore] = useState(0);
 
-  // AI Active Voice & Camera
+  // Active Voice & Camera
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
   const [companionStream, setCompanionStream] = useState<MediaStream | null>(null);
 
@@ -120,7 +114,7 @@ export default function QuizPage() {
     if (detectorEnabled && !isGlassesVerified) {
       setIsDetectorOpen(true);
       if (isVoiceEnabled) {
-        speakIndonesian("Selamat datang di kalibrasi kacamata Optik I See You. Silakan posisikan wajahmu di depan kamera.");
+        speakIndonesian("Selamat datang di kalibrasi kacamata Optik I See You. Silakan posisikan wajah di depan kamera.");
       }
     } else {
       startQuizSession(module);
@@ -129,7 +123,6 @@ export default function QuizPage() {
 
   const startQuizSession = (module: QuizModule, stream?: MediaStream | null) => {
     unlockVoiceEngine();
-    // Shuffle options dynamically for every quiz session
     const shuffled = prepareSessionQuestions(module.questions);
     setSelectedModule(module);
     setSessionQuestions(shuffled);
@@ -144,7 +137,7 @@ export default function QuizPage() {
 
     if (isVoiceEnabled) {
       speakIndonesian(
-        `Memulai ${module.title}. Soal nomor satu: ${shuffled[0].title}`
+        `Memulai ${module.title}. Pertanyaan pertama: ${shuffled[0].title}`
       );
     }
   };
@@ -170,7 +163,6 @@ export default function QuizPage() {
     if (isAnswerConfirmed || !selectedModule) return;
 
     if (isFrameDNA) {
-      // In Frame DNA, gentle timeout prompt without fail state
       setIsTimedOut(true);
       if (isVoiceEnabled) {
         speakIndonesian("Waktu 20 detik selesai. Silakan tentukan preferensi gayamu.");
@@ -182,7 +174,7 @@ export default function QuizPage() {
     setIsAnswerConfirmed(true);
 
     if (isVoiceEnabled) {
-      speakIndonesian("Waktu habis! Mari perhatikan pembahasan optik berikut.");
+      speakIndonesian("Waktu habis. Mari perhatikan pembahasan optik berikut.");
     }
   };
 
@@ -191,7 +183,7 @@ export default function QuizPage() {
     unlockVoiceEngine();
     if (!selectedModule || !activeQuestion) return;
 
-    // Frame DNA flow: pure preference mapping without right/wrong grading
+    // Frame DNA flow: pure preference mapping
     if (isFrameDNA) {
       if (!selectedOption) return;
 
@@ -223,7 +215,7 @@ export default function QuizPage() {
       if (isVoiceEnabled && selectedOption.explanation) {
         speakIndonesian(
           selectedOption.isCorrect
-            ? `Tepat sekali! ${selectedOption.explanation}`
+            ? `Tepat sekali. ${selectedOption.explanation}`
             : `Perhatikan: ${selectedOption.explanation}`
         );
       }
@@ -287,53 +279,57 @@ export default function QuizPage() {
 
       {/* ── 1. HUB VIEW ── */}
       {viewMode === "hub" && (
-        <div className="pt-6 sm:pt-10 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
-          {/* Hero Header */}
-          <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-            {/* Simple Home Return Link */}
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-isy-line text-xs font-bold text-isy-green-deep hover:bg-isy-mist hover:border-isy-green-bright/40 active:scale-95 transition-all shadow-2xs cursor-pointer"
-              >
-                <ArrowLeft className="w-3.5 h-3.5 text-isy-green-deep" />
-                <span>Kembali ke Beranda</span>
-              </Link>
-            </div>
+        <div className="pt-4 sm:pt-6 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
+          {/* Top Bar with Home Return Link strictly on TOP LEFT */}
+          <div className="flex items-center justify-between w-full mb-6 sm:mb-8">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-black/5 text-xs font-semibold text-slate-700 hover:text-isy-green-deep hover:bg-white shadow-[0_2px_8px_rgba(0,0,0,0.03)] active:scale-95 transition-all cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4 text-slate-500" />
+              <span>Kembali ke Beranda</span>
+            </Link>
 
-            <div className="inline-flex items-center gap-2 rounded-full bg-isy-green-deep/10 border border-isy-green-deep/20 px-4 py-1 text-xs font-black uppercase tracking-wider text-isy-green-deep mb-3 shadow-xs">
-              <Award className="w-3.5 h-3.5 text-isy-green-bright" />
-              <span>I See You Quiz &amp; Eye Lab</span>
-            </div>
-            <h1 className="font-serif text-3xl sm:text-5xl font-black text-isy-green-deep tracking-tight mb-3">
-              Asah Otak &amp; Skrining Mata
+            <span className="text-[11px] font-medium text-slate-400 hidden sm:inline">
+              Optik I See You • Vision &amp; Frame Lab
+            </span>
+          </div>
+
+          {/* Hero Header (Apple Editorial Style) */}
+          <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200/80 px-3.5 py-1 text-xs font-semibold text-slate-700 mb-3">
+              <span>Vision &amp; Style Diagnostic</span>
+            </span>
+            <h1 className="font-serif text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
+              Konsultasi &amp; Skrining Penglihatan
             </h1>
-            <p className="text-xs sm:text-sm text-isy-ink/70 leading-relaxed">
-              Dilengkapi Active AI Voice, timer hitung mundur 20 detik, serta uji visual interaktif untuk menguji kesehatan mata dan menemukan kacamata impianmu.
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-lg mx-auto">
+              Pilih modul analisis Frame DNA, skrining refraksi mandiri, atau uji wawasan kesehatan mata harian Anda.
             </p>
 
-            {/* AI Glasses Detector Toggle Switch */}
-            <div className="mt-6 inline-flex items-center justify-center gap-3 p-2 rounded-2xl bg-white border border-isy-line shadow-xs">
-              <div className="w-8 h-8 rounded-xl bg-isy-green-deep/10 flex items-center justify-center text-isy-green-deep">
-                <Scan className="w-4 h-4" />
+            {/* iOS Sensor Switch */}
+            <div className="mt-6 inline-flex items-center justify-center gap-3 p-2 px-3 rounded-2xl bg-white/90 backdrop-blur-xl border border-black/5 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+              <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
+                <Scan className="w-4 h-4 stroke-[1.75]" />
               </div>
               <div className="text-left text-xs pr-2">
-                <span className="font-bold text-isy-green-deep block">
-                  Mode Sensor Kacamata
+                <span className="font-semibold text-slate-900 block">
+                  Sensor Kacamata AI
                 </span>
-                <span className="text-[10px] text-isy-ink/50">
-                  {detectorEnabled ? "Pindai wajah & aktifkan live focus cam" : "Langsung mulai tanpa kamera"}
+                <span className="text-[10px] text-slate-400">
+                  {detectorEnabled ? "Pindai wajah & aktifkan Focus Cam" : "Mulai langsung tanpa kamera"}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setDetectorEnabled(!detectorEnabled)}
+                aria-label="Toggle sensor kacamata"
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${
-                  detectorEnabled ? "bg-isy-green-deep" : "bg-gray-300"
+                  detectorEnabled ? "bg-isy-green-deep" : "bg-slate-200"
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
                     detectorEnabled ? "translate-x-6" : "translate-x-1"
                   }`}
                 />
@@ -341,8 +337,8 @@ export default function QuizPage() {
             </div>
           </div>
 
-          {/* 4 Quiz Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {/* 4 Diagnostic Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
             {QUIZ_MODULES.map((module) => (
               <QuizHubCard
                 key={module.id}
@@ -354,29 +350,28 @@ export default function QuizPage() {
         </div>
       )}
 
-      {/* ── 2. PLAYING VIEW (DUOLINGO STYLE / FRAME DNA) ── */}
+      {/* ── 2. PLAYING VIEW ── */}
       {viewMode === "playing" && selectedModule && activeQuestion && (
-        <div className="pt-2 sm:pt-4 pb-48 sm:pb-36 px-4 max-w-2xl mx-auto w-full grow flex flex-col justify-between">
+        <div className="pt-2 sm:pt-4 pb-44 sm:pb-36 px-4 max-w-2xl mx-auto w-full grow flex flex-col justify-between">
           <div>
-            {/* Gamified Top Progress Bar with Voice Toggle */}
+            {/* iOS Top Navigation Bar with Progress and Sound */}
             <DuolingoProgressBar
               currentStep={currentQIndex}
               totalSteps={sessionQuestions.length || selectedModule.questions.length}
-              xpPoints={selectedModule.xpReward}
+              moduleTitle={selectedModule.badgeLabel}
               isVoiceEnabled={isVoiceEnabled}
               onToggleVoice={toggleVoice}
               onBack={handleBackQuestion}
               onExit={handleExitQuiz}
             />
 
-            {/* Question Card Header with 20s Countdown Timer */}
-            <div className="mt-5 mb-4">
-              <div className="flex items-center justify-between gap-3 mb-2">
-                <span className="text-[11px] font-black uppercase tracking-wider text-isy-green-bright bg-isy-green-bright/10 px-3 py-1 rounded-full inline-block">
+            {/* Question Header with Timer */}
+            <div className="mt-4 mb-4">
+              <div className="flex items-center justify-between gap-3 mb-2.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full inline-block">
                   {isFrameDNA ? "Analisis Frame DNA" : selectedModule.title}
                 </span>
 
-                {/* 20s Countdown Timer */}
                 <QuizCountdownTimer
                   durationSeconds={20}
                   isPaused={(!isFrameDNA && isAnswerConfirmed) || viewMode !== "playing"}
@@ -385,29 +380,29 @@ export default function QuizPage() {
                 />
               </div>
 
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-isy-green-deep leading-snug">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
                 {activeQuestion.title}
               </h2>
               {activeQuestion.subtitle && (
-                <p className="text-xs sm:text-sm text-isy-ink/70 mt-2 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
                   {activeQuestion.subtitle}
                 </p>
               )}
             </div>
 
-            {/* Timeout Banner Notification */}
+            {/* Timeout Alert Banner */}
             {isTimedOut && (
-              <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 text-xs font-bold mb-4 flex items-center gap-2.5 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-900 text-xs font-medium mb-4 flex items-center gap-2.5 animate-in fade-in slide-in-from-top-2 duration-200">
                 <Timer className="w-4 h-4 text-amber-600 shrink-0" />
                 <span>
                   {isFrameDNA
-                    ? "Waktu 20 detik selesai. Tentukan pilihan karaktermu di bawah untuk lanjut."
-                    : "Waktu 20 detik telah berakhir! Pelajari rangkuman optik di bawah untuk lanjut."}
+                    ? "Waktu 20 detik selesai. Silakan pilih opsi karaktermu untuk melanjutkan."
+                    : "Waktu 20 detik berakhir. Pelajari ulasan optik di bawah untuk melanjutkan."}
                 </span>
               </div>
             )}
 
-            {/* Interactive Visual Testing (Astigmatic Dial or Duochrome Test) */}
+            {/* Interactive Visual Testing */}
             {activeQuestion.type === "astigmatic-dial" && (
               <VisionScreeningDial type="astigmatic-dial" />
             )}
@@ -415,29 +410,32 @@ export default function QuizPage() {
               <VisionScreeningDial type="duochrome-test" />
             )}
 
-            {/* Chunky Options with Shuffled A, B, C, D Badges */}
+            {/* iOS Selection Option Cards */}
             <div className="space-y-2.5 sm:space-y-3 mt-3.5 sm:mt-5">
               {activeQuestion.options.map((option, idx) => {
                 const isSelected = selectedOption?.id === option.id;
-                const letter = String.fromCharCode(65 + idx); // A, B, C, D
+                const letter = String.fromCharCode(65 + idx);
 
-                let btnClass = "border-2 bg-white text-isy-ink/80 border-isy-line hover:border-isy-green-bright/60 hover:bg-isy-mist/40";
+                let btnClass =
+                  "border border-black/5 bg-white/90 text-slate-700 hover:border-black/15 hover:bg-white active:scale-[0.99] shadow-[0_1px_4px_rgba(0,0,0,0.02)]";
 
                 if (isFrameDNA) {
-                  // Frame DNA: Pure preference selection (NO right/wrong exam styling)
                   if (isSelected) {
-                    btnClass = "border-2 border-isy-green-deep bg-isy-green-deep/10 text-isy-green-deep font-bold shadow-sm scale-[1.01] ring-2 ring-isy-green-deep/20";
+                    btnClass =
+                      "border-isy-green-deep bg-emerald-50/50 text-slate-900 font-medium shadow-sm ring-1 ring-isy-green-deep/20";
                   }
                 } else {
-                  // Standard / Screening Quizzes: Duolingo feedback styling
                   if (isSelected) {
-                    btnClass = "border-2 border-isy-green-deep bg-isy-green-deep/5 text-isy-green-deep font-bold shadow-sm scale-[1.01]";
+                    btnClass =
+                      "border-isy-green-deep bg-emerald-50/50 text-slate-900 font-medium shadow-sm";
                   }
                   if (isAnswerConfirmed) {
                     if (option.isCorrect) {
-                      btnClass = "border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold";
+                      btnClass =
+                        "border-emerald-500 bg-emerald-50 text-emerald-950 font-medium";
                     } else if (isSelected && option.isCorrect === false) {
-                      btnClass = "border-2 border-amber-500 bg-amber-50 text-amber-900 font-bold";
+                      btnClass =
+                        "border-rose-400 bg-rose-50 text-rose-950 font-medium";
                     }
                   }
                 }
@@ -447,13 +445,13 @@ export default function QuizPage() {
                     key={option.id}
                     type="button"
                     onClick={() => handleOptionClick(option)}
-                    className={`w-full p-3 sm:p-4 rounded-2xl flex items-start gap-3 text-left transition-all duration-200 cursor-pointer ${btnClass}`}
+                    className={`w-full p-3.5 sm:p-4 rounded-2xl flex items-start gap-3 text-left transition-all duration-200 cursor-pointer ${btnClass}`}
                   >
                     <span
-                      className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg sm:rounded-xl flex items-center justify-center text-[11px] sm:text-xs font-black shrink-0 transition-colors ${
+                      className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold shrink-0 transition-colors ${
                         isSelected
                           ? "bg-isy-green-deep text-white"
-                          : "bg-gray-100 text-gray-600"
+                          : "bg-slate-100 text-slate-600"
                       }`}
                     >
                       {letter}
@@ -462,11 +460,11 @@ export default function QuizPage() {
                       {option.text}
                     </span>
 
-                    {/* Status Indicator: Radio Dot for Frame DNA, or Check/X for Educational */}
+                    {/* iOS Status Indicator */}
                     {isFrameDNA ? (
                       <div
                         className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                          isSelected ? "border-isy-green-deep bg-white" : "border-gray-300"
+                          isSelected ? "border-isy-green-deep bg-white" : "border-slate-300"
                         }`}
                       >
                         {isSelected && (
@@ -479,7 +477,7 @@ export default function QuizPage() {
                           <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
                         )}
                         {isAnswerConfirmed && isSelected && option.isCorrect === false && (
-                          <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0 mt-0.5" />
+                          <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 shrink-0 mt-0.5" />
                         )}
                       </>
                     )}
@@ -489,47 +487,47 @@ export default function QuizPage() {
             </div>
           </div>
 
-          {/* Sticky Bottom Bar with Chunky Feedback & Action */}
-          <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-isy-line p-2.5 sm:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] z-40">
-            <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
-              {/* Feedback Drawer */}
+          {/* iOS Floating Bottom Bar with Explanation & Primary CTA */}
+          <div className="fixed bottom-0 inset-x-0 bg-white/85 backdrop-blur-2xl border-t border-black/5 p-3 sm:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] z-40 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
+            <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-4">
+              {/* Feedback / Educational Drawer */}
               <div className="w-full sm:grow text-left">
                 {isFrameDNA ? (
-                  <div className="text-[11px] sm:text-xs p-2 sm:p-2.5 rounded-xl bg-isy-mist border border-isy-line text-isy-ink/80 leading-relaxed animate-in fade-in duration-200 flex items-center gap-2">
-                    <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-isy-green-deep shrink-0" />
+                  <div className="text-[11px] sm:text-xs p-2.5 rounded-2xl bg-slate-50 border border-black/5 text-slate-600 leading-relaxed flex items-center gap-2">
+                    <Compass className="w-4 h-4 text-isy-green-deep shrink-0 stroke-[1.75]" />
                     <div>
-                      <span className="font-bold text-isy-green-deep block mb-0.5">
-                        Preferensi Frame DNA:
+                      <span className="font-semibold text-slate-900 block mb-0.5">
+                        Analisis Karakter Frame:
                       </span>
                       <span>
                         {selectedOption
-                          ? "Pilihanmu diselaraskan dengan siluet dan material frame katalog resmi."
-                          : "Pilih salah satu kebiasaan harianmu di atas untuk lanjut."}
+                          ? "Preferensi tersimpan. Lanjut untuk rekomendasi koleksi yang tepat."
+                          : "Pilih salah satu kebiasaan harian di atas untuk melanjutkan."}
                       </span>
                     </div>
                   </div>
                 ) : (
                   isAnswerConfirmed && (selectedOption?.explanation || isTimedOut) && (
-                    <div className="text-[11px] sm:text-xs p-2 sm:p-2.5 rounded-xl bg-isy-mist border border-isy-line text-isy-ink/80 leading-relaxed animate-in fade-in duration-200">
-                      <span className="font-bold text-isy-green-deep block mb-0.5">
-                        Penjelasan Optik:
+                    <div className="text-[11px] sm:text-xs p-2.5 rounded-2xl bg-slate-50 border border-black/5 text-slate-700 leading-relaxed animate-in fade-in duration-200">
+                      <span className="font-semibold text-slate-900 block mb-0.5">
+                        Ulasan Refraksi &amp; Kesehatan:
                       </span>
                       {selectedOption?.explanation ||
-                        "Fokus dan pemahaman kesehatan mata bertahap dibentuk dari mengenali prinsip optik harian."}
+                        "Pemahaman refraksi dan kesehatan mata dibangun dari mengenali tanda-tanda visual harian."}
                     </div>
                   )
                 )}
               </div>
 
-              {/* Action Button */}
+              {/* Primary Action Button (Apple Pill Style) */}
               <button
                 type="button"
                 disabled={!selectedOption && !isTimedOut}
                 onClick={handleConfirmAnswer}
-                className={`w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-200 shadow-md cursor-pointer flex items-center justify-center gap-2 shrink-0 ${
+                className={`w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 shadow-sm flex items-center justify-center gap-2 shrink-0 cursor-pointer ${
                   selectedOption || isTimedOut
-                    ? "bg-gradient-to-r from-isy-green-bright to-isy-green-deep text-white hover:scale-102 hover:shadow-lg active:scale-95"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    ? "bg-isy-green-deep text-white hover:bg-isy-green-bright active:scale-[0.98]"
+                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
                 }`}
               >
                 <span>
@@ -540,15 +538,15 @@ export default function QuizPage() {
                     : isAnswerConfirmed
                     ? currentQIndex < (sessionQuestions.length || selectedModule.questions.length) - 1
                       ? "Pertanyaan Berikutnya"
-                      : "Lihat Hasil Akhir"
-                    : "Periksa Jawaban"}
+                      : "Lihat Hasil Konsultasi"
+                    : "Konfirmasi Jawaban"}
                 </span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Floating Live Companion Cam HUD */}
+          {/* Live Companion Cam */}
           <LiveCompanionCam
             stream={companionStream}
             onToggleCam={() => setCompanionStream(null)}
@@ -558,7 +556,7 @@ export default function QuizPage() {
 
       {/* ── 3. RESULT VIEW ── */}
       {viewMode === "result" && selectedModule && (
-        <div className="pt-6 sm:pt-10 pb-20 px-4 w-full">
+        <div className="pt-4 sm:pt-8 pb-20 px-4 w-full">
           <QuizResultCard
             module={selectedModule}
             userAnswers={userAnswers}

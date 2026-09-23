@@ -139,25 +139,25 @@ export default function LiveCompanionCam({ stream, onToggleCam }: LiveCompanionC
               requestCamera();
             }
           }}
-          className="flex items-center gap-1.5 p-2 sm:p-2.5 rounded-full bg-isy-green-deep/95 backdrop-blur-md text-white border border-isy-green-bright/40 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 backdrop-blur-xl text-white border border-white/15 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
         >
-          <span className="w-2 h-2 rounded-full bg-isy-green-bright animate-pulse" />
-          <Eye className="w-3.5 h-3.5 text-isy-green-bright" />
-          <span className="text-[10px] sm:text-[11px] font-bold pr-1">Focus Cam</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <Eye className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-[11px] font-medium pr-0.5">Focus Cam</span>
         </button>
       )}
 
       {/* Expanded Monitor Box — Kept in DOM so video stream is never destroyed on toggle */}
       <div
-        className={`relative w-36 sm:w-44 rounded-2xl overflow-hidden bg-black/90 border-2 border-isy-green-deep shadow-2xl p-1 backdrop-blur-md transition-all duration-200 ${
+        className={`relative w-36 sm:w-44 rounded-2xl overflow-hidden bg-slate-950/90 border border-white/20 shadow-2xl p-1.5 backdrop-blur-xl transition-all duration-200 ${
           isMinimized ? "hidden pointer-events-none" : "block"
         }`}
       >
         {/* Top Title Bar */}
-        <div className="flex items-center justify-between px-2 py-1 text-[10px] font-black text-white/80">
+        <div className="flex items-center justify-between px-1.5 py-1 text-[10px] font-medium text-white/80">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-isy-green-bright animate-ping" />
-            <span className="text-isy-green-bright uppercase tracking-wider">Eye Lab</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span className="text-white/80 font-semibold tracking-tight">Focus Cam</span>
           </div>
           <div className="flex items-center gap-1">
             {/* Camera Refresh Button */}

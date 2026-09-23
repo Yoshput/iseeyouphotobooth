@@ -268,8 +268,8 @@ export default function GlassesDetectorModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-200 select-none">
-      <div className="relative w-full max-w-lg rounded-3xl bg-white border border-isy-line p-6 sm:p-8 shadow-2xl flex flex-col items-center text-center animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 animate-in fade-in duration-200 select-none">
+      <div className="relative w-full max-w-md rounded-3xl bg-white/95 backdrop-blur-2xl border border-black/10 p-6 sm:p-8 shadow-[0_16px_48px_rgba(0,0,0,0.12)] flex flex-col items-center text-center animate-in zoom-in-95 duration-200">
         {/* Close Button */}
         <button
           type="button"
@@ -277,25 +277,26 @@ export default function GlassesDetectorModal({
             stopCamera();
             onClose();
           }}
-          className="absolute top-4 right-4 p-2 rounded-full text-isy-ink/50 hover:text-isy-ink hover:bg-black/5 transition-colors cursor-pointer"
+          aria-label="Tutup"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 active:scale-95 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Header Icon & Title */}
-        <div className="w-12 h-12 rounded-2xl bg-isy-green-deep/10 border border-isy-green-deep/20 flex items-center justify-center text-isy-green-deep mb-3 shadow-xs">
-          <Scan className="w-6 h-6 text-isy-green-deep" />
+        <div className="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 mb-3 shadow-2xs">
+          <Scan className="w-6 h-6 stroke-[1.75]" />
         </div>
 
-        <h3 className="font-serif text-2xl font-black text-isy-green-deep">
-          Sensor Kacamata AI
+        <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900">
+          Kalibrasi Sensor Kacamata
         </h3>
-        <p className="text-xs text-isy-ink/70 mt-1 max-w-xs leading-relaxed">
-          Pindai apakah kamu sedang memakai kacamata untuk kalibrasi tes penglihatan yang lebih akurat.
+        <p className="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">
+          Pindai apakah kamu sedang memakai kacamata untuk kalibrasi modul tes penglihatan.
         </p>
 
         {/* Viewfinder Frame */}
-        <div className="relative w-full aspect-[4/3] max-w-xs rounded-2xl overflow-hidden bg-black my-5 border-2 border-isy-line flex items-center justify-center shadow-inner">
+        <div className="relative w-full aspect-[4/3] max-w-xs rounded-2xl overflow-hidden bg-slate-950 my-5 border border-black/10 flex items-center justify-center shadow-inner">
           {cameraActive ? (
             <video
               ref={videoRef}
@@ -304,44 +305,39 @@ export default function GlassesDetectorModal({
               className="w-full h-full object-cover scale-x-[-1]"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center p-6 text-white/50 text-center">
-              <Camera className="w-10 h-10 mb-2 opacity-50" />
-              <span className="text-xs">Kamera belum dinyalakan</span>
+            <div className="flex flex-col items-center justify-center p-6 text-white/40 text-center">
+              <Camera className="w-8 h-8 mb-2 opacity-60 stroke-[1.5]" />
+              <span className="text-xs font-medium">Kamera belum aktif</span>
             </div>
           )}
 
-          {/* Sci-fi Viewfinder Brackets */}
-          <div className="absolute inset-4 pointer-events-none">
-            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-isy-green-bright" />
-            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-isy-green-bright" />
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-isy-green-bright" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-isy-green-bright" />
+          {/* Apple Face ID Style Corner Brackets */}
+          <div className="absolute inset-5 pointer-events-none">
+            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/60 rounded-tl" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/60 rounded-tr" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/60 rounded-bl" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/60 rounded-br" />
           </div>
-
-          {/* Sweeping laser line when scanning */}
-          {scanState === "scanning" && (
-            <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-isy-green-bright to-transparent animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_12px_#2FA84F]" />
-          )}
 
           {/* Status Overlay */}
           {scanState === "scanning" && (
-            <div className="absolute bottom-3 inset-x-3 bg-black/85 backdrop-blur-md py-1.5 px-3 rounded-full text-[11px] font-bold text-white flex items-center justify-center gap-2 shadow-md">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-isy-green-bright" />
+            <div className="absolute bottom-3 inset-x-3 bg-black/75 backdrop-blur-md py-1.5 px-3 rounded-full text-[11px] font-medium text-white flex items-center justify-center gap-2 shadow-sm">
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-400" />
               <span>{scanFeedback}</span>
             </div>
           )}
 
           {scanState === "detected" && (
-            <div className="absolute bottom-3 inset-x-3 bg-isy-green-deep/95 backdrop-blur-md py-2 px-3 rounded-full text-xs font-black text-white flex items-center justify-center gap-2 shadow-lg">
-              <CheckCircle2 className="w-4 h-4 text-isy-green-bright" />
-              <span>Kacamata Terdeteksi Presisi</span>
+            <div className="absolute bottom-3 inset-x-3 bg-isy-green-deep/95 backdrop-blur-md py-1.5 px-3 rounded-full text-xs font-semibold text-white flex items-center justify-center gap-1.5 shadow-md">
+              <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+              <span>Kacamata Terdeteksi</span>
             </div>
           )}
 
           {scanState === "not_detected" && (
-            <div className="absolute bottom-3 inset-x-3 bg-amber-950/90 backdrop-blur-md py-2 px-3 rounded-full text-xs font-bold text-amber-200 flex items-center justify-center gap-2 shadow-lg">
-              <AlertCircle className="w-4 h-4 text-amber-400" />
-              <span>Belum Memakai Kacamata</span>
+            <div className="absolute bottom-3 inset-x-3 bg-rose-950/85 backdrop-blur-md py-1.5 px-3 rounded-full text-xs font-semibold text-rose-200 flex items-center justify-center gap-1.5 shadow-md">
+              <AlertCircle className="w-4 h-4 text-rose-300" />
+              <span>Kacamata Belum Terlihat</span>
             </div>
           )}
         </div>
@@ -352,10 +348,10 @@ export default function GlassesDetectorModal({
             <button
               type="button"
               onClick={startCamera}
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-isy-green-deep text-white text-xs font-black uppercase tracking-wider hover:bg-isy-green-bright transition-all active:scale-95 shadow-md shadow-isy-green-deep/20 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-isy-green-deep text-white text-xs sm:text-sm font-semibold hover:bg-isy-green-bright transition-all active:scale-[0.98] shadow-sm cursor-pointer"
             >
               <Camera className="w-4 h-4" />
-              <span>Mulai Pindai Kamera</span>
+              <span>Buka Kamera &amp; Pindai</span>
             </button>
           )}
 
@@ -363,9 +359,9 @@ export default function GlassesDetectorModal({
             <button
               type="button"
               disabled
-              className="w-full py-3.5 px-5 rounded-2xl bg-gray-100 text-gray-400 text-xs font-bold uppercase tracking-wider cursor-not-allowed"
+              className="w-full py-3 px-5 rounded-full bg-slate-100 text-slate-400 text-xs font-medium cursor-not-allowed"
             >
-              Sedang Mengalibrasi Sensor...
+              Menganalisis Wajah...
             </button>
           )}
 
@@ -373,58 +369,46 @@ export default function GlassesDetectorModal({
             <button
               type="button"
               onClick={() => handleFinish(true)}
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep text-white text-xs font-black uppercase tracking-wider hover:scale-[1.02] transition-all active:scale-95 shadow-lg shadow-isy-green-bright/30 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-isy-green-deep text-white text-xs sm:text-sm font-semibold hover:bg-isy-green-bright transition-all active:scale-[0.98] shadow-sm cursor-pointer"
             >
-              <span>Lanjut ke Kuis</span>
+              <span>Mulai Kuis</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}
 
           {scanState === "not_detected" && (
-            <div className="space-y-2.5 text-center animate-in fade-in duration-200">
-              <p className="text-[11px] text-isy-ink/70 leading-relaxed">
-                Sensor tidak mendeteksi kacamata pada wajahmu. Silakan pakai kacamata dan pindai ulang, atau coba fitur kacamata virtual.
+            <div className="space-y-2 text-center animate-in fade-in duration-200">
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Sensor tidak mendeteksi bingkai kacamata. Silakan kenakan kacamata atau lanjut langsung.
               </p>
 
-              {/* Primary Action: Honest AI Re-Scan */}
               <button
                 type="button"
                 onClick={startCamera}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep text-white text-xs font-black uppercase tracking-wider hover:scale-[1.02] transition-all active:scale-95 shadow-md shadow-isy-green-bright/25 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-isy-green-deep text-white text-xs font-semibold hover:bg-isy-green-bright transition-all active:scale-[0.98] shadow-sm cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4" />
-                <span>Pindai Ulang Kamera (Pakai Kacamata)</span>
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Pindai Ulang</span>
               </button>
 
-              {/* Try AR Link */}
-              <Link
-                href="/try-on"
-                onClick={stopCamera}
-                className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-2xl border-2 border-isy-line bg-white text-isy-green-deep text-xs font-black uppercase tracking-wider hover:border-isy-green-bright hover:bg-isy-mist transition-all active:scale-95 shadow-xs cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-isy-green-bright" />
-                <span>Coba Kacamata Virtual AR Dulu</span>
-              </Link>
-              
-              {/* Honest Advance without Glasses: No Cheat Bypass Button */}
               <button
                 type="button"
                 onClick={() => handleFinish(false)}
-                className="w-full py-2.5 px-3 rounded-xl border border-isy-line bg-isy-mist text-isy-ink/70 text-xs font-bold hover:bg-white hover:text-isy-green-deep transition-colors cursor-pointer"
+                className="w-full py-2.5 px-3 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer"
               >
                 Lanjut Tanpa Kacamata
               </button>
             </div>
           )}
 
-          {/* Quick Skip Button (Always Available in Idle) */}
+          {/* Quick Skip Button (Available in Idle) */}
           {scanState === "idle" && (
             <button
               type="button"
               onClick={() => handleFinish(false)}
-              className="w-full py-2.5 text-xs font-bold text-isy-ink/60 hover:text-isy-green-deep transition-colors cursor-pointer"
+              className="w-full py-2 text-xs font-medium text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
             >
-              Lewati &amp; Langsung Mulai Kuis
+              Lewati &amp; Mulai Sekarang
             </button>
           )}
         </div>
