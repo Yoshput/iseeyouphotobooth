@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getR2Client, isR2Configured } from "@/lib/r2Client";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export interface SponsorshipItem {
   id: string;
@@ -22,9 +27,37 @@ export interface SponsorshipItem {
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "sponsorships.json");
+const R2_DB_KEY = "data/sponsorships.json";
 
-// Helper to ensure data file exists and read contents safely
-function readSponsorships(): SponsorshipItem[] {
+function getSponsorBucket(): string {
+  return process.env.R2_SPONSOR_BUCKET_NAME?.trim() || "isy-sponsor-storage";
+}
+
+// Helper to read sponsorships from Cloudflare R2 or local fallback
+async function readSponsorships(): Promise<SponsorshipItem[]> {
+  // 1. Primary: Read from Cloudflare R2 (persistent across all Vercel serverless instances)
+  if (isR2Configured()) {
+    try {
+      const client = getR2Client();
+      const cmd = new GetObjectCommand({
+        Bucket: getSponsorBucket(),
+        Key: R2_DB_KEY,
+      });
+      const res = await client.send(cmd);
+      const text = await res.Body?.transformToString();
+      if (text) {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (r2Err: any) {
+      if (r2Err.name === "NoSuchKey" || r2Err.Code === "NoSuchKey") {
+        return [];
+      }
+      console.warn("R2 database read failed, falling back to local file:", r2Err.message);
+    }
+  }
+
+  // 2. Fallback: Local filesystem for development
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -36,20 +69,39 @@ function readSponsorships(): SponsorshipItem[] {
     const raw = fs.readFileSync(DATA_FILE, "utf-8");
     return JSON.parse(raw);
   } catch (err) {
-    console.error("Error reading sponsorships.json:", err);
+    console.error("Error reading local sponsorships.json:", err);
     return [];
   }
 }
 
-// Helper to write contents safely
-function writeSponsorships(items: SponsorshipItem[]) {
+// Helper to write sponsorships to Cloudflare R2 and local fallback
+async function writeSponsorships(items: SponsorshipItem[]): Promise<void> {
+  const jsonContent = JSON.stringify(items, null, 2);
+
+  // 1. Primary: Save to Cloudflare R2
+  if (isR2Configured()) {
+    try {
+      const client = getR2Client();
+      const cmd = new PutObjectCommand({
+        Bucket: getSponsorBucket(),
+        Key: R2_DB_KEY,
+        Body: jsonContent,
+        ContentType: "application/json",
+      });
+      await client.send(cmd);
+    } catch (r2Err: any) {
+      console.error("R2 database write failed:", r2Err.message);
+    }
+  }
+
+  // 2. Fallback: Local file
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
-    fs.writeFileSync(DATA_FILE, JSON.stringify(items, null, 2), "utf-8");
-  } catch (err) {
-    console.error("Error writing sponsorships.json:", err);
+    fs.writeFileSync(DATA_FILE, jsonContent, "utf-8");
+  } catch {
+    // Expected on Vercel read-only filesystem
   }
 }
 
@@ -86,7 +138,7 @@ async function syncToGoogleSheet(item: SponsorshipItem) {
 
 // GET: Fetch all sponsorships
 export async function GET() {
-  const items = readSponsorships();
+  const items = await readSponsorships();
   // Return descending by creation date
   items.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -141,9 +193,9 @@ export async function POST(req: Request) {
       createdAt: new Date().toISOString(),
     };
 
-    const currentItems = readSponsorships();
+    const currentItems = await readSponsorships();
     currentItems.unshift(newItem);
-    writeSponsorships(currentItems);
+    await writeSponsorships(currentItems);
 
     // Asynchronously sync to Google Sheets if configured
     syncToGoogleSheet(newItem).catch(() => {});
@@ -175,7 +227,7 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const items = readSponsorships();
+    const items = await readSponsorships();
     const index = items.findIndex((i) => i.id === id);
 
     if (index === -1) {
@@ -189,7 +241,7 @@ export async function PATCH(req: Request) {
     if (catatanInternal !== undefined)
       items[index].catatanInternal = catatanInternal;
 
-    writeSponsorships(items);
+    await writeSponsorships(items);
 
     return NextResponse.json({
       success: true,
@@ -218,9 +270,9 @@ export async function DELETE(req: Request) {
       );
     }
 
-    const items = readSponsorships();
+    const items = await readSponsorships();
     const filtered = items.filter((i) => i.id !== id);
-    writeSponsorships(filtered);
+    await writeSponsorships(filtered);
 
     return NextResponse.json({
       success: true,
