@@ -102,8 +102,8 @@ export default function SponsorPage() {
       return;
     }
 
-    if (file.size > 25 * 1024 * 1024) {
-      setUploadError("Ukuran file melebihi batas 25MB. Silakan gunakan opsi Tautkan Link Cloud.");
+    if (file.size > 40 * 1024 * 1024) {
+      setUploadError("Ukuran file melebihi batas 40MB. Silakan gunakan opsi Tautkan Link Cloud.");
       return;
     }
 
@@ -111,6 +111,43 @@ export default function SponsorPage() {
     setIsUploadingFile(true);
 
     try {
+      // 1. Dapatkan Presigned URL untuk Direct Upload ke Cloudflare R2 (Bypass Limit 4.5MB Vercel)
+      const presignRes = await fetch("/api/sponsor/presign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type || "application/pdf",
+          fileSize: file.size,
+        }),
+      });
+
+      const presignJson = await presignRes.json();
+
+      if (presignRes.ok && presignJson.success && presignJson.uploadUrl) {
+        // Direct upload dari browser langsung ke Cloudflare R2 via HTTP PUT
+        const r2UploadRes = await fetch(presignJson.uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/pdf",
+          },
+          body: file,
+        });
+
+        if (r2UploadRes.ok) {
+          setUploadedFileInfo({
+            name: file.name,
+            originalSize: formatBytes(file.size),
+            finalSize: formatBytes(file.size),
+            savedPercentage: 0,
+            url: presignJson.publicUrl,
+          });
+          setFormData((prev) => ({ ...prev, proposalUrl: presignJson.publicUrl }));
+          return;
+        }
+      }
+
+      // 2. Fallback: upload standar via API jika presign tidak aktif
       const data = new FormData();
       data.append("file", file);
 
@@ -126,15 +163,18 @@ export default function SponsorPage() {
           name: file.name,
           originalSize: formatBytes(json.originalSize),
           finalSize: formatBytes(json.finalSize),
-          savedPercentage: json.savedPercentage,
+          savedPercentage: json.savedPercentage || 0,
           url: json.url,
         });
         setFormData((prev) => ({ ...prev, proposalUrl: json.url }));
       } else {
-        setUploadError(json.error || "Gagal mengunggah file PDF proposal.");
+        setUploadError(
+          json.error ||
+            "Gagal mengunggah file. Jika ukuran melebihi 4.5MB, gunakan opsi Tautkan Link Cloud."
+        );
       }
-    } catch {
-      setUploadError("Gagal menghubungi server kompresi & upload. Periksa koneksi internet.");
+    } catch (err: any) {
+      setUploadError("Gagal mengunggah file PDF proposal. Periksa koneksi internet Anda.");
     } finally {
       setIsUploadingFile(false);
     }
