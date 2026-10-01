@@ -144,6 +144,12 @@ export default function SponsorPage() {
           });
           setFormData((prev) => ({ ...prev, proposalUrl: presignJson.publicUrl }));
           return;
+        } else {
+          console.error("Direct R2 upload status error:", r2UploadRes.status);
+          if (r2UploadRes.status === 403) {
+            setUploadError("Akses upload ditolak (403 Forbidden). Kredensial R2 di Vercel belum diperbarui ke Access Key yang baru.");
+            return;
+          }
         }
       }
 
