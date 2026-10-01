@@ -221,29 +221,33 @@ export default function SponsorPage() {
 
       // Build structured WhatsApp message to staff marketing (087778683766)
       const marketingPhone = "6287778683766";
-      const message = `Halo Kak Yossika (Marketing Optik I See You),
+      const message = `*PENGAJUAN PROPOSAL SPONSORSHIP*
+*OPTIK I SEE YOU*
+────────────────────────────
 
-Saya ingin mengajukan proposal sponsorship kegiatan:
+Halo Kak Yossika (Tim Marketing Optik I See You),
+Saya bermaksud mengajukan proposal sponsorship untuk kegiatan kami:
 
-📋 *Detail Acara*:
+*1. DETAIL ACARA & PENYELENGGARA*
 • Nama Acara: *${formData.namaKegiatan}*
 • Penyelenggara: ${formData.instansi}
-• Penanggung Jawab: ${formData.nama}
-• No. WhatsApp: ${formData.whatsapp}
-• Cabang Terdekat: Optik I See You ${formData.cabang}
+• Penanggung Jawab (PIC): ${formData.nama}
+• No. WhatsApp PIC: ${formData.whatsapp}
+• Cabang Tertuju: Optik I See You ${formData.cabang}
 • Tanggal Acara: ${formData.tanggalKegiatan || "-"}
 • Target Peserta: ${formData.targetPeserta || "-"} orang
-• Bentuk Pengajuan: ${formData.bentukSponsor.join(", ") || "Fleksibel"}
+• Bentuk Kerjasama: ${formData.bentukSponsor.join(", ") || "Fleksibel"}
 
-📝 *Ringkasan Kegiatan*:
-${formData.resumeKegiatan || "Terlampir dalam proposal resmi."}
+*2. RINGKASAN KEGIATAN*
+"${formData.resumeKegiatan || "Terlampir lengkap di dalam berkas proposal resmi."}"
 
-📎 *Link Proposal*:
-${formData.proposalUrl || "Akan dikirimkan via chat ini / GDrive"}
+*3. BERKAS DOKUMEN PROPOSAL*
+${formData.proposalUrl || "Akan dilampirkan via chat WhatsApp"}
 
-(ID Pengajuan Web: #${proposalId})
+────────────────────────────
+*ID Registrasi Web:* #${proposalId}
 
-Mohon kesediaan waktu untuk berdiskusi lebih lanjut mengenai bentuk kemitraan ini Kak. Terima kasih banyak!`;
+Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk kemitraan ini. Terima kasih banyak!`;
 
       const encodedMessage = encodeURIComponent(message);
       const waUrl = `https://wa.me/${marketingPhone}?text=${encodedMessage}`;
@@ -624,25 +628,23 @@ Mohon kesediaan waktu untuk berdiskusi lebih lanjut mengenai bentuk kemitraan in
                 {proposalMode === "upload" ? (
                   <div className="space-y-3">
                     {uploadedFileInfo ? (
-                      /* Uploaded File Card with Compression Stats */
-                      <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-50/60 flex items-center justify-between gap-4">
+                      /* Uploaded File Card — Sleek Apple/iOS Style */
+                      <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-50/50 flex items-center justify-between gap-3 shadow-2xs">
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                          <div className="w-10 h-10 rounded-xl bg-isy-green-deep text-white flex items-center justify-center shrink-0 shadow-xs">
                             <FileCheck className="w-5 h-5" />
                           </div>
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-slate-900 truncate">
                               {uploadedFileInfo.name}
                             </p>
-                            <div className="flex flex-wrap items-center gap-2 mt-0.5 text-[11px] text-slate-600">
-                              <span>Ukuran Awal: <strong>{uploadedFileInfo.originalSize}</strong></span>
-                              <span>&rarr;</span>
-                              <span>Tersimpan: <strong className="text-emerald-700">{uploadedFileInfo.finalSize}</strong></span>
-                              {uploadedFileInfo.savedPercentage > 0 && (
-                                <span className="px-1.5 py-0.2 rounded-full bg-emerald-600 text-white text-[9.5px] font-bold">
-                                  Hemat {uploadedFileInfo.savedPercentage}%
-                                </span>
-                              )}
+                            <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-500">
+                              <span className="font-medium text-slate-600">{uploadedFileInfo.originalSize}</span>
+                              <span className="text-slate-300">&bull;</span>
+                              <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                <span>Proposal Siap Diajukan</span>
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -651,20 +653,20 @@ Mohon kesediaan waktu untuk berdiskusi lebih lanjut mengenai bentuk kemitraan in
                           type="button"
                           onClick={handleRemoveFile}
                           className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0 cursor-pointer"
-                          title="Hapus / Ganti File"
+                          title="Ganti Dokumen"
                         >
                           <X className="w-4 h-4" />
                         </button>
                       </div>
                     ) : isUploadingFile ? (
-                      /* Uploading / Compressing State */
-                      <div className="p-8 rounded-2xl border-2 border-dashed border-emerald-400 bg-emerald-50/40 text-center space-y-2">
-                        <RefreshCw className="w-6 h-6 mx-auto text-emerald-600 animate-spin" />
+                      /* Uploading State */
+                      <div className="p-8 rounded-2xl border-2 border-dashed border-emerald-400/80 bg-emerald-50/30 text-center space-y-2">
+                        <RefreshCw className="w-6 h-6 mx-auto text-isy-green-deep animate-spin" />
                         <p className="text-xs font-bold text-slate-800">
-                          Mengompres &amp; Mengunggah Dokumen PDF ke Server...
+                          Mengunggah Dokumen Proposal...
                         </p>
                         <p className="text-[11px] text-slate-500 max-w-sm mx-auto">
-                          Sistem otomatis mengoptimalkan struktur PDF agar hemat penyimpanan tanpa mengurangi kualitas teks dan visual proposal.
+                          Mohon tunggu sebentar, berkas sedang diproses dengan aman ke server Cloudflare.
                         </p>
                       </div>
                     ) : (
@@ -686,11 +688,11 @@ Mohon kesediaan waktu untuk berdiskusi lebih lanjut mengenai bentuk kemitraan in
                           Klik untuk Memilih File PDF Proposal atau Seret ke Sini
                         </p>
                         <p className="text-[11px] text-slate-500 mt-1">
-                          Format resmi <strong>.PDF</strong> (Maksimal 25MB).
+                          Format resmi <strong>.PDF</strong> (Maksimal 40MB).
                         </p>
                         <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 border border-emerald-300/40 text-[10.5px] font-semibold text-emerald-800">
                           <Sparkles className="w-3 h-3" />
-                          <span>Auto-Compression Active: Menjaga Kualitas 100% Jernih</span>
+                          <span>Penyimpanan Aman Terenkripsi Cloudflare R2</span>
                         </div>
                       </label>
                     )}
