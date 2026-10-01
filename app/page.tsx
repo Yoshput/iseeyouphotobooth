@@ -694,6 +694,16 @@ export default function LandingPage() {
                 </a>
               </li>
               <li>
+                <Link href="/home-service" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Layanan Home Service (Ke Rumah)
+                </Link>
+              </li>
+              <li>
+                <Link href="/sponsor" className="transition-colors hover:text-white flex items-center gap-1.5">
+                  <span className="text-emerald-400">›</span> Pengajuan Sponsor Event / Komunitas
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="transition-colors hover:text-white flex items-center gap-1.5">
                   <span className="text-emerald-400">›</span> Blog &amp; Edukasi Kacamata
                 </Link>
@@ -774,8 +784,8 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Legal Links */}
-            <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-white/60">
+            {/* Legal & Developer Links */}
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[11px] text-white/60">
               <Link href="/kebijakan-privasi" className="hover:text-white transition-colors">
                 Kebijakan Privasi
               </Link>
@@ -784,9 +794,50 @@ export default function LandingPage() {
                 Syarat &amp; Ketentuan
               </Link>
               <span className="text-white/20">&bull;</span>
-              <div className="inline-flex items-center gap-1.5 text-emerald-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Crafted for Every You</span>
+              
+              {/* Developer Attribution Pill — Humble, Professional, Anonymous */}
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-white/45">Crafted by</span>
+                <a
+                  href="https://yossikaputra.my.id/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 px-3 py-1 text-[11px] font-semibold text-white transition-all shadow-xs hover:border-white/40 active:scale-95"
+                  title="Developer Portfolio & Works"
+                >
+                  <div className="relative h-5 w-5 overflow-hidden rounded-full ring-1.5 ring-emerald-500/80 shrink-0">
+                    <Image
+                      src="/yossika-dev.webp"
+                      alt="Developer"
+                      width={20}
+                      height={20}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <span className="text-white font-medium group-hover:text-emerald-300 transition-colors">
+                    Dev
+                  </span>
+                  <span className="rounded-full bg-emerald-600/80 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                    DEV
+                  </span>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-white/50 group-hover:text-white transition-colors">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+                <a
+                  href="https://github.com/yoshput"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/70 hover:text-white hover:bg-white/20 transition-all active:scale-95"
+                  title="GitHub @yoshput"
+                  aria-label="GitHub @yoshput"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>

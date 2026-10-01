@@ -3,6 +3,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import PWARegister from "@/components/ui/PWARegister";
 import PWAInstallPrompt from "@/components/ui/PWAInstallPrompt";
 import PWASplashScreen from "@/components/pwa/PWASplashScreen";
+import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 import "./globals.css";
 
 /**
@@ -342,6 +343,9 @@ export default function RootLayout({
 
         {/* PWA: Install Prompt Banner */}
         <PWAInstallPrompt />
+
+        {/* Global Privacy & Cookie Consent Banner */}
+        <CookieConsentBanner />
       </body>
     </html>
   );

@@ -52,12 +52,16 @@ export interface R2UploadResult {
 export async function uploadBufferToR2(
   buffer: Buffer,
   key: string,
-  contentType: string
+  contentType: string,
+  bucketName?: string,
+  publicDomain?: string
 ): Promise<R2UploadResult> {
   const client = getR2Client();
+  const targetBucket = bucketName || R2_BUCKET_NAME;
+  const targetDomain = (publicDomain || R2_PUBLIC_DOMAIN).trim().replace(/\/+$/, "");
 
   const command = new PutObjectCommand({
-    Bucket: R2_BUCKET_NAME,
+    Bucket: targetBucket,
     Key: key,
     Body: buffer,
     ContentType: contentType,
@@ -67,9 +71,9 @@ export async function uploadBufferToR2(
 
   await client.send(command);
 
-  const publicUrl = R2_PUBLIC_DOMAIN
-    ? `${R2_PUBLIC_DOMAIN}/${key}`
-    : `https://${R2_BUCKET_NAME}.${R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${key}`;
+  const publicUrl = targetDomain
+    ? `${targetDomain}/${key}`
+    : `https://${targetBucket}.${R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${key}`;
 
   return { key, publicUrl };
 }

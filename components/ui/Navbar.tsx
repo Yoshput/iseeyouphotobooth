@@ -61,7 +61,8 @@ export default function Navbar() {
     { href: "/try-on", label: "Try-On AR" },
     { href: "/softlens", label: "Softlens" },
     { href: "/cabang", label: "4 Cabang" },
-    { href: "/photobooth", label: "Photobooth" },
+    { href: "/home-service", label: "Home Service" },
+    { href: "/sponsor", label: "Sponsor" },
     { href: "/quiz", label: "Quiz Frame" },
     { href: "/blog", label: "Blog" },
   ];
