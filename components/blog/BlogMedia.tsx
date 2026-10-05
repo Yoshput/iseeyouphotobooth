@@ -77,22 +77,29 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
     }
   };
 
-  if (videoUrl) {
+  const [hasVideoError, setHasVideoError] = useState(false);
+
+  if (videoUrl && !hasVideoError) {
     return (
       <div className="relative aspect-[4/5] w-full max-w-lg rounded-3xl overflow-hidden shadow-xl border border-isy-line bg-black flex items-center justify-center group select-none transform-gpu">
         <video
           ref={videoRef}
           src={videoUrl}
+          poster={coverImage}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          onError={() => setHasVideoError(true)}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onClick={handleVideoClick}
           className="w-full h-full object-cover cursor-pointer"
-        />
+        >
+          <source src={videoUrl} type="video/mp4" />
+          <source src="/blog/rsm-wedding-expo.mp4" type="video/mp4" />
+        </video>
 
         {/* Minimalist Sound Toggle Pill (Bottom-Right) */}
         <div className="absolute bottom-4 right-4 z-20">

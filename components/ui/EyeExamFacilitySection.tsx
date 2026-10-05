@@ -204,13 +204,6 @@ export default function EyeExamFacilitySection() {
             isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          {/* Eyebrow Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/25 bg-isy-green-bright/10 px-4 py-1.5 shadow-sm backdrop-blur-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
-            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.18em] text-isy-green-bright">
-              FASILITAS & WORKSHOP LAB OPTIK
-            </span>
-          </div>
 
           {/* Heading */}
           <h2 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
