@@ -817,9 +817,6 @@ export default function LandingPage() {
                   <span className="text-white font-medium group-hover:text-emerald-300 transition-colors">
                     Dev
                   </span>
-                  <span className="rounded-full bg-emerald-600/80 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
-                    DEV
-                  </span>
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-white/50 group-hover:text-white transition-colors">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                     <polyline points="15 3 21 3 21 9" />
