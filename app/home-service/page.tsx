@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/ui/Navbar";
 import {
@@ -19,11 +20,69 @@ import {
   Glasses,
   Home,
   Check,
+  Camera,
+  X,
+  ZoomIn,
 } from "lucide-react";
 import { CS_BRANCHES } from "@/components/ui/ContactCSModal";
 
+interface HomeServiceGalleryItem {
+  id: string;
+  image: string;
+  category: string;
+  title: string;
+  desc: string;
+}
+
+const HOME_SERVICE_GALLERY: HomeServiceGalleryItem[] = [
+  {
+    id: "periksa-mata",
+    image: "/home-service-gallery/hs-fitting.webp",
+    category: "Pemeriksaan Digital",
+    title: "Peralatan Cek Mata Lengkap Tiba di Lokasi",
+    desc: "Refraksionis membawa alat autorefractor komputer dan koper trial lens set untuk memeriksa visus (minus, plus, silinder) secara akurat di tempat Anda.",
+  },
+  {
+    id: "pilihan-frame",
+    image: "/home-service-gallery/hs-frame-selection.webp",
+    category: "Pilihan Koleksi",
+    title: "100+ Pilihan Frame Kacamata Dibawa Langsung",
+    desc: "Kotak display bertingkat berisi puluhan frame tren kekinian siap dicoba santai sepuasnya tanpa rasa canggung atau terburu-buru.",
+  },
+  {
+    id: "suasana-keluarga",
+    image: "/home-service-gallery/hs-consultation.webp",
+    category: "Keluarga & Santai",
+    title: "Coba Bareng Keluarga & Minta Pendapat Langsung",
+    desc: "Sangat ideal untuk keluarga: ayah, ibu, anak, hingga lansia bisa periksa mata bersamaan sambil santai berdiskusi di ruang tamu rumah.",
+  },
+  {
+    id: "kunjungan-kantor",
+    image: "/home-service-gallery/hs-office-visit.webp",
+    category: "Instansi & Kantor",
+    title: "Layanan Kolektif Kantor, Komunitas & Instansi",
+    desc: "Kami juga rutin melayani pemeriksaan mata terpadu untuk karyawan perusahaan, kantor pemerintahan, komunitas, hingga perkumpulan arisan.",
+  },
+  {
+    id: "fitting-presisi",
+    image: "/home-service-gallery/hs-team-service.webp",
+    category: "Pelayanan Ahli",
+    title: "Konsultasi Lensa Spesifik & Fitting Proporsional",
+    desc: "Edukasi kebutuhan lensa seperti Bluechromic anti radiasi gadget, progresif lansia, serta penyetelan frame agar presisi dan nyaman seharian.",
+  },
+  {
+    id: "uji-visus",
+    image: "/home-service-gallery/hs-eye-test.webp",
+    category: "Standar Optometri",
+    title: "Uji Ketajaman Penglihatan Bebas Pusing",
+    desc: "Standar uji visus jarak jauh menggunakan Snellen chart untuk memastikan hasil kacamata jernih, tajam, dan tidak menyebabkan mata lelah.",
+  },
+];
+
 export default function HomeServicePage() {
   const [selectedBranchId, setSelectedBranchId] = useState("purwokerto");
+  const [selectedPhoto, setSelectedPhoto] = useState<HomeServiceGalleryItem | null>(null);
+
   const [formData, setFormData] = useState({
     nama: "",
     whatsapp: "",
@@ -139,8 +198,8 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
     <main className="min-h-screen bg-isy-ivory text-isy-ink select-none flex flex-col justify-between">
       <Navbar />
 
-      <div className="pt-4 sm:pt-6 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
-        {/* Top Navigation Row (Strictly Top Left) */}
+      <div className="pt-4 sm:pt-6 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
+        {/* Top Navigation Row */}
         <div className="flex items-center justify-between w-full mb-6 sm:mb-8">
           <Link
             href="/"
@@ -159,7 +218,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-800 mb-3">
             <Home className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Layanan Periksa Mata di Rumah</span>
+            <span>Layanan Periksa Mata di Rumah &amp; Kantor</span>
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
             Home Service Optik I See You
@@ -170,7 +229,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
         </div>
 
         {/* Home Service Features */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-12">
           <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-4 flex items-center gap-3.5 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5 stroke-[1.75]" />
@@ -201,6 +260,71 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
             </div>
           </div>
         </div>
+
+        {/* ═══ REAL DOCUMENTATION & VISUAL SHOWCASE ═══ */}
+        <section className="mb-14 sm:mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-deep">
+              <Camera className="w-3.5 h-3.5 text-isy-green-bright" />
+              <span>Dokumentasi Nyata Kunjungan</span>
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
+              Seperti Apa Suasana Home Service?
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto">
+              Intip dokumentasi pengalaman nyata saat tim refraksionis Optik I See You melayani pemeriksaan mata dan pemilihan frame langsung di kediaman &amp; kantor pelanggan:
+            </p>
+          </div>
+
+          {/* Clean 6-Card Visual Grid with Smooth Shadows and Zero Text Overlay */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+            {HOME_SERVICE_GALLERY.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => setSelectedPhoto(item)}
+                className="group relative flex flex-col justify-between rounded-3xl border border-black/5 bg-white/95 p-4 shadow-sm hover:shadow-xl transition-all duration-500 ease-out hover:-translate-y-1.5 cursor-pointer"
+              >
+                {/* 100% Clean Image Container with smooth shadow & zoom */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-slate-100 shadow-xs group-hover:shadow-md transition-all duration-500 ease-out">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  {/* Subtle Zoom Hint on Hover */}
+                  <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold shadow-lg">
+                      <ZoomIn className="w-3.5 h-3.5" />
+                      <span>Lihat Foto Penuh</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Editorial Details below the photo (Zero text overlay on the photo object) */}
+                <div className="pt-4 flex flex-col justify-between flex-1">
+                  <div>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/60 mb-2">
+                      {item.category}
+                    </span>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900 group-hover:text-isy-green-deep transition-colors leading-snug mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-isy-green-deep group-hover:text-isy-green-bright transition-colors">
+                    <span>Lihat Dokumentasi</span>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* ── HOME SERVICE FORM ── */}
         <div className="rounded-3xl border border-black/5 bg-white/95 backdrop-blur-xl p-6 sm:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
@@ -249,6 +373,16 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="text-center sm:text-left pb-2 border-b border-black/5">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-isy-green-deep">Formulir Reservasi</span>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+                  Atur Jadwal Kunjungan ke Tempat Anda
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Isi data di bawah ini untuk mengonfirmasi jadwal refraksionis terdekat ke lokasi Anda.
+                </p>
+              </div>
+
               {/* Step 1: Pilih Cabang Terdekat */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-3 flex items-center gap-2">
@@ -263,18 +397,22 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
                         key={b.id}
                         type="button"
                         onClick={() => setSelectedBranchId(b.id)}
-                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                        className={`p-3.5 rounded-2xl border text-left transition-all relative cursor-pointer ${
                           isSelected
-                            ? "bg-emerald-50/80 border-emerald-500 text-emerald-950 ring-2 ring-emerald-500/20 shadow-sm"
-                            : "bg-slate-50/60 border-black/5 text-slate-600 hover:bg-slate-100/80"
+                            ? "bg-emerald-50/80 border-emerald-600 shadow-sm ring-1 ring-emerald-600"
+                            : "bg-white border-black/10 hover:border-black/20 hover:bg-slate-50/80"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <strong className="text-xs font-bold block">{b.name}</strong>
+                          <span
+                            className={`text-xs font-bold ${
+                              isSelected ? "text-emerald-950" : "text-slate-800"
+                            }`}
+                          >
+                            {b.name}
+                          </span>
                           {isSelected && (
-                            <span className="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">
-                              ✓
-                            </span>
+                            <Check className="w-3.5 h-3.5 text-emerald-700 stroke-[2.5]" />
                           )}
                         </div>
                         <p className="text-[10px] text-slate-500 line-clamp-1">{b.address}</p>
@@ -284,22 +422,22 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
                 </div>
               </div>
 
-              {/* Step 2: Data Pemesan & Lokasi */}
-              <div className="pt-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-3 flex items-center gap-2">
+              {/* Step 2: Form Identitas & Alamat */}
+              <div className="space-y-4 pt-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-1 flex items-center gap-2">
                   <User className="w-4 h-4 text-isy-green-deep" />
-                  <span>2. Identitas Pemesan &amp; Alamat Kunjungan</span>
+                  <span>2. Data Pemesan &amp; Lokasi Kunjungan</span>
                 </label>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Nama Lengkap <span className="text-rose-500">*</span>
+                      Nama Lengkap *
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="Contoh: Ibu Rina / Bpk. Hendra"
+                      placeholder="Contoh: Budi Santoso"
                       value={formData.nama}
                       onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
@@ -308,37 +446,27 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Nomor WhatsApp <span className="text-rose-500">*</span>
+                      Nomor WhatsApp Aktif *
                     </label>
-                    <div className="relative">
-                      <span className="absolute left-3.5 top-2.5 text-xs text-slate-400 font-medium">
-                        +62
-                      </span>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="81234567890"
-                        value={formData.whatsapp.replace(/^(\+?62|0)/, "")}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            whatsapp: "0" + e.target.value.replace(/\D/g, ""),
-                          })
-                        }
-                        className="w-full pl-12 pr-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
-                      />
-                    </div>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="Contoh: 081234567890"
+                      value={formData.whatsapp}
+                      onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
+                    />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Alamat Lengkap &amp; Patokan Rumah/Kantor <span className="text-rose-500">*</span>
+                    Alamat Lengkap Kunjungan (Rumah / Kantor) *
                   </label>
                   <textarea
-                    rows={2}
                     required
-                    placeholder="Contoh: Jl. Ahmad Yani No. 12, Kel. Kranji (Depan Masjid Al-Ikhlas pagar hitam)"
+                    rows={2}
+                    placeholder="Contoh: Jl. Ringin Tirto No. 12, Bancarkembar, Purwokerto Utara (Dekat Lapangan Bancarkembar)"
                     value={formData.alamat}
                     onChange={(e) => setFormData({ ...formData, alamat: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
@@ -347,56 +475,61 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
               </div>
 
               {/* Step 3: Waktu & Jumlah Orang */}
-              <div className="pt-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-3 flex items-center gap-2">
+              <div className="space-y-4 pt-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-1 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-isy-green-deep" />
-                  <span>3. Jadwal Kunjungan &amp; Rencana Pemeriksaan</span>
+                  <span>3. Jadwal &amp; Jumlah Orang yang Diperiksa</span>
                 </label>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Pilihan Tanggal <span className="text-rose-500">*</span>
+                      Tanggal Kunjungan *
                     </label>
                     <input
                       type="date"
                       required
+                      min={new Date().toISOString().split("T")[0]}
                       value={formData.tanggal}
                       onChange={(e) => setFormData({ ...formData, tanggal: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all cursor-pointer"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Estimasi Jam Kunjungan
+                      Perkiraan Jam
                     </label>
                     <select
                       value={formData.waktu}
                       onChange={(e) => setFormData({ ...formData, waktu: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all cursor-pointer"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
                     >
                       <option value="09:00">09:00 WIB (Pagi)</option>
-                      <option value="10:30">10:30 WIB (Pagi)</option>
-                      <option value="13:30">13:30 WIB (Siang)</option>
+                      <option value="10:00">10:00 WIB (Pagi)</option>
+                      <option value="11:00">11:00 WIB (Siang)</option>
+                      <option value="13:00">13:00 WIB (Siang)</option>
+                      <option value="14:00">14:00 WIB (Sore)</option>
                       <option value="15:30">15:30 WIB (Sore)</option>
+                      <option value="16:30">16:30 WIB (Sore)</option>
                       <option value="19:00">19:00 WIB (Malam)</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Jumlah Orang yang Diperiksa
+                      Jumlah Orang yang Periksa
                     </label>
                     <select
                       value={formData.jumlahOrang}
                       onChange={(e) => setFormData({ ...formData, jumlahOrang: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all cursor-pointer"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/10 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-isy-green-deep/30 focus:border-isy-green-deep transition-all"
                     >
                       <option value="1 Orang">1 Orang</option>
-                      <option value="2 - 3 Orang">2 - 3 Orang (Keluarga)</option>
-                      <option value="4 - 6 Orang">4 - 6 Orang (Keluarga Besar)</option>
-                      <option value="Rombongan Kantor (> 6 orang)">Rombongan Kantor (&gt; 6 orang)</option>
+                      <option value="2 Orang">2 Orang</option>
+                      <option value="3 - 4 Orang (Keluarga)">3 - 4 Orang (Keluarga)</option>
+                      <option value="5 - 10 Orang (Rombongan)">5 - 10 Orang (Rombongan)</option>
+                      <option value="Lebih dari 10 Orang (Kantor/Komunitas)">Lebih dari 10 Orang (Kantor/Komunitas)</option>
                     </select>
                   </div>
                 </div>
@@ -466,6 +599,51 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
           )}
         </div>
       </div>
+
+      {/* ═══ LIGHTBOX MODAL FOR PHOTO ZOOM ═══ */}
+      {selectedPhoto && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setSelectedPhoto(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-lg w-full bg-white rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200"
+          >
+            <button
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute top-4 right-4 z-20 h-9 w-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+              aria-label="Tutup"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="relative aspect-[3/4] w-full bg-slate-900">
+              <Image
+                src={selectedPhoto.image}
+                alt={selectedPhoto.title}
+                fill
+                className="object-contain"
+                sizes="(max-width: 640px) 100vw, 512px"
+              />
+            </div>
+
+            <div className="p-6 bg-white">
+              <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/60 mb-2">
+                {selectedPhoto.category}
+              </span>
+              <h3 className="font-serif text-xl font-bold text-slate-900 leading-snug mb-2">
+                {selectedPhoto.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {selectedPhoto.desc}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

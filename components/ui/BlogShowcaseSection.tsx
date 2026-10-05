@@ -158,9 +158,9 @@ export default function BlogShowcaseSection() {
           onTouchEnd={() => setIsPaused(false)}
         >
           <div className="grid grid-cols-1 md:grid-cols-12 items-stretch min-h-[380px]">
-            {/* Left Cover Image Column */}
-            <div className="md:col-span-5 relative min-h-[260px] md:min-h-full overflow-hidden bg-isy-mist">
-              <Link href={`/blog/${current.slug}`} className="block h-full w-full relative group">
+            {/* Left Cover Image Column — 100% Clean Image with smooth shadow & transition */}
+            <div className="md:col-span-5 relative min-h-[260px] md:min-h-full overflow-hidden bg-isy-mist shadow-xs">
+              <Link href={`/blog/${current.slug}`} className="block h-full w-full relative group overflow-hidden">
                 <Image
                   key={current.slug}
                   src={current.coverImage}
@@ -170,12 +170,6 @@ export default function BlogShowcaseSection() {
                   priority
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
-                {/* Clean Subtle Category Tag */}
-                <div className="absolute top-4 left-4 z-10 flex gap-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold border shadow-xs ${badgeInfo.bg}`}>
-                    {badgeInfo.label}
-                  </span>
-                </div>
               </Link>
             </div>
 
@@ -184,6 +178,8 @@ export default function BlogShowcaseSection() {
               <div key={current.slug} className="animate-in fade-in duration-300">
                 {/* Meta Header */}
                 <div className="flex items-center gap-2 text-xs text-isy-ink/60 mb-3">
+                  <span className="font-bold text-isy-green-deep">{badgeInfo.label}</span>
+                  <span>•</span>
                   <span>
                     {new Date(current.publishedAt).toLocaleDateString("id-ID", {
                       day: "numeric",

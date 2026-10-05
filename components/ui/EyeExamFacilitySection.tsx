@@ -252,22 +252,14 @@ export default function EyeExamFacilitySection() {
               style={{ transitionDelay: `${100 + idx * 80}ms` }}
             >
               <div>
-                {/* Image Container */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-isy-ivory/60 to-isy-mist/40 border border-isy-line/60 flex items-center justify-center p-3 mb-5 group-hover:bg-white transition-colors">
+                {/* Image Container — Clean object photo with smooth shadow & transition */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-isy-ivory/60 to-isy-mist/40 border border-isy-line/60 flex items-center justify-center p-3 mb-5 shadow-xs group-hover:shadow-md group-hover:bg-white transition-all duration-500 ease-out">
                   <Image
                     src={item.image}
                     alt={`${item.name} - Fasilitas Periksa Mata Komputerisasi & Faset Optik I See You`}
                     fill
-                    className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                    className="object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105"
                   />
-
-                  <span className="absolute top-3 left-3 rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-[9.5px] font-extrabold text-isy-green-deep shadow-sm border border-isy-line">
-                    {item.tag}
-                  </span>
-
-                  <span className="absolute bottom-3 right-3 rounded-full bg-isy-green-deep/90 text-white px-2.5 py-0.5 text-[9px] font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
-                    Lihat Detail
-                  </span>
                 </div>
 
                 {/* Name Only */}
