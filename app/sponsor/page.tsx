@@ -64,7 +64,11 @@ export default function SponsorPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<{
     id: string;
-    waUrl: string;
+    namaKegiatan?: string;
+    instansi?: string;
+    cabang?: string;
+    tanggalKegiatan?: string;
+    waUrl?: string;
   } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -254,10 +258,14 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
 
       setSubmittedData({
         id: proposalId,
+        namaKegiatan: formData.namaKegiatan,
+        instansi: formData.instansi,
+        cabang: formData.cabang,
+        tanggalKegiatan: formData.tanggalKegiatan,
         waUrl,
       });
 
-      // Automatically open WhatsApp in a new tab for seamless user experience
+      // Automatically open WhatsApp in a new tab as reminder & direct notification to Kak Yossika
       if (typeof window !== "undefined") {
         window.open(waUrl, "_blank");
       }
@@ -347,30 +355,65 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                Pengajuan Terkirim
+                ✓ Terdaftar di Antrean Sistem
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mt-3 mb-2">
-                Terima Kasih, Proposal Anda Telah Diterima!
+                Proposal Sponsorship Berhasil Terkirim!
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed mb-6">
-                Data proposal telah tersimpan di sistem Optik I See You dengan nomor registrasi{" "}
-                <span className="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">
+              <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed mb-6">
+                Data proposal kegiatan Anda telah tercatat secara resmi dengan nomor registrasi{" "}
+                <span className="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-black/5">
                   #{submittedData.id}
                 </span>
-                . Silakan klik tombol di bawah untuk melanjutkan chat langsung dengan Staff Marketing kami via WhatsApp.
+                .
               </p>
 
+              {/* Detail Ringkasan Pengajuan */}
+              <div className="max-w-md mx-auto bg-slate-50 border border-black/5 rounded-2xl p-4 sm:p-5 text-left mb-6 space-y-2.5">
+                <div className="flex items-center justify-between text-xs pb-2 border-b border-black/5">
+                  <span className="text-slate-500">Nama Kegiatan</span>
+                  <span className="font-bold text-slate-800 text-right">{submittedData.namaKegiatan}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs pb-2 border-b border-black/5">
+                  <span className="text-slate-500">Penyelenggara</span>
+                  <span className="font-medium text-slate-800 text-right">{submittedData.instansi}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs pb-2 border-b border-black/5">
+                  <span className="text-slate-500">Cabang Tertuju</span>
+                  <span className="font-semibold text-emerald-700 text-right">Optik I See You {submittedData.cabang}</span>
+                </div>
+                {submittedData.tanggalKegiatan && (
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500">Tanggal Acara</span>
+                    <span className="text-slate-700 text-right">{submittedData.tanggalKegiatan}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Informasi Alur Kerja Sama */}
+              <div className="max-w-md mx-auto bg-emerald-50/70 border border-emerald-200/60 rounded-2xl p-4 text-left mb-6">
+                <h4 className="text-xs font-bold text-emerald-950 mb-1 flex items-center gap-1.5">
+                  <span>ℹ️</span> Alur Evaluasi &amp; Konfirmasi
+                </h4>
+                <p className="text-[11px] text-emerald-900/80 leading-relaxed">
+                  Proposal Anda akan ditinjau oleh tim kurasi marketing kami. Jika kegiatan memenuhi kriteria kemitraan, <strong>Tim Marketing Optik I See You yang akan langsung menghubungi nomor WhatsApp PIC Anda</strong>. Anda tidak perlu mengirim konfirmasi manual via chat.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
-                <a
-                  href={submittedData.waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-isy-green-deep px-6 py-3.5 text-xs sm:text-sm font-semibold text-white shadow-md hover:bg-isy-green-bright transition-all active:scale-95 cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Buka WhatsApp Marketing Sekarang</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+                {submittedData.waUrl && (
+                  <a
+                    href={submittedData.waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-isy-green-deep px-6 py-3.5 text-xs sm:text-sm font-semibold text-white shadow-md hover:bg-isy-green-bright transition-all active:scale-95 cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Buka WhatsApp Marketing</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
 
                 <button
                   type="button"
@@ -394,6 +437,13 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
                 >
                   <span>Ajukan Proposal Lain</span>
                 </button>
+
+                <Link
+                  href="/"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-black/10 bg-slate-50 px-5 py-3 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all active:scale-95 cursor-pointer"
+                >
+                  <span>Beranda</span>
+                </Link>
               </div>
             </div>
           ) : (
