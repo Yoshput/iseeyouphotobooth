@@ -12,15 +12,27 @@ import { type CatalogCollection, type CatalogItem } from "@/lib/catalog";
 import { type SoftlensProduct, SOFTLENS_CS_WA_URL } from "@/lib/softlens";
 import { csWhatsappUrl } from "@/lib/branches";
 
+function getFrameCode(name: string, collectionTitle?: string): string {
+  let cleaned = name.replace(/—/g, "-").trim();
+  if (collectionTitle) {
+    const escaped = collectionTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`^${escaped}\\s*[-–—:]?\\s*`, "i");
+    cleaned = cleaned.replace(regex, "").trim();
+  }
+  return cleaned || name.replace(/—/g, "-");
+}
+
 /**
  * Item Card component for Frames
  */
 function CatalogItemCard({
   item,
+  collectionTitle,
   onOpenDetail,
   onOpenCSModal,
 }: {
   item: CatalogItem;
+  collectionTitle?: string;
   onOpenDetail: (item: CatalogItem) => void;
   onOpenCSModal: (item: CatalogItem) => void;
 }) {
@@ -35,6 +47,7 @@ function CatalogItemCard({
   }, [item.images]);
 
   const displayImages = item.images && item.images.length > 0 ? item.images : [item.image];
+  const frameCode = getFrameCode(item.name, collectionTitle || item.collection);
 
   return (
     <div
@@ -42,6 +55,7 @@ function CatalogItemCard({
       className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-isy-line bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-isy-green-bright/50 hover:shadow-xl cursor-pointer"
     >
       <div>
+        {/* 100% Clean Image Cover - Zero Shape/Badge Overlays */}
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-isy-mist border border-isy-line/60">
           {displayImages.map((imgSrc, idx) => (
             <Image
@@ -70,57 +84,30 @@ function CatalogItemCard({
               ))}
             </div>
           )}
-          <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-extrabold text-isy-green-deep shadow border border-isy-line z-10">
-            {item.style}
-          </span>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpenDetail(item);
-            }}
-            className="absolute bottom-3 right-3 rounded-full bg-isy-green-deep/90 text-white px-2.5 py-1 text-[10px] font-bold shadow backdrop-blur-md hover:bg-isy-green-bright transition-colors z-10"
-          >
-            {item.specsImage ? "Lihat Specs" : "Detail Frame"}
-          </button>
         </div>
 
-        <div className="mt-4 space-y-2">
-          <h3 className="font-serif text-lg font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
-            {item.name}
+        {/* Minimalist Card Body - Only Frame Code, No Description */}
+        <div className="mt-4">
+          <h3 className="font-sans text-base sm:text-lg font-bold text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
+            {frameCode}
           </h3>
-          <p className="text-xs text-isy-ink/65 leading-relaxed line-clamp-2">
-            {item.description}
-          </p>
-          <div className="pt-1 flex flex-wrap gap-1 items-center">
-            <span className="text-[10px] font-bold text-isy-ink/40">Cocok Wajah:</span>
-            {item.recommendedFor.map((shape) => (
-              <span
-                key={shape}
-                className="rounded-md bg-isy-mist px-2 py-0.5 text-[9.5px] font-extrabold text-isy-green-deep border border-isy-line"
-              >
-                {shape}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-2 pt-4 border-t border-isy-line">
-        <Link
-          href="/try-on"
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center justify-center gap-1.5 rounded-xl border border-isy-line bg-isy-mist py-2.5 text-xs font-bold text-isy-green-deep transition-all hover:bg-isy-line active:scale-95"
-        >
-          Coba AR Try-On
-        </Link>
+      {/* Clean Single Action Button: Tanya CS 4 Cabang (No AR Try-On) */}
+      <div className="mt-5 pt-4 border-t border-isy-line">
         <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             onOpenCSModal(item);
           }}
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-isy-green-deep py-2.5 text-[11px] font-bold text-white shadow transition-all hover:bg-isy-green-bright active:scale-95 text-center leading-tight px-1"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-isy-green-deep py-2.5 px-4 text-xs font-bold text-white shadow-xs transition-all hover:bg-isy-green-bright active:scale-95 text-center cursor-pointer"
         >
-          Tanya CS 4 Cabang
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.83a8.212 8.212 0 0 1-5.82 2.41h-.01c-1.38 0-2.73-.35-3.92-1.02l-.28-.16-2.9.76.77-2.83-.18-.29a8.196 8.196 0 0 1-1.25-4.39c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.98-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.45-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+          </svg>
+          <span>Tanya CS 4 Cabang</span>
         </button>
       </div>
     </div>
@@ -286,7 +273,7 @@ export default function KatalogClient({
             <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-isy-green-deep/5 text-isy-green-deep text-[11px] font-extrabold uppercase tracking-widest mb-3 border border-isy-green-deep/10">
               <span>KATALOG OPTIK I SEE YOU</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-serif font-black tracking-tight text-isy-green-deep leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-bold font-sans tracking-tight text-isy-green-deep leading-tight">
               Mau Lihat Koleksi yang Mana?
             </h1>
             <p className="text-sm sm:text-base text-isy-ink/65 mt-3 font-medium">
@@ -324,7 +311,7 @@ export default function KatalogClient({
                   </span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-serif font-black text-isy-green-deep mb-3 group-hover:text-isy-green-bright transition-colors tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-bold font-sans text-isy-green-deep mb-3 group-hover:text-isy-green-bright transition-colors tracking-tight">
                   Katalog Frame Kacamata
                 </h2>
                 <p className="text-sm text-isy-ink/65 mb-8 leading-relaxed">
@@ -364,7 +351,7 @@ export default function KatalogClient({
                   </span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-serif font-black text-white mb-3 tracking-tight drop-shadow-sm group-hover:text-emerald-300 transition-colors">
+                <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white mb-3 tracking-tight drop-shadow-sm group-hover:text-emerald-300 transition-colors">
                   Katalog Softlens &amp; Aksesoris
                 </h2>
                 <p className="text-sm text-white/75 mb-8 leading-relaxed font-normal">
@@ -404,7 +391,7 @@ export default function KatalogClient({
             </Link>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-serif font-black tracking-tight text-isy-green-deep text-center mb-6">
+          <h1 className="text-3xl sm:text-5xl font-bold font-sans tracking-tight text-isy-green-deep text-center mb-6">
             Katalog Frame Kacamata
           </h1>
 
@@ -487,24 +474,11 @@ export default function KatalogClient({
           {displaySections.length > 0 ? (
             <div className="space-y-14">
               {displaySections.map(({ collection, items }) => (
-                <div key={collection.id} className="space-y-6 pt-4 border-t border-isy-line/80 first:border-t-0 first:pt-0">
-                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="rounded-full bg-isy-green-bright/10 px-3 py-0.5 text-[10px] font-black uppercase tracking-wider text-isy-green-bright">
-                          {collection.badge}
-                        </span>
-                        <span className="text-xs font-bold text-isy-ink/40">
-                          {items.length} Frame
-                        </span>
-                      </div>
-                      <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
-                        {collection.title}
-                      </h2>
-                    </div>
-                    <p className="text-xs text-isy-ink/60 max-w-md font-medium">
-                      {collection.description}
-                    </p>
+                <div key={collection.id} className="space-y-6 pt-6 border-t border-isy-line/80 first:border-t-0 first:pt-0">
+                  <div className="pb-1">
+                    <h2 className="font-sans text-2xl sm:text-3xl font-bold text-isy-green-deep tracking-tight">
+                      {collection.title}
+                    </h2>
                   </div>
 
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -512,6 +486,7 @@ export default function KatalogClient({
                       <CatalogItemCard
                         key={item.id}
                         item={item}
+                        collectionTitle={collection.title}
                         onOpenDetail={(targetItem) => setActiveModalItem(targetItem)}
                         onOpenCSModal={openCSModal}
                       />
@@ -522,7 +497,7 @@ export default function KatalogClient({
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center rounded-3xl border border-isy-line bg-white p-12 text-center space-y-4 shadow-sm">
-              <h3 className="font-serif text-xl font-black text-isy-green-deep">Tidak Ada Model Kacamata yang Sesuai</h3>
+              <h3 className="font-bold font-sans text-xl text-isy-green-deep">Tidak Ada Model Kacamata yang Sesuai</h3>
               <button onClick={() => { setSearchQuery(""); setSelectedCategory("all"); }} className="rounded-xl bg-isy-green-bright px-6 py-2.5 text-xs font-black text-white hover:bg-isy-green-deep transition-all shadow">
                 Lihat Semua Frame
               </button>

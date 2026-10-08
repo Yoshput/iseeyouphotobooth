@@ -1,4 +1,4 @@
-export interface CatalogItem {
+﻿export interface CatalogItem {
   id: string;
   name: string;
   collection: string;
@@ -37,7 +37,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "clarity-1",
-        name: "Clarity Series — Luna Cat Eye (CF33013)",
+        name: "Clarity Series - Luna Cat Eye (CF33013)",
         collection: "Clarity Series",
         image: "/katalog/Clarity Series/1-thumb.webp",
         images: ["/katalog/Clarity Series/1-medium.webp", "/katalog/Clarity Series/1.webp"],
@@ -49,7 +49,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "clarity-2",
-        name: "Clarity Series — Luna Daily Look (CF33013)",
+        name: "Clarity Series - Luna Daily Look (CF33013)",
         collection: "Clarity Series",
         image: "/katalog/Clarity Series/2-thumb.webp",
         images: ["/katalog/Clarity Series/2-medium.webp", "/katalog/Clarity Series/2.webp"],
@@ -61,7 +61,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "clarity-3",
-        name: "Clarity Series — Clear Gray & Transparent Caramel (Specs)",
+        name: "Clarity Series - Clear Gray & Transparent Caramel (Specs)",
         collection: "Clarity Series",
         image: "/katalog/Clarity Series/3-thumb.webp",
         images: ["/katalog/Clarity Series/3-medium.webp", "/katalog/Clarity Series/3.webp"],
@@ -73,7 +73,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "clarity-4",
-        name: "Clarity Series — Luna Duo Palette",
+        name: "Clarity Series - Luna Duo Palette",
         collection: "Clarity Series",
         image: "/katalog/Clarity Series/4-thumb.webp",
         images: ["/katalog/Clarity Series/4-medium.webp", "/katalog/Clarity Series/4.webp"],
@@ -99,7 +99,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "cateye-1",
-        name: "Cat Eye Signature — Gloss Black",
+        name: "Cat Eye Signature - Gloss Black",
         collection: "Cat Eye Edition",
         image: "/katalog/Cat Eye Edition/1.webp",
         images: ["/katalog/Cat Eye Edition/1.webp", "/katalog/Cat Eye Edition/Product Specs.webp"],
@@ -111,7 +111,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "cateye-2",
-        name: "Cat Eye Velvet — Amber Tortoise",
+        name: "Cat Eye Velvet - Amber Tortoise",
         collection: "Cat Eye Edition",
         image: "/katalog/Cat Eye Edition/2.webp",
         images: ["/katalog/Cat Eye Edition/2.webp", "/katalog/Cat Eye Edition/Product Specs.webp"],
@@ -137,7 +137,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "new-1",
-        name: "Metro Square Pro — Matte Black",
+        name: "Metro Square Pro - Matte Black",
         collection: "New Collection",
         image: "/katalog/New Collection/1.webp",
         images: ["/katalog/New Collection/1.webp", "/katalog/New Collection/Product Specs.webp"],
@@ -149,7 +149,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "new-2",
-        name: "Aero Wire — Champagne Gold",
+        name: "Aero Wire - Champagne Gold",
         collection: "New Collection",
         image: "/katalog/New Collection/2.webp",
         images: ["/katalog/New Collection/2.webp", "/katalog/New Collection/Product Specs.webp"],
@@ -175,7 +175,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "titanium-1",
-        name: "Titanium Pure — Matte Steel",
+        name: "Titanium Pure - Matte Steel",
         collection: "Titanium Edition",
         image: "/katalog/Titanium Edition/1.webp",
         images: ["/katalog/Titanium Edition/1.webp", "/katalog/Titanium Edition/Product Specs.webp"],
@@ -187,7 +187,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "titanium-2",
-        name: "Titanium Air — Gunmetal Gray",
+        name: "Titanium Air - Gunmetal Gray",
         collection: "Titanium Edition",
         image: "/katalog/Titanium Edition/2.webp",
         images: ["/katalog/Titanium Edition/2.webp", "/katalog/Titanium Edition/Product Specs.webp"],
@@ -213,7 +213,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "metro-1",
-        name: "Metro Deek Urban — Black Acetate",
+        name: "Metro Deek Urban - Black Acetate",
         collection: "Metro Deek",
         image: "/katalog/Metro Deek/Feed 1.webp",
         images: ["/katalog/Metro Deek/Feed 1.webp"],
@@ -224,7 +224,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "metro-2",
-        name: "Metro Deek Minimalist — Crystal Clear",
+        name: "Metro Deek Minimalist - Crystal Clear",
         collection: "Metro Deek",
         image: "/katalog/Metro Deek/Feed 2.webp",
         images: ["/katalog/Metro Deek/Feed 2.webp"],
@@ -235,7 +235,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "metro-3",
-        name: "Metro Deek Executive — Deep Brown",
+        name: "Metro Deek Executive - Deep Brown",
         collection: "Metro Deek",
         image: "/katalog/Metro Deek/Feed 3.webp",
         images: ["/katalog/Metro Deek/Feed 3.webp"],
@@ -260,7 +260,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "luxury-1",
-        name: "Quiet Luxury One — Subtle Gold Rim",
+        name: "Quiet Luxury One - Subtle Gold Rim",
         collection: "Quiet Luxury",
         image: "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
         images: ["/katalog/Quiet Luxury/CATALOG NEW-01.webp", "/katalog/Quiet Luxury/Detail Spec.webp"],
@@ -272,7 +272,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "luxury-2",
-        name: "Quiet Luxury Two — Matte Platinum",
+        name: "Quiet Luxury Two - Matte Platinum",
         collection: "Quiet Luxury",
         image: "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
         images: ["/katalog/Quiet Luxury/CATALOG NEW-02.webp", "/katalog/Quiet Luxury/Detail Spec.webp"],
@@ -298,7 +298,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "elegance-1",
-        name: "Shades Of Elegance Alpha — Soft Rose Gold",
+        name: "Shades Of Elegance Alpha - Soft Rose Gold",
         collection: "Shades Of Elegance",
         image: "/katalog/Shades Of Elegance/1.webp",
         images: ["/katalog/Shades Of Elegance/1.webp", "/katalog/Shades Of Elegance/Product Specs.webp"],
@@ -310,7 +310,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "elegance-2",
-        name: "Shades Of Elegance Beta — Midnight Crystal",
+        name: "Shades Of Elegance Beta - Midnight Crystal",
         collection: "Shades Of Elegance",
         image: "/katalog/Shades Of Elegance/2.webp",
         images: ["/katalog/Shades Of Elegance/2.webp", "/katalog/Shades Of Elegance/Product Specs.webp"],
@@ -336,7 +336,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "shades-1",
-        name: "Shades Edition Classic — Dark Smoke",
+        name: "Shades Edition Classic - Dark Smoke",
         collection: "Shades Edition",
         image: "/katalog/Shades Edition/1.webp",
         images: ["/katalog/Shades Edition/1.webp", "/katalog/Shades Edition/Product Specs.webp"],
@@ -348,7 +348,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "shades-2",
-        name: "Shades Edition Modern — Amber Gold",
+        name: "Shades Edition Modern - Amber Gold",
         collection: "Shades Edition",
         image: "/katalog/Shades Edition/3.webp",
         images: ["/katalog/Shades Edition/3.webp", "/katalog/Shades Edition/Product Specs.webp"],
@@ -375,7 +375,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "feline-1",
-        name: "The Feline Silhouette 01 — Onyx Black",
+        name: "The Feline Silhouette 01 - Onyx Black",
         collection: "The Feline Silhouette",
         image: "/katalog/The Feline Silhouette/5-thumb.webp",
         images: ["/katalog/The Feline Silhouette/5-medium.webp", "/katalog/The Feline Silhouette/5.webp"],
@@ -386,7 +386,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "feline-2",
-        name: "The Feline Silhouette 02 — Tortoise Luxe",
+        name: "The Feline Silhouette 02 - Tortoise Luxe",
         collection: "The Feline Silhouette",
         image: "/katalog/The Feline Silhouette/6-thumb.webp",
         images: ["/katalog/The Feline Silhouette/6-medium.webp", "/katalog/The Feline Silhouette/6.webp"],
@@ -397,7 +397,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "feline-3",
-        name: "The Feline Silhouette 03 — Crimson Haze",
+        name: "The Feline Silhouette 03 - Crimson Haze",
         collection: "The Feline Silhouette",
         image: "/katalog/The Feline Silhouette/7-thumb.webp",
         images: ["/katalog/The Feline Silhouette/7-medium.webp", "/katalog/The Feline Silhouette/7.webp"],
@@ -408,7 +408,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "feline-4",
-        name: "The Feline Silhouette 04 — Amber Glow",
+        name: "The Feline Silhouette 04 - Amber Glow",
         collection: "The Feline Silhouette",
         image: "/katalog/The Feline Silhouette/8-thumb.webp",
         images: ["/katalog/The Feline Silhouette/8-medium.webp", "/katalog/The Feline Silhouette/8.webp"],
@@ -434,7 +434,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "lucid-1",
-        name: "The Lucid Vision 01 — Pure Crystal",
+        name: "The Lucid Vision 01 - Pure Crystal",
         collection: "The Lucid Vision",
         image: "/katalog/The Lucid Vision/14-thumb.webp",
         images: ["/katalog/The Lucid Vision/14-medium.webp", "/katalog/The Lucid Vision/14.webp"],
@@ -445,7 +445,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "lucid-2",
-        name: "The Lucid Vision 02 — Smoked Glass",
+        name: "The Lucid Vision 02 - Smoked Glass",
         collection: "The Lucid Vision",
         image: "/katalog/The Lucid Vision/15-thumb.webp",
         images: ["/katalog/The Lucid Vision/15-medium.webp", "/katalog/The Lucid Vision/15.webp"],
@@ -456,7 +456,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "lucid-3",
-        name: "The Lucid Vision 03 — Champagne Hue",
+        name: "The Lucid Vision 03 - Champagne Hue",
         collection: "The Lucid Vision",
         image: "/katalog/The Lucid Vision/16-thumb.webp",
         images: ["/katalog/The Lucid Vision/16-medium.webp", "/katalog/The Lucid Vision/16.webp"],
@@ -483,7 +483,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "skena-1",
-        name: "The Skena Gaze 01 — Bold Noir",
+        name: "The Skena Gaze 01 - Bold Noir",
         collection: "The Skena Gaze",
         image: "/katalog/The Skena Gaze/9-thumb.webp",
         images: ["/katalog/The Skena Gaze/9-medium.webp", "/katalog/The Skena Gaze/9.webp"],
@@ -494,7 +494,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "skena-2",
-        name: "The Skena Gaze 02 — Forest Edge",
+        name: "The Skena Gaze 02 - Forest Edge",
         collection: "The Skena Gaze",
         image: "/katalog/The Skena Gaze/10-thumb.webp",
         images: ["/katalog/The Skena Gaze/10-medium.webp", "/katalog/The Skena Gaze/10.webp"],
@@ -505,7 +505,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "skena-3",
-        name: "The Skena Gaze 03 — Retro Havana",
+        name: "The Skena Gaze 03 - Retro Havana",
         collection: "The Skena Gaze",
         image: "/katalog/The Skena Gaze/11-thumb.webp",
         images: ["/katalog/The Skena Gaze/11-medium.webp", "/katalog/The Skena Gaze/11.webp"],
@@ -516,7 +516,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "skena-4",
-        name: "The Skena Gaze 04 — Modern Slate",
+        name: "The Skena Gaze 04 - Modern Slate",
         collection: "The Skena Gaze",
         image: "/katalog/The Skena Gaze/12-thumb.webp",
         images: ["/katalog/The Skena Gaze/12-medium.webp", "/katalog/The Skena Gaze/12.webp"],
@@ -527,7 +527,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "skena-5",
-        name: "The Skena Gaze 05 — Deep Amber",
+        name: "The Skena Gaze 05 - Deep Amber",
         collection: "The Skena Gaze",
         image: "/katalog/The Skena Gaze/13-thumb.webp",
         images: ["/katalog/The Skena Gaze/13-medium.webp", "/katalog/The Skena Gaze/13.webp"],
@@ -554,7 +554,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "onyx-1",
-        name: "The Onyx Enigma 01 — Shadow Noir",
+        name: "The Onyx Enigma 01 - Shadow Noir",
         collection: "The Onyx Enigma",
         image: "/katalog/The Onyx Enigma/21-thumb.webp",
         images: ["/katalog/The Onyx Enigma/21-medium.webp", "/katalog/The Onyx Enigma/21.webp"],
@@ -565,7 +565,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "onyx-2",
-        name: "The Onyx Enigma 02 — Obsidian Gloss",
+        name: "The Onyx Enigma 02 - Obsidian Gloss",
         collection: "The Onyx Enigma",
         image: "/katalog/The Onyx Enigma/22-thumb.webp",
         images: ["/katalog/The Onyx Enigma/22-medium.webp", "/katalog/The Onyx Enigma/22.webp"],
@@ -576,7 +576,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "onyx-3",
-        name: "The Onyx Enigma 03 — Dark Tortoise",
+        name: "The Onyx Enigma 03 - Dark Tortoise",
         collection: "The Onyx Enigma",
         image: "/katalog/The Onyx Enigma/23-thumb.webp",
         images: ["/katalog/The Onyx Enigma/23-medium.webp", "/katalog/The Onyx Enigma/23.webp"],
@@ -587,7 +587,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "onyx-4",
-        name: "The Onyx Enigma 04 — Midnight Slate",
+        name: "The Onyx Enigma 04 - Midnight Slate",
         collection: "The Onyx Enigma",
         image: "/katalog/The Onyx Enigma/24-thumb.webp",
         images: ["/katalog/The Onyx Enigma/24-medium.webp", "/katalog/The Onyx Enigma/24.webp"],
@@ -598,7 +598,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "onyx-5",
-        name: "The Onyx Enigma 05 — Eclipse Crystal",
+        name: "The Onyx Enigma 05 - Eclipse Crystal",
         collection: "The Onyx Enigma",
         image: "/katalog/The Onyx Enigma/25-thumb.webp",
         images: ["/katalog/The Onyx Enigma/25-medium.webp", "/katalog/The Onyx Enigma/25.webp"],
