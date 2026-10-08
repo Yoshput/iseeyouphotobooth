@@ -178,7 +178,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
 
           
-          <h1 className="text-3xl md:text-5xl font-dm-serif text-isy-green-deep mb-6 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold font-sans text-isy-green-deep mb-6 leading-tight">
             {post.title}
           </h1>
           
@@ -214,7 +214,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="my-12 p-8 bg-isy-mist rounded-2xl border border-isy-line text-center">
             {post.category === 'tips-pilih-frame' && (
               <>
-                <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-3">Penasaran Mana yang Cocok?</h3>
+                <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-3">Penasaran Mana yang Cocok?</h3>
                 <p className="mb-6 text-isy-ink/80">Coba langsung berbagai model frame kacamata di wajahmu secara virtual sekarang juga!</p>
                 <Link href="/try-on" className="inline-block bg-isy-green-deep text-white font-medium px-8 py-3 rounded-full hover:bg-isy-green-bright transition-colors">
                   Coba AR Try-On
@@ -223,7 +223,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
             {post.category === 'perawatan-softlens' && (
               <>
-                <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-3">Butuh Softlens Baru?</h3>
+                <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-3">Butuh Softlens Baru?</h3>
                 <p className="mb-6 text-isy-ink/80">Temukan koleksi softlens nyaman dan aman untuk pemakaian harian.</p>
                 <Link href="/softlens" className="inline-block bg-isy-green-deep text-white font-medium px-8 py-3 rounded-full hover:bg-isy-green-bright transition-colors">
                   Lihat Katalog Softlens
@@ -232,7 +232,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
             {post.category === 'tren-gaya' && (
               <>
-                <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-3">Tampil Trendy Tahun Ini</h3>
+                <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-3">Tampil Trendy Tahun Ini</h3>
                 <p className="mb-6 text-isy-ink/80">Jelajahi koleksi kacamata terbaru kami yang selalu update dengan tren terkini.</p>
                 <Link href="/katalog" className="inline-block bg-isy-green-deep text-white font-medium px-8 py-3 rounded-full hover:bg-isy-green-bright transition-colors">
                   Lihat Katalog Frame
@@ -241,7 +241,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
             {post.category === 'edukasi-mata' && (
               <>
-                <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-3">Masih Bingung dengan Resep Anda?</h3>
+                <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-3">Masih Bingung dengan Resep Anda?</h3>
                 <p className="mb-6 text-isy-ink/80">Konsultasikan kebutuhan kacamata dan mata Anda langsung dengan ahli kami secara gratis.</p>
                 <a href={`https://wa.me/${CS_WHATSAPP_NUMBER}?text=Halo%20Optik%20I%20See%20You,%20saya%20mau%20konsultasi%20soal%20kesehatan%20mata%20dan%20kacamata.`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-[#25D366] text-white font-medium px-8 py-3 rounded-full hover:bg-[#20b858] transition-colors">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" className="mr-2">
@@ -253,7 +253,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
             {post.category === 'info-cabang-promo' && (
               <>
-                <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-3">
+                <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-3">
                   {post.slug === 'optik-i-see-you-banyumas-wedding-expo-rita-supermall'
                     ? 'Agenda Expo Telah Selesai'
                     : 'Kunjungi Cabang Optik I See You'}
@@ -286,7 +286,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
             {!['tips-pilih-frame', 'perawatan-softlens', 'tren-gaya', 'edukasi-mata', 'info-cabang-promo'].includes(post.category) && (
                <>
-                <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-3">Temukan Kacamata Impianmu</h3>
+                <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-3">Temukan Kacamata Impianmu</h3>
                 <p className="mb-6 text-isy-ink/80">Kunjungi optik kami atau coba secara virtual dari rumah.</p>
                 <Link href="/try-on" className="inline-block bg-isy-green-deep text-white font-medium px-8 py-3 rounded-full hover:bg-isy-green-bright transition-colors">
                   Coba AR Try-On
@@ -302,7 +302,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 mt-16 pt-10 border-t border-isy-line">
-            <h3 className="text-2xl font-dm-serif text-isy-green-deep mb-8">Artikel Terkait</h3>
+            <h3 className="text-2xl font-bold font-sans text-isy-green-deep mb-8">Artikel Terkait</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {relatedArticles.map((article) => (
                 <Link key={article.slug} href={`/blog/${article.slug}`} className="group">
@@ -316,7 +316,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     />
                   </div>
 
-                  <h4 className="font-dm-serif text-lg text-isy-green-deep group-hover:text-isy-green-bright transition-colors line-clamp-2 mb-2">
+                  <h4 className="font-bold font-sans text-lg text-isy-green-deep group-hover:text-isy-green-bright transition-colors line-clamp-2 mb-2">
                     {article.title}
                   </h4>
                   <p className="text-sm text-isy-ink/60 flex items-center">

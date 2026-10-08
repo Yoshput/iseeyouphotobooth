@@ -215,60 +215,37 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
         </div>
 
         {/* Hero Section */}
-        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-800 mb-3">
-            <Home className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Layanan Periksa Mata di Rumah &amp; Kantor</span>
-          </span>
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
+        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-slate-900 tracking-tight mb-3 text-center">
             Home Service Optik I See You
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto text-center">
             Tidak sempat ke optik? Tim optometri berlisensi kami siap datang langsung ke kediaman atau kantor Anda dengan membawa alat komputer lengkap dan 100+ pilihan frame kacamata.
           </p>
         </div>
 
-        {/* Home Service Features */}
+        {/* Home Service Features — Clean, Minimalist, No Icon Boxes */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-12">
-          <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-4 flex items-center gap-3.5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-5 h-5 stroke-[1.75]" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-slate-900">Alat Komputer Lengkap</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">Pemeriksaan visus refraksi presisi standar optik</p>
-            </div>
+          <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-5 text-center shadow-xs">
+            <h4 className="text-sm font-bold text-slate-900 mb-1">Alat Komputer Lengkap</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">Pemeriksaan visus refraksi presisi standar optik</p>
           </div>
 
-          <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-4 flex items-center gap-3.5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-800 flex items-center justify-center shrink-0">
-              <Glasses className="w-5 h-5 stroke-[1.75]" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-slate-900">Bawa 100+ Frame Pilihan</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">Bisa coba langsung santai bareng keluarga di rumah</p>
-            </div>
+          <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-5 text-center shadow-xs">
+            <h4 className="text-sm font-bold text-slate-900 mb-1">Bawa 100+ Frame Pilihan</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">Bisa coba langsung santai bareng keluarga di rumah</p>
           </div>
 
-          <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-4 flex items-center gap-3.5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-800 flex items-center justify-center shrink-0">
-              <Users className="w-5 h-5 stroke-[1.75]" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-slate-900">Ramah Lansia &amp; Balita</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">Cocok untuk orang tua yang sulit bepergian keluar</p>
-            </div>
+          <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-5 text-center shadow-xs">
+            <h4 className="text-sm font-bold text-slate-900 mb-1">Ramah Lansia &amp; Balita</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">Cocok untuk orang tua yang sulit bepergian keluar</p>
           </div>
         </div>
 
         {/* ═══ REAL DOCUMENTATION & VISUAL SHOWCASE ═══ */}
         <section className="mb-14 sm:mb-16">
           <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-deep">
-              <Camera className="w-3.5 h-3.5 text-isy-green-bright" />
-              <span>Dokumentasi Nyata Kunjungan</span>
-            </span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-sans text-slate-900 tracking-tight">
               Seperti Apa Suasana Home Service?
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto">

@@ -52,8 +52,8 @@ export default function BlogIndex() {
         </div>
 
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-dm-serif text-isy-green-deep mb-4">Blog & Edukasi Mata</h1>
-          <p className="text-lg text-isy-ink/70 max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight mb-3">Blog &amp; Edukasi Mata</h1>
+          <p className="text-base sm:text-lg text-isy-ink/70 max-w-2xl mx-auto">
             Temukan panduan lengkap seputar kesehatan mata, tips memilih kacamata yang tepat, hingga tren gaya frame terbaru.
           </p>
         </div>
@@ -64,14 +64,6 @@ export default function BlogIndex() {
           <Link href={`/blog/${featuredArticle.slug}`} className="block group mb-16">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-isy-line transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
               <div className="md:col-span-5 relative aspect-[4/5] w-full max-w-sm mx-auto md:max-w-none rounded-2xl overflow-hidden bg-isy-mist shadow-xs">
-                {featuredArticle.videoUrl && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-medium tracking-wide shadow-sm">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                    Video Dokumentasi
-                  </span>
-                )}
                 <Image 
                   src={featuredArticle.coverImage} 
                   alt={featuredArticle.title}
@@ -91,8 +83,13 @@ export default function BlogIndex() {
                       Event Selesai
                     </span>
                   )}
+                  {featuredArticle.videoUrl && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-medium">
+                      Video Liputan
+                    </span>
+                  )}
                 </div>
-                <h2 className="text-2xl sm:text-4xl font-dm-serif text-isy-green-deep mb-4 group-hover:text-isy-green-bright transition-colors leading-snug">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-sans text-isy-green-deep mb-4 group-hover:text-isy-green-bright transition-colors leading-snug">
                   {featuredArticle.title}
                 </h2>
                 <p className="text-isy-ink/70 mb-6 line-clamp-3 text-base sm:text-lg leading-relaxed">
@@ -119,7 +116,8 @@ export default function BlogIndex() {
           {restArticles.map(article => (
             <Link key={article.slug} href={`/blog/${article.slug}`} className="block group">
               <div className="bg-white rounded-3xl p-5 shadow-sm border border-isy-line transition-transform duration-300 hover:-translate-y-1 hover:shadow-md h-full flex flex-col">
-                <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden mb-5 bg-isy-mist shadow-2xs">
+                {/* Clean Image Container - Zero Overlay */}
+                <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden mb-5 bg-isy-mist shadow-xs">
                   <Image 
                     src={article.coverImage} 
                     alt={article.title}
@@ -127,23 +125,25 @@ export default function BlogIndex() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap">
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${getCategoryColor(article.category)}`}>
+                </div>
+
+                <div className="flex-grow px-2 flex flex-col">
+                  {/* Category Tag cleanly below image */}
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(article.category)}`}>
                       {getCategoryLabel(article.category)}
                     </span>
                     {article.slug === 'optik-i-see-you-banyumas-wedding-expo-rita-supermall' && (
-                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 shadow-sm">
+                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
                         Event Selesai
                       </span>
                     )}
                   </div>
-                </div>
 
-                <div className="flex-grow px-2 flex flex-col">
-                  <h3 className="text-xl font-dm-serif text-isy-green-deep mb-3 group-hover:text-isy-green-bright transition-colors line-clamp-2">
+                  <h3 className="text-lg sm:text-xl font-bold font-sans text-isy-green-deep mb-3 group-hover:text-isy-green-bright transition-colors line-clamp-2 leading-snug">
                     {article.title}
                   </h3>
-                  <p className="text-isy-ink/70 mb-4 line-clamp-3 text-sm flex-grow">
+                  <p className="text-isy-ink/70 mb-4 line-clamp-3 text-sm flex-grow leading-relaxed">
                     {article.excerpt}
                   </p>
                   <div className="flex items-center justify-between text-xs text-isy-ink/50 pt-4 border-t border-isy-line">

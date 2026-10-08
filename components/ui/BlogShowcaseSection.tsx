@@ -85,7 +85,7 @@ export default function BlogShowcaseSection() {
       <div className="mx-auto max-w-5xl relative z-10">
         {/* ═══ 1. Section Header (Centered, Clean Luxury) ═══ */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-3">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-dm-serif text-isy-green-deep tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-sans text-isy-green-deep tracking-tight">
             Inspirasi Gaya &amp; Info Terkini
           </h2>
           <p className="text-sm sm:text-base text-isy-ink/70">
@@ -193,7 +193,7 @@ export default function BlogShowcaseSection() {
 
                 {/* Title */}
                 <Link href={`/blog/${current.slug}`} className="group block">
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-dm-serif text-isy-green-deep group-hover:text-isy-green-bright transition-colors leading-snug mb-3">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold font-sans text-isy-green-deep group-hover:text-isy-green-bright transition-colors leading-snug mb-3">
                     {current.title}
                   </h3>
                 </Link>

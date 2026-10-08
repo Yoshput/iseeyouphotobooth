@@ -135,7 +135,7 @@ export default function ShareButtons({ title, slug }: { title: string; slug: str
               <span className="text-[10px] tracking-wider uppercase font-bold text-emerald-300 block mb-1">
                 Pratinjau Stiker Instagram Story
               </span>
-              <p className="text-sm font-dm-serif line-clamp-1 mb-3 px-2">
+              <p className="text-sm font-sans font-bold line-clamp-1 mb-3 px-2">
                 {title}
               </p>
 

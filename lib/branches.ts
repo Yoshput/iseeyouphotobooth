@@ -18,7 +18,7 @@ export interface Branch {
 export const BRANCHES: Branch[] = [
   {
     id: "purwokerto",
-    name: "Optik I See You — Purwokerto",
+    name: "Optik I See You - Purwokerto",
     city: "Purwokerto",
     address: "Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang, Kec. Sumbang, Kabupaten Banyumas, Jawa Tengah 53124",
     lat: -7.3929206,
@@ -38,7 +38,7 @@ export const BRANCHES: Branch[] = [
   },
   {
     id: "wonosobo",
-    name: "Optik I See You — Wonosobo",
+    name: "Optik I See You - Wonosobo",
     city: "Wonosobo",
     address: "Jl. Jenderal Soedirman, Sumberan Selatan, Wonosobo Bar., Kec. Wonosobo, Kabupaten Wonosobo, Jawa Tengah 56311",
     lat: -7.3641333,
@@ -58,7 +58,7 @@ export const BRANCHES: Branch[] = [
   },
   {
     id: "cilacap",
-    name: "Optik I See You — Cilacap",
+    name: "Optik I See You - Cilacap",
     city: "Cilacap",
     address: "Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Rawagaru, Sidanegara, Kec. Cilacap Tengah, Kabupaten Cilacap, Jawa Tengah 53223",
     lat: -7.7027438,
@@ -78,7 +78,7 @@ export const BRANCHES: Branch[] = [
   },
   {
     id: "purbalingga",
-    name: "Optik I See You — Purbalingga",
+    name: "Optik I See You - Purbalingga",
     city: "Purbalingga",
     address: "Jl. Onje No.1, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311",
     lat: -7.3886959,

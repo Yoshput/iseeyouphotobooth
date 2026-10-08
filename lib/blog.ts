@@ -21,6 +21,140 @@ function calculateReadingTime(content: string): number {
 }
 
 const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
+  // ── NEW 1. EDUKASI INSTAGRAM: KACAMATA BARU MALAH PUSING (Post DeL4YrUCfHg) ──
+  {
+    slug: 'kacamata-baru-malah-pusing-penyebab-dan-solusi',
+    title: 'Beli Kacamata Baru Malah Pusing & Kliyengan? Jangan Panik, Ini Penyebab Sebenarnya!',
+    category: 'edukasi-mata',
+    excerpt: 'Beli kacamata baru niatnya biar penglihatan makin jernih, eh kok malah bikin pusing dan kliyengan? Jangan buru-buru panik mikir resepnya yang salah, simak penjelasan ahli refraksi berikut.',
+    coverImage: '/blog/covers/kacamata-baru-pusing.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-10-06T09:00:00Z',
+    updatedAt: '2026-10-06T09:00:00Z',
+    content: `
+      <p>Beli kacamata baru niatnya biar penglihatan makin jernih, tajam, dan nyaman saat beraktivitas. Tapi kok pas dipakai pertama kali rasanya malah pusing, mual, lantai berasa melengkung, atau kliyengan? Tenang dulu bestie, jangan buru-buru panik dan menuduh resep minus atau silindermu salah!</p>
+
+      <p>Faktanya, mata dan otak kamu memang membutuhkan fase adaptasi visual. Saat beralih ke kacamata baru, sistem saraf pusat ibarat baru saja berkenalan dengan "dunia yang berbeda". Kacamata baru membawa banyak variabel perubahan: mulai dari peningkatan kekuatan koreksi lensa, sudut kemiringan pantoskopik bingkai, jarak verteks antara kornea dan lensa, hingga ukuran dan kelengkungan frame baru.</p>
+
+      <h2>Kenapa Kacamata Baru Bisa Bikin Pusing?</h2>
+      <p>Berikut beberapa faktor fisiologis normal yang terjadi selama masa adaptasi:</p>
+      <ul>
+        <li><strong>Perubahan Sudut Pandang &amp; Distorsi Tepi:</strong> Frame baru dengan bentuk berbeda (misalnya dari oval ke square tebal) merubah area lapang pandang periferal. Otak butuh waktu 3 hingga 7 hari untuk mengabaikan distorsi kecil di tepi lensa.</li>
+        <li><strong>Adaptasi Otot Siliaris Mata:</strong> Otot fokus mata yang selama ini terbiasa bekerja keras akibat kacamata lama yang sudah under-corrected kini harus rileks menerima koreksi baru yang tepat sasaran.</li>
+        <li><strong>Pergeseran Titik Fokus (Centration):</strong> Bila tinggi pupil (fitting height) atau jarak antarpupil (PD) pada frame baru sedikit berbeda dengan frame lama, persepsi ruang akan terasa sedikit goyang di awal pemakaian.</li>
+      </ul>
+
+      <h2>Kapan Pusing Ini Wajar, dan Kapan Harus Dicek Ulang?</h2>
+      <p>Adaptasi wajar biasanya berlangsung <strong>3 sampai 7 hari</strong> dengan intensitas pusing ringan yang berangsur-angsur hilang saat kacamata dipakai rutin sejak bangun pagi. Namun, jika keluhan terasa sangat berat, pandangan berbayang ganda (diplopia), mata cepat merah, atau pusing tidak berkurang setelah 1 minggu, itu tanda wajib dicek ulang!</p>
+
+      <p><strong>Plot twist-nya:</strong> Masalah pusing belum tentu ada di resep minus atau silinder kamu lho! Seringkali masalahnya ada pada:</p>
+      <ol>
+        <li><strong>Fitting Frame Belum Pas:</strong> Nosepad terlalu menekan, tangkai kacamata terlalu sempit di pelipis, atau frame melorot ke bawah.</li>
+        <li><strong>Kemiringan Frame (Pantoscopic Tilt):</strong> Sudut kemiringan bingkai terhadap bidang wajah belum disesuaikan dengan postur alami kepala Anda.</li>
+        <li><strong>Bahan &amp; Desain Lensa:</strong> Pemilihan indeks ketipisan lensa atau desain asferis yang belum optimal untuk minus tinggi.</li>
+      </ol>
+
+      <h2>Solusinya? Datang ke Optik I See You untuk Penyetelan Gratis</h2>
+      <p>Kacamata baru seharusnya membuat harimu lebih produktif dan percaya diri, bukan malah menyiksa kepala sepanjang hari. Jangan tahan rasa pusingmu! Bawa kacamata kamu ke cabang Optik I See You terdekat di Purwokerto, Purbalingga, Wonosobo, atau Cilacap. Tim refraksionis dan optician kami siap membantu cek ulang titik fokus (centration), resep mata, dan penyetelan anatomi frame secara gratis sampai 100% nyaman!</p>
+    `
+  },
+
+  // ── NEW 2. TREN GAYA INSTAGRAM: POV NYOBAIN SEISI TOKO (Post DeJij3CCT3L) ──
+  {
+    slug: 'kenapa-koleksi-frame-optik-i-see-you-bikin-candu',
+    title: 'Niat Awal Cuma \'Lihat-Lihat\', Berujung Nyobain Seisi Toko: Kenapa Koleksi Frame Optik I See You Bikin Candu?',
+    category: 'tren-gaya',
+    excerpt: 'POV ketika niat awal cuma antar teman atau sekadar iseng cuci mata, tapi 5 menit coba frame hitam, 15 menit coba caramel, dan berujung fitting puluhan model! Kenapa frame di Optik I See You selalu pas di wajah?',
+    coverImage: '/blog/covers/pov-nyobain-seisi-toko.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-10-06T08:00:00Z',
+    updatedAt: '2026-10-06T08:00:00Z',
+    content: `
+      <p>Pernah nggak kamu ke optik niat awalnya cuma mau mengantar teman atau sekadar iseng cuci mata lihat-lihat model kacamata terbaru? Katanya sih <em>"Cuma liat-liat aja kok, nggak bakal beli."</em> Tapi realitanya begitu masuk ke store Optik I See You:</p>
+      <ul>
+        <li><strong>5 menit kemudian:</strong> <em>"Wah, frame hitam glossy ini bagus juga ya siluetnya..."</em></li>
+        <li><strong>15 menit kemudian:</strong> <em>"Coba ah yang warna translucent caramel ini, ih lucu dan bikin wajah kelihatan cerah banget!"</em></li>
+        <li><strong>25 menit kemudian:</strong> <em>"Kak, frame model yang ini ada pilihan warna champagne atau olive green lainnya nggak ya?"</em></li>
+        <li><strong>35 menit kemudian (klimaks):</strong> <em>"Kak, frame di seluruh rak display ini boleh dicobain semuanya kan ya?"</em></li>
+      </ul>
+
+      <p>Tenang bestie, kamu nggak sendirian kok! Ratusan pelanggan kami setiap minggunya mengalami momen seru yang sama. Pesona koleksi frame di Optik I See You memang dirancang khusus agar bikin penasaran dan susah ditolak. Kalau pada akhirnya kamu menemukan banyak frame yang langsung klop di wajah, <em>please</em> jangan salahkan kami ya!</p>
+
+      <h2>Kenapa Frame Optik I See You Selalu Pas di Wajah?</h2>
+      <p>Bukan kebetulan bila frame kacamata di Optik I See You terasa sangat pas begitu dipasang di wajah. Ini rahasianya:</p>
+      <ol>
+        <li><strong>Ergonomi Asian Fit:</strong> Seluruh koleksi kami dikurasi dengan memperhitungkan jembatan hidung (nose bridge) dan lebar pelipis masyarakat Asia, sehingga kacamata tidak mudah melorot dan tidak menempel di pipi saat tersenyum.</li>
+        <li><strong>Material Ringan &amp; Tahan Banting:</strong> Menggunakan bahan premium seperti TR90 fleksibel, titanium ultra-light, dan high-density acetate yang nyaman dipakai seharian tanpa bikin hidung pegal atau berbekas merah.</li>
+        <li><strong>Palet Warna Estetik &amp; Skin Tone Friendly:</strong> Dari warna bold vintage tortoise, matte black, clear crystal, hingga warna pastel kalem yang menyatu harmonis dengan warna kulit dan hijab style kamu.</li>
+      </ol>
+
+      <h2>Bebas Fitting Sepuasnya di 4 Cabang Resmi</h2>
+      <p>Di Optik I See You, kamu bebas mencoba dan mengeksplorasi puluhan hingga ratusan model frame di cermin tanpa rasa canggung atau diburu-buru staf. Mampir sekarang ke cabang resmi kami di <strong>Purwokerto, Purbalingga, Wonosobo, dan Cilacap</strong>, atau coba secara virtual kapan saja menggunakan fitur <strong>AR Try-On</strong> interaktif di website ini!</p>
+    `
+  },
+
+  // ── NEW 3. EDUKASI INSTAGRAM: BIKIN KACAMATA EXPRESS 15 MENIT (Post DeGv4z5DzEJ) ──
+  {
+    slug: 'bikin-kacamata-express-15-menit-jadi-lab-cnc',
+    title: 'Gak Pake Lama! Bikin Kacamata Express Cuma 15 Menit Langsung Jadi di Optik I See You',
+    category: 'edukasi-mata',
+    excerpt: 'Masih jaman bikin kacamata nunggu berhari-hari sampai mood hilang? Di Optik I See You, proses dari pemilihan frame, pemeriksaan mata, hingga faset lensa CNC presisi tinggi cuma butuh 15 menit dan bisa ditunggu!',
+    coverImage: '/blog/covers/bikin-kacamata-15-menit.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-10-05T08:00:00Z',
+    updatedAt: '2026-10-05T08:00:00Z',
+    content: `
+      <p>Masih jaman bikin kacamata resep harus menunggu berhari-hari sampai mood jalan-jalanmu keburu hilang? Di era serba cepat saat ini, kacamata adalah kebutuhan esensial yang tidak bisa ditunda, apalagi kalau kacamata lama patah atau lensanya hilang saat tugas kuliah dan pekerjaan kantor sedang menumpuk.</p>
+
+      <p>Kenalin pengalaman baru bikin kacamata di <strong>Optik I See You</strong>: kamu cuma butuh waktu <strong>15 MENIT</strong> saja buat mendapatkan kacamata baru beresep akurat yang siap langsung dibawa pulang dan dipakai! Yes, seriusan cuma 15 menit dan bisa ditunggu sambil santai!</p>
+
+      <h2>Bisa Secepat Itu, Gimana Sih Alur Prosesnya?</h2>
+      <p>Di balik kecepatan 15 menit ini ada integrasi teknologi laboratorium mutakhir dan SOP profesional yang sangat terstruktur:</p>
+      <ol>
+        <li><strong>1. Pilih Frame Impian:</strong> Kamu bebas memilih dari 100+ koleksi frame terkini yang paling sesuai dengan karakter, bentuk wajah, dan kebutuhan harianmu.</li>
+        <li><strong>2. Pemeriksaan Visus &amp; Pengukuran Titik Fokus Presisi:</strong> Refraksionis kami mengukur ukuran refraksi mata menggunakan Autorefractor digital dan mengukur Pupil Distance (PD) secara presisi mikron.</li>
+        <li><strong>3. Pemotongan Lensa Otomatis dengan Mesin CNC 3D Frame Tracing:</strong> Mesin faset otomatis di laboratorium internal kami memindai kontur bingkai secara 3 dimensi dan memotong lensa dengan kecepatan tinggi serta akurasi presisi 0.01 mm.</li>
+        <li><strong>4. Quality Control &amp; Fitting Akhir:</strong> Kacamata dibersihkan dengan ultrasonic cleaner, diperiksa kekencangan bautnya, dan disetel langsung di wajahmu agar pas dan tidak bergeser.</li>
+      </ol>
+
+      <h2>Kualitas Tetap Nomor Satu</h2>
+      <p>Cepat bukan berarti buru-buru atau mengorbankan kualitas. Mesin pemotong otomatis CNC kami memastikan bevel tepi lensa terkunci rapat pada bingkai tanpa ada celah renggang, sehingga lensa awet, kokoh, dan tidak mudah lepas. Datang milih frame, duduk santai sejenak sambil ngobrol, pulang sudah pakai kacamata baru!</p>
+    `
+  },
+
+  // ── NEW 4. EDUKASI INSTAGRAM: KACAMATA BERKABUT KONDENSASI (Post DeBoHTnD_0O) ──
+  {
+    slug: 'kacamata-berkabut-kondensasi-stop-lap-ujung-baju',
+    title: 'Kacamata Tiba-Tiba Berkabut? Stop Lap Pakai Ujung Baju, Ini Penyebab & Cara Mengatasinya!',
+    category: 'edukasi-mata',
+    excerpt: 'Lagi asik jalan atau ngopi tiba-tiba lensa kacamata berkabut dan masuk mode blur? Eits, jangan buru-buru di-lap pakai ujung baju! Pahami fenomena kondensasi dan cara merawat coating lensa yang benar.',
+    coverImage: '/blog/covers/kacamata-berkabut-kondensasi.jpg',
+    author: 'Tim Optik I See You',
+    publishedAt: '2026-10-03T08:00:00Z',
+    updatedAt: '2026-10-03T08:00:00Z',
+    content: `
+      <p>Paling sebel kan kalau lagi asik jalan keluar dari ruangan ber-AC, menyeruput kuah mie ayam panas, atau minum kopi hangat, tiba-tiba lensa kacamata langsung berkabut putih dan pandangan seketika masuk ke <em>mode blur</em>? Eits, STOP! Jangan buru-buru di-lap pakai ujung baju ya!</p>
+
+      <h2>Lensa Kamu Bukan Rusak, Ini Fenomena Kondensasi!</h2>
+      <p>Pertama-tama, tenang dulu: lensa kacamata kamu tidak rusak kok. Kabut putih tersebut adalah fenomena fisika alami bernama <strong>kondensasi</strong>. Udara hangat yang mengandung uap air tinggi bertemu dengan permukaan lensa kacamata yang suhunya jauh lebih dingin. Akibat perbedaan temperatur tersebut, uap air di udara berubah wujud menjadi jutaan butiran embun mikro yang menempel di kedua sisi permukaan lensa.</p>
+
+      <h2>Kenapa Dilarang Keras Lap Lensa Pakai Ujung Baju?</h2>
+      <p>Hampir semua orang refleks menarik ujung kaos, kemeja, atau tisu kering untuk membersihkan kacamata yang berembun. Padahal kebiasaan sepele ini adalah <strong>musuh terbesar kacamata Anda</strong>:</p>
+      <ul>
+        <li><strong>Serat Kain Baju Terlalu Kasar:</strong> Serat katun pakaian dan tisu kayu memiliki tekstur mikroskopis yang abrasif terhadap lapisan lensa optik.</li>
+        <li><strong>Debu Mikro yang Terjebak:</strong> Pakaian yang sudah dipakai berjam-jam menyimpan partikel debu halus. Saat kamu menggosokkan baju ke lensa, debu tersebut bertindak layaknya amplas yang menghasilkan ratusan baret halus (swirl marks).</li>
+        <li><strong>Merusak Lapisan Coating:</strong> Baret halus akan mengikis lapisan Anti-Refleksi (AR), filter Blue Ray, dan lapisan hydrophobic yang melindungi lensa kacamata.</li>
+      </ul>
+
+      <h2>Cara Ampuh Mencegah &amp; Mengatasi Kacamata Berkabut:</h2>
+      <ol>
+        <li><strong>Gunakan Kain Microfiber Khusus:</strong> Selalu simpan lap microfiber pembersih optik yang halus dan bebas serat di dalam kotak kacamatamu.</li>
+        <li><strong>Gunakan Semprotan Lens Cleaner Anti-Fog:</strong> Semprotkan cairan pembersih lensa khusus yang memiliki formula anti-kabut untuk membentuk lapisan pelindung transparan tipis.</li>
+        <li><strong>Pilih Lensa dengan Lapisan Super Hydrophobic di Optik I See You:</strong> Lapisan licin modern membuat partikel air tidak dapat menempel dan langsung meluncur jatuh, menjaga pandangan tetap jernih di segala kondisi cuaca.</li>
+      </ol>
+    `
+  },
+
   // ── 0. GAYA & LIFESTYLE: STARTER PACK COFFEE SHOP (Instagram Post DcvcKUPj5ro) ──
   {
     slug: 'rekomendasi-frame-tipe-keseharian-starter-pack-coffee-shop',
@@ -44,7 +178,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <p>Dari warna crystal clear yang modern, palet warm caramel amber, hingga siluet vintage square. Setiap model kacamata punya energi unik yang siap memperkuat karakter personalmu.</p>
       </div>
 
-      <h2>1. Si Paling Skena 🎧 — Edgy, Modern &amp; Stand Out</h2>
+      <h2>1. Si Paling Skena: Edgy, Modern &amp; Stand Out</h2>
       <p>Ciri khas persona ini adalah selalu update dengan tren streetwear, suka eksplorasi musik indie, dan nggak ragu tampil beda. Datang ke coffee shop bukan cuma buat nugas, tapi sekalian <em>show off fit</em> hari ini!</p>
 
       <!-- SLIDE 2 SHOWCASE -->
@@ -57,7 +191,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <p>Frame transparan memiliki kelebihan universal: tidak menutupi riasan wajah atau garis alis, namun tetap memberikan aksen kontemporer yang sangat fotogenik untuk konten feed dan reels kamu.</p>
 
-      <h2>2. The Overworked Creative 💻 — Bold, Cerdas &amp; Anti Pusing</h2>
+      <h2>2. The Overworked Creative: Bold, Cerdas &amp; Anti Pusing</h2>
       <p>Deadline menumpuk, revisi bertubi-tubi, dan laptop menyala berjam-jam ditemani segelas iced matcha latte atau americano dingin. Ini adalah potret para desainer, penulis, arsitek, dan pekerja kreatif digital.</p>
 
       <!-- SLIDE 3 SHOWCASE -->
@@ -70,7 +204,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <p><strong>Tips Proteksi Mata:</strong> Jangan lupa pasangkan dengan <strong>Lensa Bluechromic Optik I See You</strong>. Lensa ini memblokir radiasi sinar biru dari layar monitor dan laptop secara maksimal, sehingga mata tidak cepat perih, tegang, atau pusing meski harus menatap layar seharian penuh.</p>
 
-      <h2>3. The Aesthetic Minimalist 🤍 — Clean, Kalem &amp; Quiet Luxury</h2>
+      <h2>3. The Aesthetic Minimalist: Clean, Kalem &amp; Quiet Luxury</h2>
       <p>Prinsip hidupnya adalah <em>less is more</em>. Meja kerjanya selalu rapi teratur, menyukai warna-warna earth tone netral, dan mengutamakan kenyamanan fungsional di atas segalanya.</p>
 
       <!-- SLIDE 4 SHOWCASE -->
@@ -82,7 +216,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       </div>
 
       <h2>Apapun Persona Kamu, Temukan Frame Pelengkapnya di Optik I See You</h2>
-      <p>Karakter setiap orang itu unik, dan tidak ada satu frame kacamata yang cocok untuk semua orang. Karena itulah di Optik I See You, filosofi kami adalah <em>"for every you"</em>—kami hadir menyediakan ratusan pilihan siluet frame dan teknologi lensa yang pas dengan kebutuhan mata serta gaya hidupmu.</p>
+      <p>Karakter setiap orang itu unik, dan tidak ada satu frame kacamata yang cocok untuk semua orang. Karena itulah di Optik I See You, filosofi kami adalah <em>"for every you"</em>: kami hadir menyediakan ratusan pilihan siluet frame dan teknologi lensa yang pas dengan kebutuhan mata serta gaya hidupmu.</p>
 
       <!-- SLIDE 5 SHOWCASE -->
       <div class="slide-showcase">
@@ -313,7 +447,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <p>Sering banget kejadian kan: pas liat kacamata di etalase display kelihatannya cakep dan estetik banget, tapi giliran dipakai sendiri kok rasanya kurang pas atau malah aneh? Tenang, kamu nggak sendirian! Kuncinya ternyata ada di keselarasan antara siluet frame kacamata dengan proporsi garis wajah kamu.</p>
 
       <h2>Kenapa Proporsi Wajah Itu Penting?</h2>
-      <p>Setiap orang memiliki struktur tulang wajah yang unik. Frame kacamata yang tepat akan berfungsi sebagai penyeimbang fitur alami wajah kamu—misalnya melembutkan rahang yang tegas, atau memberikan definisi tajam pada wajah yang membulat. Berikut panduan praktis (cheat sheet) untuk menentukan frame yang tepat:</p>
+      <p>Setiap orang memiliki struktur tulang wajah yang unik. Frame kacamata yang tepat akan berfungsi sebagai penyeimbang fitur alami wajah kamu, misalnya melembutkan rahang yang tegas, atau memberikan definisi tajam pada wajah yang membulat. Berikut panduan praktis (cheat sheet) untuk menentukan frame yang tepat:</p>
 
       <h2>1. Wajah Bulat (Round Face)</h2>
       <p>Karakteristik wajah bulat memiliki lebar dan panjang yang hampir seimbang dengan garis rahang melengkung lembut. <strong>Rekomendasi Frame:</strong> Pilih frame dengan garis bersudut tegas seperti kotak (square), persegi panjang (rectangular), atau geometric frame. Hindari frame bulat kecil karena akan membuat wajah terkesan semakin penuh.</p>
@@ -390,7 +524,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     content: `
       <p>Pernah nggak kamu bertanya-tanya, kenapa karakter Peter Parker selalu punya tempat spesial di hati jutaan penonton lintas generasi? Jawabannya sederhana: di balik jubah pahlawan super penyelamat dunia, Peter Parker adalah cowok biasa yang ramah, sedikit pemalu, pintar, dan tentu saja... <strong>selalu tampil ikonik dengan kacamatanya!</strong></p>
 
-      <p>Dari era Tobey Maguire yang nerd-sweet, Andrew Garfield yang edgy berkarisma, sampai Tom Holland yang sporty dan sleek—kacamata mereka terbukti bukan sekadar alat bantu baca, tapi aksesori fashion yang mengangkat aura ketampanan dan karakter wajah secara instan.</p>
+      <p>Dari era Tobey Maguire yang nerd-sweet, Andrew Garfield yang edgy berkarisma, sampai Tom Holland yang sporty dan sleek, kacamata mereka terbukti bukan sekadar alat bantu baca, tapi aksesori fashion yang mengangkat aura ketampanan dan karakter wajah secara instan.</p>
 
       <p>Menariknya, baru-baru ini akun resmi <strong>@iseeyou.glasses</strong> merilis postingan feed yang membocorkan koleksi frame yang mirip banget dengan kacamata para pemeran Spider-Man. Nggak perlu pesan jauh-jauh ke luar negeri, kamu bisa dapatkan frame-frame ini langsung di <strong>Optik I See You</strong>. Yuk kita bedah bocoran tiap slidenya di bawah ini!</p>
 
@@ -500,7 +634,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <p>Paparan sinar biru dari layar gadget di malam hari memanipulasi otak kita untuk berpikir bahwa hari masih siang. Akibatnya, produksi hormon melatonin (hormon pengatur siklus tidur) terhambat, memicu insomnia dan kualitas tidur yang buruk. Dengan kacamata anti radiasi, ritme sirkadian tubuhmu akan tetap terlindungi.</p>
 
       <h3>3. Investasi Kesehatan Jangka Panjang untuk Retina</h3>
-      <p>Paparan radiasi sinar berlebih dalam jangka panjang dikaitkan dengan risiko kerusakan oksidatif pada sel-sel fotoreseptor retina. Mencegah jauh lebih baik daripada mengobati—memakai kacamata pelindung sejak usia muda adalah langkah cerdas menjaga ketajaman penglihatan di masa depan.</p>
+      <p>Paparan radiasi sinar berlebih dalam jangka panjang dikaitkan dengan risiko kerusakan oksidatif pada sel-sel fotoreseptor retina. Mencegah jauh lebih baik daripada mengobati: memakai kacamata pelindung sejak usia muda adalah langkah cerdas menjaga ketajaman penglihatan di masa depan.</p>
 
       <p>Di Optik I See You, lensa anti radiasi tersedia baik untuk mata normal (tanpa minus) maupun bagi kamu yang memiliki resep minus dan silinder. Lindungi matamu hari ini juga!</p>
     `
@@ -651,7 +785,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <p>Jangan pernah sekali-kali menyentuh softlens dengan tangan yang kotor atau basah kuyup oleh air keran biasa. Cuci tangan dengan sabun tanpa pewangi atau pelembap berlebih, lalu keringkan menggunakan tisu atau handuk bebas serat (lint-free).</p>
 
       <h3>2. Haram Pakai Air Keran, Air Mineral, atau Cairan Bekas</h3>
-      <p>Air keran mengandung mikroorganisme seperti <em>Acanthamoeba</em> yang bisa menyebabkan infeksi parah pada kornea mata. Selalu gunakan cairan khusus (multi-purpose contact lens solution) steril. Buang cairan lama di lens case setiap hari dan isi dengan cairan yang baru—jangan ditumpuk!</p>
+      <p>Air keran mengandung mikroorganisme seperti <em>Acanthamoeba</em> yang bisa menyebabkan infeksi parah pada kornea mata. Selalu gunakan cairan khusus (multi-purpose contact lens solution) steril. Buang cairan lama di lens case setiap hari dan isi dengan cairan yang baru, jangan ditumpuk!</p>
 
       <h3>3. Jangan Pernah Tidur Menggunakan Softlens</h3>
       <p>Saat tidur, mata kita tertutup sehingga pasokan oksigen ke kornea menurun drastis. Jika softlens masih menempel di mata saat tidur, kornea bisa mengalami hipoksia (kekurangan oksigen) yang memicu peradangan hebat dan rasa perih menyengat saat bangun tidur.</p>
@@ -723,7 +857,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     title: 'Biaya Ganti Lensa Kacamata: Daftar Harga Lengkap, Jenis Lensa & Tips Hemat di Optik',
     category: 'edukasi-mata',
     excerpt: 'Berapa biaya ganti lensa kacamata di optik? Simak rincian estimasi harga lensa minus, anti radiasi blueray, photochromic, bluechromic, dan tips hemat ganti lensa bawa frame sendiri.',
-    coverImage: '/blog/covers/cover-bluechromic.jpg',
+    coverImage: '/fasilitas/mesin potong otomatis.webp',
     author: 'Tim Optik I See You',
     publishedAt: '2026-09-10T09:00:00Z',
     updatedAt: '2026-09-10T09:00:00Z',
@@ -771,7 +905,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     title: 'Rekomendasi Optik di Purwokerto: Tempat Bikin Kacamata Minus Terbaik, Murah & Bergaransi',
     category: 'info-cabang-promo',
     excerpt: 'Mencari rekomendasi optik kacamata terbaik di Purwokerto? Simak review lengkap tempat periksa mata gratis, koleksi frame estetik, dan faset lensa express di Optik I See You.',
-    coverImage: '/blog/banyumas-wedding-expo-2026.jpg',
+    coverImage: '/lokasi/purwokerto/IMG_1543.webp',
     author: 'Tim Optik I See You',
     publishedAt: '2026-09-10T10:00:00Z',
     updatedAt: '2026-09-10T10:00:00Z',
