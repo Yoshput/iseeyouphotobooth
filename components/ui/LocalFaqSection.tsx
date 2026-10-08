@@ -122,7 +122,7 @@ export default function LocalFaqSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-white via-isy-ivory/50 to-white px-6 py-20 sm:py-28">
+    <section className="relative w-full overflow-hidden bg-gradient-to-b from-white via-isy-ivory/50 to-white px-6 pt-20 sm:pt-28 pb-10 sm:pb-14">
       <div className="mx-auto max-w-4xl relative z-10 space-y-12">
         {/* Header */}
         <div className="text-center space-y-3.5 mx-auto max-w-2xl">

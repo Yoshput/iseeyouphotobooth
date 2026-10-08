@@ -564,11 +564,30 @@ export default function LandingPage() {
       {/* ═══ PAGE 9: FAQ & PERTANYAAN ═══ */}
       <LocalFaqSection />
 
-      {/* ═══ SMOOTH GRADIENT TRANSITION TO FOOTER ═══ */}
-      <div className="relative w-full h-24 sm:h-32 -mb-px overflow-hidden pointer-events-none bg-gradient-to-b from-white via-[#0d2f1d]/60 to-[#0D2F1D]">
-        {/* Ambient emerald subtle glow */}
-        <div className="absolute inset-x-0 bottom-0 h-full bg-[radial-gradient(ellipse_75%_75%_at_50%_100%,rgba(47,168,79,0.28),transparent)] animate-pulse" style={{ animationDuration: '4s' }} />
-      </div>
+      {/* ═══ ULTRA-SMOOTH SEAMLESS GRADIENT TRANSITION TO FOOTER (NO VISIBLE LINE / BAND) ═══ */}
+      <div
+        className="relative w-full h-48 sm:h-64 lg:h-80 -mt-px -mb-px pointer-events-none select-none overflow-hidden"
+        style={{
+          background: `linear-gradient(
+            to bottom,
+            rgb(255, 255, 255) 0%,
+            rgb(255, 255, 255) 6%,
+            rgb(253, 254, 253) 12%,
+            rgb(248, 250, 249) 18%,
+            rgb(238, 242, 240) 25%,
+            rgb(222, 228, 224) 33%,
+            rgb(198, 208, 202) 42%,
+            rgb(168, 182, 174) 50%,
+            rgb(134, 152, 142) 58%,
+            rgb(98, 120, 108) 67%,
+            rgb(64, 89, 75) 76%,
+            rgb(38, 67, 51) 84%,
+            rgb(21, 53, 36) 91%,
+            rgb(15, 48, 30) 96%,
+            rgb(13, 47, 29) 100%
+          )`,
+        }}
+      />
 
       {/* ═══ FOOTER — Luxury Emerald Multi-Column Layout ═══ */}
       <footer className="w-full bg-[#0D2F1D] text-white">
@@ -576,47 +595,23 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 sm:px-10 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Col 1: Brand & Identity */}
           <div className="space-y-4">
-            <div className="flex flex-col" style={{ lineHeight: 1 }}>
-              <span
-                style={{
-                  fontFamily: "var(--font-pjs)",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  letterSpacing: "0.35em",
-                  color: "#5ec97a",
-                  textTransform: "uppercase",
-                  marginBottom: "2px",
-                  display: "block",
-                }}
-              >
-                OPTIK
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-pjs)",
-                  fontSize: "28px",
-                  fontWeight: 900,
-                  color: "#ffffff",
-                  letterSpacing: "0.01em",
-                  lineHeight: 1.05,
-                  display: "block",
-                }}
-              >
-                I SEE YOU
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-pjs)",
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "rgba(255,255,255,0.75)",
-                  letterSpacing: "0.22em",
-                  marginTop: "3px",
-                  display: "block",
-                }}
+            <div className="space-y-2">
+              <Link href="/" className="inline-block group focus:outline-none">
+                <Image
+                  src="/logo/logo-isy-putih-cropped.png"
+                  alt="Optik I See You"
+                  width={220}
+                  height={75}
+                  className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                  priority
+                />
+              </Link>
+              <p
+                className="text-[12px] tracking-[0.22em] text-white/70 font-medium italic select-none"
+                style={{ fontFamily: "var(--font-playfair)" }}
               >
                 for every you
-              </span>
+              </p>
             </div>
 
             <p className="text-xs text-white/65 leading-relaxed">

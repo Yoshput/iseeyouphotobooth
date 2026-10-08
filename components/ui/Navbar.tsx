@@ -175,7 +175,10 @@ export default function Navbar() {
 
           {/* Right: "For Every You" logo + CTA */}
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <p className="hidden lg:block text-base tracking-[0.2em] text-isy-green-deep/90 font-medium select-none transition-transform hover:scale-105" style={{ fontFamily: 'var(--font-pjs)' }}>
+            <p
+              className="hidden lg:block text-base tracking-[0.16em] text-isy-green-deep/90 font-medium italic select-none transition-transform hover:scale-105"
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
               for every you
             </p>
             <Link

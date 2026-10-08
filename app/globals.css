@@ -4,10 +4,11 @@
 
 /* ── Font variables (set by Google Fonts link in layout.tsx) ───────────── */
 :root {
-  --font-pjs: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-inter: var(--font-pjs);
-  --font-playfair: var(--font-pjs);
-  --font-dm-serif: var(--font-pjs);
+  --font-poppins: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-playfair: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-dm-serif: var(--font-playfair);
+  --font-pjs: var(--font-poppins);
+  --font-inter: var(--font-poppins);
 }
 
 html {
@@ -18,7 +19,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: var(--font-pjs);
+  font-family: var(--font-poppins);
   /* kiosk: no pull-to-refresh / rubber-band on tablet browsers */
   overscroll-behavior: none;
   touch-action: manipulation;
