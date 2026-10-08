@@ -125,11 +125,10 @@ export default function LocalFaqSection() {
     <section className="relative w-full overflow-hidden bg-gradient-to-b from-white via-isy-ivory/50 to-white px-6 pt-20 sm:pt-28 pb-10 sm:pb-14">
       <div className="mx-auto max-w-4xl relative z-10 space-y-12">
         {/* Header */}
-        <div className="text-center space-y-3.5 mx-auto max-w-2xl">
-          <h2 className="text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
-            Pertanyaan Umum Seputar
-            <br />
-            <span className="text-isy-green-bright">Optik I See You</span>
+        <div className="text-center space-y-3.5 mx-auto max-w-3xl">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight leading-tight">
+            <span className="block sm:whitespace-nowrap">Pertanyaan Umum Seputar</span>
+            <span className="block text-isy-green-bright mt-1">Optik I See You</span>
           </h2>
 
           <p className="text-xs sm:text-sm font-medium text-isy-ink/65 max-w-lg mx-auto leading-relaxed">

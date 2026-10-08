@@ -58,7 +58,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/katalog", label: "Katalog" },
-    { href: "/try-on", label: "Try-On AR" },
+    { href: "/photobooth", label: "Photobooth" },
     { href: "/softlens", label: "Softlens" },
     { href: "/cabang", label: "4 Cabang" },
     { href: "/home-service", label: "Home Service" },
