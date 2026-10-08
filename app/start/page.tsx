@@ -45,11 +45,7 @@ export default function StartPage() {
       {/* ── Hero / Selection Area ─────────────────────────────────────────── */}
       <section className="flex flex-1 flex-col items-center justify-center px-6 py-12">
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-          <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-bright">
-            Optik I See You
-          </span>
-
-          <h1 className="mb-3 font-serif text-3xl font-black text-isy-green-deep sm:text-5xl">
+          <h1 className="mb-3 text-3xl font-black text-isy-green-deep sm:text-5xl">
             Mau coba yang mana?
           </h1>
           <p className="mb-10 text-xs font-medium text-isy-ink/60 sm:text-sm">
@@ -79,7 +75,7 @@ export default function StartPage() {
                 </div>
 
                 <div>
-                  <h2 className="font-serif text-2xl font-black tracking-wide text-white sm:text-3xl">
+                  <h2 className="text-2xl font-black tracking-wide text-white sm:text-3xl">
                     Try On Kacamata
                   </h2>
                   <p className="mt-2 text-xs font-medium text-white/75 leading-relaxed">
@@ -120,7 +116,7 @@ export default function StartPage() {
                 </div>
 
                 <div>
-                  <h2 className="font-serif text-2xl font-black tracking-wide text-isy-green-deep sm:text-3xl">
+                  <h2 className="text-2xl font-black tracking-wide text-isy-green-deep sm:text-3xl">
                     Photobooth
                   </h2>
                   <p className="mt-2 text-xs font-medium text-isy-ink/60 leading-relaxed">

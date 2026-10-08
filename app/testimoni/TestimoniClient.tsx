@@ -44,7 +44,7 @@ export default function TestimoniClient() {
           ✓ Diverifikasi Google
         </div>
         
-        <h1 className="font-serif text-4xl sm:text-5xl font-black text-isy-green-deep">
+        <h1 className="text-4xl sm:text-5xl font-black text-isy-green-deep">
           Apa Kata Pelanggan Kami
         </h1>
         <p className="text-lg text-isy-ink/60">
@@ -174,7 +174,7 @@ export default function TestimoniClient() {
 
       {/* CTA Section (Foto Kedua) */}
       <div className="rounded-3xl border border-isy-line bg-white p-8 text-center shadow-sm">
-        <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep mb-2">
+        <h2 className="text-2xl sm:text-3xl font-black text-isy-green-deep mb-2">
           Lihat Ulasan Asli di Google Maps Cabang:
         </h2>
         <p className="text-sm text-isy-ink/60 mb-8 max-w-lg mx-auto">

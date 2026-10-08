@@ -338,7 +338,7 @@ function GuideCard({ icon: Icon, title, desc }: { icon: LucideIcon; title: strin
       <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-isy-green-bright/30 bg-isy-mist">
         <Icon size={18} strokeWidth={1.5} className="text-isy-green-deep" aria-hidden="true" />
       </div>
-      <h3 className="mb-2 font-serif text-base sm:text-lg font-black text-isy-green-deep">{title}</h3>
+      <h3 className="mb-2 text-base sm:text-lg font-black text-isy-green-deep">{title}</h3>
       <p className="text-xs sm:text-sm leading-relaxed text-isy-ink/60 font-medium">{desc}</p>
     </div>
   );
@@ -500,13 +500,7 @@ export default function SoftlensCatalogPage() {
             </Link>
           </div>
 
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-isy-green-bright">
-              Katalog Softlens &amp; Aksesoris
-            </span>
-          </div>
-
-          <h1 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl">
+          <h1 className="text-3xl font-black text-isy-green-deep sm:text-5xl">
             Koleksi Softlens Terlengkap
           </h1>
 
@@ -602,7 +596,7 @@ export default function SoftlensCatalogPage() {
         {/* PRODUCTS GRID */}
         <section className="space-y-6">
           <div className="flex items-center justify-between border-b border-isy-line pb-3">
-            <h2 className="font-serif text-xl sm:text-2xl font-black text-isy-green-deep">
+            <h2 className="text-xl sm:text-2xl font-black text-isy-green-deep">
               {selectedCategory === "all" ? "Koleksi Lengkap Softlens & Aksesoris" : selectedCategory}
             </h2>
             <span className="rounded-full bg-isy-mist border border-isy-line px-3.5 py-1 text-xs font-black text-isy-green-deep">
@@ -613,7 +607,7 @@ export default function SoftlensCatalogPage() {
           {filteredProducts.length === 0 ? (
             <div className="py-16 text-center space-y-3 bg-white rounded-3xl border border-dashed border-isy-line max-w-md mx-auto">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="mx-auto text-isy-ink/25"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-              <h3 className="font-serif text-lg font-bold text-isy-green-deep">Tidak Ada Produk Ditemukan</h3>
+              <h3 className="text-lg font-bold text-isy-green-deep">Tidak Ada Produk Ditemukan</h3>
               <p className="text-xs text-isy-ink/50">Coba ubah kata kunci pencarian atau reset filter warna/kategori.</p>
               <button
                 onClick={() => { setSelectedCategory("all"); setSelectedColor("all"); setSearchQuery(""); }}
@@ -643,7 +637,7 @@ export default function SoftlensCatalogPage() {
             <span className="text-xs font-extrabold uppercase tracking-widest text-isy-green-bright">
               Edukasi &amp; Panduan Softlens
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
+            <h2 className="text-2xl sm:text-3xl font-black text-isy-green-deep">
               Seputar Perawatan &amp; Resep Softlens
             </h2>
             <p className="text-xs text-isy-ink/60">
@@ -694,7 +688,7 @@ export default function SoftlensCatalogPage() {
             <span className="inline-block rounded-full bg-white/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white/80 backdrop-blur-sm border border-white/20">
               Konsultasi Resep &amp; Order
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-black">
+            <h2 className="text-3xl sm:text-4xl font-black">
               Butuh Ukuran Minus Khusus / Silinder?
             </h2>
             <p className="text-xs sm:text-sm text-white/85 leading-relaxed font-medium">

@@ -483,7 +483,7 @@ export default function FrameThemePicker({
               ←
             </button>
             <div>
-              <h2 className="font-serif text-2xl font-black text-isy-green-deep">
+              <h2 className="text-2xl font-black text-isy-green-deep">
                 Pilih Template Desain Frame
               </h2>
               <p className="text-xs text-isy-ink/60 font-medium mt-0.5">

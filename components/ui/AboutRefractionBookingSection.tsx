@@ -50,16 +50,10 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
       <div className="mx-auto max-w-6xl relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* LEFT 7-cols: Story & Framing */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/25 bg-isy-green-bright/10 px-4 py-1.5 shadow-2xs">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-isy-green-deep">
-              TENTANG KAMI &bull; TERPERCAYA SEJAK 2019
-            </span>
-          </div>
-
-          <h2 className="font-serif text-3xl sm:text-5xl font-black text-isy-green-deep leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-isy-green-deep leading-tight">
             Cek Mata Gratis
             <br />
-            <span className="text-isy-green-bright italic">&amp; Konsultasi Refraksi Akurat</span>
+            <span className="text-isy-green-bright">&amp; Konsultasi Refraksi Akurat</span>
           </h2>
 
           <div className="space-y-4 text-xs sm:text-sm text-isy-ink/75 leading-relaxed">
@@ -95,7 +89,7 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-isy-green-bright">
                 RESERVASI ONLINE CEPAT
               </span>
-              <h3 className="font-serif text-xl sm:text-2xl font-black text-isy-green-deep">
+              <h3 className="text-xl sm:text-2xl font-black text-isy-green-deep">
                 Jadwalkan Cek Mata Gratis
               </h3>
               <p className="text-xs text-isy-ink/60">

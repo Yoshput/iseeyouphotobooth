@@ -297,10 +297,7 @@ export default function QuizPage() {
 
           {/* Hero Header (Apple Editorial Style) */}
           <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200/80 px-3.5 py-1 text-xs font-semibold text-slate-700 mb-3">
-              <span>Vision &amp; Style Diagnostic</span>
-            </span>
-            <h1 className="font-serif text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
+            <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
               Konsultasi &amp; Skrining Penglihatan
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-lg mx-auto">
@@ -380,7 +377,7 @@ export default function QuizPage() {
                 />
               </div>
 
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
                 {activeQuestion.title}
               </h2>
               {activeQuestion.subtitle && (

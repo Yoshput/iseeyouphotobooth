@@ -87,7 +87,7 @@ export default function PWAInstallPrompt() {
               <Image src="/icon-192.png" alt="I See You" fill className="object-cover" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-serif text-sm font-black text-isy-green-deep">Pasang sebagai Aplikasi</p>
+              <p className="text-sm font-black text-isy-green-deep">Pasang sebagai Aplikasi</p>
               <p className="text-[11px] text-isy-ink/50 font-medium">Optik I See You</p>
             </div>
             <button
@@ -150,11 +150,11 @@ export default function PWAInstallPrompt() {
             <Image src="/icon-192.png" alt="I See You" fill className="object-cover" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-serif text-sm font-black text-isy-green-deep leading-tight">
+            <p className="text-sm font-black text-isy-green-deep leading-tight">
               Pasang sebagai Aplikasi
             </p>
             <p className="text-[11px] text-isy-ink/50 font-medium">
-              Buka katalog lebih cepat — tanpa buka browser
+              Buka katalog lebih cepat tanpa buka browser
             </p>
           </div>
           <button

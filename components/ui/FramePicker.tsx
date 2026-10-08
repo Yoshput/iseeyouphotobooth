@@ -258,7 +258,7 @@ export default function FramePicker({
       {/* Grid of Layout Cards */}
       <div className="flex-1 overflow-y-auto px-6 py-6">
         <div className="mb-6 text-center max-w-md mx-auto space-y-1">
-          <h2 className="font-serif text-2xl font-black text-isy-green-deep tracking-tight">
+          <h2 className="text-2xl font-black text-isy-green-deep tracking-tight">
             PILIH GAYA FOTO
           </h2>
           <p className="text-xs text-isy-ink/65 font-medium">

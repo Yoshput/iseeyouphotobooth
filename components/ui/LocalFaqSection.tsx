@@ -126,17 +126,10 @@ export default function LocalFaqSection() {
       <div className="mx-auto max-w-4xl relative z-10 space-y-12">
         {/* Header */}
         <div className="text-center space-y-3.5 mx-auto max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/25 bg-isy-green-bright/10 px-4 py-1.5 shadow-sm backdrop-blur-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-isy-green-bright" />
-            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.18em] text-isy-green-bright">
-              INFO LENGKAP &amp; PANDUAN
-            </span>
-          </div>
-
-          <h2 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
+          <h2 className="text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
             Pertanyaan Umum Seputar
             <br />
-            <span className="text-isy-green-bright italic">Optik I See You</span>
+            <span className="text-isy-green-bright">Optik I See You</span>
           </h2>
 
           <p className="text-xs sm:text-sm font-medium text-isy-ink/65 max-w-lg mx-auto leading-relaxed">
@@ -167,7 +160,7 @@ export default function LocalFaqSection() {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-isy-green-bright">
                       {faq.category}
                     </span>
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-isy-green-deep leading-snug">
+                    <h3 className="text-base sm:text-lg font-bold text-isy-green-deep leading-snug">
                       {faq.question}
                     </h3>
                   </div>

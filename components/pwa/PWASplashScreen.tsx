@@ -78,9 +78,9 @@ export default function PWASplashScreen() {
         {/* OPTIK — small, tracked */}
         <span
           style={{
-            fontFamily: "var(--font-playfair)",
+            fontFamily: "var(--font-pjs)",
             fontSize: "14px",
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: "0.4em",
             color: "#116B3C",
             textTransform: "uppercase",
@@ -91,10 +91,10 @@ export default function PWASplashScreen() {
           OPTIK
         </span>
 
-        {/* I SEE YOU — big bold serif */}
+        {/* I SEE YOU — big bold title */}
         <span
           style={{
-            fontFamily: "var(--font-playfair)",
+            fontFamily: "var(--font-pjs)",
             fontSize: "clamp(36px, 9vw, 54px)",
             fontWeight: 900,
             color: "#0D5C33",
@@ -105,12 +105,12 @@ export default function PWASplashScreen() {
           I SEE YOU
         </span>
 
-        {/* for every you — DM Serif display italic */}
+        {/* for every you — clean geometric slogan */}
         <span
           style={{
-            fontFamily: "var(--font-dm-serif)",
+            fontFamily: "var(--font-pjs)",
             fontSize: "clamp(16px, 4vw, 22px)",
-            fontWeight: 400,
+            fontWeight: 500,
             color: "#1A8F50",
             letterSpacing: "0.22em",
             marginTop: "6px",

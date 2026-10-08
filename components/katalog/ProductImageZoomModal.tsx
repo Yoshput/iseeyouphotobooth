@@ -155,7 +155,7 @@ export default function ProductImageZoomModal({
       <div className="flex items-center justify-between border-b border-white/15 bg-black/60 px-4 py-3 sm:px-6 backdrop-blur-md">
         {/* Title & Badge */}
         <div className="min-w-0 flex-1 pr-4">
-          <h3 className="font-serif text-base sm:text-lg font-black text-white truncate">
+          <h3 className="text-base sm:text-lg font-black text-white truncate">
             {title}
           </h3>
           <span className="text-[11px] font-bold text-isy-green-bright block truncate">

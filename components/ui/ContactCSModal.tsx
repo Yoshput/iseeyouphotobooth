@@ -150,7 +150,7 @@ export default function ContactCSModal({
         <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-isy-line/70 bg-gradient-to-b from-isy-mist/50 to-white">
           <div className="flex items-center gap-3">
             <div>
-              <h2 id="cs-modal-title" className="font-serif text-lg font-black text-isy-green-deep">
+              <h2 id="cs-modal-title" className="text-lg font-black text-isy-green-deep">
                 Pilih Cabang Tujuan
               </h2>
               <p className="text-[10.5px] text-isy-ink/55 font-medium">

@@ -206,15 +206,15 @@ export default function EyeExamFacilitySection() {
         >
 
           {/* Heading */}
-          <h2 className="font-serif text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
-            Fasilitas Pemeriksaan &
+          <h2 className="text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
+            Fasilitas Pemeriksaan &amp;
             <br />
             <span className="text-isy-green-bright">Mesin Faset Presisi</span>
           </h2>
 
           {/* Subheading */}
           <p className="mx-auto max-w-xl text-xs sm:text-sm font-medium text-isy-ink/65 leading-relaxed">
-            Setiap cabang Optik I See You dilengkapi peralatan diagnostik digital dan mesin pemotong lensa otomatis modern — menjamin hasil kacamata presisi, nyaman, dan rapi.
+            Setiap cabang Optik I See You dilengkapi peralatan diagnostik digital dan mesin pemotong lensa otomatis modern untuk menjamin hasil kacamata presisi, nyaman, dan rapi.
           </p>
 
           {/* Category Filter Pills */}
@@ -264,7 +264,7 @@ export default function EyeExamFacilitySection() {
 
                 {/* Name Only */}
                 <div className="pt-1">
-                  <h3 className="font-serif text-xl font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
+                  <h3 className="text-xl font-black text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
                     {item.name}
                   </h3>
                 </div>
@@ -380,7 +380,7 @@ export default function EyeExamFacilitySection() {
                 <span className="text-[11px] font-extrabold uppercase tracking-widest text-isy-green-bright">
                   {selectedFacility.subtitle}
                 </span>
-                <h3 id="facility-modal-title" className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep leading-tight mt-1">
+                <h3 id="facility-modal-title" className="text-2xl sm:text-3xl font-black text-isy-green-deep leading-tight mt-1">
                   {selectedFacility.name}
                 </h3>
               </div>

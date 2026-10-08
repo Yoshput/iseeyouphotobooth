@@ -149,7 +149,7 @@ export default function SoftlensCartDrawer({
                 <CartIcon />
               </span>
               <div>
-                <h3 className="font-serif text-lg font-black text-isy-green-deep">
+                <h3 className="text-lg font-black text-isy-green-deep">
                   Keranjang Softlens
                 </h3>
                 <p className="text-[11px] text-isy-ink/60">
@@ -187,7 +187,7 @@ export default function SoftlensCartDrawer({
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-isy-mist text-isy-green-bright/50">
                   <CartIcon />
                 </div>
-                <h4 className="font-serif text-base font-bold text-isy-green-deep">
+                <h4 className="text-base font-bold text-isy-green-deep">
                   Keranjang Masih Kosong
                 </h4>
                 <p className="text-xs text-isy-ink/60 max-w-xs leading-relaxed">
@@ -232,7 +232,7 @@ export default function SoftlensCartDrawer({
 
                     {/* Product Name & Price */}
                     <div className="min-w-0 flex-1 space-y-0.5">
-                      <h4 className="font-serif text-xs font-bold text-isy-green-deep truncate" title={item.product.name}>
+                      <h4 className="text-xs font-bold text-isy-green-deep truncate" title={item.product.name}>
                         {item.product.name}
                       </h4>
                       <p className="text-xs font-extrabold text-isy-green-bright whitespace-nowrap">

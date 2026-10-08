@@ -154,7 +154,7 @@ export default function CatalogDetailModal({
 
         {/* Product Details Section */}
         <div className="space-y-3 pt-2">
-          <h2 className="font-serif text-2xl font-black text-isy-green-deep">
+          <h2 className="text-2xl font-black text-isy-green-deep">
             {item.name}
           </h2>
 

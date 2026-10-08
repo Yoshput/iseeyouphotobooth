@@ -26,6 +26,7 @@ import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 import Link from "next/link";
+import { ScanFace, Sparkles, Camera, QrCode } from "lucide-react";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
 import {
   BRANCHES,
@@ -35,12 +36,39 @@ import {
   mapsDirectionsUrl,
 } from "@/lib/branches";
 
-function FeatureCard({ title, desc, accent }: { title: string; desc: string; accent: string }) {
+function ModernFeatureCard({
+  icon: Icon,
+  title,
+  tag,
+  desc,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  tag: string;
+  desc: string;
+}) {
   return (
-    <div className="relative flex flex-col gap-2 rounded-2xl border border-isy-line bg-white p-5 shadow-sm transition-all hover:border-isy-green-bright/50 hover:shadow-md">
-      <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl" style={{ background: accent }} />
-      <p className="font-bold text-isy-green-deep text-sm">{title}</p>
-      <p className="text-xs text-isy-ink/60 leading-relaxed">{desc}</p>
+    <div className="group relative flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-isy-green-bright/40 hover:shadow-xl hover:shadow-isy-green-bright/5">
+      <div>
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-isy-green-deep transition-all duration-300 group-hover:bg-isy-green-deep group-hover:text-white shadow-xs">
+            <Icon className="h-5 w-5 stroke-[1.8]" />
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-isy-green-bright transition-colors">
+            {tag}
+          </span>
+        </div>
+        <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-isy-green-deep transition-colors mb-2">
+          {title}
+        </h3>
+        <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
+          {desc}
+        </p>
+      </div>
+      <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-slate-400 group-hover:text-isy-green-deep transition-colors">
+        <span>Pengalaman Interaktif</span>
+        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+      </div>
     </div>
   );
 }
@@ -52,13 +80,11 @@ export default function LandingPage() {
   const logoRef = useRef<HTMLDivElement>(null);
   const tagRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.fromTo(logoRef.current, { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.8 })
-        .fromTo(badgeRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, "-=0.3")
         .fromTo(tagRef.current, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, "-=0.2")
         .fromTo(ctaRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2");
     });
@@ -134,23 +160,17 @@ export default function LandingPage() {
               >
                 Optik I See You · AR Try-On &amp; Photobooth
               </span>
-
-              {/* Live badge */}
-              <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/25 bg-white/80 px-3.5 py-1 shadow-sm backdrop-blur-sm w-fit">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-isy-green-bright" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-isy-green-bright">AR TRY-ON EKSKLUSIF</span>
-              </div>
             </div>
 
             {/* Main headline — clean 2-line layout without awkward line wraps */}
             <div ref={tagRef}>
-              <h1 className="font-serif font-black leading-[1.12] text-isy-green-deep tracking-tight"
+              <h1 className="font-black leading-[1.12] text-isy-green-deep tracking-tight"
                   style={{ fontSize: "clamp(1.9rem, 3.6vw, 3.1rem)" }}>
                 <span className="block whitespace-nowrap">Selamat Datang,</span>
-                <span className="text-isy-green-bright italic whitespace-nowrap block">di Optik I See You</span>
+                <span className="text-isy-green-bright whitespace-nowrap block">di Optik I See You</span>
               </h1>
               <p className="mt-4 text-[13px] text-isy-ink/60 leading-relaxed max-w-[360px] font-medium">
-                Coba langsung koleksi kacamata, softlens, dan aksesoris I See You — try-on real-time di wajah kamu, tanpa install apapun.
+                Coba langsung koleksi kacamata, softlens, dan aksesoris I See You dengan try-on real-time di wajah kamu, tanpa install apapun.
               </p>
             </div>
 
@@ -328,10 +348,7 @@ export default function LandingPage() {
       {/* ═══ KATALOG PREVIEW — Infinite 2-Row Marquee Showcase ═══ */}
       <section className="w-full bg-white py-16 border-t border-isy-line overflow-hidden">
         <div className="mx-auto max-w-5xl px-6 mb-10 text-center flex flex-col items-center">
-          <span className="mb-3 inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.15em] text-isy-green-bright">
-            Koleksi Kacamata
-          </span>
-          <h2 className="font-serif text-3xl font-black text-isy-green-deep">Katalog Frame I See You</h2>
+          <h2 className="text-3xl font-black text-isy-green-deep">Katalog Frame I See You</h2>
           <p className="mt-2 text-lg sm:text-xl tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
             for every you
           </p>
@@ -453,23 +470,45 @@ export default function LandingPage() {
       {/* ═══ CINEMATIC VIDEO SHOWCASE ═══ */}
       <LandingVideoShowcase />
 
-      {/* ═══ FITUR ═══ */}
-      <section className="w-full bg-white px-6 py-16 border-t border-isy-line">
-        <div className="mx-auto max-w-lg">
-          <div className="mb-8 text-center flex flex-col items-center">
-            <span className="mb-3 inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.15em] text-isy-green-bright">
-              Fitur Unggulan
-            </span>
-            <h2 className="font-serif text-3xl font-black text-isy-green-deep">Bukan Photobooth Biasa</h2>
+      {/* ═══ FITUR — Redesigned Commercial Aesthetic ═══ */}
+      <section className="w-full bg-white px-6 py-20 border-t border-isy-line">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 text-center flex flex-col items-center max-w-xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-isy-green-deep tracking-tight">
+              Bukan Photobooth Biasa
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-slate-500 leading-relaxed font-normal">
+              Eksplorasi teknologi AR fitting kacamata dan studio foto digital modern dalam satu pengalaman visual yang intuitif.
+            </p>
             <p className="mt-2 text-base sm:text-lg tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
               for every you
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <FeatureCard title="Deteksi Bentuk Wajah" desc="Kamera otomatis kenali bentuk wajah, lalu rekomendasikan frame paling cocok." accent="linear-gradient(90deg, #116B3C, #2FA84F)" />
-            <FeatureCard title="AR Try-On Real-Time" desc="Kacamata langsung muncul di wajah, mengikuti gerakan kepala." accent="linear-gradient(90deg, #2FA84F, #86EFAC)" />
-            <FeatureCard title="Photobooth Biasa" desc="Nggak mau pakai AR? Ada mode photobooth standar juga." accent="linear-gradient(90deg, #6366F1, #818CF8)" />
-            <FeatureCard title="QR Scan & Download" desc="Scan QR code, langsung unduh foto ke HP kamu." accent="linear-gradient(90deg, #F59E0B, #FCD34D)" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            <ModernFeatureCard
+              icon={ScanFace}
+              tag="Face Analysis"
+              title="Deteksi Bentuk Wajah"
+              desc="Kamera otomatis mengidentifikasi proporsi wajah secara real-time dan merekomendasikan model frame paling proporsional."
+            />
+            <ModernFeatureCard
+              icon={Sparkles}
+              tag="3D Virtual Fit"
+              title="AR Try-On Real-Time"
+              desc="Kacamata virtual 3D langsung menempel presisi di wajah, bergerak dinamis mengikuti rotasi kepala tanpa jeda."
+            />
+            <ModernFeatureCard
+              icon={Camera}
+              tag="Studio Photo"
+              title="Photobooth Studio"
+              desc="Mode foto studio resolusi tinggi dengan aneka template frame eksklusif khas Optik I See You yang siap diabadikan."
+            />
+            <ModernFeatureCard
+              icon={QrCode}
+              tag="Instant Save"
+              title="QR Scan & Unduh"
+              desc="Pindai kode QR langsung dari layar untuk mengunduh foto jernih ke galeri ponsel kamu dalam hitungan detik."
+            />
           </div>
         </div>
       </section>
@@ -486,11 +525,8 @@ export default function LandingPage() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[500px] rounded-full bg-isy-green-bright/20 blur-[100px]" />
         
         <div className="mx-auto max-w-2xl relative z-10">
-          <span className="mb-4 inline-block rounded-full bg-isy-green-bright/20 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-emerald-300 border border-isy-green-bright/30">
-            Temukan Kacamata Kamu
-          </span>
-          <h2 className="font-serif text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
-            Cari Tahu <span className="text-isy-green-bright italic">Frame DNA</span> Kamu!
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+            Cari Tahu <span className="text-isy-green-bright">Frame DNA</span> Kamu!
           </h2>
           <p className="text-white/70 text-base md:text-lg mb-10 max-w-lg mx-auto">
             Quiz 5 menit untuk temukan frame yang cocok sama bentuk wajah dan kepribadian kamu.
@@ -514,10 +550,7 @@ export default function LandingPage() {
       <section id="lokasi" className="w-full bg-white px-6 py-16">
         <div className="mx-auto max-w-2xl">
           <div className="mb-8 text-center flex flex-col items-center">
-            <span className="mb-3 inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.15em] text-isy-green-bright">
-              Kunjungi Kami
-            </span>
-            <h2 className="font-serif text-3xl font-black text-isy-green-deep">4 Cabang Optik I See You</h2>
+            <h2 className="text-3xl font-black text-isy-green-deep">4 Cabang Optik I See You</h2>
             <p className="mt-2 text-sm text-isy-ink/60">Purwokerto · Wonosobo · Cilacap · Purbalingga</p>
             <p className="mt-2 text-base sm:text-lg tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
               for every you
@@ -531,8 +564,14 @@ export default function LandingPage() {
       {/* ═══ PAGE 9: FAQ & PERTANYAAN ═══ */}
       <LocalFaqSection />
 
+      {/* ═══ SMOOTH GRADIENT TRANSITION TO FOOTER ═══ */}
+      <div className="relative w-full h-24 sm:h-32 -mb-px overflow-hidden pointer-events-none bg-gradient-to-b from-white via-[#0d2f1d]/60 to-[#0D2F1D]">
+        {/* Ambient emerald subtle glow */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-[radial-gradient(ellipse_75%_75%_at_50%_100%,rgba(47,168,79,0.28),transparent)] animate-pulse" style={{ animationDuration: '4s' }} />
+      </div>
+
       {/* ═══ FOOTER — Luxury Emerald Multi-Column Layout ═══ */}
-      <footer className="w-full bg-[#0D2F1D] text-white border-t border-white/10">
+      <footer className="w-full bg-[#0D2F1D] text-white">
         {/* Main 4-Column Footer Content */}
         <div className="mx-auto max-w-6xl px-6 sm:px-10 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Col 1: Brand & Identity */}
@@ -540,9 +579,9 @@ export default function LandingPage() {
             <div className="flex flex-col" style={{ lineHeight: 1 }}>
               <span
                 style={{
-                  fontFamily: "var(--font-playfair)",
+                  fontFamily: "var(--font-pjs)",
                   fontSize: "11px",
-                  fontWeight: 600,
+                  fontWeight: 700,
                   letterSpacing: "0.35em",
                   color: "#5ec97a",
                   textTransform: "uppercase",
@@ -554,7 +593,7 @@ export default function LandingPage() {
               </span>
               <span
                 style={{
-                  fontFamily: "var(--font-playfair)",
+                  fontFamily: "var(--font-pjs)",
                   fontSize: "28px",
                   fontWeight: 900,
                   color: "#ffffff",
@@ -567,9 +606,9 @@ export default function LandingPage() {
               </span>
               <span
                 style={{
-                  fontFamily: "var(--font-dm-serif)",
+                  fontFamily: "var(--font-pjs)",
                   fontSize: "15px",
-                  fontWeight: 400,
+                  fontWeight: 500,
                   color: "rgba(255,255,255,0.75)",
                   letterSpacing: "0.22em",
                   marginTop: "3px",

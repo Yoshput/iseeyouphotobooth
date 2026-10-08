@@ -316,7 +316,7 @@ export default function QuizResultCard({
         </span>
 
         {/* Title & Subtitle */}
-        <h2 className="font-serif text-2xl sm:text-4xl font-bold text-slate-900 leading-tight">
+        <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 leading-tight">
           {evaluation.title}
         </h2>
         <p className="text-xs sm:text-sm font-medium text-slate-500 mt-2 max-w-lg leading-relaxed">
@@ -345,7 +345,7 @@ export default function QuizResultCard({
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
                   Rekomendasi Frame
                 </span>
-                <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-900">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                   Siluet Pilihan Untuk Wajahmu
                 </h3>
               </div>
@@ -383,7 +383,7 @@ export default function QuizResultCard({
                       </div>
 
                       {/* Details */}
-                      <h4 className="font-serif text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-isy-green-deep transition-colors">
+                      <h4 className="text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-isy-green-deep transition-colors">
                         {item.name}
                       </h4>
                       <p className="text-[11px] text-slate-500 line-clamp-2 mt-1 leading-relaxed">

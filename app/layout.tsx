@@ -20,7 +20,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://optikiseeyou.com"),
   title: {
-    default: "Optik I See You — Rekomendasi Toko Kacamata Minus & Softlens Purwokerto",
+    default: "Optik I See You | Rekomendasi Toko Kacamata Minus & Softlens Purwokerto",
     template: "%s | Optik I See You",
   },
   description:
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
   },
   openGraph: {
-    title: "Optik I See You — Kacamata, Softlens & AR Try-On Purwokerto",
+    title: "Optik I See You: Kacamata, Softlens & AR Try-On Purwokerto",
     description:
       "Periksa mata GRATIS, 100+ frame kacamata, softlens original, dan coba kacamata virtual AR di wajahmu. Tersedia di Purwokerto, Purbalingga, Wonosobo & Cilacap.",
     url: "https://optikiseeyou.com",
@@ -83,13 +83,13 @@ export const metadata: Metadata = {
         url: "/hero-bg.jpg",
         width: 1280,
         height: 853,
-        alt: "Optik I See You — Kacamata & Softlens Terbaik di Purwokerto",
+        alt: "Optik I See You: Kacamata & Softlens Terbaik di Purwokerto",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Optik I See You — Kacamata, Softlens & AR Try-On Purwokerto",
+    title: "Optik I See You: Kacamata, Softlens & AR Try-On Purwokerto",
     description:
       "Periksa mata GRATIS, 100+ frame kacamata estetik, softlens original & coba virtual AR. 4 Cabang: Purwokerto, Purbalingga, Wonosobo, Cilacap.",
     images: ["/hero-bg.jpg"],
@@ -114,16 +114,16 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        {/* Google Fonts via standard CSS link — works in static export */}
+        {/* Google Fonts via standard CSS link */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="preload"
           as="style"
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap"
           rel="stylesheet"
         />
 

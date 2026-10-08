@@ -291,7 +291,7 @@ export default function ResultPreview({
       );
     } else if (platform === "instagram") {
       window.open("https://www.instagram.com/iseeyou.glasses/", "_blank");
-      showToast("Foto diunduh — buka Instagram & share dari galeri!");
+      showToast("Foto diunduh, buka Instagram & share dari galeri!");
     } else {
       showToast("Foto diunduh! Sekarang bisa dibagikan");
     }
@@ -311,7 +311,7 @@ export default function ResultPreview({
             QR Scan belum aktif
           </p>
           <p className="mt-0.5 text-[11px] text-isy-ink/40">
-            Setup Cloudinary diperlukan — lihat{" "}
+            Setup Cloudinary diperlukan, lihat{" "}
             <span className="font-bold text-isy-green-deep">SETUP-CLOUDINARY.md</span>
           </p>
         </div>

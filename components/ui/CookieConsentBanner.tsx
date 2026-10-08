@@ -39,7 +39,7 @@ export default function CookieConsentBanner() {
     >
       <div className="rounded-3xl border border-black/10 bg-white/95 backdrop-blur-xl p-5 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
         <div className="flex items-start justify-between gap-3 mb-2.5">
-          <h3 className="font-serif text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
             We value your privacy
           </h3>
           <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 mt-2 shrink-0 animate-pulse" />

@@ -106,7 +106,7 @@ export default function BranchWhatsAppModal({ isOpen, onClose }: BranchWhatsAppM
                   Respon Cepat 4 Cabang
                 </span>
               </div>
-              <h2 id="branch-wa-modal-title" className="font-serif text-lg sm:text-xl font-black text-isy-green-deep">
+              <h2 id="branch-wa-modal-title" className="text-lg sm:text-xl font-black text-isy-green-deep">
                 Pilih WhatsApp Cabang Terdekat
               </h2>
               <p className="text-xs text-isy-ink/60 mt-0.5">

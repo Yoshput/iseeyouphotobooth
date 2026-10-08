@@ -199,7 +199,7 @@ export default function ThermalPrintModal({
               🖨️
             </span>
             <div>
-              <h3 className="font-serif text-lg font-black text-isy-green-deep">
+              <h3 className="text-lg font-black text-isy-green-deep">
                 Cetak Struk Thermal 80mm
               </h3>
               <p className="text-[11px] font-semibold text-isy-ink/60">

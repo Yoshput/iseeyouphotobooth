@@ -60,7 +60,7 @@ export default function SoftlensDetailModal({ product, isOpen = true, onClose, o
             <span className="inline-flex items-center gap-1.5 rounded-full bg-isy-green-bright/10 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-isy-green-bright border border-isy-green-bright/20 mb-2">
               {product.category}
             </span>
-            <h2 className="font-serif text-2xl font-black text-isy-green-deep">
+            <h2 className="text-2xl font-black text-isy-green-deep">
               {product.name}
             </h2>
             <div className="mt-1 flex items-baseline gap-1.5">

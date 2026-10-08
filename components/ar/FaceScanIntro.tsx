@@ -406,7 +406,7 @@ export default function FaceScanIntro({
             </div>
 
             {/* Shape Name */}
-            <h3 className="text-2xl font-black text-white tracking-wide font-serif mt-1">
+            <h3 className="text-2xl font-black text-white tracking-wide mt-1">
               {meta.label}
             </h3>
 

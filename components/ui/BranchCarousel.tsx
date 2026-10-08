@@ -62,7 +62,7 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white/70" />
               Lokasi Cabang
             </span>
-            <h3 className="font-serif text-xl font-black leading-tight text-isy-green-deep">
+            <h3 className="text-xl font-black leading-tight text-isy-green-deep">
               {branch.name}
             </h3>
           </div>
@@ -466,7 +466,7 @@ export default function BranchCarousel() {
 
           {/* Branch info overlay */}
           <div className="absolute bottom-0 inset-x-0 p-5 z-10">
-            <h3 className="font-serif text-xl font-black text-white drop-shadow sm:text-2xl">{branch.name}</h3>
+            <h3 className="text-xl font-black text-white drop-shadow sm:text-2xl">{branch.name}</h3>
             <p className="mt-1 text-[11px] text-white/80 line-clamp-1 font-medium leading-relaxed">{branch.address}</p>
           </div>
         </div>

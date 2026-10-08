@@ -90,7 +90,7 @@ export default function QuizHubCard({ module, onSelect }: QuizHubCardProps) {
             {getIcon()}
           </div>
           <div>
-            <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 leading-snug group-hover:text-isy-green-deep transition-colors">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug group-hover:text-isy-green-deep transition-colors">
               {module.title}
             </h3>
             <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed line-clamp-1">

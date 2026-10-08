@@ -299,11 +299,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
 
         {/* Hero Section */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-800 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Kemitraan &amp; Sponsorship Event</span>
-          </span>
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
+          <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
             Ajukan Kerjasama Sponsorship
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
@@ -357,7 +353,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                 ✓ Terdaftar di Antrean Sistem
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mt-3 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-3 mb-2">
                 Proposal Sponsorship Berhasil Terkirim!
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed mb-6">

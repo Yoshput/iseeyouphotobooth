@@ -6,9 +6,9 @@ export default function NotFound() {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-[#FAF9F6] p-6 text-center text-[#1a3d2e]">
       <div className="rounded-full bg-[#c9a869]/15 border border-[#c9a869]/30 px-4 py-1.5 text-xs font-black text-[#9a7633] mb-4">
-        404 — Halaman Tidak Ditemukan
+        404 · Halaman Tidak Ditemukan
       </div>
-      <h1 className="font-serif text-4xl font-black sm:text-5xl">
+      <h1 className="text-4xl font-black sm:text-5xl">
         Waduh! Halaman Tidak Ada
       </h1>
       <p className="mt-3 text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed font-medium">

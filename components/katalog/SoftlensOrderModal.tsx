@@ -175,11 +175,11 @@ export default function SoftlensOrderModal({
             </div>
 
             <div>
-              <h3 className="font-serif text-base font-black text-isy-green-deep">
+              <h3 className="text-base font-black text-isy-green-deep">
                 {step === 1 ? "Isi Data Pemesan" : "Pilih Cabang Tujuan"}
               </h3>
               <p className="text-[10px] text-isy-ink/55 font-medium">
-                {step === 1 ? "Langkah 1/2 — Data diri kamu" : "Langkah 2/2 — Pesanan diteruskan ke cabang ini"}
+                {step === 1 ? "Langkah 1/2 · Data diri kamu" : "Langkah 2/2 · Pesanan diteruskan ke cabang ini"}
               </p>
             </div>
           </div>

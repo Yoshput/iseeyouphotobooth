@@ -288,7 +288,7 @@ export default function GlassesDetectorModal({
           <Scan className="w-6 h-6 stroke-[1.75]" />
         </div>
 
-        <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900">
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
           Kalibrasi Sensor Kacamata
         </h3>
         <p className="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">

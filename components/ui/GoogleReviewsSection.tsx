@@ -41,10 +41,10 @@ export default function GoogleReviewsSection() {
             </span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-5xl font-black text-isy-green-deep leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-isy-green-deep leading-tight">
             Dipercaya Lebih dari
             <br />
-            <span className="text-isy-green-bright italic">7.500+ Sahabat Mata</span>
+            <span className="text-isy-green-bright">7.500+ Sahabat Mata</span>
           </h2>
 
           {/* Rating Summary Bar */}
