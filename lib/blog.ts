@@ -26,36 +26,61 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     slug: 'kacamata-baru-malah-pusing-penyebab-dan-solusi',
     title: 'Beli Kacamata Baru Malah Pusing & Kliyengan? Jangan Panik, Ini Penyebab Sebenarnya!',
     category: 'edukasi-mata',
-    excerpt: 'Beli kacamata baru niatnya biar penglihatan makin jernih, eh kok malah bikin pusing dan kliyengan? Jangan buru-buru panik mikir resepnya yang salah, simak penjelasan ahli refraksi berikut.',
+    excerpt: 'Beli kacamata baru niatnya biar penglihatan makin jernih, tapi kok malah bikin pusing dan kliyengan? Jangan buru-buru panik mikir resepnya yang salah, simak penjelasan ahli refraksi berikut.',
     coverImage: '/blog/covers/kacamata-baru-pusing.jpg',
     author: 'Tim Optik I See You',
     publishedAt: '2026-10-06T09:00:00Z',
     updatedAt: '2026-10-06T09:00:00Z',
     content: `
-      <p>Beli kacamata baru niatnya biar penglihatan makin jernih, tajam, dan nyaman saat beraktivitas. Tapi kok pas dipakai pertama kali rasanya malah pusing, mual, lantai berasa melengkung, atau kliyengan? Tenang dulu bestie, jangan buru-buru panik dan menuduh resep minus atau silindermu salah!</p>
+      <p>Beli kacamata baru niatnya biar penglihatan makin jernih, tajam, dan nyaman saat beraktivitas. Tapi kok pas dipakai pertama kali rasanya malah pusing, mual, lantai berasa melengkung, atau kliyengan? Tenang dulu, jangan buru-buru panik dan menuduh resep minus atau silindermu salah!</p>
 
-      <p>Faktanya, mata dan otak kamu memang membutuhkan fase adaptasi visual. Saat beralih ke kacamata baru, sistem saraf pusat ibarat baru saja berkenalan dengan "dunia yang berbeda". Kacamata baru membawa banyak variabel perubahan: mulai dari peningkatan kekuatan koreksi lensa, sudut kemiringan pantoskopik bingkai, jarak verteks antara kornea dan lensa, hingga ukuran dan kelengkungan frame baru.</p>
+      <figure>
+        <img src="/blog/kacamata-baru-pusing/slide-2.jpg" alt="Mata dan Otak Memerlukan Adaptasi Visual dengan Kacamata Baru" loading="lazy" />
+        <figcaption>Adaptasi fisiologis wajar antara sistem visual mata dan persepsi otak saat berkenalan dengan sudut koreksi baru.</figcaption>
+      </figure>
+
+      <p>Faktanya, mata dan otak kamu memang membutuhkan fase adaptasi visual. Saat beralih ke kacamata baru, sistem saraf pusat ibarat baru saja berkenalan dengan dunia yang berbeda. Kacamata baru membawa banyak variabel perubahan: mulai dari peningkatan kekuatan koreksi lensa, sudut kemiringan pantoskopik bingkai, jarak verteks antara kornea dan lensa, hingga ukuran dan kelengkungan frame baru.</p>
 
       <h2>Kenapa Kacamata Baru Bisa Bikin Pusing?</h2>
       <p>Berikut beberapa faktor fisiologis normal yang terjadi selama masa adaptasi:</p>
       <ul>
-        <li><strong>Perubahan Sudut Pandang &amp; Distorsi Tepi:</strong> Frame baru dengan bentuk berbeda (misalnya dari oval ke square tebal) merubah area lapang pandang periferal. Otak butuh waktu 3 hingga 7 hari untuk mengabaikan distorsi kecil di tepi lensa.</li>
+        <li><strong>Perubahan Sudut Pandang &amp; Distorsi Tepi:</strong> Frame baru dengan bentuk berbeda merubah area lapang pandang periferal. Otak butuh waktu 3 hingga 7 hari untuk mengabaikan distorsi kecil di tepi lensa.</li>
         <li><strong>Adaptasi Otot Siliaris Mata:</strong> Otot fokus mata yang selama ini terbiasa bekerja keras akibat kacamata lama yang sudah under-corrected kini harus rileks menerima koreksi baru yang tepat sasaran.</li>
         <li><strong>Pergeseran Titik Fokus (Centration):</strong> Bila tinggi pupil (fitting height) atau jarak antarpupil (PD) pada frame baru sedikit berbeda dengan frame lama, persepsi ruang akan terasa sedikit goyang di awal pemakaian.</li>
       </ul>
 
-      <h2>Kapan Pusing Ini Wajar, dan Kapan Harus Dicek Ulang?</h2>
-      <p>Adaptasi wajar biasanya berlangsung <strong>3 sampai 7 hari</strong> dengan intensitas pusing ringan yang berangsur-angsur hilang saat kacamata dipakai rutin sejak bangun pagi. Namun, jika keluhan terasa sangat berat, pandangan berbayang ganda (diplopia), mata cepat merah, atau pusing tidak berkurang setelah 1 minggu, itu tanda wajib dicek ulang!</p>
+      <figure>
+        <img src="/blog/kacamata-baru-pusing/slide-3.jpg" alt="Pusing Berkepanjangan Bukan Berarti Harus Ditahan" loading="lazy" />
+        <figcaption>Bila keluhan terasa berat atau menetap lebih dari satu minggu, jangan hanya menganggapnya adaptasi biasa.</figcaption>
+      </figure>
 
-      <p><strong>Plot twist-nya:</strong> Masalah pusing belum tentu ada di resep minus atau silinder kamu lho! Seringkali masalahnya ada pada:</p>
+      <h2>Kapan Pusing Ini Wajar, dan Kapan Harus Dicek Ulang?</h2>
+      <p>Adaptasi wajar biasanya berlangsung <strong>3 sampai 7 hari</strong> dengan intensitas pusing ringan yang berangsur-angsur hilang saat kacamata dipakai rutin sejak bangun pagi. Namun, jika keluhan terasa sangat berat, pandangan berbayang ganda, mata cepat merah, atau pusing tidak berkurang setelah 1 minggu, itu tanda wajib dicek ulang!</p>
+
+      <figure>
+        <img src="/blog/kacamata-baru-pusing/slide-4.jpg" alt="Faktor Pemeriksaan: Resep, Posisi Lensa, Centration, dan Fitting Frame" loading="lazy" />
+        <figcaption>Pemeriksaan menyeluruh mencakup resep optik, posisi dan sudut lensa, centration titik fokus, hingga kesesuaian anatomi frame.</figcaption>
+      </figure>
+
+      <p><strong>Plot twist-nya:</strong> Masalah pusing belum tentu ada di resep minus atau silinder kamu. Seringkali masalahnya ada pada:</p>
       <ol>
         <li><strong>Fitting Frame Belum Pas:</strong> Nosepad terlalu menekan, tangkai kacamata terlalu sempit di pelipis, atau frame melorot ke bawah.</li>
         <li><strong>Kemiringan Frame (Pantoscopic Tilt):</strong> Sudut kemiringan bingkai terhadap bidang wajah belum disesuaikan dengan postur alami kepala Anda.</li>
         <li><strong>Bahan &amp; Desain Lensa:</strong> Pemilihan indeks ketipisan lensa atau desain asferis yang belum optimal untuk minus tinggi.</li>
       </ol>
 
+      <figure>
+        <img src="/blog/kacamata-baru-pusing/slide-5.jpg" alt="Penyebab Pusing Seringkali Berasal dari Penyetelan Anatomi Frame" loading="lazy" />
+        <figcaption>Penyetelan anatomi nosepad dan tangkai kacamata secara presisi seringkali langsung menuntaskan rasa pusing tanpa harus mengubah resep.</figcaption>
+      </figure>
+
       <h2>Solusinya? Datang ke Optik I See You untuk Penyetelan Gratis</h2>
       <p>Kacamata baru seharusnya membuat harimu lebih produktif dan percaya diri, bukan malah menyiksa kepala sepanjang hari. Jangan tahan rasa pusingmu! Bawa kacamata kamu ke cabang Optik I See You terdekat di Purwokerto, Purbalingga, Wonosobo, atau Cilacap. Tim refraksionis dan optician kami siap membantu cek ulang titik fokus (centration), resep mata, dan penyetelan anatomi frame secara gratis sampai 100% nyaman!</p>
+
+      <figure>
+        <img src="/blog/kacamata-baru-pusing/slide-6.jpg" alt="Layanan Penyetelan dan Konsultasi Gratis di Cabang Optik I See You" loading="lazy" />
+        <figcaption>Kunjungi cabang resmi Optik I See You di Purwokerto, Cilacap, Purbalingga, dan Wonosobo untuk pengecekan dan penyetelan gratis.</figcaption>
+      </figure>
     `
   },
 
@@ -70,15 +95,38 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     publishedAt: '2026-10-06T08:00:00Z',
     updatedAt: '2026-10-06T08:00:00Z',
     content: `
-      <p>Pernah nggak kamu ke optik niat awalnya cuma mau mengantar teman atau sekadar iseng cuci mata lihat-lihat model kacamata terbaru? Katanya sih <em>"Cuma liat-liat aja kok, nggak bakal beli."</em> Tapi realitanya begitu masuk ke store Optik I See You:</p>
-      <ul>
-        <li><strong>5 menit kemudian:</strong> <em>"Wah, frame hitam glossy ini bagus juga ya siluetnya..."</em></li>
-        <li><strong>15 menit kemudian:</strong> <em>"Coba ah yang warna translucent caramel ini, ih lucu dan bikin wajah kelihatan cerah banget!"</em></li>
-        <li><strong>25 menit kemudian:</strong> <em>"Kak, frame model yang ini ada pilihan warna champagne atau olive green lainnya nggak ya?"</em></li>
-        <li><strong>35 menit kemudian (klimaks):</strong> <em>"Kak, frame di seluruh rak display ini boleh dicobain semuanya kan ya?"</em></li>
-      </ul>
+      <p>Pernah nggak kamu ke optik niat awalnya cuma mau mengantar teman atau sekadar iseng cuci mata lihat-lihat model kacamata terbaru? Katanya sih <em>"Cuma liat-liat aja kok, nggak bakal beli."</em> Tapi realitanya begitu masuk ke store Optik I See You suasana langsung berbeda!</p>
 
-      <p>Tenang bestie, kamu nggak sendirian kok! Ratusan pelanggan kami setiap minggunya mengalami momen seru yang sama. Pesona koleksi frame di Optik I See You memang dirancang khusus agar bikin penasaran dan susah ditolak. Kalau pada akhirnya kamu menemukan banyak frame yang langsung klop di wajah, <em>please</em> jangan salahkan kami ya!</p>
+      <figure>
+        <img src="/blog/pov-nyobain-toko/slide-2.jpg" alt="Koleksi Frame Klasik Hitam Glossy yang Elegan" loading="lazy" />
+        <figcaption>5 Menit Kemudian: Eksplorasi dimulai dengan siluet klasik hitam glossy yang langsung mempertegas karakter garis wajah.</figcaption>
+      </figure>
+
+      <p>Awalnya mencoba frame formal, tapi pantulan di cermin langsung memperlihatkan siluet wajah yang lebih segar dan berwibawa. Rasa penasaran pun mulai berlanjut ke barisan rak berikutnya.</p>
+
+      <figure>
+        <img src="/blog/pov-nyobain-toko/slide-3.jpg" alt="Koleksi Frame Translucent Caramel yang Mencerahkan Wajah" loading="lazy" />
+        <figcaption>15 Menit Kemudian: Warna translucent caramel yang memberi nuansa hangat, lembut, dan mencerahkan warna kulit.</figcaption>
+      </figure>
+
+      <p>Warna caramel transparan ini langsung memberi visual aesthetic ala Korean look yang clean dan ramah kamera. Dari satu model, mata mulai melirik ke varian retro sunglasses di sebelahnya.</p>
+
+      <figure>
+        <img src="/blog/pov-nyobain-toko/slide-4.jpg" alt="Koleksi Sunglasses Oval Bold Bernuansa Vintage Retro" loading="lazy" />
+        <figcaption>25 Menit Kemudian: Bertanya varian warna lain untuk siluet bold retro oval yang timeless dan chic.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="/blog/pov-nyobain-toko/slide-5.jpg" alt="Display Ratusan Koleksi Frame Tren Terkini di Optik I See You" loading="lazy" />
+        <figcaption>35 Menit Kemudian: Menikmati kebebasan mencoba seluruh koleksi frame di rak display tanpa rasa canggung atau diburu-buru staf.</figcaption>
+      </figure>
+
+      <p>Tenang, kamu nggak sendirian! Ratusan pelanggan kami setiap minggunya mengalami momen seru yang sama. Pesona koleksi frame di Optik I See You memang dirancang khusus agar bikin penasaran dan susah ditolak. Kalau pada akhirnya kamu menemukan banyak frame yang langsung klop di wajah, mohon jangan salahkan kami ya!</p>
+
+      <figure>
+        <img src="/blog/pov-nyobain-toko/slide-6.jpg" alt="Store Resmi Optik I See You dengan Fasilitas Lengkap" loading="lazy" />
+        <figcaption>Katanya lihat-lihat saja? Kalau yang cocok banyak, nikmati kepuasan menemukan kacamata impianmu.</figcaption>
+      </figure>
 
       <h2>Kenapa Frame Optik I See You Selalu Pas di Wajah?</h2>
       <p>Bukan kebetulan bila frame kacamata di Optik I See You terasa sangat pas begitu dipasang di wajah. Ini rahasianya:</p>
@@ -90,6 +138,11 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <h2>Bebas Fitting Sepuasnya di 4 Cabang Resmi</h2>
       <p>Di Optik I See You, kamu bebas mencoba dan mengeksplorasi puluhan hingga ratusan model frame di cermin tanpa rasa canggung atau diburu-buru staf. Mampir sekarang ke cabang resmi kami di <strong>Purwokerto, Purbalingga, Wonosobo, dan Cilacap</strong>, atau coba secara virtual kapan saja menggunakan fitur <strong>AR Try-On</strong> interaktif di website ini!</p>
+
+      <figure>
+        <img src="/blog/pov-nyobain-toko/slide-7.jpg" alt="Layanan Konsultasi dan Lokasi Cabang Optik I See You" loading="lazy" />
+        <figcaption>Temukan kacamata terbaikmu di cabang resmi Optik I See You: Purwokerto, Cilacap, Purbalingga, dan Wonosobo.</figcaption>
+      </figure>
     `
   },
 
@@ -100,6 +153,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     category: 'edukasi-mata',
     excerpt: 'Masih jaman bikin kacamata nunggu berhari-hari sampai mood hilang? Di Optik I See You, proses dari pemilihan frame, pemeriksaan mata, hingga faset lensa CNC presisi tinggi cuma butuh 15 menit dan bisa ditunggu!',
     coverImage: '/blog/covers/bikin-kacamata-15-menit.jpg',
+    videoUrl: '/blog/videos/bikin-kacamata-15-menit.mp4',
     author: 'Tim Optik I See You',
     publishedAt: '2026-10-05T08:00:00Z',
     updatedAt: '2026-10-05T08:00:00Z',
@@ -110,15 +164,34 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <h2>Bisa Secepat Itu, Gimana Sih Alur Prosesnya?</h2>
       <p>Di balik kecepatan 15 menit ini ada integrasi teknologi laboratorium mutakhir dan SOP profesional yang sangat terstruktur:</p>
-      <ol>
-        <li><strong>1. Pilih Frame Impian:</strong> Kamu bebas memilih dari 100+ koleksi frame terkini yang paling sesuai dengan karakter, bentuk wajah, dan kebutuhan harianmu.</li>
-        <li><strong>2. Pemeriksaan Visus &amp; Pengukuran Titik Fokus Presisi:</strong> Refraksionis kami mengukur ukuran refraksi mata menggunakan Autorefractor digital dan mengukur Pupil Distance (PD) secara presisi mikron.</li>
-        <li><strong>3. Pemotongan Lensa Otomatis dengan Mesin CNC 3D Frame Tracing:</strong> Mesin faset otomatis di laboratorium internal kami memindai kontur bingkai secara 3 dimensi dan memotong lensa dengan kecepatan tinggi serta akurasi presisi 0.01 mm.</li>
-        <li><strong>4. Quality Control &amp; Fitting Akhir:</strong> Kacamata dibersihkan dengan ultrasonic cleaner, diperiksa kekencangan bautnya, dan disetel langsung di wajahmu agar pas dan tidak bergeser.</li>
-      </ol>
+
+      <figure>
+        <img src="/blog/edukasi-15-menit/slide-3.jpg" alt="Langkah 1: Pemilihan Model Frame yang Sesuai Karakter Wajah" loading="lazy" />
+        <figcaption>Menit 12:43: Bebas memilih ratusan model frame terkini yang paling sesuai dengan karakter, bentuk wajah, dan kebutuhan harian.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="/blog/edukasi-15-menit/slide-4.jpg" alt="Langkah 2: Pemeriksaan Refraksi dan Penyetelan Posisi Presisi" loading="lazy" />
+        <figcaption>Menit 09:18: Tim refraksionis mengukur refraksi mata secara akurat dan menyetel posisi anatomi bingkai agar sangat nyaman dipakai.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="/blog/edukasi-15-menit/slide-5.jpg" alt="Langkah 3: Pemotongan Lensa Otomatis Mesin CNC di Laboratorium Internal" loading="lazy" />
+        <figcaption>Menit 05:42: Laboratorium internal memproses lensa secara presisi menggunakan mesin CNC 3D frame tracing otomatis berakurasi mikron.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="/blog/edukasi-15-menit/slide-6.jpg" alt="Langkah 4: Kacamata Selesai dalam 15 Menit dan Langsung Siap Dipakai" loading="lazy" />
+        <figcaption>Menit 00:00: 15 menit selesai. Satu kacamata baru siap dipakai langsung dengan hasil rapi, presisi, dan nyaman maksimal.</figcaption>
+      </figure>
 
       <h2>Kualitas Tetap Nomor Satu</h2>
       <p>Cepat bukan berarti buru-buru atau mengorbankan kualitas. Mesin pemotong otomatis CNC kami memastikan bevel tepi lensa terkunci rapat pada bingkai tanpa ada celah renggang, sehingga lensa awet, kokoh, dan tidak mudah lepas. Datang milih frame, duduk santai sejenak sambil ngobrol, pulang sudah pakai kacamata baru!</p>
+
+      <figure>
+        <img src="/blog/edukasi-15-menit/slide-7.jpg" alt="Layanan Kacamata Express di Seluruh Cabang Optik I See You" loading="lazy" />
+        <figcaption>Layanan kacamata express 15 menit tersedia di seluruh cabang resmi: Purwokerto, Cilacap, Purbalingga, dan Wonosobo.</figcaption>
+      </figure>
     `
   },
 
@@ -135,16 +208,36 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     content: `
       <p>Paling sebel kan kalau lagi asik jalan keluar dari ruangan ber-AC, menyeruput kuah mie ayam panas, atau minum kopi hangat, tiba-tiba lensa kacamata langsung berkabut putih dan pandangan seketika masuk ke <em>mode blur</em>? Eits, STOP! Jangan buru-buru di-lap pakai ujung baju ya!</p>
 
+      <figure>
+        <img src="/blog/kacamata-berkabut/slide-2.jpg" alt="Lensa Berkabut Merupakan Reaksi Alami Perbedaan Suhu Kondensasi" loading="lazy" />
+        <figcaption>Lensa kacamata kamu tidak rusak: kabut putih terjadi karena fenomena fisika kondensasi alami.</figcaption>
+      </figure>
+
       <h2>Lensa Kamu Bukan Rusak, Ini Fenomena Kondensasi!</h2>
       <p>Pertama-tama, tenang dulu: lensa kacamata kamu tidak rusak kok. Kabut putih tersebut adalah fenomena fisika alami bernama <strong>kondensasi</strong>. Udara hangat yang mengandung uap air tinggi bertemu dengan permukaan lensa kacamata yang suhunya jauh lebih dingin. Akibat perbedaan temperatur tersebut, uap air di udara berubah wujud menjadi jutaan butiran embun mikro yang menempel di kedua sisi permukaan lensa.</p>
+
+      <figure>
+        <img src="/blog/kacamata-berkabut/slide-3.jpg" alt="Proses Terjadinya Efek Kabut pada Kacamata" loading="lazy" />
+        <figcaption>Skema kondensasi: udara hangat lembap bertemu permukaan lensa dingin menghasilkan embun mikro yang memburamkan pandangan.</figcaption>
+      </figure>
 
       <h2>Kenapa Dilarang Keras Lap Lensa Pakai Ujung Baju?</h2>
       <p>Hampir semua orang refleks menarik ujung kaos, kemeja, atau tisu kering untuk membersihkan kacamata yang berembun. Padahal kebiasaan sepele ini adalah <strong>musuh terbesar kacamata Anda</strong>:</p>
       <ul>
         <li><strong>Serat Kain Baju Terlalu Kasar:</strong> Serat katun pakaian dan tisu kayu memiliki tekstur mikroskopis yang abrasif terhadap lapisan lensa optik.</li>
-        <li><strong>Debu Mikro yang Terjebak:</strong> Pakaian yang sudah dipakai berjam-jam menyimpan partikel debu halus. Saat kamu menggosokkan baju ke lensa, debu tersebut bertindak layaknya amplas yang menghasilkan ratusan baret halus (swirl marks).</li>
+        <li><strong>Debu Mikro yang Terjebak:</strong> Pakaian yang sudah dipakai berjam-jam menyimpan partikel debu halus. Saat kamu menggosokkan baju ke lensa, debu tersebut bertindak layaknya amplas yang menghasilkan ratusan baret halus.</li>
         <li><strong>Merusak Lapisan Coating:</strong> Baret halus akan mengikis lapisan Anti-Refleksi (AR), filter Blue Ray, dan lapisan hydrophobic yang melindungi lensa kacamata.</li>
       </ul>
+
+      <figure>
+        <img src="/blog/kacamata-berkabut/slide-4.jpg" alt="Hindari Mengusap Lensa dengan Ujung Pakaian Kasar" loading="lazy" />
+        <figcaption>Kain baju dan serat pakaian yang berdebu berpotensi menggores lapisan coating pelindung lensa.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="/blog/kacamata-berkabut/slide-5.jpg" alt="Solusi Coating Super Hydrophobic dan Lap Microfiber Khusus" loading="lazy" />
+        <figcaption>Rawat lensa secara tepat dengan perlindungan yang sesuai aktivitas harian agar tidak mudah berkabut.</figcaption>
+      </figure>
 
       <h2>Cara Ampuh Mencegah &amp; Mengatasi Kacamata Berkabut:</h2>
       <ol>
@@ -152,6 +245,11 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <li><strong>Gunakan Semprotan Lens Cleaner Anti-Fog:</strong> Semprotkan cairan pembersih lensa khusus yang memiliki formula anti-kabut untuk membentuk lapisan pelindung transparan tipis.</li>
         <li><strong>Pilih Lensa dengan Lapisan Super Hydrophobic di Optik I See You:</strong> Lapisan licin modern membuat partikel air tidak dapat menempel dan langsung meluncur jatuh, menjaga pandangan tetap jernih di segala kondisi cuaca.</li>
       </ol>
+
+      <figure>
+        <img src="/blog/kacamata-berkabut/slide-6.jpg" alt="Layanan Perawatan dan Pembersihan Lensa di Cabang Optik I See You" loading="lazy" />
+        <figcaption>Kunjungi Optik I See You untuk mendapatkan aksesoris pembersih optik resmi dan lensa anti-fog berkualitas.</figcaption>
+      </figure>
     `
   },
 
@@ -306,7 +404,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     slug: 'optik-i-see-you-banyumas-wedding-expo-rita-supermall',
     title: 'Optik I See You Hadir di Banyumas Wedding Expo 2026: Layanan Cek Mata dan Studio Photobooth Gratis di Rita SuperMall Purwokerto',
     category: 'info-cabang-promo',
-    excerpt: 'Dokumentasi agenda Optik I See You di Banyumas Wedding Expo 2026 yang berlangsung pada 4–6 September 2026 di Ground Floor Rita SuperMall Purwokerto. Simak keseruan layanan periksa mata gratis dan instalasi photobooth interaktif kami.',
+    excerpt: 'Dokumentasi agenda Optik I See You di Banyumas Wedding Expo 2026 yang berlangsung pada 4-6 September 2026 di Ground Floor Rita SuperMall Purwokerto. Simak keseruan layanan periksa mata gratis dan instalasi photobooth interaktif kami.',
     coverImage: '/blog/covers/cover-wedding-expo-rsm.jpg',
     videoUrl: 'https://pub-e4717ece411e494f82f5057d8bb6382b.r2.dev/static/videos/rsm-wedding-expo.mp4',
     author: 'Tim Optik I See You',
@@ -320,7 +418,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
             Event Telah Berakhir
           </span>
           <p class="text-xs sm:text-sm text-amber-900 leading-relaxed">
-            <strong>Informasi Status:</strong> Agenda pameran dan booth Optik I See You di <strong>Banyumas Wedding Expo 2026 (Rita SuperMall Purwokerto)</strong> telah resmi selesai diselenggarakan pada <strong>4 – 6 September 2026</strong>. Artikel ini tetap diarsipkan sebagai dokumentasi agenda resmi. Bagi Anda yang ingin melakukan periksa mata gratis atau mencari kacamata, silakan kunjungi gerai cabang Optik I See You terdekat.
+            <strong>Informasi Status:</strong> Agenda pameran dan booth Optik I See You di <strong>Banyumas Wedding Expo 2026 (Rita SuperMall Purwokerto)</strong> telah resmi selesai diselenggarakan pada <strong>4-6 September 2026</strong>. Artikel ini tetap diarsipkan sebagai dokumentasi agenda resmi. Bagi Anda yang ingin melakukan periksa mata gratis atau mencari kacamata, silakan kunjungi gerai cabang Optik I See You terdekat.
           </p>
         </div>
       </div>
@@ -336,7 +434,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-isy-ink/80 pt-4 border-t border-isy-line">
           <div>
             <p class="font-semibold text-isy-green-deep mb-1">Jadwal Pelaksanaan</p>
-            <p>Jumat – Minggu, 4 – 6 September 2026</p>
+            <p>Jumat sampai Minggu, 4-6 September 2026</p>
             <p class="text-amber-800 font-semibold text-xs">(Agenda Resmi Telah Selesai)</p>
           </div>
           <div>
@@ -603,7 +701,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h2>Kenapa Harus Cari Kacamata Spider-Man Kamu di Optik I See You?</h2>
       <ul>
         <li><strong>Cek Mata Digital Gratis:</strong> Dilakukan oleh tenaga refraksionis berpengalaman dengan mesin komputer akurat tanpa dipungut biaya sepeser pun.</li>
-        <li><strong>Faset Cepat Bisa Ditunggu:</strong> Kacamata baru kamu bisa langsung jadi dalam waktu 20–30 menit saja, nggak perlu nunggu berhari-hari!</li>
+        <li><strong>Faset Cepat Bisa Ditunggu:</strong> Kacamata baru kamu bisa langsung jadi dalam waktu 20-30 menit saja, nggak perlu nunggu berhari-hari!</li>
         <li><strong>Harga Transparan &amp; Bersahabat:</strong> Nggak bikin kantong jebol, ada ratusan opsi frame trendy dengan kualitas material yang awet tahan lama.</li>
       </ul>
 
@@ -726,7 +824,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h3>3. Frame Longgar, Bengkok, atau Sering Melorot</h3>
       <p>Ketika frame melorot ke bawah, titik pusat optik lensa (optical center) tidak lagi sejajar dengan pupil matamu. Pergeseran beberapa milimeter saja bisa menimbulkan efek prisma yang membuat penglihatan tidak nyaman dan memicu pusing.</p>
 
-      <h3>4. Kacamata Sudah Dipakai Lebih dari 1–2 Tahun Tanpa Pengecekan Ulang</h3>
+      <h3>4. Kacamata Sudah Dipakai Lebih dari 1-2 Tahun Tanpa Pengecekan Ulang</h3>
       <p>Para ahli optometris menyarankan pemeriksaan mata minimal setahun sekali untuk memastikan kesehatan mata dan ketepatan resep lensa kamu.</p>
 
       <h2>Solusinya? Cek Mata Gratis di Optik I See You!</h2>
@@ -871,12 +969,12 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <div class="bg-isy-mist/70 border border-isy-line rounded-2xl p-5 my-6">
         <ul class="space-y-3 text-isy-ink/90">
-          <li><strong>1. Lensa Standar CRMC (Anti Refleksi Dasar):</strong> Kisaran Rp100.000 – Rp150.000. Pilihan paling ekonomis dengan lapisan anti pantul standar dan perlindungan goresan dasar untuk mata normal maupun minus rendah.</li>
-          <li><strong>2. Lensa Anti Radiasi Blueray (Blue Cut):</strong> Kisaran Rp150.000 – Rp250.000. Wajib untuk mahasiswa, pekerja kantor, dan siapa saja yang menatap layar monitor atau smartphone lebih dari 6 jam sehari. Memblokir radiasi sinar biru berlebih agar mata tidak cepat lelah dan perih.</li>
-          <li><strong>3. Lensa Photochromic (Lensa Bunglon Transisi UV):</strong> Kisaran Rp200.000 – Rp350.000. Lensa pintar yang otomatis menggelap seperti kacamata hitam saat terkena sinar matahari luar ruangan dan kembali bening jernih di dalam ruangan.</li>
-          <li><strong>4. Lensa Bluechromic (Ultimate 2-in-1 Combo):</strong> Kisaran Rp300.000 – Rp450.000. Menggabungkan teknologi anti radiasi komputer dan photochromic transisi UV dalam satu pasang lensa. Sangat praktis bagi Anda yang aktif bekerja indoor dan sering beraktivitas outdoor.</li>
-          <li><strong>5. Lensa High Index Tipis (1.61 / 1.67 / 1.74):</strong> Kisaran Rp350.000 – Rp750.000+. Didesain khusus bagi pemilik minus tinggi (-4.00 ke atas) atau silinder tebal agar tepi lensa 30% hingga 50% lebih tipis, ringan, dan tidak tampak menonjol keluar dari bingkai kacamata.</li>
-          <li><strong>6. Lensa Progresif (Multifokal Tanpa Batas):</strong> Kisaran Rp350.000 – Rp800.000+. Solusi bagi usia 40 tahun ke atas yang membutuhkan penglihatan jarak jauh dan jarak baca dekat sekaligus tanpa garis batas di lensa.</li>
+          <li><strong>1. Lensa Standar CRMC (Anti Refleksi Dasar):</strong> Kisaran Rp100.000 - Rp150.000. Pilihan paling ekonomis dengan lapisan anti pantul standar dan perlindungan goresan dasar untuk mata normal maupun minus rendah.</li>
+          <li><strong>2. Lensa Anti Radiasi Blueray (Blue Cut):</strong> Kisaran Rp150.000 - Rp250.000. Wajib untuk mahasiswa, pekerja kantor, dan siapa saja yang menatap layar monitor atau smartphone lebih dari 6 jam sehari. Memblokir radiasi sinar biru berlebih agar mata tidak cepat lelah dan perih.</li>
+          <li><strong>3. Lensa Photochromic (Lensa Bunglon Transisi UV):</strong> Kisaran Rp200.000 - Rp350.000. Lensa pintar yang otomatis menggelap seperti kacamata hitam saat terkena sinar matahari luar ruangan dan kembali bening jernih di dalam ruangan.</li>
+          <li><strong>4. Lensa Bluechromic (Ultimate 2-in-1 Combo):</strong> Kisaran Rp300.000 - Rp450.000. Menggabungkan teknologi anti radiasi komputer dan photochromic transisi UV dalam satu pasang lensa. Sangat praktis bagi Anda yang aktif bekerja indoor dan sering beraktivitas outdoor.</li>
+          <li><strong>5. Lensa High Index Tipis (1.61 / 1.67 / 1.74):</strong> Kisaran Rp350.000 - Rp750.000+. Didesain khusus bagi pemilik minus tinggi (-4.00 ke atas) atau silinder tebal agar tepi lensa 30% hingga 50% lebih tipis, ringan, dan tidak tampak menonjol keluar dari bingkai kacamata.</li>
+          <li><strong>6. Lensa Progresif (Multifokal Tanpa Batas):</strong> Kisaran Rp350.000 - Rp800.000+. Solusi bagi usia 40 tahun ke atas yang membutuhkan penglihatan jarak jauh dan jarak baca dekat sekaligus tanpa garis batas di lensa.</li>
         </ul>
       </div>
 
@@ -930,7 +1028,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       </ul>
 
       <h3>3. Pengerjaan Faset Lensa Express dengan Mesin CNC 3D</h3>
-      <p>Paling malas kalau harus menunggu kacamata resep selesai berhari-hari? Di Optik I See You cabang Purwokerto, kami memiliki fasilitas workshop internal dengan mesin potong lensa CNC otomatis berbasis 3D Frame Tracing. Kacamata minus Anda bisa <strong>ditunggu dalam waktu 20–30 menit saja</strong> dengan hasil potongan bevel lensa yang sangat rapi dan presisi.</p>
+      <p>Paling malas kalau harus menunggu kacamata resep selesai berhari-hari? Di Optik I See You cabang Purwokerto, kami memiliki fasilitas workshop internal dengan mesin potong lensa CNC otomatis berbasis 3D Frame Tracing. Kacamata minus Anda bisa <strong>ditunggu dalam waktu 20-30 menit saja</strong> dengan hasil potongan bevel lensa yang sangat rapi dan presisi.</p>
 
       <h3>4. Fitur Inovatif: Virtual AR Try-On &amp; Studio Photobooth</h3>
       <p>Optik I See You adalah pelopor optik digital di Jawa Tengah. Sebelum datang ke toko, Anda bisa mencoba puluhan model kacamata langsung di depan kamera smartphone Anda melalui fitur <strong>AR Try-On</strong> di website kami. Dan saat mampir ke toko, abadikan foto kacamata barumu di studio Photobooth interaktif kami secara cuma-cuma!</p>
@@ -939,7 +1037,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <div class="bg-isy-mist/70 border border-isy-line rounded-2xl p-5 my-6">
         <p><strong>Alamat:</strong> Jl. Sunan Ampel No. 5, Sidamulya, Kedungmalang, Kec. Sumbang, Kabupaten Banyumas, Jawa Tengah 53124.</p>
         <p><strong>Patokan:</strong> Berada di jalur strategis penghubung Purwokerto Kota dan kawasan kampus Unsoed, sangat mudah dijangkau dengan kendaraan roda dua maupun roda empat (tersedia area parkir yang nyaman).</p>
-        <p><strong>Jam Buka:</strong> Setiap hari (Senin – Minggu) pukul 09.00 – 21.00 WIB.</p>
+        <p><strong>Jam Buka:</strong> Setiap hari (Senin sampai Minggu) pukul 09.00 - 21.00 WIB.</p>
         <p><strong>WhatsApp Reservasi:</strong> 0895-4156-14261.</p>
       </div>
 

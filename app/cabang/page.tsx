@@ -8,7 +8,7 @@ import { BRANCHES, mapsDirectionsUrl, branchWhatsappUrl } from "@/lib/branches";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "4 Cabang Resmi Optik I See You — Purwokerto, Purbalingga, Wonosobo, Cilacap",
+  title: "4 Cabang Resmi Optik I See You - Purwokerto, Purbalingga, Wonosobo, Cilacap",
   description: "Temukan toko kacamata Optik I See You terdekat di Purwokerto, Purbalingga, Wonosobo, dan Cilacap. Periksa mata gratis, faset express, dan coba kacamata AR.",
   keywords: [
     "cabang optik i see you",
@@ -94,11 +94,8 @@ export default function CabangIndexPage() {
 
       <section className="pt-28 pb-12 px-6 md:px-12 lg:px-20">
         <div className="mx-auto max-w-6xl text-center">
-          <span className="inline-block rounded-full bg-isy-green-bright/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-isy-green-bright mb-4">
-            Lokasi Gerai Resmi
-          </span>
-          <h1 className="font-serif text-3xl sm:text-5xl font-black text-isy-green-deep tracking-tight mb-4">
-            4 Cabang Optik I See You
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight mb-3">
+            Cabang Optik I See You
           </h1>
           <p className="text-sm sm:text-base text-isy-ink/70 max-w-2xl mx-auto leading-relaxed">
             Kunjungi gerai kami di Purwokerto, Purbalingga, Wonosobo, dan Cilacap untuk konsultasi &amp; periksa mata komputerisasi gratis, pembuatan lensa express, serta koleksi kacamata kekinian.
@@ -115,6 +112,7 @@ export default function CabangIndexPage() {
                 key={branch.id}
                 className="group flex flex-col rounded-3xl border border-isy-line bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-isy-green-bright/40"
               >
+                {/* Clean Image Container - Zero Overlay */}
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-isy-mist mb-5">
                   <Image
                     src={coverImg}
@@ -123,12 +121,9 @@ export default function CabangIndexPage() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-isy-green-deep shadow-xs">
-                    {branch.city}
-                  </div>
                 </div>
 
-                <h2 className="font-serif text-2xl font-bold text-isy-green-deep mb-2">
+                <h2 className="font-sans text-xl sm:text-2xl font-bold text-isy-green-deep mb-2">
                   {branch.name}
                 </h2>
 

@@ -8,17 +8,19 @@ import { csWhatsappUrl } from "@/lib/branches";
 
 interface CatalogDetailModalProps {
   item: CatalogItem | null;
+  initialTab?: "gallery" | "specs";
   onClose: () => void;
   onOpenContactCS?: (item: CatalogItem) => void;
 }
 
 export default function CatalogDetailModal({
   item,
+  initialTab = "gallery",
   onClose,
   onOpenContactCS,
 }: CatalogDetailModalProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"gallery" | "specs">("gallery");
+  const [activeTab, setActiveTab] = useState<"gallery" | "specs">(initialTab);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Close on Escape key press
@@ -31,16 +33,16 @@ export default function CatalogDetailModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [item, onClose]);
 
-  // Reset tab & image index when item changes
+  // Reset tab & image index when item changes or initialTab changes
   useEffect(() => {
-    setActiveTab("gallery");
+    setActiveTab(initialTab || "gallery");
     setActiveImageIndex(0);
-  }, [item]);
+  }, [item, initialTab]);
 
   if (!item) return null;
 
   const displayImages = item.images && item.images.length > 0 ? item.images : [item.image];
-  const hasSpecs = !!item.specsImage;
+  const hasSpecs = true; // Always provide specifications tab
 
   return (
     <div
@@ -135,7 +137,7 @@ export default function CatalogDetailModal({
             )}
           </div>
         ) : (
-          /* Full Product Specs Image View */
+          /* Full Product Specs Image View or Structured Technical Spec Card */
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-isy-mist border border-isy-line">
             {item.specsImage ? (
               <Image
@@ -145,8 +147,31 @@ export default function CatalogDetailModal({
                 className="object-contain"
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-xs text-isy-ink/50">
-                Spesifikasi gambar belum tersedia
+              <div className="flex flex-col h-full items-center justify-center p-6 text-center space-y-4 bg-gradient-to-br from-isy-mist via-white to-isy-mist">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-isy-green-deep/10 text-isy-green-deep text-[11px] font-bold">
+                  <span>Informasi Spesifikasi Teknis</span>
+                </div>
+                <div className="grid grid-cols-2 gap-3 w-full max-w-md text-left text-xs">
+                  <div className="p-3 rounded-xl bg-white border border-isy-line/80 shadow-2xs">
+                    <p className="text-[10px] font-bold text-isy-ink/50 uppercase">Kategori Model</p>
+                    <p className="font-bold text-isy-green-deep mt-0.5">{item.style || "Standar Optik"}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-isy-line/80 shadow-2xs">
+                    <p className="text-[10px] font-bold text-isy-ink/50 uppercase">Bentuk Wajah</p>
+                    <p className="font-bold text-isy-green-deep mt-0.5">{item.recommendedFor.join(", ") || "Semua Wajah"}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-isy-line/80 shadow-2xs">
+                    <p className="text-[10px] font-bold text-isy-ink/50 uppercase">Material Frame</p>
+                    <p className="font-bold text-isy-green-deep mt-0.5">Ultra-Comfort Acetate / Metal</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-isy-line/80 shadow-2xs">
+                    <p className="text-[10px] font-bold text-isy-ink/50 uppercase">Layanan Cabang</p>
+                    <p className="font-bold text-isy-green-deep mt-0.5">Free Setting &amp; Fitting</p>
+                  </div>
+                </div>
+                <p className="text-[11px] text-isy-ink/60 max-w-sm">
+                  Untuk dimensi presisi (lebar lensa, nose bridge, panjang gagang), konsultasikan dengan refraksionis di cabang atau via CS WhatsApp.
+                </p>
               </div>
             )}
           </div>

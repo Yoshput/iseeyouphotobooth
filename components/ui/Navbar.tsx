@@ -60,7 +60,7 @@ export default function Navbar() {
     { href: "/katalog", label: "Katalog" },
     { href: "/photobooth", label: "Photobooth" },
     { href: "/softlens", label: "Softlens" },
-    { href: "/cabang", label: "4 Cabang" },
+    { href: "/cabang", label: "Cabang" },
     { href: "/home-service", label: "Home Service" },
     { href: "/sponsor", label: "Sponsor" },
     { href: "/quiz", label: "Quiz Frame" },

@@ -33,7 +33,7 @@ function CatalogItemCard({
 }: {
   item: CatalogItem;
   collectionTitle?: string;
-  onOpenDetail: (item: CatalogItem) => void;
+  onOpenDetail: (item: CatalogItem, initialTab?: "gallery" | "specs") => void;
   onOpenCSModal: (item: CatalogItem) => void;
 }) {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -51,11 +51,11 @@ function CatalogItemCard({
 
   return (
     <div
-      onClick={() => onOpenDetail(item)}
+      onClick={() => onOpenDetail(item, "gallery")}
       className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-isy-line bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-isy-green-bright/50 hover:shadow-xl cursor-pointer"
     >
       <div>
-        {/* 100% Clean Image Cover - Zero Shape/Badge Overlays */}
+        {/* Image Cover with Clean Lihat Specs Overlay */}
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-isy-mist border border-isy-line/60">
           {displayImages.map((imgSrc, idx) => (
             <Image
@@ -84,6 +84,18 @@ function CatalogItemCard({
               ))}
             </div>
           )}
+
+          {/* Overlay: Lihat Specs Pill Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenDetail(item, "specs");
+            }}
+            className="absolute bottom-3 right-3 rounded-full bg-isy-green-deep/90 text-white px-2.5 py-1 text-[10px] font-bold shadow-md backdrop-blur-md hover:bg-isy-green-bright hover:scale-105 active:scale-95 transition-all z-10 flex items-center gap-1 cursor-pointer"
+          >
+            <span>Lihat Specs</span>
+          </button>
         </div>
 
         {/* Minimalist Card Body - Only Frame Code, No Description */}
@@ -141,6 +153,7 @@ export default function KatalogClient({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeModalItem, setActiveModalItem] = useState<CatalogItem | null>(null);
+  const [activeModalTab, setActiveModalTab] = useState<"gallery" | "specs">("gallery");
 
   // CS Modal
   const [csModalOpen, setCsModalOpen] = useState(false);
@@ -487,7 +500,10 @@ export default function KatalogClient({
                         key={item.id}
                         item={item}
                         collectionTitle={collection.title}
-                        onOpenDetail={(targetItem) => setActiveModalItem(targetItem)}
+                        onOpenDetail={(targetItem, tab) => {
+                          setActiveModalTab(tab || "gallery");
+                          setActiveModalItem(targetItem);
+                        }}
                         onOpenCSModal={openCSModal}
                       />
                     ))}
@@ -508,6 +524,7 @@ export default function KatalogClient({
 
       <CatalogDetailModal
         item={activeModalItem}
+        initialTab={activeModalTab}
         onClose={() => setActiveModalItem(null)}
         onOpenContactCS={openCSModal}
       />

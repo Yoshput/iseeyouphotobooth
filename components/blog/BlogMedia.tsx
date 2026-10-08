@@ -11,7 +11,9 @@ interface BlogMediaProps {
 
 export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProps) {
   const [isPlaying, setIsPlaying] = useState(true);
+  const [hasAudio, setHasAudio] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [hasVideoError, setHasVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -22,6 +24,16 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
     video.muted = true;
     setIsMuted(true);
 
+    const checkAudio = () => {
+      const audio =
+        Boolean((video as any).mozHasAudio) ||
+        Boolean((video as any).webkitAudioDecodedByteCount) ||
+        Boolean((video as any).audioTracks && (video as any).audioTracks.length > 0);
+      setHasAudio(audio);
+    };
+
+    video.addEventListener("loadeddata", checkAudio);
+
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
@@ -31,7 +43,7 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
         });
     }
 
-    // Performance & Battery Saver: Pause video when scrolled out of view to keep browser light
+    // Performance & Battery Saver: Pause video when scrolled out of view
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -46,7 +58,10 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
     );
 
     observer.observe(video);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      video.removeEventListener("loadeddata", checkAudio);
+    };
   }, [videoUrl]);
 
   const handleVideoClick = () => {
@@ -77,8 +92,6 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
     }
   };
 
-  const [hasVideoError, setHasVideoError] = useState(false);
-
   if (videoUrl && !hasVideoError) {
     return (
       <div className="relative aspect-[4/5] w-full max-w-lg rounded-3xl overflow-hidden shadow-xl border border-isy-line bg-black flex items-center justify-center group select-none transform-gpu">
@@ -90,7 +103,7 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           onError={() => setHasVideoError(true)}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
@@ -98,38 +111,39 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
           className="w-full h-full object-cover cursor-pointer"
         >
           <source src={videoUrl} type="video/mp4" />
-          <source src="/blog/rsm-wedding-expo.mp4" type="video/mp4" />
         </video>
 
-        {/* Minimalist Sound Toggle Pill (Bottom-Right) */}
-        <div className="absolute bottom-4 right-4 z-20">
-          <button
-            onClick={handleSoundToggle}
-            type="button"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white text-xs font-medium transition-all shadow-lg border border-white/15 active:scale-95 cursor-pointer"
-            aria-label={isMuted ? "Aktifkan suara video" : "Bisukan suara video"}
-          >
-            {isMuted ? (
-              <>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" />
-                  <line x1="23" y1="9" x2="17" y2="15" />
-                  <line x1="17" y1="9" x2="23" y2="15" />
-                </svg>
-                <span>Aktifkan Suara</span>
-              </>
-            ) : (
-              <>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                </svg>
-                <span className="text-emerald-300">Suara Aktif</span>
-              </>
-            )}
-          </button>
-        </div>
+        {/* Minimalist Sound Toggle Pill (Only when video actually has audio) */}
+        {hasAudio && (
+          <div className="absolute bottom-4 right-4 z-20">
+            <button
+              onClick={handleSoundToggle}
+              type="button"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white text-xs font-medium transition-all shadow-lg border border-white/15 active:scale-95 cursor-pointer"
+              aria-label={isMuted ? "Aktifkan suara video" : "Bisukan suara video"}
+            >
+              {isMuted ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                    <line x1="23" y1="9" x2="17" y2="15" />
+                    <line x1="17" y1="9" x2="23" y2="15" />
+                  </svg>
+                  <span>Aktifkan Suara</span>
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                  </svg>
+                  <span className="text-emerald-300">Suara Aktif</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
 
         {/* Minimalist Pause Overlay (Only shown when user manually paused) */}
         {!isPlaying && (
@@ -149,14 +163,6 @@ export default function BlogMedia({ title, coverImage, videoUrl }: BlogMediaProp
             </span>
           </div>
         )}
-
-        {/* Top Floating Subtle Pill */}
-        <div className="absolute top-4 left-4 z-20 pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white text-[11px] font-medium border border-white/10">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Dokumentasi Lokasi
-          </span>
-        </div>
       </div>
     );
   }

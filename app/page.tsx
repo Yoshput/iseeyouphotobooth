@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * app/page.tsx — Landing Page, Optik I See You AR Photobooth
+ * app/page.tsx - Landing Page, Optik I See You AR Photobooth
  * Slogan Logo: /logo/Logo-ForEveryYou.png (Prominent, Proportional Sizing)
  *
  * Includes:
@@ -151,7 +151,7 @@ export default function LandingPage() {
           {/* ── LEFT: Eyebrow + Heading + CTA ── */}
           <div className="flex flex-col items-start text-left justify-center">
 
-            {/* Eyebrow badge — small, uppercase, replaces bulky logo */}
+            {/* Eyebrow badge - small, uppercase, replaces bulky logo */}
             <div ref={logoRef} className="mb-6 flex flex-col gap-3">
               {/* Eyebrow text */}
               <span
@@ -162,7 +162,7 @@ export default function LandingPage() {
               </span>
             </div>
 
-            {/* Main headline — clean 2-line layout without awkward line wraps */}
+            {/* Main headline - clean 2-line layout without awkward line wraps */}
             <div ref={tagRef}>
               <h1 className="font-black leading-[1.12] text-isy-green-deep tracking-tight"
                   style={{ fontSize: "clamp(1.9rem, 3.6vw, 3.1rem)" }}>
@@ -176,7 +176,7 @@ export default function LandingPage() {
 
             {/* CTA */}
             <div ref={ctaRef} className="mt-8 w-full max-w-[420px] space-y-3">
-              {/* Primary CTA — Mulai Try-On / Photobooth */}
+              {/* Primary CTA - Mulai Try-On / Photobooth */}
               <button
                 onClick={start}
                 className="w-full rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 px-6 text-[13px] font-black uppercase tracking-[0.12em] text-white shadow-lg shadow-isy-green-bright/30 transition-all hover:scale-[1.02] hover:shadow-isy-green-bright/40 active:scale-[0.97] cursor-pointer"
@@ -184,7 +184,7 @@ export default function LandingPage() {
                 Mulai Try-On / Photobooth
               </button>
 
-              {/* Antri Cek Mata & Konsultasi Button — slightly larger & prominent */}
+              {/* Antri Cek Mata & Konsultasi Button - slightly larger & prominent */}
               <button
                 type="button"
                 onClick={() => {
@@ -222,7 +222,7 @@ export default function LandingPage() {
           {/* ── RIGHT: Floating Glasses Showcase ── */}
           <div className="flex flex-col items-center justify-center relative py-6 md:py-10 w-full">
 
-            {/* Sparkle particle 1 — top-right */}
+            {/* Sparkle particle 1 - top-right */}
             <span
               aria-hidden
               className="absolute top-[12%] right-[10%] pointer-events-none"
@@ -234,7 +234,7 @@ export default function LandingPage() {
                 animationDelay: "0s",
               }}
             />
-            {/* Sparkle particle 2 — bottom-left */}
+            {/* Sparkle particle 2 - bottom-left */}
             <span
               aria-hidden
               className="absolute bottom-[20%] left-[6%] pointer-events-none"
@@ -246,7 +246,7 @@ export default function LandingPage() {
                 animationDelay: "1.1s",
               }}
             />
-            {/* Sparkle arc line — subtle curved line */}
+            {/* Sparkle arc line - subtle curved line */}
             <span
               aria-hidden
               className="absolute top-[22%] left-[4%] pointer-events-none"
@@ -266,11 +266,11 @@ export default function LandingPage() {
               items={[
                 {
                   src: "/glasses/hero-glasses-black.webp",
-                  alt: "Frame Hitam dengan Gagang Penuh — Optik I See You",
+                  alt: "Frame Hitam dengan Gagang Penuh - Optik I See You",
                 },
                 {
                   src: "/glasses/hero-glasses-champagne.webp",
-                  alt: "Frame Crystal Champagne Blush dengan Gagang Penuh — Optik I See You",
+                  alt: "Frame Crystal Champagne Blush dengan Gagang Penuh - Optik I See You",
                 },
               ]}
               width={540}
@@ -315,7 +315,7 @@ export default function LandingPage() {
                 />
               </a>
 
-              {/* Google Maps Button — Direct Smooth Scroll to 4 Branches Section */}
+              {/* Google Maps Button - Direct Smooth Scroll to 4 Branches Section */}
               <button
                 type="button"
                 onClick={() => {
@@ -345,7 +345,7 @@ export default function LandingPage() {
       </section>
 
 
-      {/* ═══ KATALOG PREVIEW — Infinite 2-Row Marquee Showcase ═══ */}
+      {/* ═══ KATALOG PREVIEW - Infinite 2-Row Marquee Showcase ═══ */}
       <section className="w-full bg-white py-16 border-t border-isy-line overflow-hidden">
         <div className="mx-auto max-w-5xl px-6 mb-10 text-center flex flex-col items-center">
           <h2 className="text-3xl font-black text-isy-green-deep">Katalog Frame I See You</h2>
@@ -470,7 +470,7 @@ export default function LandingPage() {
       {/* ═══ CINEMATIC VIDEO SHOWCASE ═══ */}
       <LandingVideoShowcase />
 
-      {/* ═══ FITUR — Redesigned Commercial Aesthetic ═══ */}
+      {/* ═══ FITUR - Redesigned Commercial Aesthetic ═══ */}
       <section className="w-full bg-white px-6 py-20 border-t border-isy-line">
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 text-center flex flex-col items-center max-w-xl mx-auto">
@@ -550,7 +550,7 @@ export default function LandingPage() {
       <section id="lokasi" className="w-full bg-white px-6 py-16">
         <div className="mx-auto max-w-2xl">
           <div className="mb-8 text-center flex flex-col items-center">
-            <h2 className="text-3xl font-black text-isy-green-deep">4 Cabang Optik I See You</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold font-sans text-isy-green-deep tracking-tight">Cabang Optik I See You</h2>
             <p className="mt-2 text-sm text-isy-ink/60">Purwokerto · Wonosobo · Cilacap · Purbalingga</p>
             <p className="mt-2 text-base sm:text-lg tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
               for every you
@@ -564,32 +564,15 @@ export default function LandingPage() {
       {/* ═══ PAGE 9: FAQ & PERTANYAAN ═══ */}
       <LocalFaqSection />
 
-      {/* ═══ ULTRA-SMOOTH SEAMLESS GRADIENT TRANSITION TO FOOTER (NO VISIBLE LINE / BAND) ═══ */}
+      {/* ═══ 2-WARNA GRADASI: PUTIH KE HIJAU EMERALD SAMPAI BAWAH ═══ */}
       <div
-        className="relative w-full h-48 sm:h-64 lg:h-80 -mt-px -mb-px pointer-events-none select-none overflow-hidden"
+        className="relative w-full h-32 sm:h-44 lg:h-52 -mt-px -mb-px pointer-events-none select-none"
         style={{
-          background: `linear-gradient(
-            to bottom,
-            rgb(255, 255, 255) 0%,
-            rgb(255, 255, 255) 6%,
-            rgb(253, 254, 253) 12%,
-            rgb(248, 250, 249) 18%,
-            rgb(238, 242, 240) 25%,
-            rgb(222, 228, 224) 33%,
-            rgb(198, 208, 202) 42%,
-            rgb(168, 182, 174) 50%,
-            rgb(134, 152, 142) 58%,
-            rgb(98, 120, 108) 67%,
-            rgb(64, 89, 75) 76%,
-            rgb(38, 67, 51) 84%,
-            rgb(21, 53, 36) 91%,
-            rgb(15, 48, 30) 96%,
-            rgb(13, 47, 29) 100%
-          )`,
+          background: "linear-gradient(to bottom, #FFFFFF 0%, #0D2F1D 100%)",
         }}
       />
 
-      {/* ═══ FOOTER — Luxury Emerald Multi-Column Layout ═══ */}
+      {/* ═══ FOOTER - Luxury Emerald Multi-Column Layout ═══ */}
       <footer className="w-full bg-[#0D2F1D] text-white">
         {/* Main 4-Column Footer Content */}
         <div className="mx-auto max-w-6xl px-6 sm:px-10 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -701,7 +684,7 @@ export default function LandingPage() {
           {/* Col 3: Cabang Resmi & Alamat */}
           <div className="space-y-3">
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#5ec97a]">
-              4 Cabang Resmi
+              Cabang Resmi
             </h4>
             <div className="space-y-3 text-xs">
               {BRANCHES.map((b) => (
@@ -759,8 +742,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Bottom Legal & Copyright Bar */}
-        <div className="border-t border-white/10 bg-black/40 px-6 sm:px-10 py-5 text-xs text-white/50">
+        {/* Bottom Legal & Copyright Bar - Unified Emerald Green */}
+        <div className="border-t border-white/10 px-6 sm:px-10 py-5 text-xs text-white/60">
           <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div>
               <p className="text-xs font-medium text-white/70">

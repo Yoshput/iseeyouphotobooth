@@ -89,7 +89,7 @@ function DownloadPortalContent() {
     const res = await downloadOrShareImage(
       stripUrl,
       `iseeyou-photobooth-${photoId || Date.now()}.jpg`,
-      "Optik I See You — Foto Strip HD"
+      "Optik I See You - Foto Strip HD"
     );
     if (res.success) {
       showToast("Foto berhasil diunduh & tersimpan di galeri!");
@@ -104,7 +104,7 @@ function DownloadPortalContent() {
     const res = await downloadOrShareImage(
       gifUrl,
       `iseeyou-animasi-${photoId || Date.now()}.gif`,
-      "Optik I See You — Animasi GIF"
+      "Optik I See You - Animasi GIF"
     );
     if (res.success) {
       showToast("GIF animasi berhasil diunduh & tersimpan!");

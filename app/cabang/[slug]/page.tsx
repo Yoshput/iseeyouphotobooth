@@ -56,7 +56,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `Rekomendasi Optik ${branch.city} — Kacamata Minus, Cek Mata Gratis & Ganti Lensa | Optik I See You`;
+  const title = `Rekomendasi Optik ${branch.city} - Kacamata Minus, Cek Mata Gratis & Ganti Lensa | Optik I See You`;
   const description = `Rekomendasi optik kacamata terdekat di ${branch.city}: Optik I See You di ${branch.address}. Layanan periksa mata digital gratis, ratusan frame kacamata minus & silinder, softlens original Kemenkes, biaya ganti lensa bersahabat & faset express CNC bisa ditunggu. Buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
   const canonicalUrl = `https://optikiseeyou.com/cabang/${branch.id}`;
   const ogImage = branch.images[0] || "/hero-bg.jpg";
@@ -83,7 +83,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `Optik I See You ${branch.city} — Layanan Optik & Kacamata Terpercaya`,
+      title: `Optik I See You ${branch.city} - Layanan Optik & Kacamata Terpercaya`,
       description,
       url: canonicalUrl,
       siteName: "Optik I See You",
@@ -100,7 +100,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `Optik I See You ${branch.city} — Periksa Mata & Kacamata Trendi`,
+      title: `Optik I See You ${branch.city} - Periksa Mata & Kacamata Trendi`,
       description,
       images: [ogImage],
     },
@@ -179,7 +179,7 @@ const BRANCH_DESCRIPTIONS: Record<
       "Area Toko Luas, Nyaman, dan Parkir Mobil/Motor Lapang",
     ],
     surroundings:
-      "Beralamat di Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Sidanegara, Cilacap Tengah — lokasi strategis dekat pusat kuliner dan perumahan.",
+      "Beralamat di Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Sidanegara, Cilacap Tengah - lokasi strategis dekat pusat kuliner dan perumahan.",
   },
 };
 
@@ -331,7 +331,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
           itemOffered: {
             "@type": "Product",
             name: "Frame Kacamata",
-            description: "Ratusan pilihan frame kacamata pria & wanita — Cat Eye, Titanium, Acetate, Wire Frame, dan Quiet Luxury.",
+            description: "Ratusan pilihan frame kacamata pria & wanita - Cat Eye, Titanium, Acetate, Wire Frame, dan Quiet Luxury.",
             image: "https://optikiseeyou.com/katalog/Clarity%20Series/1-thumb.webp",
             aggregateRating: {
               "@type": "AggregateRating",
@@ -623,7 +623,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               >
                 <Image
                   src={imgSrc}
-                  alt={`Suasana Toko Optik I See You ${branch.city} — Foto ${idx + 1}`}
+                  alt={`Suasana Toko Optik I See You ${branch.city} - Foto ${idx + 1}`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
