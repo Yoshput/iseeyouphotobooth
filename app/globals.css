@@ -20,9 +20,19 @@ body {
   padding: 0;
   margin: 0;
   font-family: var(--font-poppins);
-  /* kiosk: no pull-to-refresh / rubber-band on tablet browsers */
+  background-color: #F8F5ED;
+  color: #183C30;
   overscroll-behavior: none;
   touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Disable tap highlight & text selection on interactive elements */

@@ -9,19 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Design tokens — design.md §2
+        // Design tokens — Luxury Optik I See You Palette
         isy: {
           white:          "#FFFFFF",
-          ivory:          "#FAF6EC",
+          ivory:          "#F8F5ED",
           mist:           "#F3F8F4",
-          "green-deep":   "#1B4332",
-          "green-bright": "#2FA84F",
-          ink:            "#16241C",
-          line:           "#E3ECE6",
+          emerald:        "#124734",
+          "emerald-hover":"#0C3527",
+          "green-deep":   "#124734",
+          "green-bright": "#1B4332",
+          "text-primary": "#183C30",
+          "text-secondary":"#626C65",
+          ink:            "#183C30",
+          border:         "#E3E7DF",
+          line:           "#E3E7DF",
         },
       },
       backgroundImage: {
-        "isy-gradient": "linear-gradient(180deg, #FAF6EC 0%, #FAF6EC 100%)",
+        "isy-gradient": "linear-gradient(180deg, #F8F5ED 0%, #F8F5ED 100%)",
       },
       fontFamily: {
         // Poppins for modern clean sans & Playfair Display for luxury editorial serif

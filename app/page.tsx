@@ -20,6 +20,7 @@ import FloatingGlasses from "@/components/ui/FloatingGlasses";
 import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
 import LandingVideoShowcase from "@/components/ui/LandingVideoShowcase";
 import AboutRefractionBookingSection from "@/components/ui/AboutRefractionBookingSection";
+import FeaturedCollectionsSection from "@/components/landing/FeaturedCollectionsSection";
 import GoogleReviewsSection from "@/components/ui/GoogleReviewsSection";
 import BlogShowcaseSection from "@/components/ui/BlogShowcaseSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
@@ -142,180 +143,125 @@ export default function LandingPage() {
       <Navbar />
 
       {/* Soft glow background */}
-      <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-[600px] w-[800px] rounded-full bg-isy-green-bright/6 blur-[140px]" />
+      {/* ═══ HERO EDITORIAL SECTION ═══ */}
+      <section className="relative min-h-[85dvh] flex items-center px-5 sm:px-8 md:px-12 lg:px-20 pt-24 sm:pt-28 pb-14 bg-[#F8F5ED]">
+        <div className="mx-auto w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
 
-      {/* ═══ HERO ═══ */}
-      <section className="relative min-h-[85dvh] flex items-center px-6 md:px-12 lg:px-20 pt-20 pb-12">
-        <div className="mx-auto w-full max-w-6xl grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-12 lg:gap-16 items-center">
+          {/* ── LEFT: Editorial Typography & Clean CTAs (7 cols) ── */}
+          <div className="lg:col-span-6 flex flex-col items-start text-left justify-center">
 
-          {/* ── LEFT: Eyebrow + Heading + CTA ── */}
-          <div className="flex flex-col items-start text-left justify-center">
-
-            {/* Eyebrow badge - small, uppercase, replaces bulky logo */}
-            <div ref={logoRef} className="mb-6 flex flex-col gap-3">
-              {/* Eyebrow text */}
-              <span
-                className="text-[10px] font-bold uppercase tracking-[0.35em] text-isy-green-bright/80"
-                style={{ letterSpacing: "0.32em" }}
-              >
-                Optik I See You · AR Try-On &amp; Photobooth
+            {/* Eyebrow badge */}
+            <div ref={logoRef} className="mb-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#124734]">
+                Optik I See You • For Every You
               </span>
             </div>
 
-            {/* Main headline - clean 2-line layout without awkward line wraps */}
+            {/* Editorial Headline with single consistent emerald color */}
             <div ref={tagRef}>
-              <h1 className="font-black leading-[1.12] text-isy-green-deep tracking-tight"
-                  style={{ fontSize: "clamp(1.9rem, 3.6vw, 3.1rem)" }}>
-                <span className="block whitespace-nowrap">Selamat Datang,</span>
-                <span className="text-isy-green-bright whitespace-nowrap block">di Optik I See You</span>
+              <h1 className="font-extrabold text-[#124734] leading-[1.14] tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem]">
+                Temukan frame yang terasa seperti kamu.
               </h1>
-              <p className="mt-4 text-[13px] text-isy-ink/60 leading-relaxed max-w-[360px] font-medium">
-                Coba langsung koleksi kacamata, softlens, dan aksesoris I See You dengan try-on real-time di wajah kamu, tanpa install apapun.
+              <p className="mt-4 text-sm sm:text-base text-[#626C65] leading-relaxed max-w-lg font-normal">
+                Jelajahi koleksi kacamata dan softlens, coba frame secara virtual, atau kunjungi cabang terdekat.
               </p>
             </div>
 
-            {/* CTA */}
-            <div ref={ctaRef} className="mt-8 w-full max-w-[420px] space-y-3">
-              {/* Primary CTA - Mulai Try-On / Photobooth */}
-              <button
-                onClick={start}
-                className="w-full rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 px-6 text-[13px] font-black uppercase tracking-[0.12em] text-white shadow-lg shadow-isy-green-bright/30 transition-all hover:scale-[1.02] hover:shadow-isy-green-bright/40 active:scale-[0.97] cursor-pointer"
-              >
-                Mulai Try-On / Photobooth
-              </button>
-
-              {/* Antri Cek Mata & Konsultasi Button - slightly larger & prominent */}
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById("antrian-cek-mata");
-                  if (el) {
-                    el.scrollIntoView({ behavior: "smooth", block: "start" });
-                  } else {
-                    router.push("#antrian-cek-mata");
-                  }
-                }}
-                className="w-full flex items-center justify-center gap-2.5 rounded-2xl border-2 border-isy-green-deep/30 bg-white/90 backdrop-blur-md py-4 px-6 text-[13.5px] font-black uppercase tracking-[0.1em] text-isy-green-deep shadow-md shadow-black/5 transition-all duration-200 hover:border-isy-green-deep hover:bg-isy-green-deep hover:text-white hover:scale-[1.02] hover:shadow-lg active:scale-[0.97] cursor-pointer group"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-isy-green-bright group-hover:text-white transition-colors"
+            {/* Action Buttons */}
+            <div ref={ctaRef} className="mt-7 w-full max-w-md space-y-3.5">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                {/* Primary CTA */}
+                <Link
+                  href="/katalog"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#124734] px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-[#0C3527] transition-all text-center"
                 >
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                <span>Antri Cek Mata &amp; Konsultasi</span>
-              </button>
+                  <span>Jelajahi Katalog</span>
+                  <span>→</span>
+                </Link>
+
+                {/* Secondary CTA */}
+                <Link
+                  href="/try-on"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-[#124734] bg-white px-6 py-3.5 text-xs sm:text-sm font-bold text-[#124734] hover:bg-[#F3F8F4] transition-all text-center shadow-2xs"
+                >
+                  <span>Coba Frame Virtual</span>
+                </Link>
+              </div>
+
+              {/* Supporting CTA */}
+              <div className="pt-1 flex items-center justify-start gap-4 text-xs">
+                <a
+                  href="#antrian-cek-mata"
+                  className="font-medium text-[#124734] hover:underline flex items-center gap-1"
+                >
+                  <span>Konsultasi &amp; Cek Mata Gratis</span>
+                  <span>↓</span>
+                </a>
+                <span className="text-[#E3E7DF]">•</span>
+                <a
+                  href="#lokasi"
+                  className="font-medium text-[#626C65] hover:text-[#124734] transition-colors"
+                >
+                  4 Cabang Resmi
+                </a>
+              </div>
             </div>
           </div>
 
-
-
-
-          {/* ── RIGHT: Floating Glasses Showcase ── */}
-          <div className="flex flex-col items-center justify-center relative py-6 md:py-10 w-full">
-
-            {/* Sparkle particle 1 - top-right */}
-            <span
-              aria-hidden
-              className="absolute top-[12%] right-[10%] pointer-events-none"
-              style={{
-                width: 6, height: 6, borderRadius: "50%",
-                background: "#2FA84F",
-                opacity: 0.6,
-                animation: "sparkle-float 3.2s ease-in-out infinite",
-                animationDelay: "0s",
-              }}
-            />
-            {/* Sparkle particle 2 - bottom-left */}
-            <span
-              aria-hidden
-              className="absolute bottom-[20%] left-[6%] pointer-events-none"
-              style={{
-                width: 4, height: 4, borderRadius: "50%",
-                background: "#1B4332",
-                opacity: 0.45,
-                animation: "sparkle-float 4s ease-in-out infinite",
-                animationDelay: "1.1s",
-              }}
-            />
-            {/* Sparkle arc line - subtle curved line */}
-            <span
-              aria-hidden
-              className="absolute top-[22%] left-[4%] pointer-events-none"
-              style={{
-                width: 32, height: 32,
-                borderRadius: "50%",
-                border: "1.5px solid rgba(47,168,79,0.25)",
-                borderBottomColor: "transparent",
-                borderLeftColor: "transparent",
-                animation: "sparkle-float 5s ease-in-out infinite reverse",
-                animationDelay: "0.6s",
-              }}
-            />
-
-            {/* Prominent Floating Glasses with full temple arms */}
+          {/* ── RIGHT: Authentic Floating Glasses Showcase (5 cols) ── */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center relative py-4 sm:py-6 w-full">
             <FloatingGlasses
               items={[
                 {
                   src: "/glasses/hero-glasses-black.webp",
-                  alt: "Frame Hitam dengan Gagang Penuh - Optik I See You",
+                  alt: "Frame Hitam Kacamata Optik I See You",
                 },
                 {
                   src: "/glasses/hero-glasses-champagne.webp",
-                  alt: "Frame Crystal Champagne Blush dengan Gagang Penuh - Optik I See You",
+                  alt: "Frame Champagne Crystal Kacamata Optik I See You",
                 },
               ]}
-              width={540}
-              height={270}
+              width={520}
+              height={260}
             />
 
-            {/* ── Prominent Floating Action Buttons (WA 4 Cabang, Shopee, Google Maps) below floating glasses ── */}
-            <div className="flex flex-row items-center justify-center gap-4 sm:gap-6 mt-8 z-10">
-              {/* WhatsApp 4 Cabang Button */}
+            {/* 3 Authentic Quick Action Buttons below Floating Glasses */}
+            <div className="flex items-center justify-center gap-3 sm:gap-4 mt-6 z-10">
               <button
                 type="button"
                 onClick={() => setIsBranchWAModalOpen(true)}
-                aria-label="Hubungi kami via WhatsApp untuk 4 Cabang (Purwokerto, Purbalingga, Cilacap, Wonosobo)"
+                aria-label="Hubungi WhatsApp 4 Cabang Resmi Optik I See You"
                 title="Chat WhatsApp 4 Cabang"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-isy-green-bright/30 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-isy-green-bright hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
+                className="flex items-center gap-2 rounded-xl bg-white border border-[#E3E7DF] px-3.5 py-2 text-xs font-semibold text-[#124734] hover:border-[#124734] hover:shadow-sm transition-all"
               >
-                <span className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping opacity-25 group-hover:opacity-40" />
                 <Image
                   src="/logo/Logo-Whatsapp.webp"
-                  alt="Chat WhatsApp"
-                  width={34}
-                  height={34}
-                  className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                  alt="WhatsApp"
+                  width={18}
+                  height={18}
+                  className="h-4.5 w-4.5 object-contain"
                 />
+                <span>WhatsApp Cabang</span>
               </button>
 
-              {/* Shopee Button */}
               <a
                 href={SHOPEE_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Kunjungi toko Shopee I See You"
+                aria-label="Kunjungi toko Shopee resmi Optik I See You"
                 title="Toko Shopee Official"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-[#E8A87C]/40 shadow-xl shadow-orange-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-[#D4875A] hover:-translate-y-1.5 active:scale-95 group"
+                className="flex items-center gap-2 rounded-xl bg-white border border-[#E3E7DF] px-3.5 py-2 text-xs font-semibold text-[#626C65] hover:border-[#D4875A] hover:text-[#D4875A] transition-all"
               >
                 <Image
                   src="/logo/Logo-Shoppe.webp"
-                  alt="Official Store Shopee"
-                  width={34}
-                  height={34}
-                  className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                  alt="Shopee"
+                  width={18}
+                  height={18}
+                  className="h-4.5 w-4.5 object-contain"
                 />
+                <span>Shopee Official</span>
               </a>
 
-              {/* Google Maps Button - Direct Smooth Scroll to 4 Branches Section */}
               <button
                 type="button"
                 onClick={() => {
@@ -326,17 +272,18 @@ export default function LandingPage() {
                     router.push("#lokasi");
                   }
                 }}
-                aria-label="Lihat Lokasi 4 Cabang Optik I See You di Google Maps"
-                title="Lihat Lokasi 4 Cabang di Google Maps"
-                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full bg-white/85 backdrop-blur-lg border-2 border-isy-green-bright/35 shadow-xl shadow-emerald-950/15 transition-all duration-300 hover:scale-115 hover:shadow-2xl hover:border-isy-green-bright hover:-translate-y-1.5 active:scale-95 group cursor-pointer"
+                aria-label="Lihat Lokasi 4 Cabang di Google Maps"
+                title="Lihat Lokasi Cabang"
+                className="flex items-center gap-2 rounded-xl bg-white border border-[#E3E7DF] px-3.5 py-2 text-xs font-semibold text-[#626C65] hover:border-[#124734] hover:text-[#124734] transition-all"
               >
                 <Image
                   src="/logo/Logo-Gmaps.webp"
-                  alt="Petunjuk Lokasi Google Maps"
-                  width={34}
-                  height={34}
-                  className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+                  alt="Google Maps"
+                  width={18}
+                  height={18}
+                  className="h-4.5 w-4.5 object-contain"
                 />
+                <span>Peta Cabang</span>
               </button>
             </div>
           </div>
@@ -344,128 +291,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-
-      {/* ═══ KATALOG PREVIEW - Infinite 2-Row Marquee Showcase ═══ */}
-      <section className="w-full bg-white py-16 border-t border-isy-line overflow-hidden">
-        <div className="mx-auto max-w-5xl px-6 mb-10 text-center flex flex-col items-center">
-          <h2 className="text-3xl font-black text-isy-green-deep">Katalog Frame I See You</h2>
-          <p className="mt-2 text-lg sm:text-xl tracking-[0.2em] text-black font-normal" style={{ fontFamily: 'var(--font-dm-serif)' }}>
-            for every you
-          </p>
-        </div>
-
-        {/* ── Marquee Showcase (2 Rows, Opposite Directions, Smooth Infinite Looping) ── */}
-        <div className="w-full space-y-6 overflow-hidden">
-          {/* Row 1: Moving LEFTWARD */}
-          <div className="marquee-group relative w-full overflow-hidden py-1">
-            <div className="animate-marquee-left flex items-center gap-6">
-              {[
-                "/Katalog Berjalan/1.webp",
-                "/katalog/Clarity Series/1-thumb.webp",
-                "/katalog/The Feline Silhouette/5-thumb.webp",
-                "/katalog/The Lucid Vision/14-thumb.webp",
-                "/katalog/The Skena Gaze/9-thumb.webp",
-                "/katalog/The Onyx Enigma/21-thumb.webp",
-                "/katalog/Cat Eye Edition/1.webp",
-                "/katalog/Titanium Edition/1.webp",
-              ]
-                .concat([
-                  "/Katalog Berjalan/1.webp",
-                  "/katalog/Clarity Series/1-thumb.webp",
-                  "/katalog/The Feline Silhouette/5-thumb.webp",
-                  "/katalog/The Lucid Vision/14-thumb.webp",
-                  "/katalog/The Skena Gaze/9-thumb.webp",
-                  "/katalog/The Onyx Enigma/21-thumb.webp",
-                  "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/Titanium Edition/1.webp",
-                ])
-                .concat([
-                  "/Katalog Berjalan/1.webp",
-                  "/katalog/Clarity Series/1-thumb.webp",
-                  "/katalog/The Feline Silhouette/5-thumb.webp",
-                  "/katalog/The Lucid Vision/14-thumb.webp",
-                  "/katalog/The Skena Gaze/9-thumb.webp",
-                  "/katalog/The Onyx Enigma/21-thumb.webp",
-                  "/katalog/Cat Eye Edition/1.webp",
-                  "/katalog/Titanium Edition/1.webp",
-                ])
-                .map((imgSrc, index) => (
-                  <Link
-                    key={`top-${index}`}
-                    href="/katalog?tab=frame"
-                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer block"
-                  >
-                    <Image
-                      src={imgSrc}
-                      alt="Koleksi Frame Utama Optik I See You"
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover/card:scale-105"
-                      sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
-                    />
-                  </Link>
-                ))}
-            </div>
-          </div>
-
-          {/* Row 2: Moving RIGHTWARD */}
-          <div className="marquee-group relative w-full overflow-hidden py-1">
-            <div className="animate-marquee-right flex items-center gap-6">
-              {[
-                "/Katalog Berjalan/2.webp",
-                "/katalog/Metro Deek/Feed 1.webp",
-                "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                "/katalog/Shades Of Elegance/1.webp",
-                "/katalog/Shades Edition/1.webp",
-                "/katalog/New Collection/1.webp",
-              ]
-                .concat([
-                  "/Katalog Berjalan/2.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
-                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                  "/katalog/Shades Of Elegance/1.webp",
-                  "/katalog/Shades Edition/1.webp",
-                  "/katalog/New Collection/1.webp",
-                ])
-                .concat([
-                  "/Katalog Berjalan/2.webp",
-                  "/katalog/Metro Deek/Feed 1.webp",
-                  "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-                  "/katalog/Shades Of Elegance/1.webp",
-                  "/katalog/Shades Edition/1.webp",
-                  "/katalog/New Collection/1.webp",
-                ])
-                .map((imgSrc, index) => (
-                  <Link
-                    key={`bottom-${index}`}
-                    href="/katalog?tab=frame"
-                    className="group/card relative h-48 sm:h-56 md:h-64 w-64 sm:w-80 md:w-96 shrink-0 overflow-hidden rounded-2xl md:rounded-3xl border border-isy-line bg-isy-mist/40 shadow-sm transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:border-isy-green-bright/40 select-none cursor-pointer block"
-                  >
-                    <Image
-                      src={imgSrc}
-                      alt="Koleksi Frame Utama Optik I See You"
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover/card:scale-105"
-                      sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
-                    />
-                  </Link>
-                ))}
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Link to Full Catalog */}
-        <div className="mt-12 text-center px-6">
-          <Link
-            href="/katalog"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-isy-green-deep px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg transition-all hover:bg-isy-green-bright active:scale-95"
-          >
-            <span>Lihat Full Katalog Frame</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
-      </section>
+      {/* ═══ PILIHAN KOLEKSI FRAME (Replaces Autoplay Marquee) ═══ */}
+      <FeaturedCollectionsSection />
 
       {/* ═══ CINEMATIC VIDEO SHOWCASE ═══ */}
       <LandingVideoShowcase />

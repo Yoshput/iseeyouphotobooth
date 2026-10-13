@@ -20,12 +20,10 @@ import {
 import Navbar from "@/components/ui/Navbar";
 import {
   BRANCHES,
-  type Branch,
   mapsEmbedUrl,
   mapsDirectionsUrl,
   branchWhatsappUrl,
   branchGoogleReviewsUrl,
-  SHOPEE_STORE_URL,
 } from "@/lib/branches";
 
 interface BranchPageProps {
@@ -56,8 +54,8 @@ export async function generateMetadata({
     };
   }
 
-  const title = `Rekomendasi Optik ${branch.city} - Kacamata Minus, Cek Mata Gratis & Ganti Lensa | Optik I See You`;
-  const description = `Rekomendasi optik kacamata terdekat di ${branch.city}: Optik I See You di ${branch.address}. Layanan periksa mata digital gratis, ratusan frame kacamata minus & silinder, softlens original Kemenkes, biaya ganti lensa bersahabat & faset express CNC bisa ditunggu. Buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
+  const title = `Optik I See You ${branch.city} - Kacamata Minus, Cek Mata Gratis & Ganti Lensa`;
+  const description = `Gerai kacamata resmi Optik I See You di ${branch.city}: ${branch.address}. Layanan periksa mata komputerisasi gratis, ratusan frame kacamata minus & silinder, softlens resmi Kemenkes RI, dan pengerjaan lensa faset express CNC. Jam buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
   const canonicalUrl = `https://optikiseeyou.com/cabang/${branch.id}`;
   const ogImage = branch.images[0] || "/hero-bg.jpg";
 
@@ -65,25 +63,20 @@ export async function generateMetadata({
     title,
     description,
     keywords: [
-      `rekomendasi optik ${branch.city.toLowerCase()}`,
-      `kacamata minus ${branch.city.toLowerCase()}`,
       `optik ${branch.city.toLowerCase()}`,
       `toko kacamata ${branch.city.toLowerCase()}`,
-      `biaya ganti lensa kacamata ${branch.city.toLowerCase()}`,
-      `tempat periksa mata ${branch.city.toLowerCase()}`,
-      `tempat bikin kacamata ${branch.city.toLowerCase()}`,
+      `kacamata minus ${branch.city.toLowerCase()}`,
+      `periksa mata gratis ${branch.city.toLowerCase()}`,
       `ganti lensa kacamata ${branch.city.toLowerCase()}`,
       `softlens ${branch.city.toLowerCase()}`,
-      `cek mata gratis ${branch.city.toLowerCase()}`,
-      `optik terdekat ${branch.city.toLowerCase()}`,
       `optik i see you ${branch.city.toLowerCase()}`,
-      `optik i see you`,
+      `optik terdekat ${branch.city.toLowerCase()}`,
     ],
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `Optik I See You ${branch.city} - Layanan Optik & Kacamata Terpercaya`,
+      title: `Optik I See You ${branch.city} - Gerai Kacamata & Periksa Mata Gratis`,
       description,
       url: canonicalUrl,
       siteName: "Optik I See You",
@@ -107,7 +100,7 @@ export async function generateMetadata({
   };
 }
 
-// ── 3. Branch Content Descriptions Tailored to Local SEO ────────────────────
+// ── 3. Branch Content Descriptions Tailored to Local Area ────────────────────
 const BRANCH_DESCRIPTIONS: Record<
   string,
   {
@@ -120,31 +113,31 @@ const BRANCH_DESCRIPTIONS: Record<
   purwokerto: {
     heroTagline: "Cabang Pusat & Laboratorium Faset CNC Utama Banyumas",
     overview: [
-      "Optik I See You Purwokerto hadir sebagai destinasi kacamata dan softlens modern terfavorit bagi mahasiswa, pelajar, dan masyarakat Banyumas. Terletak strategis di kawasan Sumbang (dekat kampus Unsoed), toko kami menyediakan ratusan pilihan frame kacamata dari gaya Quiet Luxury, Cat Eye, Metro Geek, hingga Titanium Series yang ringan dan kuat.",
+      "Optik I See You Purwokerto hadir sebagai destinasi kacamata dan softlens modern terfavorit bagi mahasiswa, pelajar, dan masyarakat Banyumas. Terletak strategis di kawasan Sumbang (dekat kampus Unsoed), toko kami menyediakan pilihan frame kacamata dari berbagai gaya serta lensa resep berkualitas.",
       "Dilengkapi dengan fasilitas pemeriksaan mata komputerisasi Autorefractor digital serta Trial Lens Set lengkap, Anda dapat melakukan konsultasi dan cek minus/silinder mata secara GRATIS bersama tim refraksionis berpengalaman. Kami juga memiliki laboratorium faset otomatis berteknologi 3D Frame Tracing CNC untuk pengerjaan kacamata resep express yang bisa ditunggu.",
     ],
     highlights: [
       "Pemeriksaan Mata Komputerisasi Gratis (Autorefractor Digital)",
-      "Pengerjaan Lensa Express dengan Mesin CNC 3D Tracing 0.01 mm",
+      "Pengerjaan Lensa Express dengan Mesin CNC 3D Tracing Presisi",
       "Koleksi Lengkap Frame Kacamata Pria & Wanita Terbaru",
-      "Katalog Softlens Resmi (ICE, X2, Pure N'Soft) Kadar Air Tinggi",
-      "Photobooth Kacamata AR & Cetak Foto Strip Instan di Tempat",
+      "Katalog Softlens Resmi Kemenkes RI Berbagai Warna & Kadar Air",
+      "Garansi Ketepatan Resep Kacamata & Penyetelan Frame",
     ],
     surroundings:
       "Lokasi sangat mudah diakses dari arah Purwokerto Kota maupun kampus Unsoed, berada di Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang, Sumbang dengan area parkir yang nyaman.",
   },
   purbalingga: {
-    heroTagline: "Pusat Kacamata Estetik & Periksa Mata Gratis di Jl. Onje",
+    heroTagline: "Pusat Kacamata & Periksa Mata Gratis di Jl. Onje",
     overview: [
       "Optik I See You Purbalingga berlokasi strategis di Jl. Onje No.1, Purbalingga Lor. Kami menghadirkan solusi penglihatan terbaik dengan koleksi frame kacamata stylish, elegan, dan harga transparan yang ramah di kantong.",
-      "Dapatkan layanan cek visus mata dan konsultasi kacamata gratis tanpa syarat. Kami menyediakan berbagai jenis lensa berkualitas: Lensa Anti Radiasi Blueray untuk pengguna gadget, Lensa Photochromic bunglon yang berubah gelap di bawah sinar matahari, Lensa Bluechromic serbaguna, hingga Lensa Progresif untuk usia 40 tahun ke atas.",
+      "Dapatkan layanan cek visus mata dan konsultasi kacamata gratis tanpa syarat. Kami menyediakan berbagai jenis lensa berkualitas: Lensa Anti Radiasi Blueray untuk pengguna gadget, Lensa Photochromic yang berubah gelap di bawah sinar matahari, Lensa Bluechromic serbaguna, hingga Lensa Progresif.",
     ],
     highlights: [
       "Konsultasi & Cek Mata Gratis dengan Peralatan Refraksi Akurat",
       "Pilihan Lensa Blueray, Photochromic, Bluechromic, & Progresif",
-      "Frame Kacamata Trendy Bergaransi dan Nyaman Dipakai",
+      "Frame Kacamata Berkualitas, Bergaransi, dan Nyaman Dipakai",
       "Layanan Ramah, Cepat, dan Pembersihan Kacamata Gratis",
-      "Promo Menarik Setiap Bulan Khusus Pelajar & Mahasiswa",
+      "Pilihan Softlens Berizin Kemenkes RI Lengkap dengan Cairan Steril",
     ],
     surroundings:
       "Terletak di pusat keramaian Purbalingga (Jl. Onje No.1), dekat dengan kawasan perkantoran dan sekolah, memudahkan Anda untuk mampir periksa mata atau memesan kacamata kapan saja.",
@@ -153,30 +146,30 @@ const BRANCH_DESCRIPTIONS: Record<
     heroTagline: "Layanan Optik Modern di Jantung Kota Wonosobo",
     overview: [
       "Optik I See You Wonosobo beralamat di Jl. Jenderal Soedirman, Sumberan Selatan (jalan protokol utama Wonosobo). Kami menjadi pilihan utama masyarakat Wonosobo dan sekitarnya yang mendambakan kacamata berkualitas tinggi dengan desain estetik kekinian.",
-      "Koleksi kami dirancang untuk menunjang aktivitas harian maupun liburan di daerah berhawa sejuk Wonosobo dan Dieng. Tersedia pula kacamata hitam Sunglasses berfitur UV400 dan Polarized untuk melindungi mata dari silau matahari, serta softlens nyaman dengan kadar air optimal.",
+      "Koleksi kami dirancang untuk menunjang aktivitas harian maupun liburan di daerah berhawa sejuk Wonosobo dan Dieng. Tersedia kacamata hitam berfitur UV400 dan Polarized untuk melindungi mata dari silau matahari, serta softlens nyaman dengan kadar air optimal.",
     ],
     highlights: [
-      "Cek Mata Digital Gratis dengan Tenaga Berpengalaman",
-      "Kacamata Sunglasses Polarized & UV400 Cocok untuk Wisata Dieng",
-      "Lensa Anti-Embun & Anti-Refleksi untuk Cuaca Dingin",
+      "Cek Mata Digital Gratis dengan Tenaga Refraksi Berpengalaman",
+      "Kacamata Sunglasses Polarized & UV400 untuk Wisata Dieng",
+      "Lensa Anti-Embun & Anti-Refleksi untuk Kenyamanan Harian",
       "Garansi Ketepatan Resep Lensa dan Garansi Frame",
       "Pilihan Softlens Natural & Glamour Berizin Kemenkes RI",
     ],
     surroundings:
-      "Berada tepat di tepi Jl. Jenderal Soedirman, jalur utama kota Wonosobo, sangat mudah ditemukan dengan plang toko Optik I See You yang khas dan terang.",
+      "Berada tepat di tepi Jl. Jenderal Soedirman, jalur utama kota Wonosobo, sangat mudah ditemukan dengan plang toko Optik I See You yang jelas dan terang.",
   },
   cilacap: {
-    heroTagline: "Pusat Frame Kacamata Pesisir & Softlens di Jl. Rinjani",
+    heroTagline: "Pusat Frame Kacamata & Softlens di Jl. Rinjani",
     overview: [
-      "Optik I See You Cilacap menyapa masyarakat kota pesisir Cilacap dengan toko yang luas, nyaman, dan ber-AC di Jl. Rinjani (depan Perum GRP Ruko No.3, Sidanegara). Kami menyediakan ragam pilihan frame kacamata berbahan Acetate tebal dan Titanium anti-karat yang sangat awet untuk iklim pesisir.",
+      "Optik I See You Cilacap menyapa masyarakat kota pesisir Cilacap dengan toko yang luas, nyaman, dan ber-AC di Jl. Rinjani (depan Perum GRP Ruko No.3, Sidanegara). Kami menyediakan ragam pilihan frame kacamata berbahan Acetate dan Titanium tahan korosi yang awet untuk iklim pesisir.",
       "Nikmati kenyamanan periksa mata digital secara gratis. Tim kami siap membantu Anda memilih bentuk kacamata yang paling sesuai dengan proporsi wajah, warna kulit, dan kebutuhan refraksi mata (minus, plus, silinder).",
     ],
     highlights: [
-      "Frame Kacamata Titanium Tahan Karat & Acetate Premium",
+      "Frame Kacamata Titanium Tahan Karat & Acetate Berkualitas",
       "Cek Mata Digital Komputerisasi Gratis Setiap Hari",
       "Lensa Perlindungan UV Maksimal & Anti Radiasi Komputer",
       "Koleksi Softlens Lengkap dengan Cairan Pembersih Steril",
-      "Area Toko Luas, Nyaman, dan Parkir Mobil/Motor Lapang",
+      "Area Toko Nyaman dan Parkir Mobil/Motor Lapang",
     ],
     surroundings:
       "Beralamat di Jl. Rinjani Depan Perum GRP No.2 Ruko No.3, Sidanegara, Cilacap Tengah - lokasi strategis dekat pusat kuliner dan perumahan.",
@@ -207,76 +200,19 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
 
   const otherBranches = BRANCHES.filter((b) => b.id !== branch.id);
 
-  // ── Schema.org Optician JSON-LD ──────────────────────────────────────────
-  const openingHoursSpec =
-    branch.id === "purbalingga"
-      ? [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            opens: "11:00",
-            closes: "20:00",
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Saturday", "Sunday"],
-            opens: "09:00",
-            closes: "21:00",
-          },
-        ]
-      : branch.id === "wonosobo"
-      ? [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday",
-            ],
-            opens: "09:00",
-            closes: "18:00",
-          },
-        ]
-      : [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday",
-            ],
-            opens: "09:00",
-            closes: "21:00",
-          },
-        ];
-
+  // ── Schema.org LocalBusiness / Optician JSON-LD (Verified only) ─────────────
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "Optician"],
     "@id": `https://optikiseeyou.com/cabang/${branch.id}#store`,
     name: `Optik I See You ${branch.city}`,
-    legalName: "Optik I See You Glasses",
-    alternateName: [
-      `Optik I See You Cabang ${branch.city}`,
-      `I See You Glasses ${branch.city}`,
-      `Optik ${branch.city}`,
-      `optikiseeyou ${branch.city}`,
-    ],
-    description: `Optik modern terpercaya di ${branch.city}, Jawa Tengah. Layanan periksa mata gratis dengan Autorefractor digital, ratusan frame kacamata estetik, softlens original, dan teknologi AR Try-On real-time. Buka setiap hari.`,
+    legalName: "Optik I See You",
+    description: `Optik modern di ${branch.city}, Jawa Tengah. Layanan periksa mata gratis dengan Autorefractor digital, ratusan koleksi frame kacamata, softlens resmi Kemenkes RI, dan teknologi AR Try-On virtual.`,
     url: `https://optikiseeyou.com/cabang/${branch.id}`,
-    image: branch.images.map((img) => `https://optikiseeyou.com${img}`),
-    logo: "https://optikiseeyou.com/logo.png",
-    telephone: branch.phone.replace(/[^0-9+]/g, "").startsWith("0")
-      ? `+62${branch.phone.replace(/[^0-9]/g, "").slice(1)}`
-      : branch.phone,
+    image: branch.images.map((img) =>
+      img.startsWith("http") ? img : `https://optikiseeyou.com${img}`
+    ),
+    telephone: branch.phone,
     priceRange: "$$",
     currenciesAccepted: "IDR",
     paymentAccepted: "Cash, Transfer Bank, QRIS",
@@ -293,96 +229,16 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
       longitude: branch.lng,
     },
     hasMap: branch.googleMapsUrl,
-    openingHoursSpecification: openingHoursSpec,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5.0",
-      bestRating: "5",
-      worstRating: "1",
-      reviewCount: "250",
-    },
     sameAs: [
       branch.instagram,
       "https://www.instagram.com/iseeyou.glasses",
       "https://www.tiktok.com/@iseeyouglasses",
-      "https://shopee.co.id/iseeyou.id",
     ],
     parentOrganization: {
       "@type": "Organization",
       "@id": "https://optikiseeyou.com/#organization",
       name: "Optik I See You",
       url: "https://optikiseeyou.com",
-      logo: "https://optikiseeyou.com/logo.png",
-    },
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Produk & Layanan Optik I See You",
-      itemListElement: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Periksa Mata Komputerisasi Gratis",
-            description: "Cek minus, plus, dan silinder dengan Autorefractor digital oleh tenaga refraksi berpengalaman.",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Product",
-            name: "Frame Kacamata",
-            description: "Ratusan pilihan frame kacamata pria & wanita - Cat Eye, Titanium, Acetate, Wire Frame, dan Quiet Luxury.",
-            image: "https://optikiseeyou.com/katalog/Clarity%20Series/1-thumb.webp",
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "5.0",
-              reviewCount: "250",
-              bestRating: "5",
-              worstRating: "1",
-            },
-            offers: {
-              "@type": "AggregateOffer",
-              priceCurrency: "IDR",
-              lowPrice: "150000",
-              highPrice: "750000",
-              offerCount: "200",
-              availability: "https://schema.org/InStock",
-            },
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Product",
-            name: "Softlens",
-            description: "Softlens original warna-warni berkadar air tinggi, tersertifikasi Kemenkes RI.",
-            image: "https://optikiseeyou.com/Katalog%20Soflens/Assets%20Soflens/New%20More%20Dubai.webp",
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "5.0",
-              reviewCount: "250",
-              bestRating: "5",
-              worstRating: "1",
-            },
-            offers: {
-              "@type": "AggregateOffer",
-              priceCurrency: "IDR",
-              lowPrice: "50000",
-              highPrice: "250000",
-              offerCount: "50",
-              availability: "https://schema.org/InStock",
-            },
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Faset Lensa Express CNC",
-            description: "Pembuatan kacamata resep dengan mesin CNC 3D Tracing presisi 0.01mm. Bisa ditunggu.",
-          },
-        },
-      ],
     },
   };
 
@@ -399,8 +255,8 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Lokasi Cabang",
-        item: "https://optikiseeyou.com/#lokasi",
+        name: "Cabang Resmi",
+        item: "https://optikiseeyou.com/cabang",
       },
       {
         "@type": "ListItem",
@@ -412,8 +268,8 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-isy-ivory text-isy-ink select-none">
-      {/* ── Schema.org Injection ─────────────────────────────────────────── */}
+    <main className="min-h-screen bg-[#F8F5ED] text-[#183C30]">
+      {/* Schema.org Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
@@ -423,86 +279,76 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      {/* Global Navbar */}
       <Navbar />
 
-      {/* ── Breadcrumb Navigation ──────────────────────────────────────────── */}
+      {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
-        className="pt-24 pb-4 px-6 md:px-12 lg:px-20 border-b border-isy-line bg-white/60 backdrop-blur-md"
+        className="pt-24 pb-4 px-4 sm:px-6 md:px-12 lg:px-20 border-b border-[#E3E7DF] bg-white"
       >
-        <div className="mx-auto max-w-6xl flex flex-wrap items-center justify-between gap-4 text-xs text-isy-ink/60">
+        <div className="mx-auto max-w-6xl flex flex-wrap items-center justify-between gap-4 text-xs text-[#626C65]">
           <Link
-            href="/"
-            className="group inline-flex items-center gap-2 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
+            href="/cabang"
+            className="group inline-flex items-center gap-1.5 rounded-lg border border-[#E3E7DF] bg-[#FAF8F3] px-3 py-1.5 text-xs font-semibold text-[#124734] hover:border-[#124734] hover:bg-white transition-colors"
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform group-hover:-translate-x-0.5"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            <span>Kembali ke Beranda</span>
+            <span>← Kembali ke Daftar Cabang</span>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <Link href="/" className="hover:text-isy-green-deep transition-colors font-medium">
-              Beranda
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-isy-ink/30" />
-            <Link href="/#lokasi" className="hover:text-isy-green-deep transition-colors font-medium">
-              Lokasi Cabang
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-isy-ink/30" />
-            <span className="font-bold text-isy-green-deep truncate">
+          <ol className="flex items-center gap-1.5">
+            <li>
+              <Link href="/" className="hover:text-[#124734] transition-colors">
+                Beranda
+              </Link>
+            </li>
+            <li>
+              <ChevronRight className="w-3 h-3 text-[#626C65]/50" />
+            </li>
+            <li>
+              <Link href="/cabang" className="hover:text-[#124734] transition-colors">
+                Cabang
+              </Link>
+            </li>
+            <li>
+              <ChevronRight className="w-3 h-3 text-[#626C65]/50" />
+            </li>
+            <li className="font-bold text-[#183C30]" aria-current="page">
               {branch.city}
-            </span>
-          </div>
+            </li>
+          </ol>
         </div>
       </nav>
 
-
-      {/* ── HERO SECTION ───────────────────────────────────────────────────── */}
-      <section className="relative px-6 md:px-12 lg:px-20 py-12 md:py-16 overflow-hidden">
-        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      {/* HERO SECTION */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-10 md:py-14 border-b border-[#E3E7DF] bg-white">
+        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Heading & CTAs */}
           <div className="lg:col-span-7 space-y-5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/30 bg-isy-green-bright/10 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-isy-green-deep">
-              <Building2 className="w-3.5 h-3.5 text-isy-green-bright" />
-              <span>Cabang Resmi Jawa Tengah</span>
+            <div className="inline-flex items-center gap-2 rounded-md bg-[#124734]/10 px-3 py-1 text-[11px] font-semibold text-[#124734]">
+              <Building2 className="w-3.5 h-3.5" />
+              <span>Gerai Resmi Jawa Tengah</span>
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black text-isy-green-deep tracking-tight leading-[1.15]">
-              Optik I See You{" "}
-              <span className="text-isy-green-bright italic block sm:inline">
-                {branch.city}
-              </span>
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black text-[#124734] tracking-tight leading-[1.15]">
+              Optik I See You {branch.city}
             </h1>
 
-            <p className="text-sm md:text-base font-semibold text-isy-ink/80 leading-relaxed max-w-xl">
+            <p className="text-sm md:text-base font-medium text-[#626C65] leading-relaxed max-w-xl">
               {content.heroTagline}
             </p>
 
             {/* Quick Badges */}
-            <div className="flex flex-wrap gap-2.5 pt-1">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-isy-line text-xs font-bold text-isy-green-deep shadow-2xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-isy-green-bright shrink-0" />
+            <div className="flex flex-wrap gap-2 pt-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FAF8F3] border border-[#E3E7DF] text-xs font-semibold text-[#183C30]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#124734] shrink-0" />
                 Cek Mata Gratis
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-isy-line text-xs font-bold text-isy-green-deep shadow-2xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-isy-green-bright shrink-0" />
-                Faset Lensa CNC Express
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FAF8F3] border border-[#E3E7DF] text-xs font-semibold text-[#183C30]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#124734] shrink-0" />
+                Faset CNC Express
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-isy-line text-xs font-bold text-isy-green-deep shadow-2xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-isy-green-bright shrink-0" />
-                Garansi Resmi Resep
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FAF8F3] border border-[#E3E7DF] text-xs font-semibold text-[#183C30]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#124734] shrink-0" />
+                Garansi Resep
               </span>
             </div>
 
@@ -512,7 +358,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
                 href={branchWhatsappUrl(branch)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-2xl bg-isy-green-bright hover:bg-isy-green-deep text-white px-6 py-3.5 text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg shadow-isy-green-bright/25 hover:shadow-xl transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#124734] hover:bg-[#0C3527] text-white px-5 py-3 text-xs sm:text-sm font-bold shadow-sm transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Chat WhatsApp {branch.city}</span>
@@ -522,73 +368,73 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
                 href={mapsDirectionsUrl(branch)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-2xl bg-white hover:bg-isy-mist border border-isy-line text-isy-green-deep px-5 py-3.5 text-xs sm:text-sm font-bold transition-all active:scale-95 shadow-2xs cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#FAF8F3] hover:bg-white border border-[#E3E7DF] text-[#183C30] px-5 py-3 text-xs sm:text-sm font-semibold transition-colors"
               >
-                <Navigation className="w-4 h-4 text-isy-green-bright" />
-                <span>Petunjuk Arah (Maps)</span>
+                <Navigation className="w-4 h-4 text-[#124734]" />
+                <span>Petunjuk Arah (Google Maps)</span>
               </a>
             </div>
           </div>
 
           {/* Right Column: Key Info Card */}
           <div className="lg:col-span-5">
-            <div className="rounded-3xl border border-white/80 bg-white/90 backdrop-blur-xl p-6 sm:p-7 shadow-xl shadow-black/5 space-y-4.5">
-              <h2 className="text-xs font-extrabold uppercase tracking-widest text-isy-green-bright">
-                Informasi Lengkap Cabang
+            <div className="rounded-2xl border border-[#E3E7DF] bg-[#FAF8F3] p-6 space-y-4 shadow-2xs">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-[#124734]">
+                Informasi Gerai
               </h2>
 
               {/* Address Item */}
-              <div className="flex items-start gap-3.5 pb-4 border-b border-isy-line/70">
-                <div className="p-2.5 rounded-2xl bg-isy-green-bright/10 text-isy-green-deep shrink-0 mt-0.5">
-                  <MapPin className="w-5 h-5 text-isy-green-bright" />
+              <div className="flex items-start gap-3 pb-3 border-b border-[#E3E7DF]">
+                <div className="p-2 rounded-lg bg-white text-[#124734] shrink-0 border border-[#E3E7DF] mt-0.5">
+                  <MapPin className="w-4 h-4" />
                 </div>
-                <div className="space-y-1 text-left">
-                  <p className="text-xs font-bold text-isy-green-deep uppercase tracking-wider">
-                    Alamat Toko
+                <div className="space-y-0.5 text-left">
+                  <p className="text-[11px] font-bold text-[#626C65] uppercase">
+                    Alamat Lengkap
                   </p>
-                  <p className="text-xs text-isy-ink/80 leading-relaxed">
+                  <p className="text-xs text-[#183C30] leading-relaxed">
                     {branch.address}
                   </p>
                 </div>
               </div>
 
               {/* Opening Hours Item */}
-              <div className="flex items-start gap-3.5 pb-4 border-b border-isy-line/70">
-                <div className="p-2.5 rounded-2xl bg-isy-green-bright/10 text-isy-green-deep shrink-0 mt-0.5">
-                  <Clock className="w-5 h-5 text-isy-green-bright" />
+              <div className="flex items-start gap-3 pb-3 border-b border-[#E3E7DF]">
+                <div className="p-2 rounded-lg bg-white text-[#124734] shrink-0 border border-[#E3E7DF] mt-0.5">
+                  <Clock className="w-4 h-4" />
                 </div>
-                <div className="space-y-1 text-left">
-                  <p className="text-xs font-bold text-isy-green-deep uppercase tracking-wider">
+                <div className="space-y-0.5 text-left">
+                  <p className="text-[11px] font-bold text-[#626C65] uppercase">
                     Jam Operasional
                   </p>
                   {branch.hoursDetail ? (
-                    <div className="text-xs text-isy-ink/80 space-y-0.5">
+                    <div className="text-xs text-[#183C30] space-y-0.5">
                       <p>{branch.hoursDetail.weekdays}</p>
                       <p>{branch.hoursDetail.weekend}</p>
                     </div>
                   ) : (
-                    <p className="text-xs text-isy-ink/80">{branch.hours}</p>
+                    <p className="text-xs text-[#183C30]">{branch.hours}</p>
                   )}
                 </div>
               </div>
 
               {/* Telephone & WA Item */}
-              <div className="flex items-start gap-3.5">
-                <div className="p-2.5 rounded-2xl bg-isy-green-bright/10 text-isy-green-deep shrink-0 mt-0.5">
-                  <Phone className="w-5 h-5 text-isy-green-bright" />
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-white text-[#124734] shrink-0 border border-[#E3E7DF] mt-0.5">
+                  <Phone className="w-4 h-4" />
                 </div>
-                <div className="space-y-1 text-left">
-                  <p className="text-xs font-bold text-isy-green-deep uppercase tracking-wider">
-                    Kontak &amp; WhatsApp
+                <div className="space-y-0.5 text-left">
+                  <p className="text-[11px] font-bold text-[#626C65] uppercase">
+                    Kontak &amp; Sosial Media
                   </p>
-                  <p className="text-xs font-bold text-isy-green-deep">{branch.phone}</p>
-                  <p className="text-[11px] text-isy-ink/60">
+                  <p className="text-xs font-bold text-[#183C30]">{branch.phone}</p>
+                  <p className="text-xs text-[#626C65]">
                     Instagram:{" "}
                     <a
                       href={branch.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-isy-green-bright font-bold hover:underline"
+                      className="text-[#124734] font-semibold hover:underline"
                     >
                       {branch.handle}
                     </a>
@@ -600,38 +446,38 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
         </div>
       </section>
 
-      {/* ── STORE PHOTO GALLERY ────────────────────────────────────────────── */}
-      <section className="px-6 md:px-12 lg:px-20 py-10 bg-white border-y border-isy-line">
+      {/* STORE PHOTO GALLERY */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-14 border-b border-[#E3E7DF] bg-[#FAF8F3]">
         <div className="mx-auto max-w-6xl space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div>
-              <span className="text-xs font-extrabold uppercase tracking-widest text-isy-green-bright">
-                Galeri Suasana Toko
+              <span className="text-xs font-bold uppercase tracking-wider text-[#124734]">
+                Dokumentasi Cabang
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep mt-1">
-                Etalase &amp; Fasilitas Optik I See You {branch.city}
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30] mt-1">
+                Suasana Toko Optik I See You {branch.city}
               </h2>
             </div>
-            <p className="text-xs text-isy-ink/60">Foto asli lokasi fisik cabang {branch.city}</p>
+            <p className="text-xs text-[#626C65]">Foto dokumentasi fisik gerai {branch.city}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {branch.images.map((imgSrc, idx) => (
               <div
                 key={idx}
-                className="group relative h-64 sm:h-72 w-full rounded-2xl md:rounded-3xl overflow-hidden border border-isy-line bg-isy-mist/30 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-isy-green-bright/40"
+                className="group relative h-60 sm:h-64 w-full rounded-xl overflow-hidden border border-[#E3E7DF] bg-white shadow-2xs"
               >
                 <Image
                   src={imgSrc}
                   alt={`Suasana Toko Optik I See You ${branch.city} - Foto ${idx + 1}`}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-300 group-hover:scale-104"
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                   priority={idx === 0}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                  <span className="text-xs font-bold text-white tracking-wide">
-                    Optik I See You {branch.city} • Foto #{idx + 1}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                  <span className="text-xs font-semibold text-white">
+                    {branch.name} • Foto {idx + 1}
                   </span>
                 </div>
               </div>
@@ -640,22 +486,22 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
         </div>
       </section>
 
-      {/* ── GOOGLE MAPS EMBED & ROUTE SECTION ──────────────────────────────── */}
-      <section className="px-6 md:px-12 lg:px-20 py-14">
+      {/* GOOGLE MAPS EMBED & ROUTE SECTION */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 bg-white border-b border-[#E3E7DF]">
         <div className="mx-auto max-w-6xl space-y-6">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-isy-green-bright">
-              Lokasi &amp; Rute
+            <span className="text-xs font-bold uppercase tracking-wider text-[#124734]">
+              Peta Lokasi
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
-              Kunjungi Toko Kami di {branch.city}
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30]">
+              Lokasi &amp; Navigasi di {branch.city}
             </h2>
-            <p className="text-xs sm:text-sm text-isy-ink/70">
+            <p className="text-xs sm:text-sm text-[#626C65] leading-relaxed">
               {content.surroundings}
             </p>
           </div>
 
-          <div className="relative w-full h-[360px] sm:h-[420px] md:h-[480px] rounded-3xl overflow-hidden border border-isy-line shadow-lg bg-isy-mist/40">
+          <div className="relative w-full h-[340px] sm:h-[400px] md:h-[450px] rounded-2xl overflow-hidden border border-[#E3E7DF] bg-[#FAF8F3]">
             <iframe
               title={`Peta Lokasi Optik I See You ${branch.city}`}
               src={mapsEmbedUrl(branch)}
@@ -672,10 +518,10 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               href={mapsDirectionsUrl(branch)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-2xl bg-isy-green-deep hover:bg-isy-green-bright text-white px-6 py-3 text-xs sm:text-sm font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#124734] hover:bg-[#0C3527] text-white px-5 py-2.5 text-xs sm:text-sm font-semibold transition-colors"
             >
-              <Navigation className="w-4 h-4 text-emerald-400" />
-              <span>Buka Navigasi Rute di Google Maps</span>
+              <Navigation className="w-4 h-4" />
+              <span>Buka Petunjuk Arah di Google Maps</span>
               <ExternalLink className="w-3.5 h-3.5 opacity-70" />
             </a>
 
@@ -683,37 +529,37 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               href={branchGoogleReviewsUrl(branch)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-2xl bg-white hover:bg-isy-mist border border-isy-line text-isy-green-deep px-5 py-3 text-xs sm:text-sm font-bold transition-all shadow-2xs active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-[#E3E7DF] bg-[#FAF8F3] hover:bg-white text-[#183C30] px-5 py-2.5 text-xs sm:text-sm font-semibold transition-colors"
             >
-              <span>Lihat Ulasan Pelanggan Google ⭐ 5.0</span>
+              <span>Ulasan Google Maps Cabang {branch.city} ↗</span>
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── DETAILED UNIQUE SEO CONTENT ────────────────────────────────────── */}
-      <section className="px-6 md:px-12 lg:px-20 py-14 bg-white border-t border-isy-line">
+      {/* DETAILED CONTENT SECTION */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 bg-[#FAF8F3] border-b border-[#E3E7DF]">
         <div className="mx-auto max-w-4xl space-y-8">
           <div className="space-y-4">
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
-              Tentang Layanan Optik I See You {branch.city}
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30]">
+              Layanan Optik I See You {branch.city}
             </h2>
             {content.overview.map((para, idx) => (
-              <p key={idx} className="text-xs sm:text-sm text-isy-ink/80 leading-relaxed">
+              <p key={idx} className="text-xs sm:text-sm text-[#626C65] leading-relaxed">
                 {para}
               </p>
             ))}
           </div>
 
           {/* Highlights Box */}
-          <div className="rounded-3xl border border-isy-line bg-isy-mist/30 p-6 sm:p-8 space-y-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-isy-green-deep">
-              Keunggulan Berbelanja Kacamata di Cabang {branch.city}:
+          <div className="rounded-2xl border border-[#E3E7DF] bg-white p-6 sm:p-8 space-y-4">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-[#124734]">
+              Keunggulan Cabang {branch.city}:
             </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-isy-ink/85">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-[#183C30]">
               {content.highlights.map((hl, idx) => (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-isy-green-bright shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#124734] shrink-0 mt-0.5" />
                   <span>{hl}</span>
                 </li>
               ))}
@@ -721,67 +567,67 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
           </div>
 
           {/* Feature Showcase Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-            <div className="rounded-2xl border border-isy-line bg-white p-5 space-y-2 shadow-2xs">
-              <Eye className="w-6 h-6 text-isy-green-bright" />
-              <h4 className="text-xs font-bold text-isy-green-deep uppercase tracking-wide">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            <div className="rounded-xl border border-[#E3E7DF] bg-white p-5 space-y-2">
+              <Eye className="w-5 h-5 text-[#124734]" />
+              <h4 className="text-xs font-bold text-[#183C30] uppercase">
                 Periksa Mata Gratis
               </h4>
-              <p className="text-xs text-isy-ink/65 leading-relaxed">
-                Refraksi komputerisasi akurat tanpa biaya untuk cek minus, plus, dan silinder.
+              <p className="text-xs text-[#626C65] leading-relaxed">
+                Refraksi komputerisasi digital akurat untuk mengukur minus, plus, dan silinder.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-isy-line bg-white p-5 space-y-2 shadow-2xs">
-              <Glasses className="w-6 h-6 text-isy-green-bright" />
-              <h4 className="text-xs font-bold text-isy-green-deep uppercase tracking-wide">
-                Ratusan Frame Trendy
+            <div className="rounded-xl border border-[#E3E7DF] bg-white p-5 space-y-2">
+              <Glasses className="w-5 h-5 text-[#124734]" />
+              <h4 className="text-xs font-bold text-[#183C30] uppercase">
+                Koleksi Frame Lengkap
               </h4>
-              <p className="text-xs text-isy-ink/65 leading-relaxed">
-                Koleksi frame kacamata pria &amp; wanita model kekinian dengan bahan berkualitas.
+              <p className="text-xs text-[#626C65] leading-relaxed">
+                Ragam pilihan bingkai kacamata terkini dengan material kokoh dan nyaman.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-isy-line bg-white p-5 space-y-2 shadow-2xs">
-              <ShieldCheck className="w-6 h-6 text-isy-green-bright" />
-              <h4 className="text-xs font-bold text-isy-green-deep uppercase tracking-wide">
-                Garansi &amp; Layanan Cepat
+            <div className="rounded-xl border border-[#E3E7DF] bg-white p-5 space-y-2">
+              <ShieldCheck className="w-5 h-5 text-[#124734]" />
+              <h4 className="text-xs font-bold text-[#183C30] uppercase">
+                Garansi &amp; Faset CNC
               </h4>
-              <p className="text-xs text-isy-ink/65 leading-relaxed">
-                Pemotongan lensa faset CNC express presisi dengan garansi kenyamanan optik.
+              <p className="text-xs text-[#626C65] leading-relaxed">
+                Pemotongan lensa express dengan mesin tracing presisi serta garansi kenyamanan resep.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── AR TRY-ON & ONLINE CATALOG BANNER ──────────────────────────────── */}
-      <section className="px-6 md:px-12 lg:px-20 py-12 bg-gradient-to-br from-isy-green-deep to-[#0A2616] text-white">
-        <div className="mx-auto max-w-4xl text-center space-y-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-bold tracking-wider uppercase text-emerald-300">
+      {/* AR TRY-ON & ONLINE CATALOG BANNER */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 bg-[#124734] text-white">
+        <div className="mx-auto max-w-3xl text-center space-y-5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-semibold tracking-wider uppercase text-white/90">
             <Sparkles className="w-3.5 h-3.5" />
-            Coba Kacamata Sebelum Datang ke Toko
+            Fitur Coba Kacamata Virtual
           </span>
 
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-black leading-tight">
-            Coba Kacamata Virtual di Wajahmu Sekarang
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold leading-tight">
+            Coba Kacamata Secara Virtual Sebelum Datang ke Toko
           </h2>
 
-          <p className="text-xs sm:text-sm text-white/70 max-w-xl mx-auto leading-relaxed">
-            Gunakan kamera HP atau laptop Anda untuk mencoba koleksi frame kacamata Optik I See You secara real-time dengan teknologi Augmented Reality 3D.
+          <p className="text-xs sm:text-sm text-white/80 max-w-xl mx-auto leading-relaxed">
+            Gunakan kamera ponsel atau laptop Anda untuk mencoba koleksi frame kacamata Optik I See You secara langsung dengan Augmented Reality 3D.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
               href="/try-on"
-              className="inline-flex items-center gap-2 rounded-2xl bg-isy-green-bright hover:bg-emerald-400 text-white px-7 py-3.5 text-xs sm:text-sm font-black uppercase tracking-wider transition-all shadow-lg active:scale-95"
+              className="inline-flex items-center gap-2 rounded-xl bg-white text-[#124734] hover:bg-[#F8F5ED] px-6 py-3 text-xs sm:text-sm font-bold transition-colors shadow-sm"
             >
-              <span>Mulai Coba AR Try-On →</span>
+              <span>Coba AR Try-On Sekarang →</span>
             </Link>
 
             <Link
               href="/katalog"
-              className="inline-flex items-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3.5 text-xs sm:text-sm font-bold transition-all active:scale-95"
+              className="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-3 text-xs sm:text-sm font-semibold transition-colors"
             >
               <span>Lihat Katalog Frame</span>
             </Link>
@@ -789,17 +635,17 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
         </div>
       </section>
 
-      {/* ── CROSS-BRANCH INTERNAL LINKING ──────────────────────────────────── */}
-      <section className="px-6 md:px-12 lg:px-20 py-14 bg-isy-ivory border-t border-isy-line">
+      {/* OTHER BRANCHES CROSS-LINKING */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 bg-white border-b border-[#E3E7DF]">
         <div className="mx-auto max-w-6xl space-y-6">
           <div className="text-center space-y-1">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-isy-green-bright">
-              Jaringan Cabang Resmi
+            <span className="text-xs font-bold uppercase tracking-wider text-[#124734]">
+              Jaringan Gerai
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30]">
               Cabang Optik I See You Lainnya
             </h2>
-            <p className="text-xs text-isy-ink/60">
+            <p className="text-xs text-[#626C65]">
               Temukan toko Optik I See You terdekat di kota Anda
             </p>
           </div>
@@ -809,29 +655,29 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               <Link
                 key={ob.id}
                 href={`/cabang/${ob.id}`}
-                className="group relative rounded-3xl border border-isy-line bg-white p-6 shadow-sm transition-all duration-300 hover:border-isy-green-bright/60 hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between"
+                className="group rounded-xl border border-[#E3E7DF] bg-[#FAF8F3] p-5 shadow-2xs transition-all duration-200 hover:border-[#124734]/40 hover:bg-white hover:shadow-xs flex flex-col justify-between"
               >
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-extrabold uppercase tracking-wider text-isy-green-bright">
+                    <span className="text-[11px] font-bold uppercase text-[#124734]">
                       Cabang {ob.city}
                     </span>
-                    <span className="text-xs text-isy-green-deep group-hover:translate-x-1 transition-transform">
+                    <span className="text-xs text-[#124734] group-hover:translate-x-0.5 transition-transform">
                       →
                     </span>
                   </div>
-                  <h3 className="font-serif text-lg font-bold text-isy-green-deep">
-                    Optik I See You {ob.city}
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#183C30]">
+                    {ob.name}
                   </h3>
-                  <p className="text-xs text-isy-ink/65 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-[#626C65] line-clamp-2 leading-relaxed">
                     {ob.address}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-isy-line/60 flex items-center justify-between text-[11px] text-isy-ink/50 mt-4">
+                <div className="pt-3 border-t border-[#EAE5D9] flex items-center justify-between text-[11px] text-[#626C65] mt-4">
                   <span>{ob.hours}</span>
-                  <span className="font-bold text-isy-green-deep group-hover:text-isy-green-bright transition-colors">
-                    Lihat Lokasi
+                  <span className="font-semibold text-[#124734]">
+                    Lihat Cabang
                   </span>
                 </div>
               </Link>
@@ -840,14 +686,14 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
         </div>
       </section>
 
-      {/* ── FOOTER ─────────────────────────────────────────────────────────── */}
-      <footer className="w-full bg-[#0D2F1D] text-white border-t border-white/10 px-6 sm:px-10 py-10 text-xs">
+      {/* FOOTER */}
+      <footer className="w-full bg-[#183C30] text-white px-4 sm:px-6 lg:px-8 py-8 text-xs">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
             <p className="font-bold text-white text-sm">Optik I See You {branch.city}</p>
             <p className="text-white/60 text-[11px] mt-0.5">{branch.address}</p>
           </div>
-          <div className="flex items-center gap-4 text-[11px] text-white/60">
+          <div className="flex items-center gap-4 text-[11px] text-white/70 flex-wrap justify-center">
             <Link href="/" className="hover:text-white transition-colors">
               Beranda
             </Link>
@@ -860,8 +706,8 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               Katalog Softlens
             </Link>
             <span>•</span>
-            <Link href="/try-on" className="hover:text-white transition-colors">
-              AR Try-On
+            <Link href="/cabang" className="hover:text-white transition-colors">
+              Semua Cabang
             </Link>
           </div>
         </div>

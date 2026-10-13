@@ -1,160 +1,349 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { SoftlensProduct } from "@/lib/softlens";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import type { SoftlensSeries, SoftlensVariant } from "@/lib/softlens";
+import { SOFTLENS_CS_WA_URL } from "@/lib/softlens";
 
-interface Props {
-  product: SoftlensProduct | null;
-  isOpen?: boolean;
+interface SoftlensDetailModalProps {
+  series: SoftlensSeries | null;
+  initialVariant?: SoftlensVariant;
+  isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (product: SoftlensProduct) => void;
+  onAddToCart: (series: SoftlensSeries, selectedVariant?: SoftlensVariant) => void;
+  onOpenZoom?: (imageSrc: string, title: string) => void;
 }
 
-const COLOR_GRADIENTS: Record<string, string> = {
-  brown: "linear-gradient(135deg, #8B6350 0%, #C4956A 100%)",
-  grey: "linear-gradient(135deg, #8C9EA8 0%, #C5CDD2 100%)",
-  hazel: "linear-gradient(135deg, #7B6248 0%, #A8855E 100%)",
-  natural: "linear-gradient(135deg, #3A3D40 0%, #70757A 100%)",
-  colorful: "linear-gradient(135deg, #4A7C9B 0%, #9BC4E2 100%)",
-  accessory: "linear-gradient(135deg, #116B3C 0%, #2FA84F 100%)",
-};
+export default function SoftlensDetailModal({
+  series,
+  initialVariant,
+  isOpen,
+  onClose,
+  onAddToCart,
+  onOpenZoom,
+}: SoftlensDetailModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElement = useRef<HTMLElement | null>(null);
 
-export default function SoftlensDetailModal({ product, isOpen = true, onClose, onAddToCart }: Props) {
-  const [mounted, setMounted] = useState(false);
+  const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+  const [activePhotoType, setActivePhotoType] = useState<"variant" | "poster">("variant");
+
+  const variants = series?.variants || [];
+  const activeVariant =
+    variants.find((v) => v.id === selectedVariantId) ||
+    variants[0];
 
   useEffect(() => {
-    if (product && isOpen) {
-      const t = requestAnimationFrame(() => setMounted(true));
-      document.body.style.overflow = "hidden";
-      return () => {
-        cancelAnimationFrame(t);
-        document.body.style.overflow = "";
-      };
-    } else {
-      setMounted(false);
+    if (!series || !isOpen) return;
+
+    previouslyFocusedElement.current = document.activeElement as HTMLElement;
+    modalRef.current?.focus();
+
+    const defaultVariant =
+      initialVariant || (series.variants && series.variants[0]);
+    if (defaultVariant) {
+      setSelectedVariantId(defaultVariant.id);
     }
-  }, [product, isOpen]);
+    setActivePhotoType("variant");
 
-  if (!product || !isOpen) return null;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
 
-  const gradient = COLOR_GRADIENTS[product.colorFamily] ?? COLOR_GRADIENTS.brown;
+      if (e.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+      if (previouslyFocusedElement.current) {
+        previouslyFocusedElement.current.focus();
+      }
+    };
+  }, [series, initialVariant, isOpen, onClose]);
+
+  if (!isOpen || !series) return null;
+
+  const currentImage =
+    activePhotoType === "poster" && activeVariant?.detailPoster
+      ? activeVariant.detailPoster
+      : activeVariant?.image || series.coverImage;
+
+  const handleSelectVariant = (v: SoftlensVariant) => {
+    setSelectedVariantId(v.id);
+    setActivePhotoType("variant");
+  };
+
+  const whatsappUrl = SOFTLENS_CS_WA_URL(
+    series.name,
+    activeVariant ? activeVariant.name : undefined
+  );
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-end justify-center p-0 sm:items-center sm:p-4"
-      style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(8px)" }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4 overflow-y-auto"
       onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="softlens-modal-title"
     >
       <div
-        className={`relative w-full max-w-lg overflow-hidden rounded-t-[2rem] bg-white shadow-2xl transition-all duration-400 sm:rounded-[2rem] ${
-          mounted ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95"
-        }`}
+        ref={modalRef}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-3xl max-h-[94vh] sm:max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-white shadow-2xl border border-[#E3E7DF] focus:outline-none flex flex-col my-auto"
       >
-        {/* Accent strip */}
-        <div className="h-1.5 w-full" style={{ background: gradient }} />
-
-        {/* Header */}
-        <div className="flex items-start justify-between px-6 pt-5 pb-2">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-isy-green-bright/10 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-isy-green-bright border border-isy-green-bright/20 mb-2">
-              {product.category}
+        {/* Header Bar */}
+        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[#EAE5D9] bg-white/95 backdrop-blur-xs px-5 py-3.5">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-[#124734] uppercase tracking-wider">
+              {series.brand || (series.type === "accessory" ? "Aksesoris" : "Koleksi Softlens")}
             </span>
-            <h2 className="text-2xl font-black text-isy-green-deep">
-              {product.name}
-            </h2>
-            <div className="mt-1 flex items-baseline gap-1.5">
-              <span className="text-xl font-black text-isy-green-bright tracking-tight">
-                {product.priceFormatted}
+            {series.badgeText && (
+              <span className="rounded bg-stone-100 px-2 py-0.5 text-[11px] font-medium text-stone-600">
+                {series.badgeText}
               </span>
-              <span className="text-[10px] text-isy-ink/40 font-semibold">
-                {product.isAccessory ? "/ pcs" : "/ pasang"}
-              </span>
-            </div>
+            )}
           </div>
-
           <button
+            type="button"
             onClick={onClose}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100 text-isy-ink/60 transition hover:bg-gray-200"
+            aria-label="Tutup jendela detail produk"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#124734]"
           >
             ✕
           </button>
         </div>
 
-        {/* Content */}
-        <div className="max-h-[65vh] overflow-y-auto px-6 py-4 space-y-5">
-          {/* Visual Swatch / Accessory Icon */}
-          <div className="relative flex items-center justify-center py-6 rounded-2xl bg-isy-mist/50 border border-isy-line">
-            <div
-              className="h-32 w-32 rounded-full shadow-xl ring-4 ring-white flex items-center justify-center relative overflow-hidden"
-              style={{ background: gradient }}
-            >
-              <div className="absolute inset-0 rounded-full bg-white/20 [mask-image:radial-gradient(ellipse_at_30%_30%,white_20%,transparent_70%)]" />
-              <span className="text-4xl text-white drop-shadow select-none">
-                {product.isAccessory ? "💧" : "👁"}
-              </span>
-            </div>
-          </div>
+        {/* Modal Main Content: 2 Columns on Desktop */}
+        <div className="p-5 sm:p-7 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+          {/* Column 1: Image Showcase & Thumbnails (5 cols) */}
+          <div className="md:col-span-5 space-y-3">
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#FAF8F3] border border-[#E3E7DF]">
+              <Image
+                src={currentImage}
+                alt={`${series.name}${activeVariant ? ` - Varian ${activeVariant.name}` : ""}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-contain p-3 transition-transform duration-300"
+                priority
+              />
 
-          {/* Description */}
-          <div className="space-y-1">
-            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-isy-ink/40">Deskripsi Produk</h4>
-            <p className="text-sm font-medium text-isy-ink/75 leading-relaxed">{product.description}</p>
-          </div>
-
-          {/* Specs / Detail Info Grid */}
-          {!product.isAccessory && (
-            <div className="grid grid-cols-3 gap-3 rounded-2xl bg-isy-mist p-4 border border-isy-line">
-              <div className="text-center">
-                <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Diameter</p>
-                <p className="mt-0.5 text-xs font-black text-isy-green-deep">{product.diameter ?? "14.2 mm"}</p>
-              </div>
-              <div className="text-center border-x border-isy-line/60">
-                <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Kadar Air</p>
-                <p className="mt-0.5 text-xs font-black text-isy-green-deep">{product.waterContent ?? "50%"}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-[10px] font-extrabold uppercase tracking-wider text-isy-ink/40">Masa Pakai</p>
-                <p className="mt-0.5 text-xs font-black text-isy-green-deep">{product.usageDuration ?? "6 Bulan"}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Features / Highlights */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-isy-ink/40">Keunggulan &amp; Spesifikasi</h4>
-            <div className="flex flex-wrap gap-2">
-              {product.specs.map((spec) => (
-                <span
-                  key={spec}
-                  className="inline-flex items-center gap-1 rounded-xl bg-isy-green-bright/10 px-3 py-1 text-xs font-bold text-isy-green-deep border border-isy-green-bright/20"
+              {onOpenZoom && (
+                <button
+                  type="button"
+                  aria-label="Perbesar gambar"
+                  onClick={() => onOpenZoom(currentImage, series.name)}
+                  className="absolute bottom-2.5 right-2.5 rounded-lg bg-white/90 p-1.5 text-stone-600 border border-stone-200 shadow-2xs hover:text-[#124734] transition-colors"
                 >
-                  <span className="text-isy-green-bright">✦</span> {spec}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    <line x1="11" y1="8" x2="11" y2="14" />
+                    <line x1="8" y1="11" x2="14" y2="11" />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {/* Poster / Photo Toggle Thumbnails if detail poster exists */}
+            {activeVariant?.detailPoster && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setActivePhotoType("variant")}
+                  className={`flex-1 rounded-lg py-1.5 text-xs font-semibold border transition-all ${
+                    activePhotoType === "variant"
+                      ? "border-[#124734] bg-[#F8F5ED] text-[#124734]"
+                      : "border-[#E3E7DF] bg-white text-stone-600 hover:border-stone-400"
+                  }`}
+                >
+                  Foto Produk
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActivePhotoType("poster")}
+                  className={`flex-1 rounded-lg py-1.5 text-xs font-semibold border transition-all ${
+                    activePhotoType === "poster"
+                      ? "border-[#124734] bg-[#F8F5ED] text-[#124734]"
+                      : "border-[#E3E7DF] bg-white text-stone-600 hover:border-stone-400"
+                  }`}
+                >
+                  Poster Detail Specs
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Column 2: Details, Variants, Specs & Actions (7 cols) */}
+          <div className="md:col-span-7 space-y-4">
+            <div>
+              <h2
+                id="softlens-modal-title"
+                className="font-sans text-xl sm:text-2xl font-extrabold text-[#183C30] leading-tight"
+              >
+                {series.name}
+              </h2>
+
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-2xl font-black text-[#124734]">
+                  {activeVariant?.priceFormatted || series.basePriceFormatted}
                 </span>
-              ))}
+                <span className="text-xs text-stone-500 font-medium">
+                  {series.type === "accessory" ? "/ pcs" : "/ pasang"}
+                </span>
+              </div>
+
+              <p className="mt-2 text-xs text-[#626C65] leading-relaxed">
+                {series.description}
+              </p>
+            </div>
+
+            {/* Variant Selector (if variants > 1) */}
+            {variants.length > 1 && (
+              <div className="border-t border-[#EAE5D9] pt-3">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-semibold text-stone-700">Pilihan Varian:</span>
+                  <span className="font-bold text-[#124734]">{activeVariant?.name}</span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {variants.map((v) => {
+                    const isSelected = v.id === selectedVariantId;
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => handleSelectVariant(v)}
+                        className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
+                          isSelected
+                            ? "border-[#124734] bg-[#F8F5ED] text-[#183C30] ring-1 ring-[#124734]"
+                            : "border-[#E3E7DF] bg-white text-stone-600 hover:border-stone-400"
+                        }`}
+                      >
+                        {v.hex && (
+                          <span
+                            className="h-3.5 w-3.5 rounded-full border border-stone-300"
+                            style={{ backgroundColor: v.hex }}
+                          />
+                        )}
+                        <span>{v.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Technical Specifications */}
+            <div className="border-t border-[#EAE5D9] pt-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+                Spesifikasi Teknis
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                {series.diameter && (
+                  <div className="rounded-lg bg-[#FAF8F3] border border-[#ECE7DC] p-2">
+                    <span className="text-[10px] text-stone-500 block">Diameter (DIA)</span>
+                    <span className="font-bold text-[#183C30]">{series.diameter}</span>
+                  </div>
+                )}
+                {series.waterContent && (
+                  <div className="rounded-lg bg-[#FAF8F3] border border-[#ECE7DC] p-2">
+                    <span className="text-[10px] text-stone-500 block">Kadar Air</span>
+                    <span className="font-bold text-[#183C30]">{series.waterContent}</span>
+                  </div>
+                )}
+                {series.usageDuration && (
+                  <div className="rounded-lg bg-[#FAF8F3] border border-[#ECE7DC] p-2">
+                    <span className="text-[10px] text-stone-500 block">Masa Pakai</span>
+                    <span className="font-bold text-[#183C30]">{series.usageDuration}</span>
+                  </div>
+                )}
+                {series.volume && (
+                  <div className="rounded-lg bg-[#FAF8F3] border border-[#ECE7DC] p-2">
+                    <span className="text-[10px] text-stone-500 block">Volume Kemasan</span>
+                    <span className="font-bold text-[#183C30]">{series.volume}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Specs Pills */}
+              {series.specs && series.specs.length > 0 && (
+                <div className="mt-2.5 flex flex-wrap gap-1.5">
+                  {series.specs.map((spec) => (
+                    <span
+                      key={spec}
+                      className="rounded bg-stone-100 px-2 py-0.5 text-[10.5px] font-medium text-stone-600"
+                    >
+                      {spec}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Actions: Add to Cart & WhatsApp */}
+            <div className="border-t border-[#EAE5D9] pt-3.5 space-y-2.5">
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onAddToCart(series, activeVariant);
+                    onClose();
+                  }}
+                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[#124734] py-3 px-4 text-xs font-bold text-white shadow-sm hover:bg-[#0C3527] transition-all"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <circle cx="9" cy="21" r="1" />
+                    <circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                  </svg>
+                  <span>Tambah ke Keranjang</span>
+                </button>
+
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#124734] bg-white py-3 px-4 text-xs font-bold text-[#124734] hover:bg-[#F8F5ED] transition-all"
+                  title="Tanya stok via WhatsApp"
+                >
+                  <Image src="/logo/Logo-Whatsapp.webp" alt="WA" width={16} height={16} />
+                  <span>Chat CS</span>
+                </a>
+              </div>
+
+              <p className="text-[11px] text-stone-500 text-center">
+                Tersedia ukuran normal &amp; minus di seluruh cabang Optik I See You.
+              </p>
             </div>
           </div>
-
-          {/* Notice */}
-          <div className="rounded-xl bg-amber-50 p-3 border border-amber-200/60 text-xs text-amber-800 flex items-start gap-2.5">
-            <span className="text-base leading-none">💡</span>
-            <p className="leading-relaxed font-medium">
-              Tersedia stok untuk mata normal, minus tinggi hingga -10.00, dan resep silinder (astigmatism). Tanyakan langsung saat order.
-            </p>
-          </div>
-        </div>
-
-        {/* Footer Actions */}
-        <div className="px-6 py-4 border-t border-isy-line bg-gray-50 flex gap-3">
-          <button
-            onClick={() => {
-              onAddToCart(product);
-              onClose();
-            }}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-isy-green-bright py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/25 transition-all hover:bg-isy-green-deep active:scale-[0.97]"
-          >
-            <span>🛒 Tambah ke Keranjang ({product.priceFormatted})</span>
-          </button>
         </div>
       </div>
     </div>

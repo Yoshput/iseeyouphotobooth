@@ -4,6 +4,7 @@ export type Testimonial = {
   avatar?: string;
   rating: number;
   date: string;
+  isoDate?: string;
   text: string;
   branch: "Purwokerto" | "Purbalingga" | "Wonosobo" | "Cilacap";
   source: "google";

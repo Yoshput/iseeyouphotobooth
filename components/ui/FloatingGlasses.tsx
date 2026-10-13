@@ -3,77 +3,87 @@
 /**
  * components/ui/FloatingGlasses.tsx
  *
- * Floating glasses showcase untuk hero section.
- * - Mendukung 1 atau 2 gambar kacamata (staggered diagonal layout)
- * - Pure PNG 100% transparan tanpa background / tanpa mix-blend-mode distortion
- * - CSS float animation via GSAP (translateY, sine.inOut, infinite)
- * - Subtle rotation oscillation, stagger antar frame
- * - Mouse parallax on desktop only (max ±15px)
- * - IntersectionObserver: pause animasi saat di luar viewport
+ * Floating glasses showcase untuk hero section landing page.
+ * - Menggunakan aset foto produk asli transparan kualitas tinggi.
+ * - Mendukung 1, 2, atau 3 frame kacamata dalam komposisi diagonal yang terarah.
+ * - Animasi floating transform halus via GSAP (translateY, rotation).
+ * - Menghormati prefers-reduced-motion (animasi dinonaktifkan jika reduced motion aktif).
+ * - Desktop mouse parallax lembut (±12px max).
+ * - Pause otomatis saat keluar viewport via IntersectionObserver.
  */
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 
-interface GlassesItem {
+export interface GlassesItem {
   src: string;
   alt?: string;
 }
 
 interface FloatingGlassesProps {
-  /** Legacy single-image support */
   src?: string;
   alt?: string;
   width?: number;
   height?: number;
-  /** Multi-image support: array of 1 atau 2 kacamata */
   items?: GlassesItem[];
 }
 
 export default function FloatingGlasses({
   src,
-  alt = "Kacamata I See You",
-  width = 520,
-  height = 260,
+  alt = "Kacamata Optik I See You",
+  width = 540,
+  height = 270,
   items,
 }: FloatingGlassesProps) {
-  // Normalise ke array — backward-compat dengan props lama (src/alt)
   const glasses: GlassesItem[] =
     items && items.length > 0
       ? items
       : src
       ? [{ src, alt }]
-      : [];
+      : [
+          {
+            src: "/glasses/hero-glasses-black.webp",
+            alt: "Frame Hitam Kacamata I See You",
+          },
+          {
+            src: "/glasses/hero-glasses-champagne.webp",
+            alt: "Frame Champagne Crystal Kacamata I See You",
+          },
+        ];
 
   const wrapRef = useRef<HTMLDivElement>(null);
-  const img1Ref = useRef<HTMLDivElement>(null);
-  const img2Ref = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const gsapCtxRef = useRef<gsap.Context | null>(null);
   const parallaxRef = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
   const [visible, setVisible] = useState(true);
   const isTouchDevice = useRef(false);
+  const prefersReducedMotion = useRef(false);
 
-  const isDual = glasses.length >= 2;
-
-  /* ── Detect touch device ───────────────────────────────── */
   useEffect(() => {
     isTouchDevice.current = window.matchMedia("(pointer: coarse)").matches;
+    prefersReducedMotion.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
   }, []);
 
-  /* ── GSAP float + rotation ─────────────────────────────── */
+  /* ── GSAP float + rotation with reduced-motion respect ─────────────── */
   useEffect(() => {
-    const refs = [img1Ref.current, img2Ref.current].filter(Boolean) as HTMLDivElement[];
-    if (refs.length === 0) return;
+    if (prefersReducedMotion.current) return;
+
+    const validRefs = itemRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (validRefs.length === 0) return;
 
     gsapCtxRef.current = gsap.context(() => {
-      refs.forEach((el, i) => {
-        const delay = i * 1.1;
+      validRefs.forEach((el, i) => {
+        const delay = i * 0.9;
+        const yDistance = i % 2 === 0 ? -12 : -10;
+        const rotAmount = i % 2 === 0 ? 2 : -2;
 
         gsap.to(el, {
-          y: -14,
-          duration: 2.7,
+          y: yDistance,
+          duration: 3.2 + i * 0.4,
           ease: "sine.inOut",
           yoyo: true,
           repeat: -1,
@@ -82,24 +92,25 @@ export default function FloatingGlasses({
         });
 
         gsap.to(el, {
-          rotation: i === 0 ? 2.5 : -2.5,
-          duration: 4.2,
+          rotation: rotAmount,
+          duration: 4.5 + i * 0.5,
           ease: "sine.inOut",
           yoyo: true,
           repeat: -1,
-          delay: delay + 0.5,
+          delay: delay + 0.4,
           paused: !visible,
         });
       });
     });
 
     return () => gsapCtxRef.current?.revert();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [glasses.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── Pause/resume based on visibility ─────────────────── */
+  /* ── Pause / resume based on visibility ─────────────────── */
   useEffect(() => {
-    const refs = [img1Ref.current, img2Ref.current].filter(Boolean) as HTMLDivElement[];
-    refs.forEach((el) => {
+    if (prefersReducedMotion.current) return;
+    const validRefs = itemRefs.current.filter(Boolean) as HTMLDivElement[];
+    validRefs.forEach((el) => {
       const tweens = gsap.getTweensOf(el);
       tweens.forEach((t) => (visible ? t.resume() : t.pause()));
     });
@@ -116,15 +127,20 @@ export default function FloatingGlasses({
     return () => observer.disconnect();
   }, []);
 
-  /* ── Mouse parallax (desktop only) ────────────────────── */
+  /* ── Subtle mouse parallax (desktop only) ────────────────────── */
   useEffect(() => {
-    if (isTouchDevice.current || !wrapRef.current) return;
+    if (
+      isTouchDevice.current ||
+      prefersReducedMotion.current ||
+      !wrapRef.current
+    )
+      return;
 
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       const nx = (e.clientX / innerWidth - 0.5) * 2;
       const ny = (e.clientY / innerHeight - 0.5) * 2;
-      parallaxRef.current = { x: nx * 15, y: ny * 10 };
+      parallaxRef.current = { x: nx * 10, y: ny * 8 };
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
@@ -136,8 +152,8 @@ export default function FloatingGlasses({
         y: parseFloat(wrapRef.current.dataset.py ?? "0"),
       };
       const lerped = {
-        x: current.x + (parallaxRef.current.x - current.x) * 0.06,
-        y: current.y + (parallaxRef.current.y - current.y) * 0.06,
+        x: current.x + (parallaxRef.current.x - current.x) * 0.05,
+        y: current.y + (parallaxRef.current.y - current.y) * 0.05,
       };
       wrapRef.current.dataset.px = String(lerped.x);
       wrapRef.current.dataset.py = String(lerped.y);
@@ -153,40 +169,27 @@ export default function FloatingGlasses({
   }, []);
 
   /* ── Render ────────────────────────────────────────────── */
-
-  if (!isDual) {
+  if (glasses.length === 1) {
     const g = glasses[0];
-    if (!g) return null;
     return (
       <div
         ref={wrapRef}
         className="relative flex items-center justify-center select-none w-full"
         style={{ willChange: "transform", maxWidth: `${width}px` }}
       >
-        {/* Shadow blob */}
         <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            bottom: "-24px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "80%",
-            height: "36px",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.12) 0%, transparent 70%)",
-            filter: "blur(20px)",
-            pointerEvents: "none",
+          ref={(el) => {
+            itemRefs.current[0] = el;
           }}
-        />
-        <div ref={img1Ref} className="w-full flex justify-center" style={{ willChange: "transform" }}>
+          className="w-full flex justify-center"
+          style={{ willChange: "transform" }}
+        >
           <Image
             src={g.src}
             alt={g.alt ?? alt}
             width={width}
             height={height}
-            className="w-full h-auto object-contain drop-shadow-md"
-            style={{ maxWidth: `${width}px` }}
+            className="w-full h-auto object-contain drop-shadow-sm"
             priority
             draggable={false}
           />
@@ -195,85 +198,65 @@ export default function FloatingGlasses({
     );
   }
 
-  // === Dual glasses layout — prominent size & diagonal stagger ===
-  const [g1, g2] = glasses;
+  // 2 or 3 curated glasses diagonal layout
   return (
     <div
       ref={wrapRef}
       className="relative flex flex-col items-center select-none w-full"
       style={{
         willChange: "transform",
-        maxWidth: "560px",
-        gap: "16px",
+        maxWidth: `${width}px`,
+        gap: "20px",
       }}
     >
-      {/* ── Frame 1 — Hitam (atas, geser sedikit ke kiri) ── */}
-      <div
-        className="relative w-[88%] sm:w-[85%]"
-        style={{ alignSelf: "flex-start", marginLeft: "2%" }}
-      >
-        {/* Soft Shadow blob */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            bottom: "-12px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "72%",
-            height: "24px",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.10) 0%, transparent 70%)",
-            filter: "blur(14px)",
-            pointerEvents: "none",
-          }}
-        />
-        <div ref={img1Ref} style={{ willChange: "transform" }}>
-          <Image
-            src={g1.src}
-            alt={g1.alt ?? "Kacamata Hitam I See You"}
-            width={width}
-            height={height}
-            className="w-full h-auto object-contain drop-shadow-sm"
-            priority
-            draggable={false}
-          />
-        </div>
-      </div>
+      {glasses.slice(0, 3).map((item, idx) => {
+        const isEven = idx % 2 === 0;
+        const alignStyle = isEven
+          ? { alignSelf: "flex-start", marginLeft: "3%" }
+          : { alignSelf: "flex-end", marginRight: "3%" };
 
-      {/* ── Frame 2 — Tortoise / Caramel (bawah, geser sedikit ke kanan) ── */}
-      <div
-        className="relative w-[88%] sm:w-[85%]"
-        style={{ alignSelf: "flex-end", marginRight: "2%" }}
-      >
-        {/* Soft Shadow blob */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            bottom: "-12px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "72%",
-            height: "24px",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.10) 0%, transparent 70%)",
-            filter: "blur(14px)",
-            pointerEvents: "none",
-          }}
-        />
-        <div ref={img2Ref} style={{ willChange: "transform" }}>
-          <Image
-            src={g2.src}
-            alt={g2.alt ?? "Kacamata Tortoise Caramel I See You"}
-            width={width}
-            height={height}
-            className="w-full h-auto object-contain drop-shadow-sm"
-            priority
-            draggable={false}
-          />
-        </div>
-      </div>
+        return (
+          <div
+            key={item.src + idx}
+            className="relative w-[88%] sm:w-[84%]"
+            style={alignStyle}
+          >
+            {/* Soft Ambient Shadow blob */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                bottom: "-10px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "74%",
+                height: "20px",
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(ellipse at center, rgba(18, 71, 52, 0.08) 0%, transparent 70%)",
+                filter: "blur(12px)",
+                pointerEvents: "none",
+              }}
+            />
+            <div
+              ref={(el) => {
+                itemRefs.current[idx] = el;
+              }}
+              style={{ willChange: "transform" }}
+            >
+              <Image
+                src={item.src}
+                alt={item.alt ?? `Frame Kacamata ${idx + 1}`}
+                width={width}
+                height={height}
+                className="w-full h-auto object-contain drop-shadow-sm"
+                priority={idx === 0}
+                draggable={false}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
