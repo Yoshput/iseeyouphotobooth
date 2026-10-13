@@ -17,23 +17,31 @@ interface FeedItem {
 }
 
 const FEED_ROW_1: FeedItem[] = [
-  { id: "feed-1", name: "RSM Editorial Feed 01", tag: "New Look", thumb: "/katalog-feed/1-thumb.webp", medium: "/katalog-feed/1-medium.webp", zoom: "/katalog-feed/1-zoom.webp" },
-  { id: "feed-2", name: "RSM Editorial Feed 02", tag: "Signature Frame", thumb: "/katalog-feed/2-thumb.webp", medium: "/katalog-feed/2-medium.webp", zoom: "/katalog-feed/2-zoom.webp" },
-  { id: "feed-3", name: "RSM Editorial Feed 03", tag: "Modern Minimalist", thumb: "/katalog-feed/3-thumb.webp", medium: "/katalog-feed/3-medium.webp", zoom: "/katalog-feed/3-zoom.webp" },
-  { id: "feed-4", name: "RSM Editorial Feed 04", tag: "Trendy Eyewear", thumb: "/katalog-feed/4-thumb.webp", medium: "/katalog-feed/4-medium.webp", zoom: "/katalog-feed/4-zoom.webp" },
-  { id: "feed-5", name: "RSM Editorial Feed 05", tag: "Titanium Elegance", thumb: "/katalog-feed/5-thumb.webp", medium: "/katalog-feed/5-medium.webp", zoom: "/katalog-feed/5-zoom.webp" },
-  { id: "feed-6", name: "RSM Editorial Feed 06", tag: "Acetate Series", thumb: "/katalog-feed/6-thumb.webp", medium: "/katalog-feed/6-medium.webp", zoom: "/katalog-feed/6-zoom.webp" },
-  { id: "feed-boom-1", name: "RSM Lookbook 01", tag: "Daily Wear", thumb: "/katalog-feed/boom-thumb.webp", medium: "/katalog-feed/boom-medium.webp", zoom: "/katalog-feed/boom-zoom.webp" },
+  { id: "feed-01", name: "RSM Editorial Feed 01", tag: "New Look", thumb: "/katalog-feed/feed-01-thumb.webp", medium: "/katalog-feed/feed-01-medium.webp", zoom: "/katalog-feed/feed-01-zoom.webp" },
+  { id: "feed-02", name: "RSM Editorial Feed 02", tag: "Signature Frame", thumb: "/katalog-feed/feed-02-thumb.webp", medium: "/katalog-feed/feed-02-medium.webp", zoom: "/katalog-feed/feed-02-zoom.webp" },
+  { id: "feed-03", name: "RSM Editorial Feed 03", tag: "Modern Minimalist", thumb: "/katalog-feed/feed-03-thumb.webp", medium: "/katalog-feed/feed-03-medium.webp", zoom: "/katalog-feed/feed-03-zoom.webp" },
+  { id: "feed-04", name: "RSM Editorial Feed 04", tag: "Trendy Eyewear", thumb: "/katalog-feed/feed-04-thumb.webp", medium: "/katalog-feed/feed-04-medium.webp", zoom: "/katalog-feed/feed-04-zoom.webp" },
+  { id: "feed-05", name: "RSM Editorial Feed 05", tag: "Titanium Elegance", thumb: "/katalog-feed/feed-05-thumb.webp", medium: "/katalog-feed/feed-05-medium.webp", zoom: "/katalog-feed/feed-05-zoom.webp" },
+  { id: "feed-06", name: "RSM Editorial Feed 06", tag: "Acetate Series", thumb: "/katalog-feed/feed-06-thumb.webp", medium: "/katalog-feed/feed-06-medium.webp", zoom: "/katalog-feed/feed-06-zoom.webp" },
+  { id: "aesthetic-01", name: "Frame Aesthetic Collection", tag: "Aesthetic Look", thumb: "/katalog-feed/aesthetic-01-thumb.webp", medium: "/katalog-feed/aesthetic-01-medium.webp", zoom: "/katalog-feed/aesthetic-01-zoom.webp" },
+  { id: "lookbook-01", name: "RSM Lookbook 01", tag: "Daily Wear", thumb: "/katalog-feed/lookbook-01-thumb.webp", medium: "/katalog-feed/lookbook-01-medium.webp", zoom: "/katalog-feed/lookbook-01-zoom.webp" },
+  { id: "lookbook-05", name: "RSM Lookbook 05", tag: "Casual Smart", thumb: "/katalog-feed/lookbook-05-thumb.webp", medium: "/katalog-feed/lookbook-05-medium.webp", zoom: "/katalog-feed/lookbook-05-zoom.webp" },
+  { id: "lookbook-06", name: "RSM Lookbook 06", tag: "Urban Classic", thumb: "/katalog-feed/lookbook-06-thumb.webp", medium: "/katalog-feed/lookbook-06-medium.webp", zoom: "/katalog-feed/lookbook-06-zoom.webp" },
+  { id: "lookbook-07", name: "RSM Lookbook 07", tag: "Modern Accent", thumb: "/katalog-feed/lookbook-07-thumb.webp", medium: "/katalog-feed/lookbook-07-medium.webp", zoom: "/katalog-feed/lookbook-07-zoom.webp" },
 ];
 
 const FEED_ROW_2: FeedItem[] = [
-  { id: "feed-7", name: "RSM Editorial Feed 07", tag: "Classic Retro", thumb: "/katalog-feed/7-thumb.webp", medium: "/katalog-feed/7-medium.webp", zoom: "/katalog-feed/7-zoom.webp" },
-  { id: "feed-8", name: "RSM Editorial Feed 08", tag: "Urban Style", thumb: "/katalog-feed/8-thumb.webp", medium: "/katalog-feed/8-medium.webp", zoom: "/katalog-feed/8-zoom.webp" },
-  { id: "feed-9", name: "RSM Editorial Feed 09", tag: "Comfort Fit", thumb: "/katalog-feed/9-thumb.webp", medium: "/katalog-feed/9-medium.webp", zoom: "/katalog-feed/9-zoom.webp" },
-  { id: "feed-10", name: "RSM Editorial Feed 10", tag: "Cat Eye Trend", thumb: "/katalog-feed/10-thumb.webp", medium: "/katalog-feed/10-medium.webp", zoom: "/katalog-feed/10-zoom.webp" },
-  { id: "feed-11", name: "RSM Editorial Feed 11", tag: "Subtle Charm", thumb: "/katalog-feed/11-thumb.webp", medium: "/katalog-feed/11-medium.webp", zoom: "/katalog-feed/11-zoom.webp" },
-  { id: "feed-boom-2", name: "RSM Lookbook 02", tag: "Vintage Classic", thumb: "/katalog-feed/boom-02-thumb.webp", medium: "/katalog-feed/boom-02-medium.webp", zoom: "/katalog-feed/boom-02-zoom.webp" },
-  { id: "feed-boom-3", name: "RSM Lookbook 03", tag: "Gentle Edge", thumb: "/katalog-feed/boom-03-thumb.webp", medium: "/katalog-feed/boom-03-medium.webp", zoom: "/katalog-feed/boom-03-zoom.webp" },
+  { id: "feed-07", name: "RSM Editorial Feed 07", tag: "Classic Retro", thumb: "/katalog-feed/feed-07-thumb.webp", medium: "/katalog-feed/feed-07-medium.webp", zoom: "/katalog-feed/feed-07-zoom.webp" },
+  { id: "feed-08", name: "RSM Editorial Feed 08", tag: "Urban Style", thumb: "/katalog-feed/feed-08-thumb.webp", medium: "/katalog-feed/feed-08-medium.webp", zoom: "/katalog-feed/feed-08-zoom.webp" },
+  { id: "feed-09", name: "RSM Editorial Feed 09", tag: "Comfort Fit", thumb: "/katalog-feed/feed-09-thumb.webp", medium: "/katalog-feed/feed-09-medium.webp", zoom: "/katalog-feed/feed-09-zoom.webp" },
+  { id: "feed-10", name: "RSM Editorial Feed 10", tag: "Cat Eye Trend", thumb: "/katalog-feed/feed-10-thumb.webp", medium: "/katalog-feed/feed-10-medium.webp", zoom: "/katalog-feed/feed-10-zoom.webp" },
+  { id: "feed-11", name: "RSM Editorial Feed 11", tag: "Subtle Charm", thumb: "/katalog-feed/feed-11-thumb.webp", medium: "/katalog-feed/feed-11-medium.webp", zoom: "/katalog-feed/feed-11-zoom.webp" },
+  { id: "lookbook-02", name: "RSM Lookbook 02", tag: "Vintage Classic", thumb: "/katalog-feed/lookbook-02-thumb.webp", medium: "/katalog-feed/lookbook-02-medium.webp", zoom: "/katalog-feed/lookbook-02-zoom.webp" },
+  { id: "lookbook-03", name: "RSM Lookbook 03", tag: "Gentle Edge", thumb: "/katalog-feed/lookbook-03-thumb.webp", medium: "/katalog-feed/lookbook-03-medium.webp", zoom: "/katalog-feed/lookbook-03-zoom.webp" },
+  { id: "lookbook-04", name: "RSM Lookbook 04", tag: "Chic Minimal", thumb: "/katalog-feed/lookbook-04-thumb.webp", medium: "/katalog-feed/lookbook-04-medium.webp", zoom: "/katalog-feed/lookbook-04-zoom.webp" },
+  { id: "lookbook-08", name: "RSM Lookbook 08", tag: "Bold Statement", thumb: "/katalog-feed/lookbook-08-thumb.webp", medium: "/katalog-feed/lookbook-08-medium.webp", zoom: "/katalog-feed/lookbook-08-zoom.webp" },
+  { id: "lookbook-09", name: "RSM Lookbook 09", tag: "Editorial Glow", thumb: "/katalog-feed/lookbook-09-thumb.webp", medium: "/katalog-feed/lookbook-09-medium.webp", zoom: "/katalog-feed/lookbook-09-zoom.webp" },
+  { id: "lookbook-10", name: "RSM Lookbook 10", tag: "Timeless Fit", thumb: "/katalog-feed/lookbook-10-thumb.webp", medium: "/katalog-feed/lookbook-10-medium.webp", zoom: "/katalog-feed/lookbook-10-zoom.webp" },
 ];
 
 export default function RunningCatalogFeed() {

@@ -293,10 +293,10 @@ export default function EyeExamFacilitySection() {
             {TRUST_HIGHLIGHTS.map((highlight) => (
               <div
                 key={highlight}
-                className="inline-flex items-center gap-2 rounded-full border border-isy-green-bright/20 bg-white px-4 py-1.5 text-xs font-bold text-isy-green-deep shadow-sm"
+                className="inline-flex items-center gap-2 rounded-full border border-[#2FA84F]/25 bg-white px-4 py-1.5 text-xs font-bold text-[#124734] shadow-xs"
               >
                 <svg
-                  className="h-3.5 w-3.5 text-isy-green-bright"
+                  className="h-3.5 w-3.5 text-[#2FA84F]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -315,7 +315,7 @@ export default function EyeExamFacilitySection() {
           <div className="pt-2">
             <a
               href="#lokasi"
-              className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep py-4 px-8 text-xs font-black uppercase tracking-[0.14em] text-white shadow-lg shadow-isy-green-bright/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-isy-green-bright/40 active:scale-[0.97]"
+              className="inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#2FA84F] to-[#124734] py-4 px-8 text-xs font-black uppercase tracking-[0.14em] text-white shadow-lg shadow-[#2FA84F]/35 transition-all duration-300 hover:scale-[1.03] hover:shadow-[#2FA84F]/50 active:scale-[0.97]"
             >
               <span>KUNJUNGI CABANG OPTIK I SEE YOU</span>
               <svg

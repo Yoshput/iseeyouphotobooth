@@ -375,22 +375,24 @@ export default function LandingPage() {
       <EyeExamFacilitySection />
 
       {/* ═══ QUIZ CTA SECTION ═══ */}
-      <section className="w-full bg-gradient-to-br from-[#0D2F1D] to-isy-green-deep px-6 py-20 text-center relative overflow-hidden">
+      <section className="w-full bg-gradient-to-b from-[#0F3822] via-[#0D2F1D] to-[#0A2417] px-6 py-20 text-center relative overflow-hidden">
         {/* Glow effect */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[500px] rounded-full bg-isy-green-bright/20 blur-[100px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[350px] w-[600px] rounded-full bg-[#2FA84F]/15 blur-[120px]" />
         
         <div className="mx-auto max-w-2xl relative z-10">
           <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
-            Cari Tahu <span className="text-isy-green-bright">Frame DNA</span> Kamu!
+            Cari Tahu <span className="text-[#2FA84F]">Frame DNA</span><br />
+            Kamu!
           </h2>
-          <p className="text-white/70 text-base md:text-lg mb-10 max-w-lg mx-auto">
+          <p className="text-white/85 text-base md:text-lg mb-10 max-w-lg mx-auto font-normal">
             Quiz 5 menit untuk temukan frame yang cocok sama bentuk wajah dan kepribadian kamu.
           </p>
           <Link
             href="/quiz"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-isy-green-bright to-emerald-500 px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-isy-green-bright/30 transition-all hover:scale-105 active:scale-95"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#2FA84F] to-[#10B981] px-8 py-4 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-[#2FA84F]/35 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#2FA84F]/50 active:scale-95"
           >
-            Mulai Quiz Frame DNA →
+            <span>MULAI QUIZ FRAME DNA</span>
+            <span>→</span>
           </Link>
         </div>
       </section>
@@ -590,7 +592,7 @@ export default function LandingPage() {
 
             <button
               onClick={start}
-              className="mt-2 w-full rounded-xl bg-isy-green-bright py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-isy-green-bright active:scale-95"
+              className="mt-2 w-full rounded-xl bg-[#2FA84F] hover:bg-[#258e42] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-[#2FA84F]/30 transition-all active:scale-95 cursor-pointer"
             >
               Mulai Photobooth AR →
             </button>
