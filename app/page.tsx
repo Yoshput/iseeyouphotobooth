@@ -144,11 +144,11 @@ export default function LandingPage() {
 
       {/* Soft glow background */}
       {/* ═══ HERO EDITORIAL SECTION ═══ */}
-      <section className="relative min-h-[85dvh] flex items-center px-5 sm:px-8 md:px-12 lg:px-20 pt-24 sm:pt-28 pb-14 bg-[#F8F5ED]">
-        <div className="mx-auto w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <section className="relative min-h-[85dvh] flex items-center justify-center px-6 md:px-12 lg:px-20 pt-24 sm:pt-28 pb-14 bg-[#F8F5ED]">
+        <div className="mx-auto w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-          {/* ── LEFT: Editorial Typography & Clean CTAs (7 cols) ── */}
-          <div className="lg:col-span-6 flex flex-col items-start text-left justify-center">
+          {/* ── LEFT: Editorial Typography & Stacked CTAs ── */}
+          <div className="flex flex-col items-start text-left justify-center">
 
             {/* Eyebrow badge */}
             <div ref={logoRef} className="mb-4">
@@ -157,76 +157,87 @@ export default function LandingPage() {
               </span>
             </div>
 
-            {/* Editorial Headline with single consistent emerald color */}
+            {/* Editorial Headline with vibrant 2-tone colors */}
             <div ref={tagRef}>
-              <h1 className="font-extrabold text-[#124734] leading-[1.14] tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem]">
-                Temukan frame yang terasa seperti kamu.
+              <h1 className="font-extrabold leading-[1.14] tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem]">
+                <span className="text-[#124734] block">Temukan frame</span>
+                <span className="bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] bg-clip-text text-transparent block">
+                  yang terasa seperti kamu.
+                </span>
               </h1>
               <p className="mt-4 text-sm sm:text-base text-[#626C65] leading-relaxed max-w-lg font-normal">
                 Jelajahi koleksi kacamata dan softlens, coba frame secara virtual, atau kunjungi cabang terdekat.
               </p>
             </div>
 
-            {/* Action Buttons */}
-            <div ref={ctaRef} className="mt-7 w-full max-w-md space-y-3.5">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                {/* Primary CTA: Mulai Try-On / Photobooth */}
-                <button
-                  type="button"
-                  onClick={start}
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#124734] px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-[#0C3527] transition-all text-center cursor-pointer active:scale-98"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  <span>Mulai Try-On / Photobooth</span>
-                </button>
+            {/* Action Buttons: Stacked layout with vibrant gradient matching Screenshot 3 */}
+            <div ref={ctaRef} className="mt-7 w-full max-w-[440px] space-y-3.5">
+              {/* Primary CTA: Mulai Try-On / Photobooth */}
+              <button
+                type="button"
+                onClick={start}
+                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] py-4 px-6 text-[13px] sm:text-[13.5px] font-black uppercase tracking-[0.12em] text-white shadow-lg shadow-[#208c49]/25 transition-all hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] cursor-pointer"
+              >
+                <span>MULAI TRY-ON / PHOTOBOOTH</span>
+              </button>
 
-                {/* Secondary CTA: Antrian Cek Mata */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    const el = document.getElementById("antrian-cek-mata");
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth", block: "start" });
-                    } else {
-                      router.push("#antrian-cek-mata");
-                    }
-                  }}
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#124734] bg-white px-6 py-3.5 text-xs sm:text-sm font-bold text-[#124734] hover:bg-[#124734] hover:text-white transition-all text-center shadow-2xs cursor-pointer active:scale-98 group"
+              {/* Secondary CTA: Antri Cek Mata & Konsultasi */}
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("antrian-cek-mata");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  } else {
+                    router.push("#antrian-cek-mata");
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2.5 rounded-2xl border-2 border-[#124734]/25 bg-white/95 backdrop-blur-md py-4 px-6 text-[13px] sm:text-[13.5px] font-black uppercase tracking-[0.08em] text-[#124734] shadow-md shadow-black/5 transition-all duration-200 hover:border-[#124734] hover:bg-[#FAF8F3] hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-[#208c49] group-hover:scale-110 transition-transform"
                 >
-                  <Eye className="h-4 w-4 text-[#124734] group-hover:text-white transition-colors" />
-                  <span>Antrian Cek Mata</span>
-                </button>
-              </div>
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span>ANTRI CEK MATA &amp; KONSULTASI</span>
+              </button>
 
-              {/* Supporting CTA */}
-              <div className="pt-1 flex items-center justify-start gap-4 text-xs">
+              {/* Supporting CTA below Antrian Cek Mata */}
+              <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
                 <Link
                   href="/katalog"
-                  className="font-semibold text-[#124734] hover:underline flex items-center gap-1"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1.5 text-xs font-bold text-[#124734] shadow-2xs hover:border-[#124734] hover:bg-[#FAF8F3] transition-colors"
                 >
                   <span>Jelajahi Katalog Frame</span>
                   <span>→</span>
                 </Link>
-                <span className="text-[#E3E7DF]">•</span>
                 <Link
                   href="/softlens"
-                  className="font-medium text-[#626C65] hover:text-[#124734] transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1.5 text-xs font-bold text-[#124734] shadow-2xs hover:border-[#124734] hover:bg-[#FAF8F3] transition-colors"
                 >
-                  Katalog Softlens
+                  <span>Katalog Softlens</span>
                 </Link>
-                <span className="text-[#E3E7DF]">•</span>
-                <a
-                  href="#lokasi"
-                  className="font-medium text-[#626C65] hover:text-[#124734] transition-colors"
+                <Link
+                  href="/cabang"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1.5 text-xs font-bold text-[#124734] shadow-2xs hover:border-[#124734] hover:bg-[#FAF8F3] transition-colors"
                 >
-                  4 Cabang Resmi
-                </a>
+                  <span>4 Cabang Resmi</span>
+                </Link>
               </div>
             </div>
           </div>
 
-          {/* ── RIGHT: Authentic Floating Glasses Showcase (5 cols) ── */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center relative py-4 sm:py-6 w-full">
+          {/* ── RIGHT: Authentic Floating Glasses Showcase ── */}
+          <div className="flex flex-col items-center justify-center relative py-4 sm:py-6 w-full">
             <FloatingGlasses
               items={[
                 {

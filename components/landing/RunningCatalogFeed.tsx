@@ -45,8 +45,51 @@ export default function RunningCatalogFeed() {
     return `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
+  // Exactly duplicate lists for mathematically seamless -50% infinite loops
+  const row1Items = [...FEED_ROW_1, ...FEED_ROW_1];
+  const row2Items = [...FEED_ROW_2, ...FEED_ROW_2];
+
   return (
     <section className="relative w-full overflow-hidden bg-[#FAF8F3] py-16 sm:py-24 border-y border-[#E3E7DF]">
+      <style>{`
+        @keyframes marquee-scroll-left {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
+
+        @keyframes marquee-scroll-right {
+          0% {
+            transform: translate3d(-50%, 0, 0);
+          }
+          100% {
+            transform: translate3d(0, 0, 0);
+          }
+        }
+
+        .marquee-track-left {
+          display: flex !important;
+          width: max-content !important;
+          animation: marquee-scroll-left 32s linear infinite !important;
+          will-change: transform;
+        }
+
+        .marquee-track-right {
+          display: flex !important;
+          width: max-content !important;
+          animation: marquee-scroll-right 32s linear infinite !important;
+          will-change: transform;
+        }
+
+        .marquee-container:hover .marquee-track-left,
+        .marquee-container:hover .marquee-track-right {
+          animation-play-state: paused !important;
+        }
+      `}</style>
+
       <div className="mx-auto max-w-6xl px-4 sm:px-6 mb-10 text-center space-y-3">
         <span className="text-xs font-bold uppercase tracking-widest text-[#124734]">
           Pilihan Koleksi
@@ -62,9 +105,9 @@ export default function RunningCatalogFeed() {
       {/* Marquee Showcase (2 Rows, Opposite Directions, Smooth Infinite Loop) */}
       <div className="w-full space-y-4 sm:space-y-6 overflow-hidden">
         {/* Row 1: Leftward Infinite Marquee */}
-        <div className="group/row relative w-full overflow-hidden py-1">
-          <div className="animate-marquee-left flex items-center gap-4 sm:gap-6 group-hover/row:[animation-play-state:paused]">
-            {FEED_ROW_1.concat(FEED_ROW_1).concat(FEED_ROW_1).map((item, idx) => (
+        <div className="marquee-container relative w-full overflow-hidden py-1">
+          <div className="marquee-track-left flex items-center gap-4 sm:gap-6">
+            {row1Items.map((item, idx) => (
               <button
                 key={`r1-${idx}`}
                 type="button"
@@ -81,7 +124,6 @@ export default function RunningCatalogFeed() {
                   loading="lazy"
                 />
 
-                {/* Subtle gradient overlay at bottom */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-white/80">
                     {item.tag}
@@ -99,9 +141,9 @@ export default function RunningCatalogFeed() {
         </div>
 
         {/* Row 2: Rightward Infinite Marquee */}
-        <div className="group/row relative w-full overflow-hidden py-1">
-          <div className="animate-marquee-right flex items-center gap-4 sm:gap-6 group-hover/row:[animation-play-state:paused]">
-            {FEED_ROW_2.concat(FEED_ROW_2).concat(FEED_ROW_2).map((item, idx) => (
+        <div className="marquee-container relative w-full overflow-hidden py-1">
+          <div className="marquee-track-right flex items-center gap-4 sm:gap-6">
+            {row2Items.map((item, idx) => (
               <button
                 key={`r2-${idx}`}
                 type="button"
