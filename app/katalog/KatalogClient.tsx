@@ -1,541 +1,878 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef, KeyboardEvent } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import Image from "next/image";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Link from "next/link";
-import FloatingSunglasses from "@/components/katalog/FloatingSunglasses";
-import CatalogConfetti from "@/components/katalog/CatalogConfetti";
+import CatalogItemCard from "@/components/katalog/CatalogItemCard";
 import CatalogDetailModal from "@/components/katalog/CatalogDetailModal";
 import ContactCSModal from "@/components/ui/ContactCSModal";
-import { type CatalogCollection, type CatalogItem } from "@/lib/catalog";
-import { type SoftlensProduct, SOFTLENS_CS_WA_URL } from "@/lib/softlens";
-import { csWhatsappUrl } from "@/lib/branches";
+import type { CatalogCollection, CatalogItem } from "@/lib/catalog";
+import type { SoftlensProduct } from "@/lib/softlens";
 
-function getFrameCode(name: string, collectionTitle?: string): string {
-  let cleaned = name.replace(/—/g, "-").trim();
-  if (collectionTitle) {
-    const escaped = collectionTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regex = new RegExp(`^${escaped}\\s*[-–—:]?\\s*`, "i");
-    cleaned = cleaned.replace(regex, "").trim();
-  }
-  return cleaned || name.replace(/—/g, "-");
+interface KatalogClientProps {
+  initialCollections: CatalogCollection[];
+  initialSoftlens?: SoftlensProduct[];
 }
 
-/**
- * Item Card component for Frames
- */
-function CatalogItemCard({
-  item,
-  collectionTitle,
-  onOpenDetail,
-  onOpenCSModal,
-}: {
-  item: CatalogItem;
-  collectionTitle?: string;
-  onOpenDetail: (item: CatalogItem, initialTab?: "gallery" | "specs") => void;
-  onOpenCSModal: (item: CatalogItem) => void;
-}) {
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  useEffect(() => {
-    if (!item.images || item.images.length <= 1) return;
-    const interval = setInterval(() => {
-      setSlideIndex((prev) => (prev + 1) % item.images.length);
-    }, 3500);
-    return () => clearInterval(interval);
-  }, [item.images]);
-
-  const displayImages = item.images && item.images.length > 0 ? item.images : [item.image];
-  const frameCode = getFrameCode(item.name, collectionTitle || item.collection);
-
-  return (
-    <div
-      onClick={() => onOpenDetail(item, "gallery")}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-isy-line bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-isy-green-bright/50 hover:shadow-xl cursor-pointer"
-    >
-      <div>
-        {/* Image Cover with Clean Lihat Specs Overlay */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-isy-mist border border-isy-line/60">
-          {displayImages.map((imgSrc, idx) => (
-            <Image
-              key={imgSrc}
-              src={imgSrc}
-              alt={`Frame Kacamata ${item.name} model ${item.style} - Optik I See You (Foto ${idx + 1})`}
-              fill
-              className={`object-contain p-4 transition-all duration-700 ${
-                idx === slideIndex ? "opacity-100 scale-100" : "opacity-0 scale-105"
-              }`}
-            />
-          ))}
-          {displayImages.length > 1 && (
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-              {displayImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSlideIndex(idx);
-                  }}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    idx === slideIndex ? "w-4 bg-isy-green-bright" : "w-1 bg-isy-green-bright/30"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Overlay: Lihat Specs Pill Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpenDetail(item, "specs");
-            }}
-            className="absolute bottom-3 right-3 rounded-full bg-isy-green-deep/90 text-white px-2.5 py-1 text-[10px] font-bold shadow-md backdrop-blur-md hover:bg-isy-green-bright hover:scale-105 active:scale-95 transition-all z-10 flex items-center gap-1 cursor-pointer"
-          >
-            <span>Lihat Specs</span>
-          </button>
-        </div>
-
-        {/* Minimalist Card Body - Only Frame Code, No Description */}
-        <div className="mt-4">
-          <h3 className="font-sans text-base sm:text-lg font-bold text-isy-green-deep leading-snug group-hover:text-isy-green-bright transition-colors">
-            {frameCode}
-          </h3>
-        </div>
-      </div>
-
-      {/* Clean Single Action Button: Tanya CS 4 Cabang (No AR Try-On) */}
-      <div className="mt-5 pt-4 border-t border-isy-line">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenCSModal(item);
-          }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-isy-green-deep py-2.5 px-4 text-xs font-bold text-white shadow-xs transition-all hover:bg-isy-green-bright active:scale-95 text-center cursor-pointer"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
-            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.83a8.212 8.212 0 0 1-5.82 2.41h-.01c-1.38 0-2.73-.35-3.92-1.02l-.28-.16-2.9.76.77-2.83-.18-.29a8.196 8.196 0 0 1-1.25-4.39c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.98-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.45-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
-          </svg>
-          <span>Tanya CS 4 Cabang</span>
-        </button>
-      </div>
-    </div>
-  );
-}
+const FAVORITES_STORAGE_KEY = "isy_fav_frames";
 
 export default function KatalogClient({
   initialCollections,
-}: {
-  initialCollections: CatalogCollection[];
-  initialSoftlens?: SoftlensProduct[];
+}: KatalogClientProps) {
+  // Flatten unique items across all collections
+  const allItems = useMemo<CatalogItem[]>(() => {
+    const map = new Map<string, CatalogItem>();
+    initialCollections.forEach((col) => {
+      col.items.forEach((item) => {
+        if (!map.has(item.id)) {
+          map.set(item.id, {
+            ...item,
+            collection: item.collection || col.title,
+          });
+        }
+      });
+    });
+    return Array.from(map.values());
+  }, [initialCollections]);
 
-}) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const tabParam = searchParams.get("tab");
-  const catParam = searchParams.get("cat");
-  const qParam = searchParams.get("q");
+  // Dynamic filter lists supported by data
+  const availableShapes = useMemo(() => {
+    const set = new Set<string>();
+    allItems.forEach((i) => {
+      const s = i.shape || i.style;
+      if (s) set.add(s);
+    });
+    return Array.from(set).sort();
+  }, [allItems]);
 
-  const [viewMode, setViewMode] = useState<"choose" | "frame">(
-    tabParam === "frame" || Boolean(catParam) || Boolean(qParam) ? "frame" : "choose"
-  );
+  const availableMaterials = useMemo(() => {
+    const set = new Set<string>();
+    allItems.forEach((i) => {
+      if (i.material) set.add(i.material);
+    });
+    return Array.from(set).sort();
+  }, [allItems]);
+
+  const availableColors = useMemo(() => {
+    const set = new Set<string>();
+    allItems.forEach((i) => {
+      i.colors?.forEach((c) => {
+        if (c.name) set.add(c.name);
+      });
+    });
+    return Array.from(set).sort();
+  }, [allItems]);
+
+  // Filter States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedShape, setSelectedShape] = useState("all");
+  const [selectedMaterial, setSelectedMaterial] = useState("all");
+  const [selectedColor, setSelectedColor] = useState("all");
+  const [selectedCollection, setSelectedCollection] = useState("all");
+  const [onlyWithAr, setOnlyWithAr] = useState(false);
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [sortBy, setSortBy] = useState<
+    "default" | "name-asc" | "name-desc" | "price-asc" | "price-desc"
+  >("default");
+
+  // Mobile Filter Drawer
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Local Favorites
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
-    if (tabParam === "frame" || Boolean(catParam) || Boolean(qParam)) {
-      setViewMode("frame");
+    try {
+      const saved = localStorage.getItem(FAVORITES_STORAGE_KEY);
+      if (saved) {
+        setFavorites(JSON.parse(saved));
+      }
+    } catch {
+      // localStorage may fail in restricted/private modes
     }
-  }, [tabParam, catParam, qParam]);
+  }, []);
 
-  // Frame state
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [activeModalItem, setActiveModalItem] = useState<CatalogItem | null>(null);
-  const [activeModalTab, setActiveModalTab] = useState<"gallery" | "specs">("gallery");
+  const toggleFavorite = useCallback((id: string) => {
+    setFavorites((prev) => {
+      const next = prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id];
+      try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Ignore storage write error
+      }
+      return next;
+    });
+  }, []);
 
-  // CS Modal
+  // Modal States
+  const [activeDetailItem, setActiveDetailItem] = useState<CatalogItem | null>(null);
+  const [activeColorVariant, setActiveColorVariant] = useState<string | undefined>();
   const [csModalOpen, setCsModalOpen] = useState(false);
-  const [csModalItem, setCsModalItem] = useState<CatalogItem | null>(null);
+  const [csModalItem, setCsModalItem] = useState<{
+    item: CatalogItem;
+    colorVariant?: string;
+  } | null>(null);
 
-  
-  const openCSModal = (item: CatalogItem) => {
-    setCsModalItem(item);
+  // Filtering & Search Logic
+  const filteredItems = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+
+    const result = allItems.filter((item) => {
+      // Search matching (Name, SKU, Collection, Shape, Material, Color, Recommended)
+      if (q) {
+        const matchesName = item.name.toLowerCase().includes(q);
+        const matchesSku = item.sku?.toLowerCase().includes(q);
+        const matchesCollection = item.collection.toLowerCase().includes(q);
+        const matchesShape = ((item.shape || item.style) || "").toLowerCase().includes(q);
+        const matchesMaterial = item.material?.toLowerCase().includes(q);
+        const matchesColors = item.colors?.some((c) =>
+          c.name.toLowerCase().includes(q)
+        );
+        const matchesRecommended = item.recommendedFor?.some((r) =>
+          r.toLowerCase().includes(q)
+        );
+
+        if (
+          !matchesName &&
+          !matchesSku &&
+          !matchesCollection &&
+          !matchesShape &&
+          !matchesMaterial &&
+          !matchesColors &&
+          !matchesRecommended
+        ) {
+          return false;
+        }
+      }
+
+      // Shape filter
+      if (selectedShape !== "all") {
+        const itemShape = item.shape || item.style;
+        if (itemShape !== selectedShape) return false;
+      }
+
+      // Material filter
+      if (selectedMaterial !== "all") {
+        if (item.material !== selectedMaterial) return false;
+      }
+
+      // Color filter
+      if (selectedColor !== "all") {
+        const hasColor = item.colors?.some((c) =>
+          c.name.toLowerCase() === selectedColor.toLowerCase()
+        );
+        if (!hasColor) return false;
+      }
+
+      // Collection filter
+      if (selectedCollection !== "all") {
+        const targetCol = initialCollections.find((c) => c.id === selectedCollection);
+        if (!targetCol) return false;
+        const belongsToCollection = targetCol.items.some((i) => i.id === item.id);
+        if (!belongsToCollection && item.collection !== targetCol.title) return false;
+      }
+
+      // AR Try-On filter
+      if (onlyWithAr && !item.arAssetId) {
+        return false;
+      }
+
+      // Favorites filter
+      if (onlyFavorites && !favorites.includes(item.id)) {
+        return false;
+      }
+
+      return true;
+    });
+
+    // Sorting
+    if (sortBy === "name-asc") {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "name-desc") {
+      result.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortBy === "price-asc") {
+      result.sort((a, b) => {
+        if (!a.price) return 1;
+        if (!b.price) return -1;
+        return a.price - b.price;
+      });
+    } else if (sortBy === "price-desc") {
+      result.sort((a, b) => {
+        if (!a.price) return 1;
+        if (!b.price) return -1;
+        return b.price - a.price;
+      });
+    }
+
+    return result;
+  }, [
+    allItems,
+    searchQuery,
+    selectedShape,
+    selectedMaterial,
+    selectedColor,
+    selectedCollection,
+    onlyWithAr,
+    onlyFavorites,
+    favorites,
+    sortBy,
+    initialCollections,
+  ]);
+
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (selectedShape !== "all") count++;
+    if (selectedMaterial !== "all") count++;
+    if (selectedColor !== "all") count++;
+    if (selectedCollection !== "all") count++;
+    if (onlyWithAr) count++;
+    if (onlyFavorites) count++;
+    if (searchQuery) count++;
+    return count;
+  }, [
+    selectedShape,
+    selectedMaterial,
+    selectedColor,
+    selectedCollection,
+    onlyWithAr,
+    onlyFavorites,
+    searchQuery,
+  ]);
+
+  const resetAllFilters = () => {
+    setSearchQuery("");
+    setSelectedShape("all");
+    setSelectedMaterial("all");
+    setSelectedColor("all");
+    setSelectedCollection("all");
+    setOnlyWithAr(false);
+    setOnlyFavorites(false);
+    setSortBy("default");
+  };
+
+  const handleOpenDetail = (item: CatalogItem, colorVariantName?: string) => {
+    setActiveDetailItem(item);
+    setActiveColorVariant(colorVariantName);
+  };
+
+  const handleQuickWhatsApp = (item: CatalogItem, colorVariantName?: string) => {
+    setCsModalItem({ item, colorVariant: colorVariantName });
     setCsModalOpen(true);
   };
 
-  const categories = [
-    { id: "all", label: "Semua Koleksi" },
-    ...initialCollections.map((c) => ({ id: c.id, label: c.title })),
-  ];
-
-  const quickSearchTags = [
-    "The Feline Silhouette",
-    "The Skena Gaze",
-    "The Lucid Vision",
-    "The Onyx Enigma",
-    "Cat Eye Edition",
-    "Quiet Luxury",
-    "Titanium",
-    "Metro Deek",
-  ];
-
-  const displaySections = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-
-    if (!q) {
-      return initialCollections.map((collection) => {
-        const categoryMatches = selectedCategory === "all" || collection.id === selectedCategory;
-        if (!categoryMatches) return null;
-        return { collection, items: collection.items };
-      }).filter(Boolean) as Array<{ collection: CatalogCollection; items: CatalogItem[] }>;
-    }
-
-    const rawMatches = initialCollections.map((collection) => {
-      const categoryMatches = selectedCategory === "all" || collection.id === selectedCategory;
-      if (!categoryMatches) return null;
-
-      const collectionTitleMatch =
-        collection.title.toLowerCase().includes(q) ||
-        collection.id.toLowerCase().includes(q);
-
-      const matchingItems = collection.items.filter((item) => {
-        const nameMatch = item.name.toLowerCase().includes(q);
-        const styleMatch = item.style.toLowerCase().includes(q);
-        const colMatch = item.collection.toLowerCase().includes(q);
-        const shapeMatch = item.recommendedFor.some((shape) => shape.toLowerCase().includes(q));
-
-        if (collectionTitleMatch || nameMatch || styleMatch || colMatch || shapeMatch) {
-          return true;
-        }
-
-        return q.length > 3 && item.description.toLowerCase().includes(q);
-      });
-
-      if (matchingItems.length === 0) return null;
-
-      return {
-        collection,
-        items: matchingItems,
-        isTitleMatch: collectionTitleMatch,
-      };
-    }).filter(Boolean) as Array<{
-      collection: CatalogCollection;
-      items: CatalogItem[];
-      isTitleMatch: boolean;
-    }>;
-
-    const hasDirectMatches = rawMatches.some(
-      (sec) =>
-        sec.isTitleMatch ||
-        sec.items.some(
-          (i) =>
-            i.name.toLowerCase().includes(q) ||
-            i.style.toLowerCase().includes(q) ||
-            i.collection.toLowerCase().includes(q)
-        )
-    );
-
-    if (hasDirectMatches) {
-      return rawMatches
-        .map((sec) => {
-          if (sec.isTitleMatch) return { collection: sec.collection, items: sec.items };
-          const strictItems = sec.items.filter(
-            (item) =>
-              item.name.toLowerCase().includes(q) ||
-              item.style.toLowerCase().includes(q) ||
-              item.collection.toLowerCase().includes(q) ||
-              item.recommendedFor.some((shape) => shape.toLowerCase().includes(q))
-          );
-          if (strictItems.length === 0) return null;
-          return { collection: sec.collection, items: strictItems };
-        })
-        .filter(Boolean) as Array<{ collection: CatalogCollection; items: CatalogItem[] }>;
-    }
-
-    return rawMatches.map((sec) => ({ collection: sec.collection, items: sec.items }));
-  }, [selectedCategory, searchQuery, initialCollections]);
-  const totalMatchingItems = useMemo(() => {
-    return displaySections.reduce((acc, sec) => acc + sec.items.length, 0);
-  }, [displaySections]);
-
   return (
-    <div className="relative min-h-dvh w-full bg-isy-gradient selection:bg-isy-green-bright selection:text-white overflow-x-hidden pt-20 pb-20">
-      <FloatingSunglasses />
-      <CatalogConfetti />
-
-      {viewMode === "choose" ? (
-        /* Gateway Mode: 2 Big Choice Cards */
-        <section className="relative overflow-hidden px-4 sm:px-6 py-8 sm:py-16 flex flex-col items-center justify-center min-h-[calc(100vh-140px)]">
-          {/* Top-Left Back Button to Home */}
-          <div className="w-full max-w-5xl mx-auto flex items-center justify-start mb-6">
-            <Link
-              href="/"
-              className="group inline-flex items-center gap-2 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-4 py-2 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-0.5">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              <span>Kembali ke Beranda</span>
+    <div className="min-h-screen bg-[#FAF8F3] text-[#22211E] pt-20 pb-24 selection:bg-[#1B4332] selection:text-white">
+      {/* Top Banner / Breadcrumb & Category Bar */}
+      <div className="border-b border-[#ECE7DC] bg-[#FAF8F3]/90 backdrop-blur-xs">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-stone-500">
+            <Link href="/" className="hover:text-[#1B4332] transition-colors">
+              Beranda
             </Link>
+            <span>/</span>
+            <span className="font-semibold text-[#0D2F1D]">Katalog Frame</span>
           </div>
 
-          {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-            <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-isy-green-deep/5 text-isy-green-deep text-[11px] font-extrabold uppercase tracking-widest mb-3 border border-isy-green-deep/10">
-              <span>KATALOG OPTIK I SEE YOU</span>
-            </div>
-            <h1 className="text-3xl sm:text-5xl font-bold font-sans tracking-tight text-isy-green-deep leading-tight">
-              Mau Lihat Koleksi yang Mana?
-            </h1>
-            <p className="text-sm sm:text-base text-isy-ink/65 mt-3 font-medium">
-              Pilih katalog frame kacamata optik atau koleksi softlens natural &amp; eye care.
-            </p>
-          </div>
-
-          {/* 2 Big Choice Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto w-full">
-            {/* Card 1: Katalog Frame Kacamata */}
-            <div
-              onClick={() => {
-                setViewMode("frame");
-                router.push("/katalog?tab=frame");
-              }}
-              className="group relative flex flex-col justify-between bg-white rounded-3xl p-8 sm:p-10 border-2 border-isy-line hover:border-isy-green-bright shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer"
+          <div className="flex items-center gap-3">
+            <Link
+              href="/quiz"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-[#1B4332] hover:underline"
             >
-              <div>
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 border border-emerald-100 text-isy-green-deep transition-transform group-hover:scale-110">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="6" cy="14" r="4" />
-                        <circle cx="18" cy="14" r="4" />
-                        <path d="M10 14h4" />
-                        <path d="M6 10l2-4h8l2 4" />
-                      </svg>
-                    </div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-800">
-                      KOLEKSI OPTIK
-                    </span>
-                  </div>
-                  <span className="text-xs font-bold text-gray-400 bg-gray-50 border border-gray-100 px-3 py-1 rounded-full">
-                    9+ Seri Koleksi
-                  </span>
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl font-bold font-sans text-isy-green-deep mb-3 group-hover:text-isy-green-bright transition-colors tracking-tight">
-                  Katalog Frame Kacamata
-                </h2>
-                <p className="text-sm text-isy-ink/65 mb-8 leading-relaxed">
-                  Koleksi frame kacamata optik &amp; sunglasses original: The Feline Silhouette, The Skena Gaze, The Lucid Vision, Cat Eye, Quiet Luxury, Titanium Edition, dan seri eksklusif lainnya.
-                </p>
-              </div>
-
-              <div className="w-full inline-flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-isy-green-bright text-white font-black text-sm sm:text-base shadow-md shadow-isy-green-bright/25 group-hover:bg-isy-green-deep transition-all">
-                <span>Buka Katalog Frame →</span>
-              </div>
-            </div>
-
-            {/* Card 2: Katalog Softlens & Aksesoris */}
+              <span>Quiz Frame DNA</span>
+              <span>→</span>
+            </Link>
             <Link
               href="/softlens"
-              className="group relative flex flex-col justify-between bg-gradient-to-br from-[#0B2E1E] via-[#0E3B27] to-[#071C12] text-white rounded-3xl p-8 sm:p-10 border-2 border-emerald-800/40 hover:border-emerald-400/80 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer relative overflow-hidden"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#D5CFBF] bg-white px-3 py-1 text-xs font-semibold text-stone-700 hover:border-[#1B4332] hover:text-[#1B4332] transition-all shadow-2xs"
             >
-              <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
-
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 border border-white/15 text-emerald-300 backdrop-blur-md transition-transform group-hover:scale-110">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
-                        <circle cx="12" cy="12" r="3.5" />
-                        <circle cx="13" cy="11" r="1" fill="currentColor" />
-                      </svg>
-                    </div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-300">
-                      SOFTLENS &amp; EYE CARE
-                    </span>
-                  </div>
-
-                  <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white font-extrabold text-xs tracking-wide shadow-sm">
-                    Estetik &amp; Nyaman
-                  </span>
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white mb-3 tracking-tight drop-shadow-sm group-hover:text-emerald-300 transition-colors">
-                  Katalog Softlens &amp; Aksesoris
-                </h2>
-                <p className="text-sm text-white/75 mb-8 leading-relaxed font-normal">
-                  Koleksi softlens normal &amp; minus warna natural berestetika tinggi, cairan pembersih steril berkualitas, serta perlengkapan perawatan mata.
-                </p>
-              </div>
-
-              <div className="relative z-10 w-full inline-flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-300 text-[#071C12] font-black text-sm sm:text-base shadow-lg shadow-emerald-500/25 group-hover:from-emerald-300 group-hover:to-teal-200 transition-all">
-                <span>Buka Katalog Softlens & Cairan →</span>
-              </div>
-            </Link>
-          </div>
-        </section>
-      ) : (
-        /* Frame Mode Content */
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 mb-8 animate-in fade-in duration-300">
-          <div className="flex items-center justify-between mb-6">
-            <button
-              onClick={() => {
-                setViewMode("choose");
-                router.push("/katalog");
-              }}
-              className="group inline-flex items-center gap-1.5 rounded-full border border-isy-line bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-isy-green-deep shadow-xs hover:border-isy-green-bright hover:bg-isy-mist active:scale-95 transition-all cursor-pointer"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-0.5">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              <span>Kembali ke Pilihan Katalog</span>
-            </button>
-
-            <Link
-              href="/softlens"
-              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-800/30 bg-emerald-950/80 px-3.5 py-1.5 text-xs font-bold text-emerald-200 hover:bg-emerald-900 transition-all"
-            >
-              <span>Buka Katalog Softlens</span>
+              <span>Koleksi Softlens</span>
               <span>→</span>
             </Link>
           </div>
+        </div>
+      </div>
 
-          <h1 className="text-3xl sm:text-5xl font-bold font-sans tracking-tight text-isy-green-deep text-center mb-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-6 sm:pt-8">
+        {/* Short & Elegant Catalog Header */}
+        <header className="mb-6 sm:mb-8">
+          <h1 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0D2F1D]">
             Katalog Frame Kacamata
           </h1>
+          <p className="mt-1.5 text-xs sm:text-sm text-stone-600 max-w-2xl leading-relaxed">
+            Pilihan bingkai kacamata optik dan sunglasses original Optik I See You.
+            Pilih model, cek spesifikasi presisi dalam milimeter, lalu hubungi cabang terdekat untuk ketersediaan stok &amp; periksa mata.
+          </p>
+        </header>
 
-          {/* Quiz Recommendation Banner (No emojis) */}
-          <Link href="/quiz" className="block max-w-2xl mx-auto mb-8 rounded-2xl bg-gradient-to-r from-isy-green-bright to-isy-green-deep text-white p-4 text-center shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer">
-            <div className="flex items-center justify-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
-              </svg>
-              <span className="font-extrabold text-xs sm:text-sm tracking-wide">Bingung pilih frame yang pas? Ikuti Quiz Frame DNA →</span>
-            </div>
-          </Link>
-
-          {/* Search bar */}
-          <div className="pt-1 max-w-xl mx-auto space-y-3 mb-10">
-            <div className="relative flex items-center">
-              <svg className="absolute left-4 h-4 w-4 text-isy-ink/40 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        {/* Search, Filter Bar & Quick Controls */}
+        <div className="space-y-3.5 mb-6">
+          {/* Main Search & Control Bar */}
+          <div className="flex flex-col md:flex-row md:items-center gap-2.5 sm:gap-3">
+            {/* Search Input */}
+            <div className="relative flex-1">
+              <svg
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 pointer-events-none"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari model kacamata, bentuk frame, atau koleksi..."
-                className="w-full rounded-full border border-isy-line bg-isy-mist/70 pl-11 pr-10 py-3 text-xs font-bold text-isy-green-deep placeholder:text-isy-ink/40 focus:border-isy-green-bright focus:bg-white focus:outline-none focus:ring-2 focus:ring-isy-green-bright/20 transition-all shadow-sm"
+                placeholder="Cari nama model, SKU (misal CK2127), bentuk frame, warna..."
+                className="w-full rounded-xl border border-[#D8D2C4] bg-white pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#0D2F1D] placeholder:text-stone-400 focus:border-[#1B4332] focus:outline-none focus:ring-1 focus:ring-[#1B4332] transition-all shadow-2xs"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery("")} className="absolute right-4 flex h-5 w-5 items-center justify-center rounded-full bg-isy-ink/20 text-[10px] text-white hover:bg-isy-green-deep transition-colors">✕</button>
+                <button
+                  type="button"
+                  aria-label="Hapus teks pencarian"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 text-xs p-1"
+                >
+                  ✕
+                </button>
               )}
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
-              <span className="text-[10px] font-extrabold text-isy-ink/40 uppercase tracking-wider">Cari cepat:</span>
-              {quickSearchTags.map((tag) => (
-                <button key={tag} onClick={() => { setSearchQuery(tag); setSelectedCategory("all"); }} className="rounded-full border border-isy-line bg-white/80 px-2.5 py-1 text-[10.5px] font-bold text-isy-green-deep hover:border-isy-green-bright hover:bg-isy-mist transition-all active:scale-95 shadow-2xs">
-                  {tag}
-                </button>
-              ))}
+
+            {/* Desktop Filters Row */}
+            <div className="hidden lg:flex items-center gap-2">
+              {/* Shape Dropdown */}
+              <select
+                value={selectedShape}
+                aria-label="Filter bentuk frame"
+                onChange={(e) => setSelectedShape(e.target.value)}
+                className="rounded-xl border border-[#D8D2C4] bg-white px-3 py-2.5 text-xs font-medium text-stone-700 focus:border-[#1B4332] focus:outline-none focus:ring-1 focus:ring-[#1B4332]"
+              >
+                <option value="all">Semua Bentuk</option>
+                {availableShapes.map((shape) => (
+                  <option key={shape} value={shape}>
+                    {shape}
+                  </option>
+                ))}
+              </select>
+
+              {/* Material Dropdown */}
+              <select
+                value={selectedMaterial}
+                aria-label="Filter material frame"
+                onChange={(e) => setSelectedMaterial(e.target.value)}
+                className="rounded-xl border border-[#D8D2C4] bg-white px-3 py-2.5 text-xs font-medium text-stone-700 focus:border-[#1B4332] focus:outline-none focus:ring-1 focus:ring-[#1B4332]"
+              >
+                <option value="all">Semua Material</option>
+                {availableMaterials.map((mat) => (
+                  <option key={mat} value={mat}>
+                    {mat}
+                  </option>
+                ))}
+              </select>
+
+              {/* Collection Dropdown */}
+              <select
+                value={selectedCollection}
+                aria-label="Filter koleksi"
+                onChange={(e) => setSelectedCollection(e.target.value)}
+                className="rounded-xl border border-[#D8D2C4] bg-white px-3 py-2.5 text-xs font-medium text-stone-700 focus:border-[#1B4332] focus:outline-none focus:ring-1 focus:ring-[#1B4332]"
+              >
+                <option value="all">Semua Koleksi</option>
+                {initialCollections.map((col) => (
+                  <option key={col.id} value={col.id}>
+                    {col.title}
+                  </option>
+                ))}
+              </select>
+
+              {/* Color Dropdown */}
+              <select
+                value={selectedColor}
+                aria-label="Filter warna"
+                onChange={(e) => setSelectedColor(e.target.value)}
+                className="rounded-xl border border-[#D8D2C4] bg-white px-3 py-2.5 text-xs font-medium text-stone-700 focus:border-[#1B4332] focus:outline-none focus:ring-1 focus:ring-[#1B4332]"
+              >
+                <option value="all">Semua Warna</option>
+                {availableColors.map((color) => (
+                  <option key={color} value={color}>
+                    {color}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort & Mobile Trigger */}
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Sort By Dropdown */}
+              <select
+                value={sortBy}
+                aria-label="Urutkan produk"
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="rounded-xl border border-[#D8D2C4] bg-white px-3 py-2.5 text-xs font-medium text-stone-700 focus:border-[#1B4332] focus:outline-none focus:ring-1 focus:ring-[#1B4332]"
+              >
+                <option value="default">Urutan Standar</option>
+                <option value="name-asc">Nama (A — Z)</option>
+                <option value="name-desc">Nama (Z — A)</option>
+                <option value="price-asc">Harga Terendah</option>
+                <option value="price-desc">Harga Tertinggi</option>
+              </select>
+
+              {/* Mobile Filter Button */}
+              <button
+                type="button"
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="lg:hidden inline-flex items-center gap-1.5 rounded-xl border border-[#D8D2C4] bg-white px-3.5 py-2.5 text-xs font-semibold text-[#0D2F1D] hover:border-[#1B4332] shadow-2xs"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <line x1="4" y1="21" x2="4" y2="14" />
+                  <line x1="4" y1="10" x2="4" y2="3" />
+                  <line x1="12" y1="21" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12" y2="3" />
+                  <line x1="20" y1="21" x2="20" y2="16" />
+                  <line x1="20" y1="12" x2="20" y2="3" />
+                  <line x1="1" y1="14" x2="7" y2="14" />
+                  <line x1="9" y1="8" x2="15" y2="8" />
+                  <line x1="17" y1="16" x2="23" y2="16" />
+                </svg>
+                <span>Filter</span>
+                {activeFilterCount > 0 && (
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#1B4332] text-[10px] font-bold text-white">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 scrollbar-none mb-8">
-            {categories.map((cat) => (
+          {/* Quick Shape Chips & Quick Toggles */}
+          <div className="flex items-center justify-between gap-3 overflow-x-auto pb-1 scrollbar-none">
+            <div className="flex items-center gap-1.5 flex-wrap">
               <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`rounded-full px-5 py-2.5 text-xs font-extrabold transition-all active:scale-95 whitespace-nowrap ${
-                  selectedCategory === cat.id
-                    ? "bg-isy-green-deep text-white shadow-md"
-                    : "border border-isy-line bg-white text-isy-ink/70 hover:border-isy-green-bright hover:text-isy-green-deep"
+                type="button"
+                onClick={() => setSelectedShape("all")}
+                className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                  selectedShape === "all"
+                    ? "bg-[#1B4332] text-white"
+                    : "border border-[#D8D2C4] bg-white text-stone-600 hover:border-stone-400"
                 }`}
               >
-                {cat.label}
+                Semua
               </button>
-            ))}
+              {availableShapes.map((shape) => {
+                const isActive = selectedShape === shape;
+                return (
+                  <button
+                    key={shape}
+                    type="button"
+                    onClick={() => setSelectedShape(isActive ? "all" : shape)}
+                    className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                      isActive
+                        ? "bg-[#1B4332] text-white"
+                        : "border border-[#D8D2C4] bg-white text-stone-600 hover:border-stone-400"
+                    }`}
+                  >
+                    {shape}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Quick AR & Favorites Toggles */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setOnlyWithAr((prev) => !prev)}
+                className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                  onlyWithAr
+                    ? "bg-[#0D2F1D] text-emerald-200"
+                    : "border border-[#D8D2C4] bg-white text-stone-600 hover:border-stone-400"
+                }`}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span>Hanya AR</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setOnlyFavorites((prev) => !prev)}
+                className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                  onlyFavorites
+                    ? "bg-[#1B4332] text-white"
+                    : "border border-[#D8D2C4] bg-white text-stone-600 hover:border-stone-400"
+                }`}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill={onlyFavorites ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+                <span>Favorit ({favorites.length})</span>
+              </button>
+            </div>
           </div>
 
-          {/* Search / Filter Status Notice */}
-          {(searchQuery || selectedCategory !== "all") && (
-            <div className="flex items-center justify-between rounded-2xl bg-white p-4 border border-isy-line shadow-xs mb-8">
-              <p className="text-xs font-bold text-isy-green-deep">
-                Menampilkan <span className="font-black text-isy-green-bright">{totalMatchingItems}</span> frame
-                {searchQuery && (
-                  <span> untuk pencarian &quot;<span className="italic text-isy-green-bright">{searchQuery}</span>&quot;</span>
-                )}
-              </p>
+          {/* Active Filter Chips & Results Count Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#ECE7DC] text-xs">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-semibold text-stone-700">
+                {filteredItems.length} model frame ditemukan
+              </span>
+
+              {/* Active Filter Badges */}
+              {selectedShape !== "all" && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] border border-[#D5CFBF] px-2 py-0.5 text-[11px] text-[#0D2F1D]">
+                  Bentuk: {selectedShape}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedShape("all")}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+
+              {selectedMaterial !== "all" && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] border border-[#D5CFBF] px-2 py-0.5 text-[11px] text-[#0D2F1D]">
+                  Material: {selectedMaterial}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedMaterial("all")}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+
+              {selectedColor !== "all" && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] border border-[#D5CFBF] px-2 py-0.5 text-[11px] text-[#0D2F1D]">
+                  Warna: {selectedColor}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedColor("all")}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+
+              {selectedCollection !== "all" && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] border border-[#D5CFBF] px-2 py-0.5 text-[11px] text-[#0D2F1D]">
+                  Koleksi:{" "}
+                  {initialCollections.find((c) => c.id === selectedCollection)?.title}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCollection("all")}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+
+              {onlyWithAr && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[11px] text-emerald-900">
+                  Virtual Try-On AR
+                  <button
+                    type="button"
+                    onClick={() => setOnlyWithAr(false)}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+
+              {onlyFavorites && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] border border-[#D5CFBF] px-2 py-0.5 text-[11px] text-[#0D2F1D]">
+                  Favorit Tersimpan
+                  <button
+                    type="button"
+                    onClick={() => setOnlyFavorites(false)}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] border border-[#D5CFBF] px-2 py-0.5 text-[11px] text-[#0D2F1D]">
+                  &quot;{searchQuery}&quot;
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="hover:text-red-700"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
+            </div>
+
+            {activeFilterCount > 0 && (
               <button
-                onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCategory("all");
-                }}
-                className="text-xs font-extrabold text-isy-green-bright hover:underline"
+                type="button"
+                onClick={resetAllFilters}
+                className="font-semibold text-[#1B4332] hover:underline"
               >
-                Reset Filter
+                Reset Semua Filter
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Product Grid: 4 cols wide desktop, 3 cols tablet, 2 cols mobile */}
+        {filteredItems.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+            {filteredItems.map((item) => (
+              <CatalogItemCard
+                key={item.id}
+                item={item}
+                isFavorite={favorites.includes(item.id)}
+                onToggleFavorite={toggleFavorite}
+                onOpenDetail={handleOpenDetail}
+                onQuickWhatsApp={handleQuickWhatsApp}
+              />
+            ))}
+          </div>
+        ) : (
+          /* Clean Empty State */
+          <div className="rounded-2xl border border-[#E7E2D7] bg-white p-12 text-center max-w-lg mx-auto my-12 space-y-4 shadow-2xs">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF7F0] text-[#1B4332]">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </div>
+            <h2 className="font-sans text-base sm:text-lg font-bold text-[#0D2F1D]">
+              Tidak Ada Model Frame yang Sesuai
+            </h2>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Coba kurangi kombinasi filter atau hapus kata kunci pencarian untuk melihat semua koleksi frame.
+            </p>
+            <button
+              type="button"
+              onClick={resetAllFilters}
+              className="rounded-xl bg-[#1B4332] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#0D2F1D] transition-colors"
+            >
+              Tampilkan Semua Frame
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Filter Slide-Over Drawer */}
+      {isMobileFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs"
+          onClick={() => setIsMobileFilterOpen(false)}
+        >
+          <div
+            className="w-full max-w-xs h-full bg-white p-5 flex flex-col justify-between shadow-2xl overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="space-y-5">
+              <div className="flex items-center justify-between border-b border-[#EFEBE2] pb-3">
+                <h3 className="font-sans text-base font-bold text-[#0D2F1D]">
+                  Filter Katalog
+                </h3>
+                <button
+                  type="button"
+                  aria-label="Tutup panel filter"
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="p-1 text-stone-500 hover:text-stone-800"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Shape Filter */}
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                  Bentuk Frame
+                </label>
+                <select
+                  value={selectedShape}
+                  onChange={(e) => setSelectedShape(e.target.value)}
+                  className="w-full rounded-lg border border-[#D8D2C4] bg-[#FAF7F0] p-2 text-xs text-stone-700"
+                >
+                  <option value="all">Semua Bentuk</option>
+                  {availableShapes.map((shape) => (
+                    <option key={shape} value={shape}>
+                      {shape}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Material Filter */}
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                  Material Frame
+                </label>
+                <select
+                  value={selectedMaterial}
+                  onChange={(e) => setSelectedMaterial(e.target.value)}
+                  className="w-full rounded-lg border border-[#D8D2C4] bg-[#FAF7F0] p-2 text-xs text-stone-700"
+                >
+                  <option value="all">Semua Material</option>
+                  {availableMaterials.map((mat) => (
+                    <option key={mat} value={mat}>
+                      {mat}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Collection Filter */}
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                  Koleksi
+                </label>
+                <select
+                  value={selectedCollection}
+                  onChange={(e) => setSelectedCollection(e.target.value)}
+                  className="w-full rounded-lg border border-[#D8D2C4] bg-[#FAF7F0] p-2 text-xs text-stone-700"
+                >
+                  <option value="all">Semua Koleksi</option>
+                  {initialCollections.map((col) => (
+                    <option key={col.id} value={col.id}>
+                      {col.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Color Filter */}
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                  Varian Warna
+                </label>
+                <select
+                  value={selectedColor}
+                  onChange={(e) => setSelectedColor(e.target.value)}
+                  className="w-full rounded-lg border border-[#D8D2C4] bg-[#FAF7F0] p-2 text-xs text-stone-700"
+                >
+                  <option value="all">Semua Warna</option>
+                  {availableColors.map((color) => (
+                    <option key={color} value={color}>
+                      {color}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* AR & Favorites Toggles */}
+              <div className="space-y-2 border-t border-[#EFEBE2] pt-3">
+                <label className="flex items-center gap-2 text-xs text-stone-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={onlyWithAr}
+                    onChange={(e) => setOnlyWithAr(e.target.checked)}
+                    className="rounded border-[#D8D2C4] text-[#1B4332] focus:ring-[#1B4332]"
+                  />
+                  <span>Hanya yang mendukung Virtual Try-On (AR)</span>
+                </label>
+
+                <label className="flex items-center gap-2 text-xs text-stone-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={onlyFavorites}
+                    onChange={(e) => setOnlyFavorites(e.target.checked)}
+                    className="rounded border-[#D8D2C4] text-[#1B4332] focus:ring-[#1B4332]"
+                  />
+                  <span>Hanya frame yang saya favoritkan ({favorites.length})</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-4 border-t border-[#EFEBE2] space-y-2">
+              <button
+                type="button"
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="w-full rounded-xl bg-[#1B4332] py-2.5 text-xs font-bold text-white text-center"
+              >
+                Terapkan Filter ({filteredItems.length} Produk)
+              </button>
+              <button
+                type="button"
+                onClick={resetAllFilters}
+                className="w-full rounded-xl border border-[#D8D2C4] py-2 text-xs font-semibold text-stone-600 text-center"
+              >
+                Reset Semua
               </button>
             </div>
-          )}
-
-          {/* Frame Collections Grid */}
-          {displaySections.length > 0 ? (
-            <div className="space-y-14">
-              {displaySections.map(({ collection, items }) => (
-                <div key={collection.id} className="space-y-6 pt-6 border-t border-isy-line/80 first:border-t-0 first:pt-0">
-                  <div className="pb-1">
-                    <h2 className="font-sans text-2xl sm:text-3xl font-bold text-isy-green-deep tracking-tight">
-                      {collection.title}
-                    </h2>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {items.map((item) => (
-                      <CatalogItemCard
-                        key={item.id}
-                        item={item}
-                        collectionTitle={collection.title}
-                        onOpenDetail={(targetItem, tab) => {
-                          setActiveModalTab(tab || "gallery");
-                          setActiveModalItem(targetItem);
-                        }}
-                        onOpenCSModal={openCSModal}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center rounded-3xl border border-isy-line bg-white p-12 text-center space-y-4 shadow-sm">
-              <h3 className="font-bold font-sans text-xl text-isy-green-deep">Tidak Ada Model Kacamata yang Sesuai</h3>
-              <button onClick={() => { setSearchQuery(""); setSelectedCategory("all"); }} className="rounded-xl bg-isy-green-bright px-6 py-2.5 text-xs font-black text-white hover:bg-isy-green-deep transition-all shadow">
-                Lihat Semua Frame
-              </button>
-            </div>
-          )}
+          </div>
         </div>
       )}
 
+      {/* Product Detail Modal */}
       <CatalogDetailModal
-        item={activeModalItem}
-        initialTab={activeModalTab}
-        onClose={() => setActiveModalItem(null)}
-        onOpenContactCS={openCSModal}
+        item={activeDetailItem}
+        selectedColorName={activeColorVariant}
+        onClose={() => setActiveDetailItem(null)}
       />
 
-
-      <ContactCSModal
-        isOpen={csModalOpen}
-        onClose={() => setCsModalOpen(false)}
-        waUrl={csModalItem ? csWhatsappUrl(csModalItem.name) : csWhatsappUrl()}
-        productName={csModalItem?.name}
-      />
+      {/* Quick CS WhatsApp Modal */}
+      {csModalItem && (
+        <ContactCSModal
+          isOpen={csModalOpen}
+          onClose={() => {
+            setCsModalOpen(false);
+            setCsModalItem(null);
+          }}
+          productName={`${csModalItem.item.name}${
+            csModalItem.item.sku ? ` (SKU: ${csModalItem.item.sku})` : ""
+          }${
+            csModalItem.colorVariant ? ` - Warna ${csModalItem.colorVariant}` : ""
+          }`}
+          customMessage={(branchName) =>
+            `Halo Optik I See You ${branchName}! 👋\nSaya tertarik dengan frame *${csModalItem.item.name}*${
+              csModalItem.item.sku ? ` (SKU: *${csModalItem.item.sku}*)` : ""
+            }${
+              csModalItem.colorVariant
+                ? ` varian warna *${csModalItem.colorVariant}*`
+                : ""
+            }.\n\nApakah stok masih tersedia di Cabang ${branchName}? Boleh dibantu informasinya? Terima kasih! 🙏`
+          }
+        />
+      )}
     </div>
   );
 }

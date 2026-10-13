@@ -236,7 +236,7 @@ export default function QuizResultCard({
         return [getItem("clarity-1"), getItem("metro-1"), getItem("new-1")].filter(Boolean) as CatalogItem[];
       }
       if (p === "the-dreamer") {
-        return [getItem("lucid-1"), getItem("feline-1"), getItem("clarity-4")].filter(Boolean) as CatalogItem[];
+        return [getItem("lucid-1"), getItem("feline-1"), getItem("clarity-1")].filter(Boolean) as CatalogItem[];
       }
       return [getItem("titanium-1"), getItem("luxury-1"), getItem("titanium-2")].filter(Boolean) as CatalogItem[];
     }

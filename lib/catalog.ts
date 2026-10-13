@@ -1,13 +1,39 @@
-﻿export interface CatalogItem {
+export interface ProductColorVariant {
+  name: string;
+  hex?: string;
+  image?: string;
+}
+
+export interface ProductDimensions {
+  lensWidth?: number;    // mm (e.g. 52)
+  frameWidth?: number;   // mm (e.g. 125)
+  lensHeight?: number;   // mm (e.g. 41)
+  bridgeWidth?: number;  // mm (e.g. 18)
+  templeLength?: number; // mm (e.g. 150)
+}
+
+export interface CatalogItem {
   id: string;
+  sku?: string;
   name: string;
   collection: string;
-  image: string;
-  images: string[];
-  specsImage?: string;
-  style: string;
+  shape: string;                 // "Cat-Eye", "Square", "Oval", "Round", "Browline"
+  material?: string;             // only verified data (e.g. "Acetate", "Titanium"), otherwise undefined
+  dimensions?: ProductDimensions;
+  colors?: ProductColorVariant[];
+  price?: number;                // verified price in IDR if known, otherwise undefined
+  priceRange?: string;           // verified price range if known, otherwise undefined
+  priceIncludesLens?: boolean;   // default false / undefined
+  image: string;                 // hero product image
+  images: string[];              // primary product gallery
+  lifestyleImages?: string[];    // lifestyle / on-model photos
+  posterImages?: string[];       // promotional campaign / launch posters
+  specsImage?: string;           // dimension diagram / spec sheet
+  arAssetId?: string;            // only for variants with actual matching AR 3D assets
   recommendedFor: string[];
   description: string;
+  // Legacy fields for backward compatibility
+  style?: string;
   glassesId?: string;
 }
 
@@ -26,7 +52,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     id: "clarity-series",
     title: "Clarity Series",
     badge: "Cat Eye Edition",
-    description: "Definisi cateye frame yang effortless. Desain transparan yang ringan, clean, dan bikin look kamu makin stand out dengan engsel metal presisi.",
+    description: "Definisi cateye frame yang effortless dengan material transparan ringan dan engsel metal presisi.",
     coverImage: "/katalog/Clarity Series/1-thumb.webp",
     images: [
       "/katalog/Clarity Series/1-medium.webp",
@@ -37,51 +63,340 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "clarity-1",
-        name: "Clarity Series - Luna Cat Eye (CF33013)",
+        sku: "CF33013",
+        name: "Luna Cat Eye CF33013",
         collection: "Clarity Series",
-        image: "/katalog/Clarity Series/1-thumb.webp",
-        images: ["/katalog/Clarity Series/1-medium.webp", "/katalog/Clarity Series/1.webp"],
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 52,
+          frameWidth: 125,
+          lensHeight: 41,
+        },
+        colors: [
+          { name: "Clear Gray", hex: "#949DA5", image: "/katalog/Clarity Series/1-medium.webp" },
+          { name: "Transparent Caramel", hex: "#C68B59", image: "/katalog/Clarity Series/4-medium.webp" },
+        ],
+        image: "/katalog/Clarity Series/1-medium.webp",
+        images: [
+          "/katalog/Clarity Series/1-medium.webp",
+          "/katalog/Clarity Series/4-medium.webp",
+        ],
+        lifestyleImages: ["/katalog/Clarity Series/2-medium.webp"],
         specsImage: "/katalog/Clarity Series/3-medium.webp",
         style: "Translucent Cat-Eye",
         recommendedFor: ["Round", "Oval", "Heart"],
-        description: "Definisi cateye frame yang effortless dengan material transparan ringan dan engsel metal kokoh presisi.",
+        description: "Definisi cateye frame yang effortless dengan material transparan ringan dan engsel metal kokoh presisi. Tersedia dalam dua pilihan warna: Clear Gray dan Transparent Caramel.",
         glassesId: "cateye-frame",
       },
+    ],
+  },
+  {
+    id: "clear-frame-acetate",
+    title: "Clear Frame Series (Acetate)",
+    badge: "Acetate Edition",
+    description: "Frame transparan kekinian yang siap menyempurnakan bentuk wajahmu dengan material acetate solid.",
+    coverImage: "/katalog/Clear Frame Series (Acetate)/20.png",
+    images: [
+      "/katalog/Clear Frame Series (Acetate)/18.png",
+      "/katalog/Clear Frame Series (Acetate)/19.png",
+      "/katalog/Clear Frame Series (Acetate)/20.png",
+    ],
+    items: [
       {
-        id: "clarity-2",
-        name: "Clarity Series - Luna Daily Look (CF33013)",
-        collection: "Clarity Series",
-        image: "/katalog/Clarity Series/2-thumb.webp",
-        images: ["/katalog/Clarity Series/2-medium.webp", "/katalog/Clarity Series/2.webp"],
-        specsImage: "/katalog/Clarity Series/3-medium.webp",
-        style: "Translucent Cat-Eye",
+        id: "ck81309",
+        sku: "CK81309",
+        name: "Clear Frame Acetate CK81309",
+        collection: "Clear Frame Series (Acetate)",
+        shape: "Square",
+        material: "Acetate",
+        dimensions: {
+          lensWidth: 49,
+          frameWidth: 118,
+          lensHeight: 41,
+          bridgeWidth: 20,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Clear Grey", hex: "#7D838A", image: "/katalog/Clear Frame Series (Acetate)/20.png" },
+          { name: "Peach", hex: "#D49A89", image: "/katalog/Clear Frame Series (Acetate)/18.png" },
+        ],
+        image: "/katalog/Clear Frame Series (Acetate)/20.png",
+        images: [
+          "/katalog/Clear Frame Series (Acetate)/20.png",
+          "/katalog/Clear Frame Series (Acetate)/18.png",
+        ],
+        lifestyleImages: ["/katalog/Clear Frame Series (Acetate)/19.png"],
+        specsImage: "/katalog/Clear Frame Series (Acetate)/20.png",
+        style: "Translucent Square",
+        recommendedFor: ["Oval", "Round", "Heart"],
+        description: "Frame transparan kekinian dengan material acetate yang siap menyempurnakan bentuk wajahmu.",
+      },
+    ],
+  },
+  {
+    id: "clear-frame-series",
+    title: "Clear Frame Series",
+    badge: "Modern Clear",
+    description: "Clear acetate edition buat kamu yang suka tampilan clean dengan sentuhan modern.",
+    coverImage: "/katalog/Clear Frame Series/22.png",
+    images: [
+      "/katalog/Clear Frame Series/21.png",
+      "/katalog/Clear Frame Series/22.png",
+      "/katalog/Clear Frame Series/23.png",
+      "/katalog/Clear Frame Series/24.png",
+    ],
+    items: [
+      {
+        id: "ck1011",
+        sku: "CK1011",
+        name: "Clear Frame Modern CK1011",
+        collection: "Clear Frame Series",
+        shape: "Square",
+        material: "Acetate",
+        dimensions: {
+          lensWidth: 45,
+          frameWidth: 114,
+          lensHeight: 41,
+          bridgeWidth: 26,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Clear Grey", hex: "#B0B5BA", image: "/katalog/Clear Frame Series/22.png" },
+          { name: "Peach", hex: "#D9A595", image: "/katalog/Clear Frame Series/22.png" },
+        ],
+        image: "/katalog/Clear Frame Series/22.png",
+        images: [
+          "/katalog/Clear Frame Series/22.png",
+        ],
+        lifestyleImages: [
+          "/katalog/Clear Frame Series/21.png",
+          "/katalog/Clear Frame Series/23.png",
+        ],
+        specsImage: "/katalog/Clear Frame Series/24.png",
+        style: "Clear Acetate",
+        recommendedFor: ["Oval", "Round", "Diamond"],
+        description: "Clear acetate edition buat kamu yang suka tampilan clean dengan sentuhan modern. Frame bening bukan berarti penampilan harus biasa.",
+      },
+    ],
+  },
+  {
+    id: "plastik-kotak",
+    title: "Acetate Square Series",
+    badge: "Casual Preppy",
+    description: "Frame acetate kekinian dengan engsel solid. Tetep place in walau kamu lagi aktif seharian.",
+    coverImage: "/katalog/Plastik Kotak/10.png",
+    images: [
+      "/katalog/Plastik Kotak/10.png",
+      "/katalog/Plastik Kotak/11.png",
+      "/katalog/Plastik Kotak/12.png",
+      "/katalog/Plastik Kotak/13 fix.png",
+    ],
+    items: [
+      {
+        id: "ck2127",
+        sku: "CK2127",
+        name: "Frame Kotak CK2127",
+        collection: "Acetate Square Series",
+        shape: "Square",
+        material: "Acetate",
+        dimensions: {
+          lensWidth: 50,
+          frameWidth: 125,
+          lensHeight: 44,
+          bridgeWidth: 18,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Hitam", hex: "#1B1C1E", image: "/katalog/Plastik Kotak/10.png" },
+          { name: "Clear Grey", hex: "#8C9298", image: "/katalog/Plastik Kotak/13 fix.png" },
+          { name: "Peach Transparan", hex: "#D59A8F", image: "/katalog/Plastik Kotak/11.png" },
+        ],
+        image: "/katalog/Plastik Kotak/10.png",
+        images: [
+          "/katalog/Plastik Kotak/10.png",
+          "/katalog/Plastik Kotak/13 fix.png",
+          "/katalog/Plastik Kotak/11.png",
+        ],
+        lifestyleImages: ["/katalog/Plastik Kotak/12.png"],
+        specsImage: "/katalog/Plastik Kotak/13 fix.png",
+        style: "Square Acetate",
         recommendedFor: ["Round", "Oval", "Heart"],
-        description: "Material transparan premium dipadu dengan engsel metal kokoh presisi. Mewah, ringan, dan comfy dipakai seharian.",
-        glassesId: "cateye-frame",
+        description: "Frame acetate kekinian dengan engsel solid. Desain kotak yang aesthetic buat OOTD hijab atau casual.",
       },
+    ],
+  },
+  {
+    id: "the-daily-essential",
+    title: "The Daily Essential",
+    badge: "Man Series",
+    description: "Desain minimalis tanpa ornamen ribet, dirancang khusus buat kamu yang suka look rapi tapi tetap kelihatan edgy.",
+    coverImage: "/katalog/The Daily Essesintial/4.png",
+    images: [
+      "/katalog/The Daily Essesintial/1.png",
+      "/katalog/The Daily Essesintial/2.png",
+      "/katalog/The Daily Essesintial/3.png",
+      "/katalog/The Daily Essesintial/4.png",
+    ],
+    items: [
       {
-        id: "clarity-3",
-        name: "Clarity Series - Clear Gray & Transparent Caramel (Specs)",
-        collection: "Clarity Series",
-        image: "/katalog/Clarity Series/3-thumb.webp",
-        images: ["/katalog/Clarity Series/3-medium.webp", "/katalog/Clarity Series/3.webp"],
-        specsImage: "/katalog/Clarity Series/3-medium.webp",
-        style: "Translucent Colors & Dimension",
-        recommendedFor: ["Round", "Oval", "Diamond"],
-        description: "Dua pilihan warna anti-boring: Clear Gray & Transparent Caramel. Lebar lensa 52 mm, lebar frame 125 mm, tinggi 41 mm.",
-        glassesId: "cateye-frame",
-      },
-      {
-        id: "clarity-4",
-        name: "Clarity Series - Luna Duo Palette",
-        collection: "Clarity Series",
-        image: "/katalog/Clarity Series/4-thumb.webp",
-        images: ["/katalog/Clarity Series/4-medium.webp", "/katalog/Clarity Series/4.webp"],
-        specsImage: "/katalog/Clarity Series/3-medium.webp",
-        style: "Translucent Cat-Eye",
+        id: "ck2501",
+        sku: "CK2501",
+        name: "Square Browline CK2501",
+        collection: "The Daily Essential",
+        shape: "Browline",
+        dimensions: {
+          lensWidth: 54,
+          frameWidth: 127,
+          lensHeight: 42,
+          bridgeWidth: 19,
+          templeLength: 145,
+        },
+        colors: [
+          { name: "Hitam Glossy", hex: "#181818", image: "/katalog/The Daily Essesintial/4.png" },
+          { name: "Clear Grey", hex: "#7E848B", image: "/katalog/The Daily Essesintial/4.png" },
+        ],
+        image: "/katalog/The Daily Essesintial/4.png",
+        images: [
+          "/katalog/The Daily Essesintial/4.png",
+          "/katalog/The Daily Essesintial/2.png",
+        ],
+        lifestyleImages: ["/katalog/The Daily Essesintial/3.png"],
+        posterImages: ["/katalog/The Daily Essesintial/1.png"],
+        specsImage: "/katalog/The Daily Essesintial/4.png",
+        style: "Square Browline",
         recommendedFor: ["Round", "Oval", "Heart"],
-        description: "Jadikan Luna daily eyewear andalanmu untuk upgrade penampilan harian yang effortlessly stylish.",
-        glassesId: "cateye-frame",
+        description: "Clean look, zero effort. Ngedongkrak daily fit kamu tanpa perlu try hard.",
+      },
+    ],
+  },
+  {
+    id: "celni",
+    title: "CELNI Edition",
+    badge: "Sun Series",
+    description: "Less is more, but make it bold. Kacamata hitam siluet oval dengan aksen bintang elegan pada engsel.",
+    coverImage: "/katalog/CELNI/3.png",
+    images: [
+      "/katalog/CELNI/1.png",
+      "/katalog/CELNI/2.png",
+      "/katalog/CELNI/3.png",
+      "/katalog/CELNI/4.png",
+    ],
+    items: [
+      {
+        id: "celni-1",
+        sku: "CELNI",
+        name: "CELNI Oval Sunglasses",
+        collection: "CELNI Edition",
+        shape: "Oval",
+        dimensions: {
+          lensWidth: 54,
+          frameWidth: 128,
+          lensHeight: 39,
+          bridgeWidth: 23,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Black", hex: "#181818", image: "/katalog/CELNI/3.png" },
+          { name: "Amber", hex: "#9E6534", image: "/katalog/CELNI/3.png" },
+        ],
+        image: "/katalog/CELNI/3.png",
+        images: [
+          "/katalog/CELNI/3.png",
+          "/katalog/CELNI/4.png",
+        ],
+        lifestyleImages: ["/katalog/CELNI/2.png"],
+        posterImages: ["/katalog/CELNI/1.png"],
+        specsImage: "/katalog/CELNI/3.png",
+        style: "Oval Sunglasses",
+        recommendedFor: ["Square", "Heart", "Diamond"],
+        description: "Less is more, but make it bold. Kacamata hitam siluet oval dengan aksen bintang elegan pada engsel.",
+      },
+    ],
+  },
+  {
+    id: "sun-glasses-ci5003",
+    title: "CI5003 Sun Series",
+    badge: "Bold Sunglasses",
+    description: "Ready to steal the spotlight? Material solid dengan aksen garis ganda di sudut bingkai.",
+    coverImage: "/katalog/Sun - Glasses 51003/2.png",
+    images: [
+      "/katalog/Sun - Glasses 51003/1.png",
+      "/katalog/Sun - Glasses 51003/2.png",
+      "/katalog/Sun - Glasses 51003/3.png",
+      "/katalog/Sun - Glasses 51003/4.png",
+    ],
+    items: [
+      {
+        id: "ci5003",
+        sku: "CI5003",
+        name: "Bold Frame CI5003",
+        collection: "CI5003 Sun Series",
+        shape: "Square",
+        dimensions: {
+          lensWidth: 54,
+          frameWidth: 127,
+          lensHeight: 49,
+          bridgeWidth: 12,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Hitam", hex: "#181818", image: "/katalog/Sun - Glasses 51003/2.png" },
+        ],
+        image: "/katalog/Sun - Glasses 51003/2.png",
+        images: [
+          "/katalog/Sun - Glasses 51003/2.png",
+          "/katalog/Sun - Glasses 51003/3.png",
+        ],
+        lifestyleImages: ["/katalog/Sun - Glasses 51003/2.png"],
+        posterImages: ["/katalog/Sun - Glasses 51003/1.png"],
+        specsImage: "/katalog/Sun - Glasses 51003/4.png",
+        style: "Square Sunglasses",
+        recommendedFor: ["Round", "Oval", "Heart"],
+        description: "Bold frame, zero drama. Auto level-up look kamu dengan aksen presisi di sudut bingkai.",
+      },
+    ],
+  },
+  {
+    id: "sun-glasses-ci5033",
+    title: "CI5033 Sun Series",
+    badge: "Sunday Sunglasses",
+    description: "Built for the Sunday. 100% UV Protection. Mata aman dari silau, bold tapi enteng.",
+    coverImage: "/katalog/Sun Glasses/17.png",
+    images: [
+      "/katalog/Sun Glasses/15.png",
+      "/katalog/Sun Glasses/16.png",
+      "/katalog/Sun Glasses/17.png",
+    ],
+    items: [
+      {
+        id: "ci5033",
+        sku: "CI5033",
+        name: "Cat Eye Sun CI5033",
+        collection: "CI5033 Sun Series",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 148,
+          lensHeight: 50,
+          bridgeWidth: 14,
+          templeLength: 145,
+        },
+        colors: [
+          { name: "Hitam", hex: "#181818", image: "/katalog/Sun Glasses/17.png" },
+        ],
+        image: "/katalog/Sun Glasses/17.png",
+        images: [
+          "/katalog/Sun Glasses/17.png",
+          "/katalog/Sun Glasses/16.png",
+        ],
+        lifestyleImages: [
+          "/katalog/Sun Glasses/15.png",
+          "/katalog/Sun Glasses/16.png",
+        ],
+        specsImage: "/katalog/Sun Glasses/17.png",
+        style: "Cat-Eye Sunglasses",
+        recommendedFor: ["Heart", "Oval", "Round"],
+        description: "Simpel tapi stand out. Cocok untuk hangout atau driving dengan 100% UV Protection.",
       },
     ],
   },
@@ -101,8 +416,19 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "cateye-1",
         name: "Cat Eye Signature - Gloss Black",
         collection: "Cat Eye Edition",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 52,
+          frameWidth: 135,
+          lensHeight: 45,
+          bridgeWidth: 16,
+          templeLength: 141,
+        },
+        colors: [
+          { name: "Hitam Glossy", hex: "#181818", image: "/katalog/Cat Eye Edition/1.webp" },
+        ],
         image: "/katalog/Cat Eye Edition/1.webp",
-        images: ["/katalog/Cat Eye Edition/1.webp", "/katalog/Cat Eye Edition/Product Specs.webp"],
+        images: ["/katalog/Cat Eye Edition/1.webp"],
         specsImage: "/katalog/Cat Eye Edition/Product Specs.webp",
         style: "Cat-Eye",
         recommendedFor: ["Heart", "Oval", "Round"],
@@ -111,14 +437,25 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "cateye-2",
-        name: "Cat Eye Velvet - Amber Tortoise",
+        name: "Cat Eye Velvet - Nude Peach",
         collection: "Cat Eye Edition",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 52,
+          frameWidth: 135,
+          lensHeight: 45,
+          bridgeWidth: 16,
+          templeLength: 141,
+        },
+        colors: [
+          { name: "Nude Peach", hex: "#E8B8A6", image: "/katalog/Cat Eye Edition/2.webp" },
+        ],
         image: "/katalog/Cat Eye Edition/2.webp",
-        images: ["/katalog/Cat Eye Edition/2.webp", "/katalog/Cat Eye Edition/Product Specs.webp"],
+        images: ["/katalog/Cat Eye Edition/2.webp"],
         specsImage: "/katalog/Cat Eye Edition/Product Specs.webp",
         style: "Cat-Eye",
         recommendedFor: ["Heart", "Oval", "Diamond"],
-        description: "Warna tortoise eksklusif dengan gagang titanium yang sangat ringan.",
+        description: "Warna peach elegan dengan sudut lengkung yang mempermanis garis wajah.",
         glassesId: "cateye-frame",
       },
     ],
@@ -127,7 +464,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     id: "new-collection",
     title: "New Collection",
     badge: "Rilisan Terbaru",
-    description: "Koleksi kacamata kekinian dengan material ringan dan anti-radiasi.",
+    description: "Koleksi kacamata kekinian dengan material ringan dan siluet cat-eye modern.",
     coverImage: "/katalog/New Collection/1.webp",
     images: [
       "/katalog/New Collection/1.webp",
@@ -137,27 +474,49 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "new-1",
-        name: "Metro Square Pro - Matte Black",
+        name: "Aero Cat Eye - Gloss Black",
         collection: "New Collection",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 139,
+          lensHeight: 48,
+          bridgeWidth: 19,
+          templeLength: 139,
+        },
+        colors: [
+          { name: "Hitam Gloss", hex: "#181818", image: "/katalog/New Collection/1.webp" },
+        ],
         image: "/katalog/New Collection/1.webp",
-        images: ["/katalog/New Collection/1.webp", "/katalog/New Collection/Product Specs.webp"],
+        images: ["/katalog/New Collection/1.webp"],
         specsImage: "/katalog/New Collection/Product Specs.webp",
-        style: "Square",
+        style: "Cat-Eye",
         recommendedFor: ["Round", "Oval", "Diamond"],
-        description: "Desain persegi kontemporer dengan sudut halus, cocok untuk aktivitas harian.",
-        glassesId: "square-frame",
+        description: "Desain cat-eye modern dengan siluet ramping dan sudut halus, cocok untuk aktivitas harian.",
+        glassesId: "cateye-frame",
       },
       {
         id: "new-2",
-        name: "Aero Wire - Champagne Gold",
+        name: "Aero Cat Eye - Nude Peach",
         collection: "New Collection",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 139,
+          lensHeight: 48,
+          bridgeWidth: 19,
+          templeLength: 139,
+        },
+        colors: [
+          { name: "Nude Peach", hex: "#E8B8A6", image: "/katalog/New Collection/2.webp" },
+        ],
         image: "/katalog/New Collection/2.webp",
-        images: ["/katalog/New Collection/2.webp", "/katalog/New Collection/Product Specs.webp"],
+        images: ["/katalog/New Collection/2.webp"],
         specsImage: "/katalog/New Collection/Product Specs.webp",
-        style: "Round Wire",
+        style: "Cat-Eye",
         recommendedFor: ["Square", "Heart", "Diamond"],
-        description: "Frame kawat bulat yang halus dan ringan, memberikan kesan retro modern.",
-        glassesId: "oval-frame",
+        description: "Frame cat-eye transparan peach yang lembut dan ringan, memberikan kesan feminin modern.",
+        glassesId: "cateye-frame",
       },
     ],
   },
@@ -177,8 +536,20 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "titanium-1",
         name: "Titanium Pure - Matte Steel",
         collection: "Titanium Edition",
+        shape: "Oval",
+        material: "Titanium",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 125,
+          lensHeight: 47,
+          bridgeWidth: 17,
+          templeLength: 145,
+        },
+        colors: [
+          { name: "Hitam Steel", hex: "#181818", image: "/katalog/Titanium Edition/1.webp" },
+        ],
         image: "/katalog/Titanium Edition/1.webp",
-        images: ["/katalog/Titanium Edition/1.webp", "/katalog/Titanium Edition/Product Specs.webp"],
+        images: ["/katalog/Titanium Edition/1.webp"],
         specsImage: "/katalog/Titanium Edition/Product Specs.webp",
         style: "Titanium",
         recommendedFor: ["Oval", "Square", "Heart"],
@@ -187,10 +558,22 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "titanium-2",
-        name: "Titanium Air - Gunmetal Gray",
+        name: "Titanium Air - Rose Gold",
         collection: "Titanium Edition",
+        shape: "Oval",
+        material: "Titanium",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 125,
+          lensHeight: 47,
+          bridgeWidth: 17,
+          templeLength: 145,
+        },
+        colors: [
+          { name: "Rose Gold", hex: "#E2B5A0", image: "/katalog/Titanium Edition/2.webp" },
+        ],
         image: "/katalog/Titanium Edition/2.webp",
-        images: ["/katalog/Titanium Edition/2.webp", "/katalog/Titanium Edition/Product Specs.webp"],
+        images: ["/katalog/Titanium Edition/2.webp"],
         specsImage: "/katalog/Titanium Edition/Product Specs.webp",
         style: "Titanium",
         recommendedFor: ["Oval", "Round", "Diamond"],
@@ -215,6 +598,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "metro-1",
         name: "Metro Deek Urban - Black Acetate",
         collection: "Metro Deek",
+        shape: "Square",
+        colors: [
+          { name: "Hitam", hex: "#181818", image: "/katalog/Metro Deek/Feed 1.webp" },
+        ],
         image: "/katalog/Metro Deek/Feed 1.webp",
         images: ["/katalog/Metro Deek/Feed 1.webp"],
         style: "Urban Square",
@@ -226,6 +613,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "metro-2",
         name: "Metro Deek Minimalist - Crystal Clear",
         collection: "Metro Deek",
+        shape: "Square",
+        colors: [
+          { name: "Crystal Clear", hex: "#D6DADF", image: "/katalog/Metro Deek/Feed 2.webp" },
+        ],
         image: "/katalog/Metro Deek/Feed 2.webp",
         images: ["/katalog/Metro Deek/Feed 2.webp"],
         style: "Transparan",
@@ -237,6 +628,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "metro-3",
         name: "Metro Deek Executive - Deep Brown",
         collection: "Metro Deek",
+        shape: "Square",
+        colors: [
+          { name: "Deep Brown", hex: "#4A3222", image: "/katalog/Metro Deek/Feed 3.webp" },
+        ],
         image: "/katalog/Metro Deek/Feed 3.webp",
         images: ["/katalog/Metro Deek/Feed 3.webp"],
         style: "Classic Square",
@@ -260,26 +655,55 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "luxury-1",
-        name: "Quiet Luxury One - Subtle Gold Rim",
+        sku: "BP30367",
+        name: "Quiet Luxury BP30367 - Subtle Gold Rim",
         collection: "Quiet Luxury",
+        shape: "Oval",
+        dimensions: {
+          lensWidth: 49,
+          frameWidth: 139,
+          lensHeight: 47,
+          bridgeWidth: 15,
+          templeLength: 140,
+        },
+        colors: [
+          { name: "Tortoise Light", hex: "#8B5436", image: "/katalog/Quiet Luxury/CATALOG NEW-01.webp" },
+          { name: "Grey", hex: "#665F64", image: "/katalog/Quiet Luxury/Detail Spec.webp" },
+          { name: "Tortoise Dark", hex: "#693B22", image: "/katalog/Quiet Luxury/CATALOG NEW-02.webp" },
+        ],
         image: "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
-        images: ["/katalog/Quiet Luxury/CATALOG NEW-01.webp", "/katalog/Quiet Luxury/Detail Spec.webp"],
+        images: [
+          "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+          "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
+        ],
         specsImage: "/katalog/Quiet Luxury/Detail Spec.webp",
         style: "Luxury Oval",
         recommendedFor: ["Square", "Oval", "Heart"],
-        description: "Keanggunan minimalis dengan aksen emas halus yang sangat berkelas.",
+        description: "Keanggunan minimalis dengan aksen tortoise halus yang sangat berkelas.",
         glassesId: "oval-frame",
       },
       {
         id: "luxury-2",
-        name: "Quiet Luxury Two - Matte Platinum",
+        sku: "BP30367",
+        name: "Quiet Luxury BP30367 - Dark Amber",
         collection: "Quiet Luxury",
+        shape: "Oval",
+        dimensions: {
+          lensWidth: 49,
+          frameWidth: 139,
+          lensHeight: 47,
+          bridgeWidth: 15,
+          templeLength: 140,
+        },
+        colors: [
+          { name: "Tortoise Dark", hex: "#693B22", image: "/katalog/Quiet Luxury/CATALOG NEW-02.webp" },
+        ],
         image: "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
-        images: ["/katalog/Quiet Luxury/CATALOG NEW-02.webp", "/katalog/Quiet Luxury/Detail Spec.webp"],
+        images: ["/katalog/Quiet Luxury/CATALOG NEW-02.webp"],
         specsImage: "/katalog/Quiet Luxury/Detail Spec.webp",
-        style: "Luxury Round",
+        style: "Luxury Oval",
         recommendedFor: ["Square", "Oblong", "Diamond"],
-        description: "Finishing platinum matte ultralight untuk kenyamanan dan gengsi ekstra.",
+        description: "Finishing tortoise amber pekat untuk kenyamanan dan keanggunan ekstra.",
         glassesId: "round-frame",
       },
     ],
@@ -288,7 +712,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     id: "shades-of-elegance",
     title: "Shades Of Elegance",
     badge: "Elegance Collection",
-    description: "Sentuhan siluet elegan dengan gradasi warna menawan untuk penampilan anggun.",
+    description: "Sentuhan siluet bulat elegan dengan gradasi warna menawan untuk penampilan anggun.",
     coverImage: "/katalog/Shades Of Elegance/1.webp",
     images: [
       "/katalog/Shades Of Elegance/1.webp",
@@ -298,10 +722,24 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     items: [
       {
         id: "elegance-1",
-        name: "Shades Of Elegance Alpha - Soft Rose Gold",
+        name: "Shades Of Elegance Alpha - Clear Grey",
         collection: "Shades Of Elegance",
+        shape: "Round",
+        dimensions: {
+          lensWidth: 49,
+          frameWidth: 120,
+          lensHeight: 49,
+          bridgeWidth: 20,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Clear Grey Tint", hex: "#8F9397", image: "/katalog/Shades Of Elegance/1.webp" },
+        ],
         image: "/katalog/Shades Of Elegance/1.webp",
-        images: ["/katalog/Shades Of Elegance/1.webp", "/katalog/Shades Of Elegance/Product Specs.webp"],
+        images: [
+          "/katalog/Shades Of Elegance/1.webp",
+          "/katalog/Shades Of Elegance/2.webp",
+        ],
         specsImage: "/katalog/Shades Of Elegance/Product Specs.webp",
         style: "Cat-Eye Elegance",
         recommendedFor: ["Heart", "Oval", "Round"],
@@ -310,10 +748,21 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
       {
         id: "elegance-2",
-        name: "Shades Of Elegance Beta - Midnight Crystal",
+        name: "Shades Of Elegance Beta - Smoke Grey",
         collection: "Shades Of Elegance",
+        shape: "Round",
+        dimensions: {
+          lensWidth: 49,
+          frameWidth: 120,
+          lensHeight: 49,
+          bridgeWidth: 20,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Smoke Grey", hex: "#6B7075", image: "/katalog/Shades Of Elegance/2.webp" },
+        ],
         image: "/katalog/Shades Of Elegance/2.webp",
-        images: ["/katalog/Shades Of Elegance/2.webp", "/katalog/Shades Of Elegance/Product Specs.webp"],
+        images: ["/katalog/Shades Of Elegance/2.webp"],
         specsImage: "/katalog/Shades Of Elegance/Product Specs.webp",
         style: "Soft Square",
         recommendedFor: ["Round", "Oval", "Diamond"],
@@ -338,8 +787,22 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "shades-1",
         name: "Shades Edition Classic - Dark Smoke",
         collection: "Shades Edition",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 126,
+          lensHeight: 49,
+          bridgeWidth: 19,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Dark Smoke", hex: "#181818", image: "/katalog/Shades Edition/1.webp" },
+        ],
         image: "/katalog/Shades Edition/1.webp",
-        images: ["/katalog/Shades Edition/1.webp", "/katalog/Shades Edition/Product Specs.webp"],
+        images: [
+          "/katalog/Shades Edition/1.webp",
+          "/katalog/Shades Edition/3.webp",
+        ],
         specsImage: "/katalog/Shades Edition/Product Specs.webp",
         style: "Sunglasses Square",
         recommendedFor: ["Oval", "Round", "Heart"],
@@ -350,8 +813,19 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "shades-2",
         name: "Shades Edition Modern - Amber Gold",
         collection: "Shades Edition",
+        shape: "Cat-Eye",
+        dimensions: {
+          lensWidth: 55,
+          frameWidth: 126,
+          lensHeight: 49,
+          bridgeWidth: 19,
+          templeLength: 150,
+        },
+        colors: [
+          { name: "Amber Gold", hex: "#B87538", image: "/katalog/Shades Edition/3.webp" },
+        ],
         image: "/katalog/Shades Edition/3.webp",
-        images: ["/katalog/Shades Edition/3.webp", "/katalog/Shades Edition/Product Specs.webp"],
+        images: ["/katalog/Shades Edition/3.webp"],
         specsImage: "/katalog/Shades Edition/Product Specs.webp",
         style: "Sunglasses Aviator",
         recommendedFor: ["Square", "Oval", "Diamond"],
@@ -377,6 +851,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "feline-1",
         name: "The Feline Silhouette 01 - Onyx Black",
         collection: "The Feline Silhouette",
+        shape: "Cat-Eye",
+        colors: [
+          { name: "Onyx Black", hex: "#181818", image: "/katalog/The Feline Silhouette/5-medium.webp" },
+        ],
         image: "/katalog/The Feline Silhouette/5-thumb.webp",
         images: ["/katalog/The Feline Silhouette/5-medium.webp", "/katalog/The Feline Silhouette/5.webp"],
         style: "Cat-Eye Luxury",
@@ -388,6 +866,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "feline-2",
         name: "The Feline Silhouette 02 - Tortoise Luxe",
         collection: "The Feline Silhouette",
+        shape: "Cat-Eye",
+        colors: [
+          { name: "Tortoise Luxe", hex: "#7A4B2A", image: "/katalog/The Feline Silhouette/6-medium.webp" },
+        ],
         image: "/katalog/The Feline Silhouette/6-thumb.webp",
         images: ["/katalog/The Feline Silhouette/6-medium.webp", "/katalog/The Feline Silhouette/6.webp"],
         style: "Cat-Eye Statement",
@@ -399,6 +881,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "feline-3",
         name: "The Feline Silhouette 03 - Crimson Haze",
         collection: "The Feline Silhouette",
+        shape: "Cat-Eye",
+        colors: [
+          { name: "Crimson Haze", hex: "#8B2B38", image: "/katalog/The Feline Silhouette/7-medium.webp" },
+        ],
         image: "/katalog/The Feline Silhouette/7-thumb.webp",
         images: ["/katalog/The Feline Silhouette/7-medium.webp", "/katalog/The Feline Silhouette/7.webp"],
         style: "Cat-Eye Modern",
@@ -410,6 +896,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "feline-4",
         name: "The Feline Silhouette 04 - Amber Glow",
         collection: "The Feline Silhouette",
+        shape: "Cat-Eye",
+        colors: [
+          { name: "Amber Glow", hex: "#B87538", image: "/katalog/The Feline Silhouette/8-medium.webp" },
+        ],
         image: "/katalog/The Feline Silhouette/8-thumb.webp",
         images: ["/katalog/The Feline Silhouette/8-medium.webp", "/katalog/The Feline Silhouette/8.webp"],
         style: "Cat-Eye Minimalist",
@@ -419,7 +909,6 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
       },
     ],
   },
-
   {
     id: "the-lucid-vision",
     title: "The Lucid Vision",
@@ -436,6 +925,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "lucid-1",
         name: "The Lucid Vision 01 - Pure Crystal",
         collection: "The Lucid Vision",
+        shape: "Square",
+        colors: [
+          { name: "Pure Crystal", hex: "#E5E9EC", image: "/katalog/The Lucid Vision/14-medium.webp" },
+        ],
         image: "/katalog/The Lucid Vision/14-thumb.webp",
         images: ["/katalog/The Lucid Vision/14-medium.webp", "/katalog/The Lucid Vision/14.webp"],
         style: "Transparent Clear",
@@ -447,6 +940,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "lucid-2",
         name: "The Lucid Vision 02 - Smoked Glass",
         collection: "The Lucid Vision",
+        shape: "Square",
+        colors: [
+          { name: "Smoked Glass", hex: "#8A9096", image: "/katalog/The Lucid Vision/15-medium.webp" },
+        ],
         image: "/katalog/The Lucid Vision/15-thumb.webp",
         images: ["/katalog/The Lucid Vision/15-medium.webp", "/katalog/The Lucid Vision/15.webp"],
         style: "Smoked Crystal",
@@ -458,6 +955,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "lucid-3",
         name: "The Lucid Vision 03 - Champagne Hue",
         collection: "The Lucid Vision",
+        shape: "Square",
+        colors: [
+          { name: "Champagne Hue", hex: "#D4C4A8", image: "/katalog/The Lucid Vision/16-medium.webp" },
+        ],
         image: "/katalog/The Lucid Vision/16-thumb.webp",
         images: ["/katalog/The Lucid Vision/16-medium.webp", "/katalog/The Lucid Vision/16.webp"],
         style: "Warm Crystal",
@@ -485,6 +986,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "skena-1",
         name: "The Skena Gaze 01 - Bold Noir",
         collection: "The Skena Gaze",
+        shape: "Square",
+        colors: [
+          { name: "Bold Noir", hex: "#181818", image: "/katalog/The Skena Gaze/9-medium.webp" },
+        ],
         image: "/katalog/The Skena Gaze/9-thumb.webp",
         images: ["/katalog/The Skena Gaze/9-medium.webp", "/katalog/The Skena Gaze/9.webp"],
         style: "Chunky Square",
@@ -496,6 +1001,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "skena-2",
         name: "The Skena Gaze 02 - Forest Edge",
         collection: "The Skena Gaze",
+        shape: "Square",
+        colors: [
+          { name: "Forest Edge", hex: "#2A3B2F", image: "/katalog/The Skena Gaze/10-medium.webp" },
+        ],
         image: "/katalog/The Skena Gaze/10-thumb.webp",
         images: ["/katalog/The Skena Gaze/10-medium.webp", "/katalog/The Skena Gaze/10.webp"],
         style: "Geometric Bold",
@@ -507,6 +1016,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "skena-3",
         name: "The Skena Gaze 03 - Retro Havana",
         collection: "The Skena Gaze",
+        shape: "Square",
+        colors: [
+          { name: "Retro Havana", hex: "#82502A", image: "/katalog/The Skena Gaze/11-medium.webp" },
+        ],
         image: "/katalog/The Skena Gaze/11-thumb.webp",
         images: ["/katalog/The Skena Gaze/11-medium.webp", "/katalog/The Skena Gaze/11.webp"],
         style: "Vintage Skena",
@@ -518,6 +1031,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "skena-4",
         name: "The Skena Gaze 04 - Modern Slate",
         collection: "The Skena Gaze",
+        shape: "Square",
+        colors: [
+          { name: "Modern Slate", hex: "#63686E", image: "/katalog/The Skena Gaze/12-medium.webp" },
+        ],
         image: "/katalog/The Skena Gaze/12-thumb.webp",
         images: ["/katalog/The Skena Gaze/12-medium.webp", "/katalog/The Skena Gaze/12.webp"],
         style: "Architectural Square",
@@ -529,11 +1046,15 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "skena-5",
         name: "The Skena Gaze 05 - Deep Amber",
         collection: "The Skena Gaze",
+        shape: "Square",
+        colors: [
+          { name: "Deep Amber", hex: "#A86928", image: "/katalog/The Skena Gaze/13-medium.webp" },
+        ],
         image: "/katalog/The Skena Gaze/13-thumb.webp",
         images: ["/katalog/The Skena Gaze/13-medium.webp", "/katalog/The Skena Gaze/13.webp"],
         style: "Statement Acetate",
         recommendedFor: ["Oval", "Heart", "Square"],
-        description: "Warna madu amber pekat dengan kilau material asetat premium yang sangat mewah.",
+        description: "Warna madu amber pekat dengan kilau mewah yang menonjol.",
         glassesId: "square-frame",
       },
     ],
@@ -556,6 +1077,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "onyx-1",
         name: "The Onyx Enigma 01 - Shadow Noir",
         collection: "The Onyx Enigma",
+        shape: "Square",
+        colors: [
+          { name: "Shadow Noir", hex: "#181818", image: "/katalog/The Onyx Enigma/21-medium.webp" },
+        ],
         image: "/katalog/The Onyx Enigma/21-thumb.webp",
         images: ["/katalog/The Onyx Enigma/21-medium.webp", "/katalog/The Onyx Enigma/21.webp"],
         style: "Onyx Square",
@@ -567,6 +1092,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "onyx-2",
         name: "The Onyx Enigma 02 - Obsidian Gloss",
         collection: "The Onyx Enigma",
+        shape: "Square",
+        colors: [
+          { name: "Obsidian Gloss", hex: "#181818", image: "/katalog/The Onyx Enigma/22-medium.webp" },
+        ],
         image: "/katalog/The Onyx Enigma/22-thumb.webp",
         images: ["/katalog/The Onyx Enigma/22-medium.webp", "/katalog/The Onyx Enigma/22.webp"],
         style: "Gloss Bold",
@@ -578,6 +1107,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "onyx-3",
         name: "The Onyx Enigma 03 - Dark Tortoise",
         collection: "The Onyx Enigma",
+        shape: "Oval",
+        colors: [
+          { name: "Dark Tortoise", hex: "#5C3D24", image: "/katalog/The Onyx Enigma/23-medium.webp" },
+        ],
         image: "/katalog/The Onyx Enigma/23-thumb.webp",
         images: ["/katalog/The Onyx Enigma/23-medium.webp", "/katalog/The Onyx Enigma/23.webp"],
         style: "Modern Tortoise",
@@ -589,6 +1122,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "onyx-4",
         name: "The Onyx Enigma 04 - Midnight Slate",
         collection: "The Onyx Enigma",
+        shape: "Square",
+        colors: [
+          { name: "Midnight Slate", hex: "#484E55", image: "/katalog/The Onyx Enigma/24-medium.webp" },
+        ],
         image: "/katalog/The Onyx Enigma/24-thumb.webp",
         images: ["/katalog/The Onyx Enigma/24-medium.webp", "/katalog/The Onyx Enigma/24.webp"],
         style: "Minimalist Slate",
@@ -600,6 +1137,10 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         id: "onyx-5",
         name: "The Onyx Enigma 05 - Eclipse Crystal",
         collection: "The Onyx Enigma",
+        shape: "Oval",
+        colors: [
+          { name: "Eclipse Crystal", hex: "#5B6168", image: "/katalog/The Onyx Enigma/25-medium.webp" },
+        ],
         image: "/katalog/The Onyx Enigma/25-thumb.webp",
         images: ["/katalog/The Onyx Enigma/25-medium.webp", "/katalog/The Onyx Enigma/25.webp"],
         style: "Dark Crystal",
@@ -610,5 +1151,3 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
     ],
   },
 ];
-
-
