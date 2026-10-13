@@ -28,15 +28,17 @@ export default function CatalogItemCard({
   const colors = item.colors && item.colors.length > 0 ? item.colors : [];
   const activeColor = colors[selectedColorIdx];
 
-  // Primary image prioritizes active color variant's image, then item.image, then first in images
+  // Primary initial image: cover photo or active color variant
   const primaryImage =
     (activeColor && activeColor.image) ||
+    item.coverImage ||
     item.image ||
     (item.images && item.images[0]) ||
     "/placeholder-glasses.png";
 
-  // Alternate hover image: second image in gallery or lifestyle photo
-  const alternateImage =
+  // Alternate hover image: specs diagram with measurements (lebar, tinggi, dll) or second photo
+  const hoverImage =
+    item.specsImage ||
     (item.images && item.images.length > 1 && item.images[1] !== primaryImage
       ? item.images[1]
       : null) ||
@@ -44,7 +46,7 @@ export default function CatalogItemCard({
       ? item.lifestyleImages[0]
       : null);
 
-  const displayImage = isHovered && alternateImage ? alternateImage : primaryImage;
+  const displayImage = isHovered && hoverImage ? hoverImage : primaryImage;
 
   // Frame display name
   const displayName = item.name;
@@ -67,8 +69,8 @@ export default function CatalogItemCard({
       className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-[#E7E2D7] bg-white transition-all duration-200 hover:border-[#1B4332]/40 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#1B4332] cursor-pointer"
     >
       <div>
-        {/* Photo Canvas */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#FAF7F0] border-b border-[#EFEBE2]">
+        {/* Photo Canvas (4:5 portrait to match real product posters and dimension sheets perfectly) */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#FAF7F0] border-b border-[#EFEBE2]">
           {/* Shape badge */}
           {shapeLabel && (
             <div className="absolute top-2.5 left-2.5 z-10">
@@ -126,6 +128,15 @@ export default function CatalogItemCard({
                   <circle cx="12" cy="12" r="3" />
                 </svg>
                 Virtual Try-On
+              </span>
+            </div>
+          )}
+
+          {/* Dimension specs badge on hover */}
+          {isHovered && item.specsImage && (
+            <div className="absolute bottom-2 right-2 z-10 transition-opacity">
+              <span className="inline-flex items-center gap-1 rounded bg-[#124734]/90 backdrop-blur-xs px-2 py-0.5 text-[9.5px] font-semibold text-white shadow-2xs">
+                📐 Detail Ukuran
               </span>
             </div>
           )}

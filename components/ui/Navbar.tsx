@@ -10,56 +10,61 @@ export default function Navbar() {
   const [visible, setVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [isQuizPlaying, setIsQuizPlaying] = useState(false);
+  const [isKatalogOpen, setIsKatalogOpen] = useState(false);
+  const [isMobileKatalogOpen, setIsMobileKatalogOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
 
+  // Close dropdown on click outside
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      const diff = currentY - lastScrollY.current;
-
-      // Show when scrolling UP, hide when scrolling DOWN (after 60px threshold)
-      if (currentY < 60) {
-        setVisible(true);
-      } else if (diff > 6) {
-        // Scrolling DOWN → hide
-        setVisible(false);
-      } else if (diff < -6) {
-        // Scrolling UP → show
-        setVisible(true);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsKatalogOpen(false);
       }
-
-      setScrolled(currentY > 30);
-      lastScrollY.current = currentY;
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Detect whether user is actively answering a quiz so bottom nav only hides during gameplay
+  // Close on route change
   useEffect(() => {
-    if (typeof document === "undefined") return;
-
-    const checkQuizState = () => {
-      setIsQuizPlaying(document.body.getAttribute("data-quiz-playing") === "true");
-    };
-
-    checkQuizState();
-
-    const observer = new MutationObserver(checkQuizState);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["data-quiz-playing"],
-    });
-
-    return () => observer.disconnect();
+    setIsKatalogOpen(false);
+    setIsMobileKatalogOpen(false);
   }, [pathname]);
 
+  const isKatalogActive = Boolean(pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
+
+  const katalogOptions = [
+    {
+      href: "/katalog",
+      title: "Katalog Frame Kacamata",
+      desc: "100+ Koleksi frame optik, titanium & sunglasses",
+      badge: "Frame Optik",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="6" cy="14" r="4" />
+          <circle cx="18" cy="14" r="4" />
+          <path d="M10 14h4" />
+          <path d="M2 14l3-7h14l3 7" />
+        </svg>
+      ),
+    },
+    {
+      href: "/softlens",
+      title: "Katalog Softlens",
+      desc: "Softlens warna natural, bening & cairan Kemenkes RI",
+      badge: "Kemenkes RI",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      ),
+    },
+  ];
+
   const navLinks = [
-    { href: "/katalog", label: "Katalog" },
     { href: "/photobooth", label: "Photobooth" },
-    { href: "/softlens", label: "Softlens" },
     { href: "/cabang", label: "Cabang" },
     { href: "/home-service", label: "Home Service" },
     { href: "/sponsor", label: "Sponsor" },
@@ -140,16 +145,99 @@ export default function Navbar() {
                 </svg>
               </Link>
 
+              {/* Interactive Katalog Dropdown Button */}
+              <div
+                ref={dropdownRef}
+                className="relative"
+                onMouseEnter={() => setIsKatalogOpen(true)}
+                onMouseLeave={() => setIsKatalogOpen(false)}
+              >
+                <button
+                  type="button"
+                  onClick={() => setIsKatalogOpen((prev) => !prev)}
+                  aria-expanded={isKatalogOpen}
+                  aria-haspopup="true"
+                  className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all duration-200 cursor-pointer ${
+                    isKatalogActive
+                      ? "bg-isy-green-deep text-white shadow-md"
+                      : "text-isy-green-deep/80 hover:bg-[#F2ECE0] hover:text-isy-green-deep hover:scale-105 active:scale-95"
+                  }`}
+                >
+                  <span>Katalog</span>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={`transition-transform duration-200 ${isKatalogOpen ? "rotate-180" : ""}`}
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </button>
+
+                {/* Desktop Dropdown Popover */}
+                {isKatalogOpen && (
+                  <div className="absolute left-0 top-full pt-2 z-50 w-72 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="overflow-hidden rounded-2xl border border-[#E3E7DF] bg-[#FAF8F3] p-2 shadow-xl ring-1 ring-black/5">
+                      <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#626C65]">
+                        Pilihan Katalog Produk
+                      </div>
+                      <div className="space-y-1">
+                        {katalogOptions.map((opt) => {
+                          const isOptionActive = pathname?.startsWith(opt.href);
+                          return (
+                            <Link
+                              key={opt.href}
+                              href={opt.href}
+                              onClick={() => setIsKatalogOpen(false)}
+                              className={`flex items-start gap-3 rounded-xl p-2.5 transition-colors border group/item ${
+                                isOptionActive
+                                  ? "bg-white border-[#124734]/30 shadow-2xs"
+                                  : "hover:bg-white border-transparent hover:border-[#E3E7DF]"
+                              }`}
+                            >
+                              <div
+                                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                                  isOptionActive
+                                    ? "bg-[#124734] text-white"
+                                    : "bg-[#124734]/10 text-[#124734] group-hover/item:bg-[#124734] group-hover/item:text-white"
+                                }`}
+                              >
+                                {opt.icon}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span className="text-xs font-bold text-[#183C30] group-hover/item:text-[#124734]">
+                                    {opt.title}
+                                  </span>
+                                  <span className="text-[9.5px] font-semibold text-[#124734] bg-[#124734]/10 px-1.5 py-0.5 rounded">
+                                    {opt.badge}
+                                  </span>
+                                </div>
+                                <p className="text-[11px] text-[#626C65] leading-snug mt-0.5 line-clamp-1">
+                                  {opt.desc}
+                                </p>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Other Navigation Links */}
               {navLinks.map((link) => {
-                const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
                 const isActive =
-                  isKatalog ||
-                  (link.href.startsWith("/#")
+                  link.href.startsWith("/#")
                     ? false
-                    : (pathname ?? "").startsWith(link.href.split("?")[0]));
+                    : (pathname ?? "").startsWith(link.href.split("?")[0]);
 
-                // Quiz gets a special sparkle badge
                 const isQuiz = link.href === "/quiz";
 
                 return (
@@ -197,9 +285,78 @@ export default function Navbar() {
 
       </header>
 
+      {/* Mobile Katalog Selection Popup (Drawer) */}
+      {isMobileKatalogOpen && !isQuizPlaying && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-2xs md:hidden"
+            onClick={() => setIsMobileKatalogOpen(false)}
+          />
+          <div
+            className="fixed left-3 right-3 z-50 md:hidden animate-in slide-in-from-bottom-3 fade-in duration-200"
+            style={{ bottom: "calc(3.6rem + env(safe-area-inset-bottom, 0px))" }}
+          >
+            <div className="overflow-hidden rounded-2xl border border-[#E3E7DF] bg-[#FAF8F3] p-3 shadow-2xl ring-1 ring-black/10">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E3E7DF] px-1 mb-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#124734]">
+                  Pilih Katalog Produk
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileKatalogOpen(false)}
+                  className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-200/70 text-stone-700 text-xs font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="space-y-1.5">
+                {katalogOptions.map((opt) => {
+                  const isOptionActive = pathname?.startsWith(opt.href);
+                  return (
+                    <Link
+                      key={opt.href}
+                      href={opt.href}
+                      onClick={() => setIsMobileKatalogOpen(false)}
+                      className={`flex items-center gap-3 rounded-xl p-2.5 transition-colors border ${
+                        isOptionActive
+                          ? "bg-white border-[#124734]/30 shadow-2xs"
+                          : "bg-white border-[#E3E7DF] active:bg-[#FAF8F3]"
+                      }`}
+                    >
+                      <div
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                          isOptionActive
+                            ? "bg-[#124734] text-white"
+                            : "bg-[#124734]/10 text-[#124734]"
+                        }`}
+                      >
+                        {opt.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-[#183C30]">
+                            {opt.title}
+                          </span>
+                          <span className="text-[9.5px] font-semibold text-[#124734] bg-[#124734]/10 px-1.5 py-0.5 rounded">
+                            {opt.badge}
+                          </span>
+                        </div>
+                        <p className="text-[10.5px] text-[#626C65] truncate mt-0.5">
+                          {opt.desc}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Mobile Bottom Nav Bar — scrollable for all links (hidden only when user is actively playing a quiz) */}
       {!isQuizPlaying && (
-        <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center border-t border-isy-line/80 bg-[#FAF6EC]/95 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto gap-1 text-[11px] font-bold scrollbar-none">
+        <div className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center border-t border-[#E3E7DF] bg-[#FAF6EC]/98 backdrop-blur-md px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] overflow-x-auto gap-1 text-[11px] font-bold scrollbar-none shadow-sm">
           {/* Home */}
           <Link
             href="/"
@@ -218,13 +375,38 @@ export default function Navbar() {
           {/* Divider */}
           <span className="shrink-0 h-4 w-px bg-isy-line/80 mx-0.5" />
 
+          {/* Mobile Katalog 2-Choice Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsMobileKatalogOpen((prev) => !prev)}
+            aria-expanded={isMobileKatalogOpen}
+            className={`relative flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-full transition-colors cursor-pointer ${
+              isKatalogActive || isMobileKatalogOpen
+                ? "bg-isy-green-deep text-white"
+                : "text-isy-green-deep/80 hover:text-isy-green-deep active:scale-95"
+            }`}
+          >
+            <span>Katalog</span>
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`transition-transform duration-200 ${isMobileKatalogOpen ? "rotate-180" : ""}`}
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
           {navLinks.map((link) => {
-            const isKatalog = link.href === "/katalog" && (pathname?.startsWith("/katalog") || pathname?.startsWith("/softlens"));
             const isActive =
-              isKatalog ||
-              (link.href.startsWith("/#")
+              link.href.startsWith("/#")
                 ? false
-                : (pathname ?? "").startsWith(link.href.split("?")[0]));
+                : (pathname ?? "").startsWith(link.href.split("?")[0]);
 
             const isQuiz = link.href === "/quiz";
 

@@ -86,7 +86,7 @@ export default function SoftlensSeriesCard({
           <div className="text-[11px] text-[#626C65] font-medium mb-1 truncate">
             {series.type === "lens"
               ? `Kadar Air: ${series.waterContent || "42%"} • ${series.usageDuration || "6 Bulan"}`
-              : "Perawatan & Higienitas Mata"}
+              : "Perawatan dan Higienitas Mata"}
           </div>
 
           <h3 className="font-sans text-sm sm:text-[15px] font-bold text-[#183C30] leading-snug line-clamp-1 group-hover:text-[#124734] transition-colors">

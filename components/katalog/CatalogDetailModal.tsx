@@ -186,7 +186,7 @@ export default function CatalogDetailModal({
           {/* Column 1: Photos & Diagrams (5 cols on lg) */}
           <div className="lg:col-span-6 space-y-4">
             {/* Primary Display View */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#FAF7F0] border border-[#E7E2D7]">
+            <div className="relative aspect-[4/5] max-h-[520px] w-full overflow-hidden rounded-xl bg-[#FAF7F0] border border-[#E7E2D7]">
               {showSpecsDiagram && item.specsImage ? (
                 <Image
                   src={item.specsImage}

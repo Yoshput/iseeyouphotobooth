@@ -335,7 +335,6 @@ export default function RootLayout({
         {/* Luxury Brand Opening Splash Screen */}
         <PWASplashScreen />
 
-        <CustomCursor />
         {children}
 
         {/* PWA: Register Service Worker */}

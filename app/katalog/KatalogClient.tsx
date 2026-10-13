@@ -299,7 +299,7 @@ export default function KatalogClient({
           </h1>
           <p className="mt-1.5 text-xs sm:text-sm text-stone-600 max-w-2xl leading-relaxed">
             Pilihan bingkai kacamata optik dan sunglasses original Optik I See You.
-            Pilih model, cek spesifikasi presisi dalam milimeter, lalu hubungi cabang terdekat untuk ketersediaan stok &amp; periksa mata.
+            Pilih model, cek spesifikasi presisi dalam milimeter, lalu hubungi cabang terdekat untuk ketersediaan stok dan periksa mata.
           </p>
         </header>
 

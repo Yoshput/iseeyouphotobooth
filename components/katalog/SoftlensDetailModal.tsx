@@ -340,7 +340,7 @@ export default function SoftlensDetailModal({
               </div>
 
               <p className="text-[11px] text-stone-500 text-center">
-                Tersedia ukuran normal &amp; minus di seluruh cabang Optik I See You.
+                Tersedia ukuran normal dan minus di seluruh cabang Optik I See You.
               </p>
             </div>
           </div>

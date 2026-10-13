@@ -201,8 +201,8 @@ export default function SoftlensClient() {
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-black text-[#124734] tracking-tight">
-                Katalog Softlens &amp; Perawatan
+              <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#124734] tracking-tight">
+                Katalog Softlens dan Perawatan
               </h1>
               <p className="mt-2 text-sm sm:text-base text-[#626C65] max-w-2xl leading-relaxed">
                 Pilihan softlens warna natural, lensa bening bulanan, serta cairan pembersih higienis resmi Kemenkes RI untuk kesehatan mata Anda.
@@ -268,8 +268,8 @@ export default function SoftlensClient() {
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             {[
               { id: "all", label: "Semua Produk" },
-              { id: "lens", label: "Softlens & Warna" },
-              { id: "accessory", label: "Cairan & Aksesoris" },
+              { id: "lens", label: "Softlens Warna" },
+              { id: "accessory", label: "Cairan dan Aksesoris" },
             ].map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -337,7 +337,7 @@ export default function SoftlensClient() {
           <div className="rounded-xl border border-dashed border-[#E3E7DF] bg-white p-12 text-center max-w-md mx-auto space-y-3">
             <p className="text-sm font-bold text-[#183C30]">Tidak ada produk yang cocok</p>
             <p className="text-xs text-[#626C65]">
-              Coba gunakan kata kunci pencarian yang berbeda atau reset filter kategori &amp; warna.
+              Coba gunakan kata kunci pencarian yang berbeda atau reset filter kategori dan warna.
             </p>
             <button
               type="button"
@@ -368,7 +368,7 @@ export default function SoftlensClient() {
               Panduan Higienitas
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-[#183C30] mt-1">
-              Perawatan &amp; Edukasi Softlens
+              Perawatan dan Edukasi Softlens
             </h2>
             <p className="text-xs sm:text-sm text-[#626C65] mt-1 leading-relaxed">
               Panduan pemakaian aman untuk kenyamanan kornea mata dan pencegahan iritasi harian.
