@@ -17,7 +17,7 @@ const config: Config = {
           emerald:        "#124734",
           "emerald-hover":"#0C3527",
           "green-deep":   "#124734",
-          "green-bright": "#1B4332",
+          "green-bright": "#2FA84F",
           "text-primary": "#183C30",
           "text-secondary":"#626C65",
           ink:            "#183C30",
