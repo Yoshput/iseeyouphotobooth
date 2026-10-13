@@ -20,14 +20,14 @@ import FloatingGlasses from "@/components/ui/FloatingGlasses";
 import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
 import LandingVideoShowcase from "@/components/ui/LandingVideoShowcase";
 import AboutRefractionBookingSection from "@/components/ui/AboutRefractionBookingSection";
-import FeaturedCollectionsSection from "@/components/landing/FeaturedCollectionsSection";
+import RunningCatalogFeed from "@/components/landing/RunningCatalogFeed";
 import GoogleReviewsSection from "@/components/ui/GoogleReviewsSection";
 import BlogShowcaseSection from "@/components/ui/BlogShowcaseSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 import Link from "next/link";
-import { ScanFace, Sparkles, Camera, QrCode } from "lucide-react";
+import { ScanFace, Sparkles, Camera, QrCode, Eye } from "lucide-react";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
 import {
   BRANCHES,
@@ -170,33 +170,50 @@ export default function LandingPage() {
             {/* Action Buttons */}
             <div ref={ctaRef} className="mt-7 w-full max-w-md space-y-3.5">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                {/* Primary CTA */}
-                <Link
-                  href="/katalog"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#124734] px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-[#0C3527] transition-all text-center"
+                {/* Primary CTA: Mulai Try-On / Photobooth */}
+                <button
+                  type="button"
+                  onClick={start}
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#124734] px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-[#0C3527] transition-all text-center cursor-pointer active:scale-98"
                 >
-                  <span>Jelajahi Katalog</span>
-                  <span>→</span>
-                </Link>
+                  <Sparkles className="h-4 w-4" />
+                  <span>Mulai Try-On / Photobooth</span>
+                </button>
 
-                {/* Secondary CTA */}
-                <Link
-                  href="/try-on"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-[#124734] bg-white px-6 py-3.5 text-xs sm:text-sm font-bold text-[#124734] hover:bg-[#F3F8F4] transition-all text-center shadow-2xs"
+                {/* Secondary CTA: Antrian Cek Mata */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById("antrian-cek-mata");
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    } else {
+                      router.push("#antrian-cek-mata");
+                    }
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#124734] bg-white px-6 py-3.5 text-xs sm:text-sm font-bold text-[#124734] hover:bg-[#124734] hover:text-white transition-all text-center shadow-2xs cursor-pointer active:scale-98 group"
                 >
-                  <span>Coba Frame Virtual</span>
-                </Link>
+                  <Eye className="h-4 w-4 text-[#124734] group-hover:text-white transition-colors" />
+                  <span>Antrian Cek Mata</span>
+                </button>
               </div>
 
               {/* Supporting CTA */}
               <div className="pt-1 flex items-center justify-start gap-4 text-xs">
-                <a
-                  href="#antrian-cek-mata"
-                  className="font-medium text-[#124734] hover:underline flex items-center gap-1"
+                <Link
+                  href="/katalog"
+                  className="font-semibold text-[#124734] hover:underline flex items-center gap-1"
                 >
-                  <span>Konsultasi &amp; Cek Mata Gratis</span>
-                  <span>↓</span>
-                </a>
+                  <span>Jelajahi Katalog Frame</span>
+                  <span>→</span>
+                </Link>
+                <span className="text-[#E3E7DF]">•</span>
+                <Link
+                  href="/softlens"
+                  className="font-medium text-[#626C65] hover:text-[#124734] transition-colors"
+                >
+                  Katalog Softlens
+                </Link>
                 <span className="text-[#E3E7DF]">•</span>
                 <a
                   href="#lokasi"
@@ -291,8 +308,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ PILIHAN KOLEKSI FRAME (Replaces Autoplay Marquee) ═══ */}
-      <FeaturedCollectionsSection />
+      {/* ═══ KATALOG BERJALAN: FEED RSM MARQUEE ═══ */}
+      <RunningCatalogFeed />
 
       {/* ═══ CINEMATIC VIDEO SHOWCASE ═══ */}
       <LandingVideoShowcase />
