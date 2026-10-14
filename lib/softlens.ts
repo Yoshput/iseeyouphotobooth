@@ -9,7 +9,7 @@ export const SOFTLENS_CS_WA_URL = (productName?: string, variantName?: string) =
     ? `*${productName}* (Varian: *${variantName}*)`
     : productName
     ? `*${productName}*`
-    : "koleksi Softlens & Aksesoris";
+    : "koleksi Softlens dan Aksesoris";
   const msg = `Halo CS Optik I See You 👋, saya tertarik dengan produk ${itemDesc} di Katalog Softlens. Boleh info ketersediaan stok, ukuran minus, dan cara pemesanan? Terima kasih! 🙏`;
   return `https://wa.me/${SOFTLENS_CS_NUMBER}?text=${encodeURIComponent(msg)}`;
 };
@@ -31,12 +31,12 @@ export interface SoftlensVariant {
   badgeText?: string;
 }
 
-/** Model Series Softlens & Aksesoris (1 Series = 1 Kartu) */
+/** Model Series Softlens dan Aksesoris (1 Series = 1 Kartu) */
 export interface SoftlensSeries {
   id: string; // e.g. "exoticon-ice-no5"
   name: string; // e.g. "Exoticon ICE N°5"
   brand?: string;
-  category: "Softlens" | "Aksesoris & Perawatan";
+  category: "Softlens" | "Aksesoris dan Perawatan";
   type: "lens" | "accessory";
   colorFamily: "brown" | "grey" | "hazel" | "natural" | "colorful" | "accessory";
   coverImage: string;
@@ -60,7 +60,7 @@ export interface SoftlensSeries {
 export interface SoftlensProduct {
   id: string;
   name: string;
-  category: "Koleksi Premium" | "Aksesoris & Perawatan" | "Softlens";
+  category: "Koleksi Premium" | "Aksesoris dan Perawatan" | "Softlens";
   colorFamily: "brown" | "grey" | "hazel" | "natural" | "colorful" | "accessory";
   specs: string[];
   description: string;
@@ -100,10 +100,10 @@ export const COLOR_FILTERS = [
   { id: "all", label: "Semua Warna" },
   { id: "brown", label: "Cokelat (Brown)" },
   { id: "grey", label: "Abu-Abu (Grey)" },
-  { id: "hazel", label: "Hazel & Emas" },
-  { id: "natural", label: "Natural & Bening" },
+  { id: "hazel", label: "Hazel dan Emas" },
+  { id: "natural", label: "Natural dan Bening" },
   { id: "colorful", label: "Anti Blue Light" },
-  { id: "accessory", label: "Cairan & Aksesoris" },
+  { id: "accessory", label: "Cairan dan Aksesoris" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -258,7 +258,7 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     colorFamily: "natural",
     coverImage: "/Katalog Soflens/Assets Soflens/exoticon-exo clear.webp",
     description:
-      "Softlens bening bulanan ultrathin berbahan Etafilcon A, memberikan penglihatan super tajam & sangat nyaman.",
+      "Softlens bening bulanan ultrathin berbahan Etafilcon A, memberikan penglihatan super tajam dan sangat nyaman.",
     specs: ["Monthly Disposable", "Super Thin Vision", "For Sensitive Eyes", "Etafilcon A"],
     diameter: "14.2 mm",
     waterContent: "55%",
@@ -481,14 +481,14 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
   },
 
   // ───────────────────────────────────────────────────────────────────────────
-  // AKSESORIS & PERAWATAN SOFLENS & KACAMATA
+  // AKSESORIS DAN PERAWATAN SOFLENS DAN KACAMATA
   // ───────────────────────────────────────────────────────────────────────────
-  // ── 11. ICE Solution Multi-Purpose (150ML & 60ML) ──
+  // ── 11. ICE Solution Multi-Purpose (150ML dan 60ML) ──
   {
     id: "ice-solution",
     name: "ICE Solution Multi-Purpose",
     brand: "ICE",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Cairan Soflens Ice-150ml.webp",
@@ -524,12 +524,12 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     ],
   },
 
-  // ── 12. X2 Solution Multi-Purpose (120ML & 60ML) ──
+  // ── 12. X2 Solution Multi-Purpose (120ML dan 60ML) ──
   {
     id: "x2-solution",
     name: "X2 Solution Multi-Purpose",
     brand: "X2",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Cairan Soflens X2.webp",
@@ -570,7 +570,7 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "x2-contacts-15ml",
     name: "X2 Contacts Tetes Mata (15ML)",
     brand: "X2",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/X2 Contacts.webp",
@@ -599,18 +599,18 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "pure-n-soft-60ml",
     name: "Pure N'Soft Solution (60ML)",
     brand: "Pure N'Soft",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Cairan Soflens  Men Soft.webp",
     description:
-      "Cairan pembersih & perendam softlens Pure N'Soft 60ml menjaga lensa tetap higienis dan nyaman seharian.",
-    specs: ["Hyaluronic Gentle", "Ekonomis & Steril", "Lepas Endapan Protein", "Kemasan 60ML"],
+      "Cairan pembersih dan perendam softlens Pure N'Soft 60ml menjaga lensa tetap higienis dan nyaman seharian.",
+    specs: ["Hyaluronic Gentle", "Ekonomis dan Steril", "Lepas Endapan Protein", "Kemasan 60ML"],
     volume: "60ML",
     isAccessory: true,
     basePrice: 8000,
     basePriceFormatted: "Rp 8.000",
-    badgeText: "Hemat & Steril",
+    badgeText: "Hemat dan Steril",
     variants: [
       {
         id: "pure-n-soft-60ml",
@@ -623,17 +623,17 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     ],
   },
 
-  // ── 15. Case Magnet Exclusive (2 Varian: Coklat & Pastel) ──
+  // ── 15. Case Magnet Exclusive (2 Varian: Coklat dan Pastel) ──
   {
     id: "case-magnet-series",
-    name: "Case Magnet Kacamata & Softlens",
+    name: "Case Magnet Kacamata dan Softlens",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Case Magnet Coklat.webp",
     description:
-      "Kotak kacamata & softlens hardcase bermagnet mewah dengan interior beludru lembut pelindung goresan.",
+      "Kotak kacamata dan softlens hardcase bermagnet mewah dengan interior beludru lembut pelindung goresan.",
     specs: ["Magnetic Closure", "Hard Case Protection", "Luxury Finish", "Interior Beludru"],
     isAccessory: true,
     basePrice: 30000,
@@ -669,12 +669,12 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "cleaner-lensa-nex",
     name: "Cleaner Lensa NEX Anti-Fog (30ML)",
     brand: "NEX",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Cleaner Lensa Nex.webp",
     description:
-      "Cairan semprot pembersih lensa kacamata NEX anti-embun & anti-static untuk kejernihan HD seketika.",
+      "Cairan semprot pembersih lensa kacamata NEX anti-embun dan anti-static untuk kejernihan HD seketika.",
     specs: ["Anti-Fog Spray", "High Definition Clean", "Streak-Free", "Aman untuk Coating"],
     volume: "30ML",
     isAccessory: true,
@@ -698,13 +698,13 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "cleaner-biasa",
     name: "Spray Cleaner Lensa Standard (30ML)",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Cleaner Biasa.webp",
     description:
       "Pembersih semprot praktis efektif mengangkat noda minyak dan debu seketika pada lensa dan frame.",
-    specs: ["Sanitizer Spray", "Pocket Size", "Debu & Minyak Hilang", "Jernih Maksimal"],
+    specs: ["Sanitizer Spray", "Pocket Size", "Debu dan Minyak Hilang", "Jernih Maksimal"],
     volume: "30ML",
     isAccessory: true,
     basePrice: 10000,
@@ -727,12 +727,12 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "mesin-pencuci-soflens",
     name: "Mesin Pencuci Softlens (Ultrasonic)",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Mesin Pencuci Soflens.webp",
     description:
-      "Mesin getar ultrasonic otomatis membersihkan kotoran & endapan protein pada softlens tanpa merusak pori lensa.",
+      "Mesin getar ultrasonic otomatis membersihkan kotoran dan endapan protein pada softlens tanpa merusak pori lensa.",
     specs: ["Vibrasi Otomatis", "USB Rechargeable", "Pembersih Kuman Deep Clean", "Steril 3 Menit"],
     isAccessory: true,
     basePrice: 15000,
@@ -750,12 +750,12 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     ],
   },
 
-  // ── 19. Wadah Softlens Travel Kit (2 Varian: Standard & Hijau Mint) ──
+  // ── 19. Wadah Softlens Travel Kit (2 Varian: Standard dan Hijau Mint) ──
   {
     id: "wadah-soflens-series",
     name: "Wadah Softlens Travel Kit",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Wadah Soflens.webp",
@@ -793,7 +793,7 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "ear-hook",
     name: "Ear Hook Anti-Slip Kacamata",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Ear Hook.webp",
@@ -807,7 +807,7 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     variants: [
       {
         id: "ear-hook",
-        name: "Sepasang (Kiri & Kanan)",
+        name: "Sepasang (Kiri dan Kanan)",
         colorFamily: "accessory",
         image: "/Katalog Soflens/Aksesoris/Ear Hook.webp",
         price: 10000,
@@ -821,12 +821,12 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "nose-pad-tempel",
     name: "Nose Pad Tempel Silikon Soft",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Nose pad Tempel.webp",
     description:
-      "Bantalan hidung silikon fleksibel menambah kenyamanan & mencegah kacamata meninggalkan bekas di hidung.",
+      "Bantalan hidung silikon fleksibel menambah kenyamanan dan mencegah kacamata meninggalkan bekas di hidung.",
     specs: ["Silikon Air-Cushion", "Perekat Kuat", "Bebas Bekas di Hidung", "Anti-Sakit"],
     isAccessory: true,
     basePrice: 12000,
@@ -849,13 +849,13 @@ export const SOFTLENS_SERIES_LIST: SoftlensSeries[] = [
     id: "strap-kacamata",
     name: "Strap Tali Kacamata Sport / Etnik",
     brand: "Optik I See You",
-    category: "Aksesoris & Perawatan",
+    category: "Aksesoris dan Perawatan",
     type: "accessory",
     colorFamily: "accessory",
     coverImage: "/Katalog Soflens/Aksesoris/Strap Kacamata.webp",
     description:
-      "Tali gantungan kacamata stylish & kuat menjaga kacamata tetap aman di leher saat tidak dipakai.",
-    specs: ["Tali Flexible Adjustable", "Pengunci Karet Kuat", "Trendy & Modis", "Mencegah Kacamata Jatuh"],
+      "Tali gantungan kacamata stylish dan kuat menjaga kacamata tetap aman di leher saat tidak dipakai.",
+    specs: ["Tali Flexible Adjustable", "Pengunci Karet Kuat", "Trendy dan Modis", "Mencegah Kacamata Jatuh"],
     isAccessory: true,
     basePrice: 15000,
     basePriceFormatted: "Rp 15.000",
@@ -882,7 +882,7 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = SOFTLENS_SERIES_LIST.flatMap
       category:
         series.category === "Softlens"
           ? ("Koleksi Premium" as const)
-          : ("Aksesoris & Perawatan" as const),
+          : ("Aksesoris dan Perawatan" as const),
       colorFamily: variant.colorFamily,
       specs: series.specs,
       description: series.description,
@@ -908,14 +908,14 @@ export const SOFTLENS_PRODUCTS: SoftlensProduct[] = SOFTLENS_SERIES_LIST.flatMap
 export const SOFTLENS_CATEGORIES = [
   { id: "all", label: "Semua Koleksi" },
   { id: "Softlens", label: "Koleksi Softlens" },
-  { id: "Aksesoris & Perawatan", label: "Aksesoris & Perawatan" },
+  { id: "Aksesoris dan Perawatan", label: "Aksesoris dan Perawatan" },
 ];
 
 export const SOFTLENS_FAQ = [
   {
     id: "minus-tinggi",
     icon: "👁️",
-    title: "Minus Tinggi & Resep Presisi",
+    title: "Minus Tinggi dan Resep Presisi",
     desc: "Ready stok softlens dari normal (plano) hingga minus tinggi. Tim CS kami siap mencocokkan resep mata kamu.",
   },
   {
@@ -927,7 +927,7 @@ export const SOFTLENS_FAQ = [
   {
     id: "cara-pakai",
     icon: "🤲",
-    title: "Cara Pakai & Higienitas",
+    title: "Cara Pakai dan Higienitas",
     desc: "Selalu cuci tangan bersih dengan sabun, dan rendam softlens minimal 4 jam sebelum pemakaian awal.",
   },
   {
@@ -946,6 +946,6 @@ export const SOFTLENS_FAQ = [
     id: "aksesoris-set",
     icon: "🧰",
     title: "Perawatan Lens Case",
-    desc: "Ganti wadah perendam softlens secara berkala 1-2 bulan sekali demi menjaga kesehatan & kesegaran mata.",
+    desc: "Ganti wadah perendam softlens secara berkala 1-2 bulan sekali demi menjaga kesehatan dan kesegaran mata.",
   },
 ];

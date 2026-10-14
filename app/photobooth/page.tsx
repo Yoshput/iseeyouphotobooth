@@ -204,7 +204,7 @@ function GiantQRModal({
           <div className="inline-flex items-center gap-1.5 rounded-full bg-isy-green-bright/10 px-3 py-1 text-xs font-bold text-isy-green-bright">
             <span>Pop-Up Event Booth Mode</span>
           </div>
-          <h3 className="font-serif text-xl font-black text-isy-green-deep">Scan &amp; Unduh di HP Kamu</h3>
+          <h3 className="font-sans text-xl font-extrabold text-isy-green-deep">Scan dan Unduh di HP Kamu</h3>
           <p className="text-xs text-isy-ink/60">Arahkan kamera HP ke QR Code raksasa di bawah ini</p>
         </div>
 
@@ -216,7 +216,7 @@ function GiantQRModal({
  <p className="text-[11px] font-semibold text-isy-green-deep truncate">{uploadedUrl}</p>
 
  <button onClick={onClose} className="w-full rounded-2xl bg-isy-green-bright py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-isy-green-deep active:scale-95 transition-all">
- Tutup & Kembalikan Layar
+ Tutup dan Kembalikan Layar
  </button>
  </div>
  </div>
@@ -288,7 +288,7 @@ function QRBox({
               )}
             </div>
             <div className="flex flex-col gap-0.5">
-              <p className="text-xs font-black text-isy-green-deep">Scan &amp; Unduh di HP</p>
+              <p className="text-xs font-black text-isy-green-deep">Scan dan Unduh di HP</p>
               {isUploading ? (
                 <p className="text-[10px] leading-tight text-amber-700 font-medium flex items-center gap-1">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500 animate-ping" />
@@ -346,7 +346,7 @@ function QRBox({
               Setup Cloudinary Diperlukan
             </p>
             <p className="mt-0.5 text-[10px] text-red-700/80 leading-relaxed break-words line-clamp-2">
-              {uploadError || "Pastikan Cloudinary preset di-set Unsigned & ENV Vercel terpasang."}
+              {uploadError || "Pastikan Cloudinary preset di-set Unsigned dan ENV Vercel terpasang."}
             </p>
           </div>
         </div>
@@ -372,13 +372,13 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
   const downloadStrip = async () => {
     onToast("Mengunduh foto ke galeri...");
     await downloadOrShareImage(compositeUrl, `iseeyou-strip-${Date.now()}.jpg`, "Optik I See You — Photo");
-    onToast("Foto berhasil diunduh & tersimpan di galeri!");
+    onToast("Foto berhasil diunduh dan tersimpan di galeri!");
   };
   const downloadGif = async () => {
     if (!gifUrl) return;
     onToast("Mengunduh GIF animasi...");
     await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
-    onToast("GIF animasi berhasil diunduh & tersimpan di galeri!");
+    onToast("GIF animasi berhasil diunduh dan tersimpan di galeri!");
   };
   const shareWA = async () => {
     setTimeout(() => window.open("https://wa.me/?text=" + encodeURIComponent("Coba kacamata di @iseeyou.glasses AR Photobooth! https://optikiseeyou.com/photobooth"), "_blank"), 300);
@@ -391,7 +391,7 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="w-full max-w-sm rounded-3xl bg-white p-5 shadow-2xl space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-serif text-lg font-black text-isy-green-deep">Bagikan Hasil</h3>
+          <h3 className="font-sans text-lg font-extrabold text-isy-green-deep">Bagikan Hasil</h3>
           <button onClick={onClose} className="flex h-7 w-7 items-center justify-center rounded-full bg-isy-mist text-isy-ink/60 hover:bg-isy-line transition-colors"></button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -569,7 +569,7 @@ function StripPreview({
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-3 py-8">
         <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-isy-green-bright border-t-transparent" />
-        <p className="text-sm font-bold text-isy-green-deep">{isArMode ? "Membuat foto Try On…" : "Membuat foto strip & GIF animasi…"}</p>
+        <p className="text-sm font-bold text-isy-green-deep">{isArMode ? "Membuat foto Try On…" : "Membuat foto strip dan GIF animasi…"}</p>
         <p className="text-[11px] text-isy-ink/50">Memproses komposisi terbaik...</p>
       </div>
     );
@@ -1098,7 +1098,7 @@ export default function PhotoboothPage() {
     showToast("Mengunduh foto ke galeri...");
     const res = await downloadOrShareImage(compositeUrl, `iseeyou-foto-${Date.now()}.jpg`, "Optik I See You — Photo");
     if (res.success) {
-      showToast("Foto berhasil diunduh & tersimpan di galeri!");
+      showToast("Foto berhasil diunduh dan tersimpan di galeri!");
     } else {
       showToast("Gagal mengunduh foto.");
     }
@@ -1109,7 +1109,7 @@ export default function PhotoboothPage() {
     showToast("Mengunduh GIF animasi ke galeri...");
     const res = await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
     if (res.success) {
-      showToast("GIF animasi berhasil diunduh & tersimpan di galeri!");
+      showToast("GIF animasi berhasil diunduh dan tersimpan di galeri!");
     } else {
       showToast("Gagal mengunduh GIF.");
     }
@@ -1597,7 +1597,7 @@ export default function PhotoboothPage() {
   <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
   <circle cx="12" cy="13" r="4" />
   </svg>
-  {arEnabled ? `Try On & Ambil Foto` : `Mulai Foto`}
+  {arEnabled ? `Try On dan Ambil Foto` : `Mulai Foto`}
   </span>
   </button>
   </div>
@@ -1669,7 +1669,7 @@ export default function PhotoboothPage() {
           ? "bg-isy-green-bright/15 text-isy-green-deep border border-isy-green-bright/40"
           : "bg-gray-100 text-gray-400 border border-gray-200"
       }`}
-      title={soundEnabled ? "Suara Countdown & Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
+      title={soundEnabled ? "Suara Countdown dan Jepret ON (Klik untuk Mute)" : "Suara Muted (Klik untuk Nyalakan)"}
     >
       {soundEnabled ? (
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-isy-green-deep">
@@ -1890,7 +1890,7 @@ export default function PhotoboothPage() {
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black uppercase tracking-wider">
                 🎉 Sesi Foto Selesai ({layout.numPhotos} Foto)
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl font-black text-isy-green-deep">
+              <h3 className="font-sans text-2xl sm:text-3xl font-extrabold text-isy-green-deep">
                 Semua Foto Berhasil Diambil!
               </h3>
               <p className="text-xs sm:text-sm text-isy-ink/70 max-w-md mx-auto">
@@ -2032,14 +2032,14 @@ export default function PhotoboothPage() {
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-black uppercase tracking-wider">
                 Sedang Dalam Pengembangan
               </span>
-              <h3 className="font-serif text-2xl font-bold text-isy-green-deep">
+              <h3 className="font-sans text-2xl font-extrabold text-isy-green-deep">
                 Fitur Try-On 3D Segera Hadir!
               </h3>
               <p className="text-xs sm:text-sm text-isy-ink/70 leading-relaxed pt-1">
-                Pengalaman fitting kacamata 3D Real-Time CAD saat ini sedang dalam proses riset &amp; kalibrasi presisi frame oleh tim *Optik I See You*.
+                Pengalaman fitting kacamata 3D Real-Time CAD saat ini sedang dalam proses riset dan kalibrasi presisi frame oleh tim *Optik I See You*.
               </p>
               <p className="text-xs text-isy-green-deep font-semibold bg-isy-mist/70 p-3 rounded-xl border border-isy-line">
-                ✨ Disarankan menggunakan **Try-On AR 2D &amp; Photobooth** yang sudah siap 100% dengan katalog lengkap dan cetak foto strip!
+                ✨ Disarankan menggunakan **Try-On AR 2D dan Photobooth** yang sudah siap 100% dengan katalog lengkap dan cetak foto strip!
               </p>
             </div>
 
@@ -2082,7 +2082,7 @@ export default function PhotoboothPage() {
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-isy-green-bright/15 text-isy-green-deep text-[11px] font-black uppercase tracking-wider">
                 📱 Kamera HP Nirkabel
               </span>
-              <h3 className="font-serif text-xl font-bold text-isy-green-deep">
+              <h3 className="font-sans text-xl font-extrabold text-isy-green-deep">
                 Scan QR dengan HP Samsung
               </h3>
               <p className="text-xs text-isy-ink/65">
@@ -2112,10 +2112,10 @@ export default function PhotoboothPage() {
               </p>
               <p className="font-bold flex items-center gap-1.5">
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[9px] font-black text-white">2</span>
-                Klik link &amp; izinkan akses kamera
+                Klik link dan izinkan akses kamera
               </p>
               <p className="text-[10px] text-emerald-800 pt-0.5">
-                ✨ Kamera HP akan otomatis terhubung ke Tablet ini dalam hitungan detik.
+                Kamera HP akan otomatis terhubung ke Tablet ini dalam hitungan detik.
               </p>
             </div>
 

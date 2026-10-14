@@ -27,7 +27,7 @@ import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 import Link from "next/link";
-import { ScanFace, Sparkles, Camera, QrCode, Eye } from "lucide-react";
+import { ScanFace, Glasses, Camera, QrCode, Eye } from "lucide-react";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
 import {
   BRANCHES,
@@ -109,10 +109,10 @@ export default function LandingPage() {
       },
       {
         "@type": "Question",
-        "name": "Apakah periksa mata di Optik I See You Purwokerto & cabang lainnya gratis?",
+        "name": "Apakah periksa mata di Optik I See You Purwokerto dan cabang lainnya gratis?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Ya, Optik I See You menyediakan layanan Konsultasi & Cek Mata Gratis dengan Autorefractor digital komputerisasi dan Trial Lens Set oleh tenaga refraksi berpengalaman."
+          "text": "Ya, Optik I See You menyediakan layanan Konsultasi dan Cek Mata Gratis dengan Autorefractor digital komputerisasi dan Trial Lens Set oleh tenaga refraksi berpengalaman."
         }
       },
       {
@@ -208,7 +208,7 @@ export default function LandingPage() {
                   <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
-                <span>ANTRI CEK MATA &amp; KONSULTASI</span>
+                <span>ANTRI CEK MATA DAN KONSULTASI</span>
               </button>
 
               {/* Supporting CTA below Antrian Cek Mata */}
@@ -347,7 +347,7 @@ export default function LandingPage() {
               desc="Kamera otomatis mengidentifikasi proporsi wajah secara real-time dan merekomendasikan model frame paling proporsional."
             />
             <ModernFeatureCard
-              icon={Sparkles}
+              icon={Glasses}
               tag="3D Virtual Fit"
               title="AR Try-On Real-Time"
               desc="Kacamata virtual 3D langsung menempel presisi di wajah, bergerak dinamis mengikuti rotasi kepala tanpa jeda."
@@ -361,7 +361,7 @@ export default function LandingPage() {
             <ModernFeatureCard
               icon={QrCode}
               tag="Instant Save"
-              title="QR Scan & Unduh"
+              title="QR Scan dan Unduh"
               desc="Pindai kode QR langsung dari layar untuk mengunduh foto jernih ke galeri ponsel kamu dalam hitungan detik."
             />
           </div>
@@ -455,7 +455,7 @@ export default function LandingPage() {
             </div>
 
             <p className="text-xs text-white/65 leading-relaxed">
-              Optik kacamata &amp; softlens estetik modern terpercaya sejak 2019 dengan 4 cabang resmi di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.
+              Optik kacamata dan softlens estetik modern terpercaya sejak 2019 dengan 4 cabang resmi di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.
             </p>
 
             <div className="flex flex-wrap gap-2 pt-2">
@@ -482,7 +482,7 @@ export default function LandingPage() {
           {/* Col 2: Navigasi Layanan & Produk */}
           <div className="space-y-3">
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#5ec97a]">
-              Layanan &amp; Produk
+              Layanan dan Produk
             </h4>
             <ul className="space-y-2.5 text-xs text-white/70">
               <li>
@@ -497,12 +497,12 @@ export default function LandingPage() {
               </li>
               <li>
                 <Link href="/softlens" className="transition-colors hover:text-white flex items-center gap-1.5">
-                  <span className="text-emerald-400">›</span> Katalog Softlens &amp; Aksesoris
+                  <span className="text-emerald-400">›</span> Katalog Softlens dan Aksesoris
                 </Link>
               </li>
               <li>
                 <Link href="/photobooth" className="transition-colors hover:text-white flex items-center gap-1.5">
-                  <span className="text-emerald-400">›</span> AR Photobooth &amp; Cetak Instan
+                  <span className="text-emerald-400">›</span> AR Photobooth dan Cetak Instan
                 </Link>
               </li>
               <li>
@@ -512,7 +512,7 @@ export default function LandingPage() {
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-white flex items-center gap-1.5"
                 >
-                  <span className="text-emerald-400">›</span> Price List &amp; Jenis Lensa ↗
+                  <span className="text-emerald-400">›</span> Daftar Harga dan Jenis Lensa ↗
                 </a>
               </li>
               <li>
@@ -532,7 +532,7 @@ export default function LandingPage() {
               </li>
               <li>
                 <Link href="/blog" className="transition-colors hover:text-white flex items-center gap-1.5">
-                  <span className="text-emerald-400">›</span> Blog &amp; Edukasi Kacamata
+                  <span className="text-emerald-400">›</span> Blog dan Edukasi Kacamata
                 </Link>
               </li>
             </ul>
@@ -573,7 +573,7 @@ export default function LandingPage() {
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#5ec97a]">
               Social Media Official
             </h4>
-            <p className="text-xs text-white/60">Ikuti info promo &amp; katalog terbaru di cabang terdekat:</p>
+            <p className="text-xs text-white/60">Ikuti info promo dan katalog terbaru di cabang terdekat:</p>
 
             <div className="grid grid-cols-2 gap-1.5">
               {BRANCHES.map((b) => (
@@ -618,7 +618,7 @@ export default function LandingPage() {
               </Link>
               <span className="text-white/20">&bull;</span>
               <Link href="/syarat-ketentuan" className="hover:text-white transition-colors">
-                Syarat &amp; Ketentuan
+                Syarat dan Ketentuan
               </Link>
             </div>
           </div>

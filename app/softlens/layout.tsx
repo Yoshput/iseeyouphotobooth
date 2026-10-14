@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { SOFTLENS_PRODUCTS, SOFTLENS_FAQ } from '@/lib/softlens';
 
 export const metadata: Metadata = {
-  title: 'Katalog Softlens Murah & Original Kemenkes — Normal & Minus | Optik I See You',
-  description: 'Pusat softlens minus & normal original berizin Kemenkes RI: X2, Kitty Kawaii, Dreamcon, Geo. Kadar air tinggi, nyaman, steril. Panduan cara merawat softlens & cek stok di Purwokerto, Cilacap, Purbalingga, Wonosobo!',
+  title: 'Katalog Softlens Murah dan Original Kemenkes — Normal dan Minus | Optik I See You',
+  description: 'Pusat softlens minus dan normal original berizin Kemenkes RI: X2, Kitty Kawaii, Dreamcon, Geo. Kadar air tinggi, nyaman, steril. Panduan cara merawat softlens dan cek stok di Purwokerto, Cilacap, Purbalingga, Wonosobo!',
   keywords: [
     'softlens purwokerto',
     'softlens minus purwokerto',
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     'optik i see you softlens',
   ],
   openGraph: {
-    title: 'Katalog Softlens Murah & Original Kemenkes — Normal & Minus | Optik I See You',
-    description: 'Softlens original bersertifikasi Kemenkes RI dengan kadar air tinggi & kenyamanan maksimal. Tersedia normal & minus di 4 cabang resmi.',
+    title: 'Katalog Softlens Murah dan Original Kemenkes — Normal dan Minus | Optik I See You',
+    description: 'Softlens original bersertifikasi Kemenkes RI dengan kadar air tinggi dan kenyamanan maksimal. Tersedia normal dan minus di 4 cabang resmi.',
     url: 'https://optikiseeyou.com/softlens',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Katalog Softlens Optik I See You' }],
   },

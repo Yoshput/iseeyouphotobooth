@@ -265,7 +265,7 @@ export default function ResultPreview({
       showToast("Foto tersimpan!");
     } else {
       // preview fallback — guide user to long-press save on iOS
-      showToast("Tekan & tahan foto, lalu pilih 'Simpan'");
+      showToast("Tekan dan tahan foto, lalu pilih 'Simpan'");
     }
   };
 
@@ -291,7 +291,7 @@ export default function ResultPreview({
       );
     } else if (platform === "instagram") {
       window.open("https://www.instagram.com/iseeyou.glasses/", "_blank");
-      showToast("Foto diunduh, buka Instagram & share dari galeri!");
+      showToast("Foto diunduh, buka Instagram dan bagikan dari galeri!");
     } else {
       showToast("Foto diunduh! Sekarang bisa dibagikan");
     }
@@ -374,7 +374,7 @@ export default function ResultPreview({
             className="h-[140px] w-[140px] rounded-lg"
           />
           <p className="text-[10px] text-isy-ink/40 text-center">
-            Scan dengan kamera HP untuk buka & simpan foto
+            Scan dengan kamera HP untuk buka dan simpan foto
           </p>
         </div>
       );

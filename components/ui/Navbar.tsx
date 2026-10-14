@@ -38,7 +38,7 @@ export default function Navbar() {
     {
       href: "/katalog",
       title: "Katalog Frame Kacamata",
-      desc: "100+ Koleksi frame optik, titanium & sunglasses",
+      desc: "100+ Koleksi frame optik, titanium dan sunglasses",
       badge: "Frame Optik",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -52,7 +52,7 @@ export default function Navbar() {
     {
       href: "/softlens",
       title: "Katalog Softlens",
-      desc: "Softlens warna natural, bening & cairan Kemenkes RI",
+      desc: "Softlens warna natural, bening dan cairan Kemenkes RI",
       badge: "Kemenkes RI",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

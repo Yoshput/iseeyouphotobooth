@@ -27,7 +27,7 @@ export default function KebijakanPrivasiPage() {
               priority
             />
             <span className="hidden sm:inline-block border-l border-slate-200 pl-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Pusat Privasi &amp; Keamanan
+              Pusat Privasi dan Keamanan
             </span>
           </Link>
           <Link
@@ -187,7 +187,7 @@ export default function KebijakanPrivasiPage() {
             <span>&bull;</span>
             <Link href="/kebijakan-privasi" className="font-semibold text-emerald-800 hover:underline">Kebijakan Privasi</Link>
             <span>&bull;</span>
-            <Link href="/syarat-ketentuan" className="hover:text-emerald-700 transition-colors">Syarat &amp; Ketentuan</Link>
+            <Link href="/syarat-ketentuan" className="hover:text-emerald-700 transition-colors">Syarat dan Ketentuan</Link>
           </div>
         </div>
       </footer>

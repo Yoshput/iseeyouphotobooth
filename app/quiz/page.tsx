@@ -291,14 +291,14 @@ export default function QuizPage() {
             </Link>
 
             <span className="text-[11px] font-medium text-slate-400 hidden sm:inline">
-              Optik I See You • Vision &amp; Frame Lab
+              Optik I See You • Vision dan Frame Lab
             </span>
           </div>
 
           {/* Hero Header (Apple Editorial Style) */}
           <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
             <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-3">
-              Konsultasi &amp; Skrining Penglihatan
+              Konsultasi dan Skrining Penglihatan
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-lg mx-auto">
               Pilih modul analisis Frame DNA, skrining refraksi mandiri, atau uji wawasan kesehatan mata harian Anda.
@@ -311,10 +311,10 @@ export default function QuizPage() {
               </div>
               <div className="text-left text-xs pr-2">
                 <span className="font-semibold text-slate-900 block">
-                  Sensor Kacamata AI
+                  Sensor Kacamata
                 </span>
                 <span className="text-[10px] text-slate-400">
-                  {detectorEnabled ? "Pindai wajah & aktifkan Focus Cam" : "Mulai langsung tanpa kamera"}
+                  {detectorEnabled ? "Pindai wajah dan aktifkan Focus Cam" : "Mulai langsung tanpa kamera"}
                 </span>
               </div>
               <button
@@ -507,7 +507,7 @@ export default function QuizPage() {
                   isAnswerConfirmed && (selectedOption?.explanation || isTimedOut) && (
                     <div className="text-[11px] sm:text-xs p-2.5 rounded-2xl bg-slate-50 border border-black/5 text-slate-700 leading-relaxed animate-in fade-in duration-200">
                       <span className="font-semibold text-slate-900 block mb-0.5">
-                        Ulasan Refraksi &amp; Kesehatan:
+                        Ulasan Refraksi dan Kesehatan:
                       </span>
                       {selectedOption?.explanation ||
                         "Pemahaman refraksi dan kesehatan mata dibangun dari mengenali tanda-tanda visual harian."}

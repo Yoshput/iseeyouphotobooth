@@ -120,7 +120,7 @@ export default function StartPage() {
                     Photobooth
                   </h2>
                   <p className="mt-2 text-xs font-medium text-isy-ink/60 leading-relaxed">
-                    Pilih berbagai layout strip foto klasik, ambil foto bertahap, & buat GIF animasi!
+                    Pilih berbagai layout strip foto klasik, ambil foto bertahap, dan buat GIF animasi!
                   </p>
                 </div>
               </div>

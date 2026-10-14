@@ -140,7 +140,7 @@ export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=Shop
 export function branchWhatsappUrl(branch: Branch) {
   const num = branch.waNumber || branch.phone.replace(/[^0-9]/g, "");
   const formattedNum = num.startsWith("0") ? `62${num.slice(1)}` : num;
-  const message = `Halo Optik I See You cabang ${branch.city}, saya mau tanya lokasi & produk yang ada di toko.`;
+  const message = `Halo Optik I See You cabang ${branch.city}, saya mau tanya lokasi dan produk yang ada di toko.`;
   return `https://wa.me/${formattedNum}?text=${encodeURIComponent(message)}`;
 }
 
@@ -156,7 +156,7 @@ export function catalogWhatsappUrl(glassesName?: string) {
 }
 
 export function konsultasiWhatsappUrl() {
-  const message = `Halo Optik I See You, saya mau Konsultasi Gratis mengenai periksa mata & rekomendasi kacamata/lensa.`;
+  const message = `Halo Optik I See You, saya mau Konsultasi Gratis mengenai periksa mata dan rekomendasi kacamata/lensa.`;
   return `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 

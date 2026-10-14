@@ -110,7 +110,7 @@ export default function BranchWhatsAppModal({ isOpen, onClose }: BranchWhatsAppM
                 Pilih WhatsApp Cabang Terdekat
               </h2>
               <p className="text-xs text-isy-ink/60 mt-0.5">
-                Silakan hubungi admin cabang kota Anda untuk tanya stok, lensa &amp; jadwal periksa:
+                Silakan hubungi admin cabang kota Anda untuk tanya stok, lensa dan jadwal periksa:
               </p>
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function BranchWhatsAppModal({ isOpen, onClose }: BranchWhatsAppM
         {/* Footer info */}
         <div className="px-6 py-3 bg-isy-mist/50 border-t border-isy-line/60 text-center">
           <p className="text-[11px] text-isy-ink/50">
-            Layanan konsultasi kacamata &amp; periksa mata resmi Optik I See You
+            Layanan konsultasi kacamata dan periksa mata resmi Optik I See You
           </p>
         </div>
       </div>

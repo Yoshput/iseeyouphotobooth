@@ -1,4 +1,4 @@
-export type BlogCategory = 'edukasi-mata' | 'tips-pilih-frame' | 'perawatan-softlens' | 'tren-gaya' | 'info-cabang-promo';
+﻿export type BlogCategory = 'edukasi-mata' | 'tips-pilih-frame' | 'perawatan-softlens' | 'tren-gaya' | 'info-cabang-promo';
 
 export type BlogPost = {
   slug: string;
@@ -24,7 +24,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── NEW 1. EDUKASI INSTAGRAM: KACAMATA BARU MALAH PUSING (Post DeL4YrUCfHg) ──
   {
     slug: 'kacamata-baru-malah-pusing-penyebab-dan-solusi',
-    title: 'Beli Kacamata Baru Malah Pusing & Kliyengan? Jangan Panik, Ini Penyebab Sebenarnya!',
+    title: 'Beli Kacamata Baru Malah Pusing dan Kliyengan? Jangan Panik, Ini Penyebab Sebenarnya!',
     category: 'edukasi-mata',
     excerpt: 'Beli kacamata baru niatnya biar penglihatan makin jernih, tapi kok malah bikin pusing dan kliyengan? Jangan buru-buru panik mikir resepnya yang salah, simak penjelasan ahli refraksi berikut.',
     coverImage: '/blog/covers/kacamata-baru-pusing.jpg',
@@ -44,7 +44,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h2>Kenapa Kacamata Baru Bisa Bikin Pusing?</h2>
       <p>Berikut beberapa faktor fisiologis normal yang terjadi selama masa adaptasi:</p>
       <ul>
-        <li><strong>Perubahan Sudut Pandang &amp; Distorsi Tepi:</strong> Frame baru dengan bentuk berbeda merubah area lapang pandang periferal. Otak butuh waktu 3 hingga 7 hari untuk mengabaikan distorsi kecil di tepi lensa.</li>
+        <li><strong>Perubahan Sudut Pandang dan Distorsi Tepi:</strong> Frame baru dengan bentuk berbeda merubah area lapang pandang periferal. Otak butuh waktu 3 hingga 7 hari untuk mengabaikan distorsi kecil di tepi lensa.</li>
         <li><strong>Adaptasi Otot Siliaris Mata:</strong> Otot fokus mata yang selama ini terbiasa bekerja keras akibat kacamata lama yang sudah under-corrected kini harus rileks menerima koreksi baru yang tepat sasaran.</li>
         <li><strong>Pergeseran Titik Fokus (Centration):</strong> Bila tinggi pupil (fitting height) atau jarak antarpupil (PD) pada frame baru sedikit berbeda dengan frame lama, persepsi ruang akan terasa sedikit goyang di awal pemakaian.</li>
       </ul>
@@ -66,7 +66,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <ol>
         <li><strong>Fitting Frame Belum Pas:</strong> Nosepad terlalu menekan, tangkai kacamata terlalu sempit di pelipis, atau frame melorot ke bawah.</li>
         <li><strong>Kemiringan Frame (Pantoscopic Tilt):</strong> Sudut kemiringan bingkai terhadap bidang wajah belum disesuaikan dengan postur alami kepala Anda.</li>
-        <li><strong>Bahan &amp; Desain Lensa:</strong> Pemilihan indeks ketipisan lensa atau desain asferis yang belum optimal untuk minus tinggi.</li>
+        <li><strong>Bahan dan Desain Lensa:</strong> Pemilihan indeks ketipisan lensa atau desain asferis yang belum optimal untuk minus tinggi.</li>
       </ol>
 
       <figure>
@@ -132,8 +132,8 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <p>Bukan kebetulan bila frame kacamata di Optik I See You terasa sangat pas begitu dipasang di wajah. Ini rahasianya:</p>
       <ol>
         <li><strong>Ergonomi Asian Fit:</strong> Seluruh koleksi kami dikurasi dengan memperhitungkan jembatan hidung (nose bridge) dan lebar pelipis masyarakat Asia, sehingga kacamata tidak mudah melorot dan tidak menempel di pipi saat tersenyum.</li>
-        <li><strong>Material Ringan &amp; Tahan Banting:</strong> Menggunakan bahan premium seperti TR90 fleksibel, titanium ultra-light, dan high-density acetate yang nyaman dipakai seharian tanpa bikin hidung pegal atau berbekas merah.</li>
-        <li><strong>Palet Warna Estetik &amp; Skin Tone Friendly:</strong> Dari warna bold vintage tortoise, matte black, clear crystal, hingga warna pastel kalem yang menyatu harmonis dengan warna kulit dan hijab style kamu.</li>
+        <li><strong>Material Ringan dan Tahan Banting:</strong> Menggunakan bahan premium seperti TR90 fleksibel, titanium ultra-light, dan high-density acetate yang nyaman dipakai seharian tanpa bikin hidung pegal atau berbekas merah.</li>
+        <li><strong>Palet Warna Estetik dan Skin Tone Friendly:</strong> Dari warna bold vintage tortoise, matte black, clear crystal, hingga warna pastel kalem yang menyatu harmonis dengan warna kulit dan hijab style kamu.</li>
       </ol>
 
       <h2>Bebas Fitting Sepuasnya di 4 Cabang Resmi</h2>
@@ -198,7 +198,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── NEW 4. EDUKASI INSTAGRAM: KACAMATA BERKABUT KONDENSASI (Post DeBoHTnD_0O) ──
   {
     slug: 'kacamata-berkabut-kondensasi-stop-lap-ujung-baju',
-    title: 'Kacamata Tiba-Tiba Berkabut? Stop Lap Pakai Ujung Baju, Ini Penyebab & Cara Mengatasinya!',
+    title: 'Kacamata Tiba-Tiba Berkabut? Stop Lap Pakai Ujung Baju, Ini Penyebab dan Cara Mengatasinya!',
     category: 'edukasi-mata',
     excerpt: 'Lagi asik jalan atau ngopi tiba-tiba lensa kacamata berkabut dan masuk mode blur? Eits, jangan buru-buru di-lap pakai ujung baju! Pahami fenomena kondensasi dan cara merawat coating lensa yang benar.',
     coverImage: '/blog/covers/kacamata-berkabut-kondensasi.jpg',
@@ -239,7 +239,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <figcaption>Rawat lensa secara tepat dengan perlindungan yang sesuai aktivitas harian agar tidak mudah berkabut.</figcaption>
       </figure>
 
-      <h2>Cara Ampuh Mencegah &amp; Mengatasi Kacamata Berkabut:</h2>
+      <h2>Cara Ampuh Mencegah dan Mengatasi Kacamata Berkabut:</h2>
       <ol>
         <li><strong>Gunakan Kain Microfiber Khusus:</strong> Selalu simpan lap microfiber pembersih optik yang halus dan bebas serat di dalam kotak kacamatamu.</li>
         <li><strong>Gunakan Semprotan Lens Cleaner Anti-Fog:</strong> Semprotkan cairan pembersih lensa khusus yang memiliki formula anti-kabut untuk membentuk lapisan pelindung transparan tipis.</li>
@@ -253,7 +253,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     `
   },
 
-  // ── 0. GAYA & LIFESTYLE: STARTER PACK COFFEE SHOP (Instagram Post DcvcKUPj5ro) ──
+  // ── 0. GAYA dan LIFESTYLE: STARTER PACK COFFEE SHOP (Instagram Post DcvcKUPj5ro) ──
   {
     slug: 'rekomendasi-frame-tipe-keseharian-starter-pack-coffee-shop',
     title: 'Starter Pack Nongkrong di Coffee Shop: Rekomendasi Frame Kacamata Sesuai Tipe Keseharian Kamu',
@@ -276,7 +276,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <p>Dari warna crystal clear yang modern, palet warm caramel amber, hingga siluet vintage square. Setiap model kacamata punya energi unik yang siap memperkuat karakter personalmu.</p>
       </div>
 
-      <h2>1. Si Paling Skena: Edgy, Modern &amp; Stand Out</h2>
+      <h2>1. Si Paling Skena: Edgy, Modern dan Stand Out</h2>
       <p>Ciri khas persona ini adalah selalu update dengan tren streetwear, suka eksplorasi musik indie, dan nggak ragu tampil beda. Datang ke coffee shop bukan cuma buat nugas, tapi sekalian <em>show off fit</em> hari ini!</p>
 
       <!-- SLIDE 2 SHOWCASE -->
@@ -289,7 +289,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <p>Frame transparan memiliki kelebihan universal: tidak menutupi riasan wajah atau garis alis, namun tetap memberikan aksen kontemporer yang sangat fotogenik untuk konten feed dan reels kamu.</p>
 
-      <h2>2. The Overworked Creative: Bold, Cerdas &amp; Anti Pusing</h2>
+      <h2>2. The Overworked Creative: Bold, Cerdas dan Anti Pusing</h2>
       <p>Deadline menumpuk, revisi bertubi-tubi, dan laptop menyala berjam-jam ditemani segelas iced matcha latte atau americano dingin. Ini adalah potret para desainer, penulis, arsitek, dan pekerja kreatif digital.</p>
 
       <!-- SLIDE 3 SHOWCASE -->
@@ -302,7 +302,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <p><strong>Tips Proteksi Mata:</strong> Jangan lupa pasangkan dengan <strong>Lensa Bluechromic Optik I See You</strong>. Lensa ini memblokir radiasi sinar biru dari layar monitor dan laptop secara maksimal, sehingga mata tidak cepat perih, tegang, atau pusing meski harus menatap layar seharian penuh.</p>
 
-      <h2>3. The Aesthetic Minimalist: Clean, Kalem &amp; Quiet Luxury</h2>
+      <h2>3. The Aesthetic Minimalist: Clean, Kalem dan Quiet Luxury</h2>
       <p>Prinsip hidupnya adalah <em>less is more</em>. Meja kerjanya selalu rapi teratur, menyukai warna-warna earth tone netral, dan mengutamakan kenyamanan fungsional di atas segalanya.</p>
 
       <!-- SLIDE 4 SHOWCASE -->
@@ -394,7 +394,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <ul>
         <li><strong>Fitur AR Try-On Real-Time:</strong> Coba puluhan model frame langsung di depan kamera HP atau laptop Anda secara instan di website kami tanpa perlu download aplikasi.</li>
-        <li><strong>Fitting &amp; Konsultasi Langsung di 4 Cabang:</strong> Kunjungi gerai resmi kami di <strong>Purwokerto, Purbalingga, Wonosobo, dan Cilacap</strong>. Tim refraksionis optisien kami siap membantu menganalisis bentuk wajah dan merekomendasikan frame yang paling menonjolkan keunikan karakter Anda.</li>
+        <li><strong>Fitting dan Konsultasi Langsung di 4 Cabang:</strong> Kunjungi gerai resmi kami di <strong>Purwokerto, Purbalingga, Wonosobo, dan Cilacap</strong>. Tim refraksionis optisien kami siap membantu menganalisis bentuk wajah dan merekomendasikan frame yang paling menonjolkan keunikan karakter Anda.</li>
         <li><strong>Pemeriksaan Refraksi Digital Gratis:</strong> Dapatkan pengecekan mata akurat dengan alat komputerisasi mutakhir tanpa pungutan biaya!</li>
       </ul>
     `
@@ -440,7 +440,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
           <div>
             <p class="font-semibold text-isy-green-deep mb-1">Titik Lokasi Booth</p>
             <p>Ground Floor (GF), Rita SuperMall Purwokerto</p>
-            <p>Tepat di depan J.CO Donuts &amp; Coffee dan sebelah Lift Utama</p>
+            <p>Tepat di depan J.CO Donuts dan Coffee dan sebelah Lift Utama</p>
           </div>
         </div>
       </div>
@@ -461,7 +461,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <ul class="space-y-2 text-isy-ink/90">
           <li><strong>Pusat Perbelanjaan:</strong> Rita SuperMall Purwokerto, Jl. Jend. Soedirman No. 296.</li>
           <li><strong>Lantai Pameran:</strong> Ground Floor (GF).</li>
-          <li><strong>Titik Patokan Utama:</strong> Tepat berhadapan langsung dengan gerai J.CO Donuts &amp; Coffee.</li>
+          <li><strong>Titik Patokan Utama:</strong> Tepat berhadapan langsung dengan gerai J.CO Donuts dan Coffee.</li>
           <li><strong>Titik Akses Lift:</strong> Bersebelahan persis dengan pintu lift penumpang utama lantai GF.</li>
           <li><strong>Jam Operasional:</strong> 10.00 hingga 22.00 WIB setiap hari pameran.</li>
         </ul>
@@ -495,7 +495,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <!-- SLIDE 2 -->
       <div class="slide-showcase">
-        <span class="slide-tag">Dokumentasi 2 • Good Vibes &amp; Wedding Couple</span>
+        <span class="slide-tag">Dokumentasi 2 • Good Vibes dan Wedding Couple</span>
         <img src="/blog/wedding-expo/slide-2.jpg" alt="Pengunjung dan Pengantin Kunjungi Booth Optik I See You" />
         <h3>Good Vibes, Busy Day, Happy Faces!</h3>
         <p>Keseruan interaksi antara tim Optik I See You dengan pengunjung expo. Kehadiran pasangan pengantin berbusana adat pernikahan tradisional yang ikut mengunjungi booth menjadi salah satu momen paling berkesan dan menambah hangat suasana expo.</p>
@@ -525,7 +525,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
         <p>Instalasi studio photobooth gratis menjadi daya tarik favorit bagi pengunjung dari berbagai kalangan. Pengunjung dapat berpose seru dengan properti kacamata pilihan dan mengabadikan momen kebersamaan secara instan di area expo.</p>
       </div>
 
-      <h2>Kunjungan Cabang &amp; Layanan Berkelanjutan</h2>
+      <h2>Kunjungan Cabang dan Layanan Berkelanjutan</h2>
       <p>Meskipun agenda pameran Banyumas Wedding Expo 2026 telah resmi berakhir pada <strong>6 September 2026</strong>, seluruh fasilitas dan layanan unggulan kami tetap hadir setiap hari untuk Anda.</p>
       
       <p>Bagi Anda yang belum sempat mampir atau ingin melanjutkan konsultasi resep kacamata, penyesuaian lensa, maupun memilih koleksi frame terbaru, Anda dapat langsung mengunjungi gerai cabang resmi Optik I See You terdekat (Purwokerto, Purbalingga, Cilacap, dan Wonosobo) atau menghubungi layanan pelanggan kami.</p>
@@ -569,7 +569,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── 2. HACK KACAMATA KINCLONG (Instagram Post DcTFA9Tj6MS) ────────────────
   {
     slug: 'hack-kacamata-kinclong-awet',
-    title: 'Hack Kacamata Kinclong: 5 Kebiasaan Sepele yang Bikin Kacamata Cepat Baret & Melar',
+    title: 'Hack Kacamata Kinclong: 5 Kebiasaan Sepele yang Bikin Kacamata Cepat Baret dan Melar',
     category: 'edukasi-mata',
     excerpt: 'Siapa yang kacamatanya kalau nggak blur karena noda jari, pasti buram gara-gara salah lap? Intip 5 kebiasaan buruk yang bikin kacamata rusak dan cara perawatannya.',
     coverImage: '/blog/covers/cover-hack-kinclong.jpg',
@@ -686,7 +686,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <!-- SLIDE 9 -->
       <div class="slide-showcase">
-        <span class="slide-tag">Slide 9 • Outlet & Lokasi Toko</span>
+        <span class="slide-tag">Slide 9 • Outlet dan Lokasi Toko</span>
         <img src="/blog/spiderman/slide-9.jpg" alt="Info Cabang Optik I See You Purwokerto Purbalingga Wonosobo Cilacap" />
         <h3>Koleksi Lengkapnya Siap Kamu Coba di 4 Cabang!</h3>
         <p>Semua frame Spider-Man di atas bukan sekadar pajangan di katalog online lho! Kamu bisa datang langsung, pegang fisiknya, dan <strong>coba fitting sepuasnya</strong> di 4 cabang resmi Optik I See You:</p>
@@ -702,7 +702,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <ul>
         <li><strong>Cek Mata Digital Gratis:</strong> Dilakukan oleh tenaga refraksionis berpengalaman dengan mesin komputer akurat tanpa dipungut biaya sepeser pun.</li>
         <li><strong>Faset Cepat Bisa Ditunggu:</strong> Kacamata baru kamu bisa langsung jadi dalam waktu 20-30 menit saja, nggak perlu nunggu berhari-hari!</li>
-        <li><strong>Harga Transparan &amp; Bersahabat:</strong> Nggak bikin kantong jebol, ada ratusan opsi frame trendy dengan kualitas material yang awet tahan lama.</li>
+        <li><strong>Harga Transparan dan Bersahabat:</strong> Nggak bikin kantong jebol, ada ratusan opsi frame trendy dengan kualitas material yang awet tahan lama.</li>
       </ul>
 
       <p>Jadi, dari sekian banyak gaya pemeran Spider-Man di atas, mana siluet frame yang paling menggambarkan kepribadian kamu? Screenshot kodenya sekarang dan langsung bawa ke cabang Optik I See You terdekat ya!</p>
@@ -725,7 +725,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <h2>3 Alasan Kenapa Kacamata Anti-Radiasi Wajib Kamu Miliki:</h2>
 
-      <h3>1. Mengurangi Beban Kerja Mata &amp; Mencegah Digital Eye Strain</h3>
+      <h3>1. Mengurangi Beban Kerja Mata dan Mencegah Digital Eye Strain</h3>
       <p>Sinar biru memiliki panjang gelombang pendek yang mudah menyebar dan sulit difokuskan oleh lensa mata secara alami. Hal ini memaksa otot siliaris mata berkontraksi lebih keras agar gambar tetap tajam. Lensa anti radiasi (Blue Cut) memblokir spektrum sinar berbahaya ini sehingga mata terasa jauh lebih rileks saat menatap layar berjam-jam.</p>
 
       <h3>2. Membantu Tidur Malam Jauh Lebih Pulas</h3>
@@ -738,7 +738,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
     `
   },
 
-  // ── 5. TREND GAJI & CATEYE (Instagram Post DaSHSc1D9Fk) ───────────────────
+  // ── 5. TREND GAJI dan CATEYE (Instagram Post DaSHSc1D9Fk) ───────────────────
   {
     slug: 'tren-self-reward-gajian-frame-cateye',
     title: 'Tren Self-Reward Gajian: Kenapa Frame Cat-Eye Jadi Pilihan Paling Worth It?',
@@ -754,11 +754,11 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h2>Kenapa Kacamata Adalah Self-Reward Terbaik?</h2>
       <p>Banyak dari kita yang menghabiskan uang gajian untuk kopi kekinian atau outfit yang hanya dipakai sekali dua kali. Padahal, kacamata adalah barang yang kamu pakai setiap hari, dari pagi hingga malam, dan langsung berada di pusat perhatian wajahmu. Meng-upgrade kacamata ke model yang lebih stylish dan lensa yang lebih nyaman adalah bentuk self-care yang nyata dampaknya.</p>
 
-      <h2>Daya Tarik Koleksi Cat-Eye: Cateye Caramel &amp; Cateye Skena</h2>
+      <h2>Daya Tarik Koleksi Cat-Eye: Cateye Caramel dan Cateye Skena</h2>
       <p>Salah satu siluet paling diburu pelanggan di Optik I See You adalah koleksi Cat-Eye Edition. Apa sih rahasianya?</p>
       <ul>
         <li><strong>Efek Visual Facelift Alami:</strong> Lekukan sudut atas frame cat-eye memberikan ilusi mengangkat tulang pipi, membuat wajah terlihat lebih proporsional, tirus, dan manis seketika.</li>
-        <li><strong>Varian Warna Hangat (Caramel &amp; Honey Tortoise):</strong> Palet warna earthy caramel sangat menyatu dengan undertone kulit wanita Indonesia, memberikan kilau elegan tanpa terkesan berlebihan.</li>
+        <li><strong>Varian Warna Hangat (Caramel dan Honey Tortoise):</strong> Palet warna earthy caramel sangat menyatu dengan undertone kulit wanita Indonesia, memberikan kilau elegan tanpa terkesan berlebihan.</li>
         <li><strong>Material Acetate Berkualitas:</strong> Kokoh, tidak mudah patah, dan sangat nyaman bertengger di hidung sepanjang hari.</li>
       </ul>
 
@@ -769,7 +769,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── 6. MATA SERING PERIH SCREEN TIME (Instagram Post DZ7OajuDxtv) ─────────
   {
     slug: 'mata-sering-perih-screen-time',
-    title: 'Mata Sering Terasa Perih Saat Menatap Layar? Cek Screen Time & Rule 20-20-20 Ini',
+    title: 'Mata Sering Terasa Perih Saat Menatap Layar? Cek Screen Time dan Rule 20-20-20 Ini',
     category: 'edukasi-mata',
     excerpt: 'Mata perih bukan berarti harus ditahan atau dinormalisasi. Kenali penyebab mata kering akibat screen time berlebih dan cara meredakannya dengan aturan 20-20-20.',
     coverImage: '/blog/covers/cover-mata-perih.jpg',
@@ -867,7 +867,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── 9. PANDUAN MERAWAT SOFTLENS (Instagram Post Dcnl288kWyo) ─────────────
   {
     slug: 'panduan-merawat-softlens',
-    title: 'Panduan Lengkap Merawat Softlens: 3 Aturan Dasar Biar Mata Tetap Sehat & Nyaman',
+    title: 'Panduan Lengkap Merawat Softlens: 3 Aturan Dasar Biar Mata Tetap Sehat dan Nyaman',
     category: 'perawatan-softlens',
     excerpt: 'Pake softlens emang bikin look makin cakep, tapi maintenance-nya juga harus bener dong! Jangan sampai malas ganti cairan di lens case atau nekat pakai air keran.',
     coverImage: '/blog/covers/cover-softlens.jpg',
@@ -879,7 +879,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
 
       <h2>3 Aturan Wajib (Basic Rules) Pengguna Softlens:</h2>
 
-      <h3>1. Selalu Cuci & Keringkan Tangan Sebelum Menyentuh Lensa</h3>
+      <h3>1. Selalu Cuci dan Keringkan Tangan Sebelum Menyentuh Lensa</h3>
       <p>Jangan pernah sekali-kali menyentuh softlens dengan tangan yang kotor atau basah kuyup oleh air keran biasa. Cuci tangan dengan sabun tanpa pewangi atau pelembap berlebih, lalu keringkan menggunakan tisu atau handuk bebas serat (lint-free).</p>
 
       <h3>2. Haram Pakai Air Keran, Air Mineral, atau Cairan Bekas</h3>
@@ -940,7 +940,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h2>1. SPH (Sphere / Sferis)</h2>
       <p>Menunjukkan kekuatan lensa untuk mengoreksi rabun jauh (tanda minus -) atau rabun dekat (tanda plus +).</p>
 
-      <h2>2. CYL (Cylinder) &amp; AXIS (Derajat)</h2>
+      <h2>2. CYL (Cylinder) dan AXIS (Derajat)</h2>
       <p>CYL mengukur besarnya silinder (astigmatisme) akibat kelengkungan kornea yang tidak simetris, sedangkan AXIS (1-180 derajat) menunjukkan posisi rotasi silinder tersebut pada lensa.</p>
 
       <h2>3. PD (Pupillary Distance)</h2>
@@ -952,7 +952,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── 12. BIAYA GANTI LENSA KACAMATA (Non-Brand High Intent SEO) ───────────
   {
     slug: 'biaya-ganti-lensa-kacamata-jenis-harga',
-    title: 'Biaya Ganti Lensa Kacamata: Daftar Harga Lengkap, Jenis Lensa & Tips Hemat di Optik',
+    title: 'Biaya Ganti Lensa Kacamata: Daftar Harga Lengkap, Jenis Lensa dan Tips Hemat di Optik',
     category: 'edukasi-mata',
     excerpt: 'Berapa biaya ganti lensa kacamata di optik? Simak rincian estimasi harga lensa minus, anti radiasi blueray, photochromic, bluechromic, dan tips hemat ganti lensa bawa frame sendiri.',
     coverImage: '/fasilitas/mesin potong otomatis.webp',
@@ -1000,7 +1000,7 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
   // ── 13. REKOMENDASI OPTIK PURWOKERTO (Local Non-Brand High Intent SEO) ───
   {
     slug: 'rekomendasi-optik-kacamata-purwokerto-banyumas',
-    title: 'Rekomendasi Optik di Purwokerto: Tempat Bikin Kacamata Minus Terbaik, Murah & Bergaransi',
+    title: 'Rekomendasi Optik di Purwokerto: Tempat Bikin Kacamata Minus Terbaik, Murah dan Bergaransi',
     category: 'info-cabang-promo',
     excerpt: 'Mencari rekomendasi optik kacamata terbaik di Purwokerto? Simak review lengkap tempat periksa mata gratis, koleksi frame estetik, dan faset lensa express di Optik I See You.',
     coverImage: '/lokasi/purwokerto/IMG_1543.webp',
@@ -1018,19 +1018,19 @@ const rawArticles: Omit<BlogPost, 'readingTime'>[] = [
       <h3>1. Periksa Mata Digital Komputerisasi 100% Gratis</h3>
       <p>Tidak perlu khawatir ada biaya tersembunyi. Di Optik I See You Purwokerto, setiap pengunjung berhak mendapatkan pemeriksaan refraksi mata komprehensif menggunakan perangkat <em>Autorefractor</em> terkomputerisasi didampingi tenaga refraksionis berpengalaman. Kami memeriksa ketajaman visus, ukuran minus (miopia), plus (hipermetropia), hingga derajat silinder (astigmatisme) secara presisi.</p>
 
-      <h3>2. Ratusan Pilihan Frame Estetik &amp; Kekinian</h3>
+      <h3>2. Ratusan Pilihan Frame Estetik dan Kekinian</h3>
       <p>Lupakan bingkai kacamata yang kaku dan membosankan! Di gerai kami, Anda akan menemukan kurasi model frame modern yang dirancang untuk mempertegas karakter wajah:</p>
       <ul>
         <li><strong>Titanium Series:</strong> Bobot super ringan di bawah 15 gram, anti-karat, dan tidak meninggalkan bekas merah di batang hidung.</li>
         <li><strong>The Feline Silhouette (Cat-Eye):</strong> Memberikan efek lifting alami pada tulang pipi dan membuat wajah bulat terlihat lebih ramping.</li>
-        <li><strong>Quiet Luxury &amp; Korean Minimalist:</strong> Bingkai tipis elegan dengan warna rose gold, champagne, dan matte black yang cocok untuk outfit ngampus maupun meeting kerja.</li>
+        <li><strong>Quiet Luxury dan Korean Minimalist:</strong> Bingkai tipis elegan dengan warna rose gold, champagne, dan matte black yang cocok untuk outfit ngampus maupun meeting kerja.</li>
         <li><strong>Acetate Bold (The Skena Gaze):</strong> Frame tebal retro 90-an yang sangat fotogenik dan jadi favorit anak muda skena Purwokerto.</li>
       </ul>
 
       <h3>3. Pengerjaan Faset Lensa Express dengan Mesin CNC 3D</h3>
       <p>Paling malas kalau harus menunggu kacamata resep selesai berhari-hari? Di Optik I See You cabang Purwokerto, kami memiliki fasilitas workshop internal dengan mesin potong lensa CNC otomatis berbasis 3D Frame Tracing. Kacamata minus Anda bisa <strong>ditunggu dalam waktu 20-30 menit saja</strong> dengan hasil potongan bevel lensa yang sangat rapi dan presisi.</p>
 
-      <h3>4. Fitur Inovatif: Virtual AR Try-On &amp; Studio Photobooth</h3>
+      <h3>4. Fitur Inovatif: Virtual AR Try-On dan Studio Photobooth</h3>
       <p>Optik I See You adalah pelopor optik digital di Jawa Tengah. Sebelum datang ke toko, Anda bisa mencoba puluhan model kacamata langsung di depan kamera smartphone Anda melalui fitur <strong>AR Try-On</strong> di website kami. Dan saat mampir ke toko, abadikan foto kacamata barumu di studio Photobooth interaktif kami secara cuma-cuma!</p>
 
       <h2>Panduan Lokasi Optik I See You Purwokerto</h2>

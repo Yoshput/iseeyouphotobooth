@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Camera, Scan, Glasses, CheckCircle2, ArrowRight, X, Sparkles, RefreshCw, AlertCircle } from "lucide-react";
+import { Camera, Scan, Glasses, CheckCircle2, ArrowRight, X, RefreshCw, AlertCircle } from "lucide-react";
 import { getFaceLandmarker } from "@/lib/mediapipe";
 import { speakIndonesian, stopSpeaking, unlockVoiceEngine } from "@/lib/voice";
 
@@ -49,7 +49,7 @@ export default function GlassesDetectorModal({
 
       setCameraActive(true);
       setScanState("scanning");
-      setScanFeedback("Menganalisis area wajah & kacamata...");
+      setScanFeedback("Menganalisis area wajah dan kacamata...");
       detectionCountsRef.current = { glasses: 0, noGlasses: 0, totalFrames: 0 };
 
       let stream = streamRef.current;
@@ -79,7 +79,7 @@ export default function GlassesDetectorModal({
         speakIndonesian("Memindai area wajah dan kacamata. Harap tenang di depan kamera.");
       }
 
-      setScanFeedback("Menganalisis area wajah & kacamata...");
+      setScanFeedback("Menganalisis area wajah dan kacamata...");
 
       // Initialize MediaPipe Face Landmarker
       const landmarker = await getFaceLandmarker(1).catch((err) => {
@@ -351,7 +351,7 @@ export default function GlassesDetectorModal({
               className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-isy-green-deep text-white text-xs sm:text-sm font-semibold hover:bg-isy-green-bright transition-all active:scale-[0.98] shadow-sm cursor-pointer"
             >
               <Camera className="w-4 h-4" />
-              <span>Buka Kamera &amp; Pindai</span>
+              <span>Buka Kamera dan Pindai</span>
             </button>
           )}
 
@@ -408,7 +408,7 @@ export default function GlassesDetectorModal({
               onClick={() => handleFinish(false)}
               className="w-full py-2 text-xs font-medium text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
             >
-              Lewati &amp; Mulai Sekarang
+              Lewati dan Mulai Sekarang
             </button>
           )}
         </div>

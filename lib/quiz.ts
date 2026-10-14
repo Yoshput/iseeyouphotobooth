@@ -60,9 +60,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     id: 'q1',
     question: 'Aktivitas akhir pekan favoritmu biasanya...',
     answers: [
-      { text: 'Istirahat santai & streaming film di rumah', scores: { 'quiet-luxe': 3 } },
-      { text: 'Eksplor cafe baru & update inspirasi gaya', scores: { 'bold-statement': 2, 'everyday-chic': 1 } },
-      { text: 'Olahraga outdoor & jalan pagi', scores: { 'everyday-chic': 3 } },
+      { text: 'Istirahat santai dan streaming film di rumah', scores: { 'quiet-luxe': 3 } },
+      { text: 'Eksplor cafe baru dan update inspirasi gaya', scores: { 'bold-statement': 2, 'everyday-chic': 1 } },
+      { text: 'Olahraga outdoor dan jalan pagi', scores: { 'everyday-chic': 3 } },
       { text: 'Kumpul komunitas seni atau workshop kreatif', scores: { 'the-dreamer': 3, 'bold-statement': 1 } },
     ],
   },
@@ -70,10 +70,10 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     id: 'q2',
     question: 'Gaya berpakaian harianmu paling menggambarkan...',
     answers: [
-      { text: 'Minimalis monokrom & clean cut', scores: { 'quiet-luxe': 3 } },
+      { text: 'Minimalis monokrom dan clean cut', scores: { 'quiet-luxe': 3 } },
       { text: 'Smart casual dengan statement piece', scores: { 'bold-statement': 2, 'everyday-chic': 1 } },
       { text: 'Sporty, fleksibel, dan fungsional', scores: { 'everyday-chic': 3 } },
-      { text: 'Kombinasi unik & sentuhan vintage artsy', scores: { 'the-dreamer': 3, 'bold-statement': 1 } },
+      { text: 'Kombinasi unik dan sentuhan vintage artsy', scores: { 'the-dreamer': 3, 'bold-statement': 1 } },
     ],
   },
   {
@@ -90,10 +90,10 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     id: 'q4',
     question: 'Referensi gaya visual yang paling menginspirasimu...',
     answers: [
-      { text: 'Old money aesthetic & timeless luxury', scores: { 'quiet-luxe': 3 } },
-      { text: 'Modern streetwear & metropolitan chic', scores: { 'bold-statement': 2, 'everyday-chic': 1 } },
-      { text: 'Korean effortless look & Scandinavian clean', scores: { 'everyday-chic': 3 } },
-      { text: 'Indie cinema, retro 90s, & artistic design', scores: { 'the-dreamer': 3, 'bold-statement': 1 } },
+      { text: 'Old money aesthetic dan timeless luxury', scores: { 'quiet-luxe': 3 } },
+      { text: 'Modern streetwear dan metropolitan chic', scores: { 'bold-statement': 2, 'everyday-chic': 1 } },
+      { text: 'Korean effortless look dan Scandinavian clean', scores: { 'everyday-chic': 3 } },
+      { text: 'Indie cinema, retro 90s, dan artistic design', scores: { 'the-dreamer': 3, 'bold-statement': 1 } },
     ],
   },
   {

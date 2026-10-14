@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog & Edukasi Kacamata: Tips Memilih Frame, Softlens & Biaya Ganti Lensa | Optik I See You',
+  title: 'Blog dan Edukasi Kacamata: Tips Memilih Frame, Softlens dan Biaya Ganti Lensa | Optik I See You',
   description: 'Panduan lengkap perawatan mata, biaya ganti lensa kacamata di optik, cara merawat softlens untuk pemula, trik memilih frame sesuai bentuk wajah, dan rekomendasi kacamata minus.',
   keywords: [
     'blog kacamata',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'edukasi kesehatan mata',
   ],
   openGraph: {
-    title: 'Blog Kesehatan Mata & Tips Kacamata | Optik I See You',
+    title: 'Blog Kesehatan Mata dan Tips Kacamata | Optik I See You',
     description: 'Tips perawatan mata, cara pilih frame kacamata, tren frame 2026, dan edukasi softlens dari tim ahli Optik I See You.',
     url: 'https://optikiseeyou.com/blog',
     siteName: 'Optik I See You',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: '/hero-bg.jpg',
         width: 1280,
         height: 853,
-        alt: 'Blog Optik I See You — Tips Kacamata & Kesehatan Mata',
+        alt: 'Blog Optik I See You — Tips Kacamata dan Kesehatan Mata',
       },
     ],
     locale: 'id_ID',

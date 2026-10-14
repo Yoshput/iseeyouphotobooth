@@ -126,7 +126,7 @@ export async function checkCleanterConnection(
     return {
       isAvailable: false,
       message: isAborted
-        ? "Koneksi ke Cleanter timeout. Buka & jalankan app Cleanter di Android."
+        ? "Koneksi ke Cleanter timeout. Buka dan jalankan app Cleanter di Android."
         : "Aplikasi Cleanter tidak terdeteksi. Pastikan app Cleanter aktif di port 9100.",
     };
   }

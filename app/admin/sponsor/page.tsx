@@ -436,7 +436,7 @@ export default function AdminSponsorPage() {
             </div>
 
             <p className="text-xs text-[#0D2F1D]/65 leading-relaxed mb-6 font-normal">
-              Masukkan Security PIN Staff Marketing untuk mengelola proposal &amp; pengajuan kegiatan.
+              Masukkan Security PIN Staff Marketing untuk mengelola proposal dan pengajuan kegiatan.
             </p>
 
             {/* Security Rate Limit Status */}
@@ -768,9 +768,9 @@ export default function AdminSponsorPage() {
                 <thead>
                   <tr className="border-b border-[#0D2F1D]/8 bg-[#FAF6EC]/80 text-[#0D2F1D]/70 font-bold uppercase tracking-wider text-[10px]">
                     <th className="py-3.5 px-5">Tanggal / ID</th>
-                    <th className="py-3.5 px-5">Instansi &amp; PIC</th>
-                    <th className="py-3.5 px-5">Nama Acara &amp; Cabang</th>
-                    <th className="py-3.5 px-5">Target &amp; Bentuk</th>
+                    <th className="py-3.5 px-5">Instansi dan PIC</th>
+                    <th className="py-3.5 px-5">Nama Acara dan Cabang</th>
+                    <th className="py-3.5 px-5">Target dan Bentuk</th>
                     <th className="py-3.5 px-5">File Proposal</th>
                     <th className="py-3.5 px-5">Status</th>
                     <th className="py-3.5 px-5 text-right">Aksi</th>
@@ -940,7 +940,7 @@ export default function AdminSponsorPage() {
                 </div>
                 <div>
                   <h3 className="font-bold text-base text-[#0D2F1D]">
-                    Sinkronisasi Google Drive &amp; Spreadsheet
+                    Sinkronisasi Google Drive dan Spreadsheet
                   </h3>
                   <p className="text-xs text-[#0D2F1D]/60">
                     Koneksi data pengajuan sponsor real-time tanpa database berbayar.
@@ -990,7 +990,7 @@ export default function AdminSponsorPage() {
                 onClick={() => setIsGSheetModalOpen(false)}
                 className="px-5 py-2.5 rounded-full bg-[#116B3C] text-white font-bold text-xs hover:bg-[#0D2F1D] transition-colors cursor-pointer"
               >
-                Tutup &amp; Mengerti
+                Tutup dan Mengerti
               </button>
             </div>
           </div>

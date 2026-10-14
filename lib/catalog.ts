@@ -819,7 +819,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         specsImage: "/katalog/Shades Edition/Product Specs.webp",
         style: "Sunglasses Square",
         recommendedFor: ["Oval", "Round", "Heart"],
-        description: "Kacamata hitam gaya klasik dengan lensa dark smoke anti-glare & proteksi UV400 maksimal.",
+        description: "Kacamata hitam gaya klasik dengan lensa dark smoke anti-glare dan proteksi UV400 maksimal.",
         glassesId: "sunglasses-black",
       },
       {

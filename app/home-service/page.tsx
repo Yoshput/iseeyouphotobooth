@@ -15,7 +15,6 @@ import {
   CheckCircle2,
   ExternalLink,
   MessageCircle,
-  Sparkles,
   ShieldCheck,
   Glasses,
   Home,
@@ -52,22 +51,22 @@ const HOME_SERVICE_GALLERY: HomeServiceGalleryItem[] = [
   {
     id: "suasana-keluarga",
     image: "/home-service-gallery/hs-consultation.webp",
-    category: "Keluarga & Santai",
-    title: "Coba Bareng Keluarga & Minta Pendapat Langsung",
+    category: "Keluarga dan Santai",
+    title: "Coba Bareng Keluarga dan Minta Pendapat Langsung",
     desc: "Sangat ideal untuk keluarga: ayah, ibu, anak, hingga lansia bisa periksa mata bersamaan sambil santai berdiskusi di ruang tamu rumah.",
   },
   {
     id: "kunjungan-kantor",
     image: "/home-service-gallery/hs-office-visit.webp",
-    category: "Instansi & Kantor",
-    title: "Layanan Kolektif Kantor, Komunitas & Instansi",
+    category: "Instansi dan Kantor",
+    title: "Layanan Kolektif Kantor, Komunitas dan Instansi",
     desc: "Kami juga rutin melayani pemeriksaan mata terpadu untuk karyawan perusahaan, kantor pemerintahan, komunitas, hingga perkumpulan arisan.",
   },
   {
     id: "fitting-presisi",
     image: "/home-service-gallery/hs-team-service.webp",
     category: "Pelayanan Ahli",
-    title: "Konsultasi Lensa Spesifik & Fitting Proporsional",
+    title: "Konsultasi Lensa Spesifik dan Fitting Proporsional",
     desc: "Edukasi kebutuhan lensa seperti Bluechromic anti radiasi gadget, progresif lansia, serta penyetelan frame agar presisi dan nyaman seharian.",
   },
   {
@@ -237,7 +236,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
           </div>
 
           <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-5 text-center shadow-xs">
-            <h4 className="text-sm font-bold text-slate-900 mb-1">Ramah Lansia &amp; Balita</h4>
+            <h4 className="text-sm font-bold text-slate-900 mb-1">Ramah Lansia dan Balita</h4>
             <p className="text-xs text-slate-500 leading-relaxed">Cocok untuk orang tua yang sulit bepergian keluar</p>
           </div>
         </div>
@@ -249,7 +248,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
               Seperti Apa Suasana Home Service?
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto">
-              Intip dokumentasi pengalaman nyata saat tim refraksionis Optik I See You melayani pemeriksaan mata dan pemilihan frame langsung di kediaman &amp; kantor pelanggan:
+              Intip dokumentasi pengalaman nyata saat tim refraksionis Optik I See You melayani pemeriksaan mata dan pemilihan frame langsung di kediaman dan kantor pelanggan:
             </p>
           </div>
 
@@ -285,7 +284,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
                     <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/60 mb-2">
                       {item.category}
                     </span>
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900 group-hover:text-isy-green-deep transition-colors leading-snug mb-2">
+                    <h3 className="font-sans text-base sm:text-lg font-bold text-slate-900 group-hover:text-isy-green-deep transition-colors leading-snug mb-2">
                       {item.title}
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed font-normal">
@@ -314,7 +313,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                 Pemesanan Tercatat
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mt-3 mb-2">
+              <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 mb-2">
                 Booking Home Service Berhasil!
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed mb-6">
@@ -352,7 +351,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="text-center sm:text-left pb-2 border-b border-black/5">
                 <span className="text-[11px] font-extrabold uppercase tracking-wider text-isy-green-deep">Formulir Reservasi</span>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+                <h3 className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">
                   Atur Jadwal Kunjungan ke Tempat Anda
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
@@ -403,7 +402,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
               <div className="space-y-4 pt-2">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-1 flex items-center gap-2">
                   <User className="w-4 h-4 text-isy-green-deep" />
-                  <span>2. Data Pemesan &amp; Lokasi Kunjungan</span>
+                  <span>2. Data Pemesan dan Lokasi Kunjungan</span>
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -455,7 +454,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
               <div className="space-y-4 pt-2">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-1 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-isy-green-deep" />
-                  <span>3. Jadwal &amp; Jumlah Orang yang Diperiksa</span>
+                  <span>3. Jadwal dan Jumlah Orang yang Diperiksa</span>
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
@@ -611,7 +610,7 @@ Mohon konfirmasi ketersediaan jadwal tim refraksionis ke lokasi saya. Terima kas
               <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/60 mb-2">
                 {selectedPhoto.category}
               </span>
-              <h3 className="font-serif text-xl font-bold text-slate-900 leading-snug mb-2">
+              <h3 className="font-sans text-xl font-extrabold text-slate-900 leading-snug mb-2">
                 {selectedPhoto.title}
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">

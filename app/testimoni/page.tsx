@@ -3,10 +3,10 @@ import Navbar from "@/components/ui/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Testimoni & Review Pelanggan | Optik I See You",
+  title: "Testimoni dan Review Pelanggan | Optik I See You",
   description: "⭐⭐⭐⭐⭐ Ribuan ulasan bintang 5 dari Google Maps! Baca pengalaman pelanggan Optik I See You di Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
   openGraph: {
-    title: "Testimoni & Review Pelanggan | Optik I See You",
+    title: "Testimoni dan Review Pelanggan | Optik I See You",
     description: "Baca ribuan ulasan bintang 5 dari pelanggan nyata Optik I See You di 4 cabang Jawa Tengah.",
     url: "https://optikiseeyou.com/testimoni",
     siteName: "Optik I See You",

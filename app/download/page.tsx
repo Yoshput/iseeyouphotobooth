@@ -92,7 +92,7 @@ function DownloadPortalContent() {
       "Optik I See You - Foto Strip HD"
     );
     if (res.success) {
-      showToast("Foto berhasil diunduh & tersimpan di galeri!");
+      showToast("Foto berhasil diunduh dan tersimpan di galeri!");
     } else {
       showToast("Gagal mengunduh foto.");
     }
@@ -107,7 +107,7 @@ function DownloadPortalContent() {
       "Optik I See You - Animasi GIF"
     );
     if (res.success) {
-      showToast("GIF animasi berhasil diunduh & tersimpan!");
+      showToast("GIF animasi berhasil diunduh dan tersimpan!");
     } else {
       showToast("Gagal mengunduh GIF.");
     }
@@ -153,7 +153,7 @@ function DownloadPortalContent() {
           </div>
 
           <div className="space-y-1.5">
-            <h2 className="font-serif text-lg font-bold text-isy-green-deep">
+            <h2 className="font-sans text-lg font-extrabold text-isy-green-deep">
               Menyiapkan Foto HD Anda…
             </h2>
             <p className="text-xs text-isy-ink/70 leading-relaxed">
@@ -198,7 +198,7 @@ function DownloadPortalContent() {
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-black uppercase tracking-wider">
               Masa Simpan Berakhir
             </span>
-            <h2 className="font-serif text-xl font-bold text-isy-green-deep">
+            <h2 className="font-sans text-xl font-extrabold text-isy-green-deep">
               Foto Sudah Tidak Tersedia
             </h2>
             <p className="text-xs text-isy-ink/70 leading-relaxed pt-1">
@@ -270,11 +270,11 @@ function DownloadPortalContent() {
             />
           </Link>
           <div className="space-y-0.5">
-            <h1 className="font-serif text-lg font-bold text-isy-green-deep">
+            <h1 className="font-sans text-lg font-extrabold text-isy-green-deep">
               Hasil Foto Photobooth
             </h1>
             <p className="text-[11px] text-isy-ink/60">
-              Download langsung foto HD &amp; animasi GIF ke galeri HP kamu
+              Download langsung foto HD dan animasi GIF ke galeri HP kamu
             </p>
           </div>
         </div>
@@ -343,7 +343,7 @@ function DownloadPortalContent() {
           </p>
           <ul className="list-disc list-inside text-[10.5px] text-emerald-900/80 space-y-0.5">
             <li>Klik tombol hijau <b>Unduh ke Galeri</b> di bawah.</li>
-            <li>Di iPhone / Android, Anda juga bisa <b>tekan & tahan foto</b> di atas, lalu pilih <b>&quot;Simpan ke Foto&quot;</b> / <b>&quot;Download Gambar&quot;</b>.</li>
+            <li>Di iPhone / Android, Anda juga bisa <b>tekan dan tahan foto</b> di atas, lalu pilih <b>&quot;Simpan ke Foto&quot;</b> / <b>&quot;Download Gambar&quot;</b>.</li>
           </ul>
         </div>
 

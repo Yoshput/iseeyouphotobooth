@@ -32,11 +32,11 @@ export interface QuizModule {
 }
 
 export const QUIZ_MODULES: QuizModule[] = [
-  // ── 1. STYLE & FRAME PERSONA (FRAME DNA) ──
+  // ── 1. STYLE DAN FRAME PERSONA (FRAME DNA) ──
   {
     id: 'style-persona',
-    title: 'Analisis Karakter & Frame DNA',
-    tagline: 'Temukan siluet kacamata yang paling mewakili karakter & kebiasaanmu',
+    title: 'Analisis Karakter dan Frame DNA',
+    tagline: 'Temukan siluet kacamata yang paling mewakili karakter dan kebiasaanmu',
     description: 'Kuis gaya hidup dan preferensi harian tanpa benar/salah untuk menentukan seri frame kacamata paling harmonis dengan kepribadianmu.',
     iconName: 'Compass',
     xpReward: 100,
@@ -159,10 +159,10 @@ export const QUIZ_MODULES: QuizModule[] = [
     ],
   },
 
-  // ── 2. VISION SCREENING (MINUS & SILINDER) ──
+  // ── 2. VISION SCREENING (MINUS DAN SILINDER) ──
   {
     id: 'vision-screening',
-    title: 'Skrining Refraksi Cepat: Minus & Silinder',
+    title: 'Skrining Refraksi Cepat: Minus dan Silinder',
     tagline: 'Tes visual interaktif untuk mendeteksi ketajaman fokus mata',
     description: 'Gunakan layar ponsel atau monitormu untuk memeriksa indikasi astigmatisme (silinder) lewat dial kipas dan fokus duochrome merah-hijau.',
     iconName: 'Eye',
@@ -220,7 +220,7 @@ export const QUIZ_MODULES: QuizModule[] = [
           },
           {
             id: 'vs2_a',
-            text: 'Kedua sisi (Merah & Hijau) terlihat sama pekat dan tajam',
+            text: 'Kedua sisi (Merah dan Hijau) terlihat sama pekat dan tajam',
             isCorrect: true,
             scoreWeight: 25,
             indicates: 'normal',
@@ -304,7 +304,7 @@ export const QUIZ_MODULES: QuizModule[] = [
     ],
   },
 
-  // ── 3. EYE HEALTH & SCREEN TIME ──
+  // ── 3. EYE HEALTH DAN SCREEN TIME ──
   {
     id: 'eye-health',
     title: 'IQ Kesehatan Mata di Era Gadget',
@@ -444,7 +444,7 @@ export const QUIZ_MODULES: QuizModule[] = [
     iconName: 'ShieldCheck',
     xpReward: 90,
     estimatedMinutes: 2,
-    badgeLabel: 'Tips Awet & Bersih',
+    badgeLabel: 'Tips Awet dan Bersih',
     badgeTone: 'amber',
     questions: [
       {
@@ -462,7 +462,7 @@ export const QUIZ_MODULES: QuizModule[] = [
           },
           {
             id: 'gc1_a',
-            text: 'Sangat tidak disarankan! Serat kayu pada tisu & debu pada kaos dapat menggores lapisan coating lensa',
+            text: 'Sangat tidak disarankan! Serat kayu pada tisu dan debu pada kaos dapat menggores lapisan coating lensa',
             isCorrect: true,
             scoreWeight: 25,
             explanation: 'Tepat sekali! Tisu terbuat dari serat kayu mikro yang abrasif. Selalu gunakan kain lap microfiber khusus kacamata.',

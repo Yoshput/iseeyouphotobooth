@@ -1,8 +1,8 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Studio Photobooth Interaktif & Cetak Foto Instan — Optik I See You",
-  description: "Studio photobooth interaktif Optik I See You. Jepret foto estetik gratis dengan aneka frame unik, filter warna retro & film, serta unduh instan ke HP via scan QR code.",
+  title: "Studio Photobooth Interaktif dan Cetak Foto Instan — Optik I See You",
+  description: "Studio photobooth interaktif Optik I See You. Jepret foto estetik gratis dengan aneka frame unik, filter warna retro dan film, serta unduh instan ke HP via scan QR code.",
   keywords: [
     "photobooth purwokerto",
     "photobooth kacamata",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "optik i see you photobooth",
   ],
   openGraph: {
-    title: "Studio Photobooth Interaktif & Cetak Foto Instan | Optik I See You",
+    title: "Studio Photobooth Interaktif dan Cetak Foto Instan | Optik I See You",
     description: "Foto seru di photobooth Optik I See You dengan frame estetik dan scan QR langsung simpan ke galeri smartphone.",
     url: "https://optikiseeyou.com/photobooth",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Photobooth Optik I See You" }],

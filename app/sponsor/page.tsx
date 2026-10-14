@@ -14,7 +14,7 @@ import {
   Phone,
   Mail,
   MapPin,
-  Sparkles,
+  Camera,
   ExternalLink,
   MessageCircle,
   HelpCircle,
@@ -76,7 +76,7 @@ export default function SponsorPage() {
     "Voucher Diskon Peserta",
     "Stan Cek Mata Gratis di Lokasi",
     "Photobooth AR Event",
-    "Merchandise & Doorprize Kacamata",
+    "Merchandise dan Doorprize Kacamata",
     "Dana Sponsorship",
     "Media Partner / Publikasi",
   ];
@@ -232,7 +232,7 @@ export default function SponsorPage() {
 Halo Kak Yossika (Tim Marketing Optik I See You),
 Saya bermaksud mengajukan proposal sponsorship untuk kegiatan kami:
 
-*1. DETAIL ACARA & PENYELENGGARA*
+*1. DETAIL ACARA DAN PENYELENGGARA*
 • Nama Acara: *${formData.namaKegiatan}*
 • Penyelenggara: ${formData.instansi}
 • Penanggung Jawab (PIC): ${formData.nama}
@@ -327,7 +327,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
 
           <div className="rounded-2xl border border-black/5 bg-white/90 backdrop-blur-md p-4 text-center shadow-xs">
             <div className="w-10 h-10 mx-auto rounded-xl bg-purple-50 text-purple-800 flex items-center justify-center mb-2.5">
-              <Sparkles className="w-5 h-5 stroke-[1.75]" />
+              <Camera className="w-5 h-5 stroke-[1.75]" />
             </div>
             <h4 className="text-xs font-bold text-slate-900">Photobooth AR</h4>
             <p className="text-[11px] text-slate-500 mt-0.5">Interaktif live try-on kacamata untuk crowd event</p>
@@ -338,7 +338,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
               <Building2 className="w-5 h-5 stroke-[1.75]" />
             </div>
             <h4 className="text-xs font-bold text-slate-900">Dukungan Dana</h4>
-            <p className="text-[11px] text-slate-500 mt-0.5">Dana sponsorship &amp; goodie bag merchandise</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">Dana sponsorship dan goodie bag merchandise</p>
           </div>
         </div>
 
@@ -389,7 +389,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
               {/* Informasi Alur Kerja Sama */}
               <div className="max-w-md mx-auto bg-emerald-50/70 border border-emerald-200/60 rounded-2xl p-4 text-left mb-6">
                 <h4 className="text-xs font-bold text-emerald-950 mb-1 flex items-center gap-1.5">
-                  <span>ℹ️</span> Alur Evaluasi &amp; Konfirmasi
+                  <span>ℹ️</span> Alur Evaluasi dan Konfirmasi
                 </h4>
                 <p className="text-[11px] text-emerald-900/80 leading-relaxed">
                   Proposal Anda akan ditinjau oleh tim kurasi marketing kami. Jika kegiatan memenuhi kriteria kemitraan, <strong>Tim Marketing Optik I See You yang akan langsung menghubungi nomor WhatsApp PIC Anda</strong>. Anda tidak perlu mengirim konfirmasi manual via chat.
@@ -455,7 +455,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 pb-2 border-b border-black/5 flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-isy-green-deep" />
-                  <span>1. Identitas Penyelenggara &amp; Kontak</span>
+                  <span>1. Identitas Penyelenggara dan Kontak</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -530,7 +530,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
               <div className="pt-2">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 pb-2 border-b border-black/5 flex items-center gap-2">
                   <FileText className="w-4 h-4 text-isy-green-deep" />
-                  <span>2. Detail Acara &amp; Target Audiens</span>
+                  <span>2. Detail Acara dan Target Audiens</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
@@ -737,7 +737,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
                           Format resmi <strong>.PDF</strong> (Maksimal 40MB).
                         </p>
                         <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 border border-emerald-300/40 text-[10.5px] font-semibold text-emerald-800">
-                          <Sparkles className="w-3 h-3" />
+                          <ShieldCheck className="w-3 h-3" />
                           <span>Penyimpanan Aman Terenkripsi Cloudflare R2</span>
                         </div>
                       </label>

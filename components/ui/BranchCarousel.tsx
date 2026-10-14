@@ -243,7 +243,7 @@ function BranchModal({ branch, onClose }: { branch: Branch; onClose: () => void 
           {branch.images && branch.images.length > 0 && (
             <div className="mx-6 mb-4 space-y-2">
               <p className="flex items-center justify-between text-xs font-bold text-isy-green-deep">
-                <span>Foto Toko & Suasana</span>
+                <span>Foto Toko dan Suasana</span>
                 <span className="text-[10px] font-medium text-isy-ink/40">{photoIdx + 1} / {branch.images.length}</span>
               </p>
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-isy-line bg-black/5">
@@ -431,7 +431,7 @@ export default function BranchCarousel() {
           {branch.images && branch.images.length > 0 ? (
             <Image
               src={branch.images[photoIndex]}
-              alt={`Toko ${branch.name} - Rekomendasi Toko Kacamata & Optik di ${branch.city}`}
+              alt={`Toko ${branch.name} - Rekomendasi Toko Kacamata dan Optik di ${branch.city}`}
               fill
               sizes="(max-width: 768px) 100vw, 650px"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"

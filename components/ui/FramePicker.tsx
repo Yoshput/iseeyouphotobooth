@@ -262,7 +262,7 @@ export default function FramePicker({
             PILIH GAYA FOTO
           </h2>
           <p className="text-xs text-isy-ink/65 font-medium">
-            Rasio cetak standar photobooth fisik: Strip 2×6 inch (1:3) & Card 4×6 inch (2:3)
+            Rasio cetak standar photobooth fisik: Strip 2×6 inch (1:3) dan Card 4×6 inch (2:3)
           </p>
         </div>
 

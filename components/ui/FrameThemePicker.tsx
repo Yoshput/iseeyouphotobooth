@@ -174,7 +174,7 @@ function VisualThemeMockup({
 
           {/* Footer */}
           <div className="pt-0.5 border-t border-[#E2B857]/30 text-center z-10">
-            <span className="text-[5.5px] font-serif italic text-[#E2B857]/90 tracking-wide">
+            <span className="text-[5.5px] font-sans font-medium text-[#E2B857]/90 tracking-wide">
               Edisi Spesial I See You
             </span>
           </div>
@@ -379,7 +379,7 @@ function ThemeCard({
       <div className="flex items-center justify-between w-full">
         {isKoranNotTrio ? (
           <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[9px] font-black uppercase text-amber-700 border border-amber-500/30 z-10">
-            Tahap Update (1 & 4 Foto)
+            Tahap Update (1 dan 4 Foto)
           </span>
         ) : isSignature ? (
           <span className="rounded-full bg-emerald-700/10 px-2 py-0.5 text-[9px] font-black uppercase text-emerald-800 border border-emerald-700/30 z-10">

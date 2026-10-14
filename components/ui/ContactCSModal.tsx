@@ -120,7 +120,7 @@ export default function ContactCSModal({
     } else if (productName) {
       message = `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya ketersediaan frame: *${productName}*\n\nApakah masih tersedia di cabang ini? Boleh dibantu informasinya? 🙏`;
     } else {
-      message = `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya tentang produk frame & lensa kacamata di Optik I See You.\n\nBoleh dibantu informasinya? 🙏`;
+      message = `Halo Optik I See You ${branch.name}! 👋\nSaya ingin bertanya tentang produk frame dan lensa kacamata di Optik I See You.\n\nBoleh dibantu informasinya? 🙏`;
     }
     const waUrl = `https://api.whatsapp.com/send/?phone=${branch.phoneWa}&text=${encodeURIComponent(message)}`;
 

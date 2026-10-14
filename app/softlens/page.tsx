@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Katalog Softlens Resmi Kemenkes RI | Optik I See You",
     description:
-      "Temukan lensa kontak nyaman untuk mata minus & normal serta cairan steril resmi di Optik I See You.",
+      "Temukan lensa kontak nyaman untuk mata minus dan normal serta cairan steril resmi di Optik I See You.",
     url: "https://optikiseeyou.com/softlens",
     siteName: "Optik I See You",
     locale: "id_ID",
@@ -29,7 +29,7 @@ export default function SoftlensPage() {
       {
         "@type": "ItemList",
         "@id": "https://optikiseeyou.com/softlens#products",
-        name: "Katalog Softlens & Perawatan Optik I See You",
+        name: "Katalog Softlens dan Perawatan Optik I See You",
         description:
           "Daftar softlens dan cairan pembersih steril resmi berizin Kemenkes RI di Optik I See You.",
         itemListElement: SOFTLENS_SERIES_LIST.map((series, idx) => {

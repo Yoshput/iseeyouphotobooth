@@ -42,7 +42,7 @@ function buildOrderMessage(
     ``,
     `*TOTAL PEMBAYARAN:* Rp ${total.toLocaleString("id-ID")}`,
     ``,
-    `Mohon info ketersediaan stok & cara pembayarannya ya kak. Terima kasih!`,
+    `Mohon info ketersediaan stok dan cara pembayarannya ya kak. Terima kasih!`,
   ].join("\n");
 }
 

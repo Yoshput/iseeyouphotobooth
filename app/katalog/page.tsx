@@ -16,7 +16,7 @@ export default function KatalogPage() {
         "@id": "https://optikiseeyou.com/katalog#products",
         name: "Koleksi Frame Kacamata Optik I See You",
         description:
-          "Katalog bingkai kacamata optik & sunglasses original di cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
+          "Katalog bingkai kacamata optik dan sunglasses original di cabang Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
         itemListElement: allProducts.map((item, idx) => {
           const productObj: Record<string, any> = {
             "@type": "Product",

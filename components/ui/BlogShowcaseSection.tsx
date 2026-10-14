@@ -12,7 +12,7 @@ function getCategoryBadge(category: BlogCategory) {
     case "edukasi-mata":
       return { label: "Edukasi Mata", bg: "bg-blue-50 text-blue-800 border-blue-200" };
     case "info-cabang-promo":
-      return { label: "Event & Promo", bg: "bg-amber-50 text-amber-900 border-amber-200" };
+      return { label: "Event dan Promo", bg: "bg-amber-50 text-amber-900 border-amber-200" };
     case "tren-gaya":
       return { label: "Tren Gaya", bg: "bg-purple-50 text-purple-800 border-purple-200" };
     case "perawatan-softlens":
@@ -28,7 +28,7 @@ const CATEGORY_TABS: { key: string; label: string; icon: "all" | "eye" | "glasse
   { key: "edukasi-mata", label: "Edukasi Mata", icon: "eye" },
   { key: "tips-pilih-frame", label: "Tips Pilih Frame", icon: "glasses" },
   { key: "tren-gaya", label: "Tren Gaya", icon: "sparkle" },
-  { key: "info-cabang-promo", label: "Event & Cabang", icon: "event" },
+  { key: "info-cabang-promo", label: "Event dan Cabang", icon: "event" },
 ];
 
 export default function BlogShowcaseSection() {
@@ -86,7 +86,7 @@ export default function BlogShowcaseSection() {
         {/* ═══ 1. Section Header (Centered, Clean Luxury) ═══ */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-3">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-sans text-isy-green-deep tracking-tight">
-            Inspirasi Gaya &amp; Info Terkini
+            Inspirasi Gaya dan Info Terkini
           </h2>
           <p className="text-sm sm:text-base text-isy-ink/70">
             Simak rekomendasi frame sesuai bentuk wajah, tips kesehatan mata, dan agenda resmi Optik I See You.

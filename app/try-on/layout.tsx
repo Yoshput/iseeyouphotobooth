@@ -1,8 +1,8 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Coba AR Try-On Kacamata Online — Virtual Mirror Real-Time | Optik I See You",
-  description: "Coba kacamata online secara virtual di wajahmu secara real-time dengan teknologi AI & AR Try-On Optik I See You. Pilih frame kacamata pria & wanita yang paling pas sebelum beli.",
+  description: "Coba kacamata online secara virtual di wajahmu secara real-time dengan teknologi AR Try-On Optik I See You. Pilih frame kacamata pria dan wanita yang paling pas sebelum beli.",
   keywords: [
     "try on kacamata online",
     "virtual try on kacamata",

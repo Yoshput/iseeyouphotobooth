@@ -15,7 +15,7 @@ function getCategoryColor(category: BlogCategory) {
 }
 
 function getCategoryLabel(category: BlogCategory) {
-  if (category === "info-cabang-promo") return "Event & Promo";
+  if (category === "info-cabang-promo") return "Event dan Promo";
   return category.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
 
@@ -52,7 +52,7 @@ export default function BlogIndex() {
         </div>
 
         <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight mb-3">Blog &amp; Edukasi Mata</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight mb-3">Blog dan Edukasi Mata</h1>
           <p className="text-base sm:text-lg text-isy-ink/70 max-w-2xl mx-auto">
             Temukan panduan lengkap seputar kesehatan mata, tips memilih kacamata yang tepat, hingga tren gaya frame terbaru.
           </p>

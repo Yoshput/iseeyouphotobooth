@@ -168,13 +168,13 @@ export default function EventFloatingNotice() {
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>
-                  <span className="truncate font-medium">Depan J.CO &amp; Samping Lift GF</span>
+                  <span className="truncate font-medium">Depan J.CO dan Samping Lift GF</span>
                 </div>
               </div>
 
               <div className="mt-1.5">
                 <span className="inline-block px-2 py-0.5 rounded-md bg-emerald-50 text-[10px] font-bold text-emerald-900 border border-emerald-200">
-                  Cek Mata &amp; Photobooth Gratis
+                  Cek Mata dan Photobooth Gratis
                 </span>
               </div>
             </div>
@@ -183,7 +183,7 @@ export default function EventFloatingNotice() {
           {/* Prominent Action Button */}
           <div className="mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-isy-line">
             <div className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-isy-green-deep group-hover:bg-isy-green-bright text-white text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-98">
-              <span>Buka Informasi Booth &amp; Putar Video</span>
+              <span>Buka Informasi Booth dan Putar Video</span>
               <svg
                 width="12"
                 height="12"

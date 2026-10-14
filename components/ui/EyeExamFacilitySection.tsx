@@ -23,7 +23,7 @@ interface FacilityItem {
   name: string;
   subtitle: string;
   tag: string;
-  category: "Pemeriksaan Mata" | "Lab & Faset Lensa";
+  category: "Pemeriksaan Mata" | "Lab dan Faset Lensa";
   shortDesc: string;
   detailedDesc: string;
   highlights: string[];
@@ -35,8 +35,8 @@ const FACILITIES: FacilityItem[] = [
     id: "mesin-potong-otomatis",
     name: "Mesin Potong Lensa Otomatis",
     subtitle: "High-Speed CNC Auto Lens Edger",
-    tag: "Lab & Faset Otomatis",
-    category: "Lab & Faset Lensa",
+    tag: "Lab dan Faset Otomatis",
+    category: "Lab dan Faset Lensa",
     shortDesc:
       "Mesin faset otomatis berbasis CNC digital dengan 3D frame tracing untuk hasil pemotongan lensa super rapi, akurat hingga 0.01 mm, dan siap ditunggu.",
     detailedDesc:
@@ -45,7 +45,7 @@ const FACILITIES: FacilityItem[] = [
       "Presisi CNC 0.01 mm",
       "Pengerjaan Cepat (Express / Bisa Ditunggu)",
       "3D Frame Tracing Komputer",
-      "Bevel Halus Anti-Gores & Terkunci Kuat",
+      "Bevel Halus Anti-Gores dan Terkunci Kuat",
     ],
     image: "/fasilitas/mesin potong otomatis.webp",
   },
@@ -54,15 +54,15 @@ const FACILITIES: FacilityItem[] = [
     name: "Mesin Potong Lensa Semi Otomatis",
     subtitle: "Precision Manual Pattern Edger",
     tag: "Workshop Presisi",
-    category: "Lab & Faset Lensa",
+    category: "Lab dan Faset Lensa",
     shortDesc:
       "Mesin faset presisi tinggi untuk pengerjaan custom frame, rimless/half-frame, dan penyetelan manual khusus oleh teknisi lab berpengalaman.",
     detailedDesc:
       "Mesin faset semi-otomatis yang memberikan fleksibilitas penuh bagi teknisi refraksi untuk melakukan pemotongan, penyesuaian sudut bevel, dan penghalusan tepi lensa secara manual. Sangat ideal untuk kacamata model khusus, frame vintage, atau lensa dengan kurva basis unik yang memerlukan sentuhan tangan ahli demi kenyamanan estetika maksimal.",
     highlights: [
-      "Custom Rimless & Half-Frame",
+      "Custom Rimless dan Half-Frame",
       "Finishing Bevel Manual Halus",
-      "Kontrol Sudut & Ketebalan Ekstra",
+      "Kontrol Sudut dan Ketebalan Ekstra",
       "Dikerjakan Teknisi Lab Berpengalaman",
     ],
     image: "/fasilitas/mesin potong semi otomatis.webp",
@@ -79,9 +79,9 @@ const FACILITIES: FacilityItem[] = [
       "Alat diagnostik digital berteknologi infra merah yang memancarkan cahaya lembut ke retina untuk mendeteksi indeks bias mata secara instan dalam hitungan detik. Menghasilkan data awal minus, plus, silinder, serta axis mata dengan akurasi tinggi sebagai pondasi sebelum penentuan ukuran lensa final.",
     highlights: [
       "Pengukuran Instan dalam 3 Detik",
-      "Deteksi Minus, Plus, & Silinder",
+      "Deteksi Minus, Plus, dan Silinder",
       "Data Refraksi Objektif Akurat",
-      "Non-Invasif & Nyaman untuk Mata",
+      "Non-Invasif dan Nyaman untuk Mata",
     ],
     image: "/fasilitas/autorefractor.webp",
   },
@@ -99,7 +99,7 @@ const FACILITIES: FacilityItem[] = [
       "Pengaturan Jarak Pupil (PD) Presisi",
       "Uji Coba Nyata di Wajah Pasien",
       "Simulasi Pemakaian Kacamata Langsung",
-      "Mencegah Pusing & Ketidaknyamanan",
+      "Mencegah Pusing dan Ketidaknyamanan",
     ],
     image: "/fasilitas/trial-frame.webp",
   },
@@ -110,12 +110,12 @@ const FACILITIES: FacilityItem[] = [
     tag: "Koleksi Lensa Presisi",
     category: "Pemeriksaan Mata",
     shortDesc:
-      "Set koper komplit berisi ratusan pilihan lensa uji coba minus, plus, dan silinder presisi tinggi untuk menemukan resep kacamata yang paling pas & tajam.",
+      "Set koper komplit berisi ratusan pilihan lensa uji coba minus, plus, dan silinder presisi tinggi untuk menemukan resep kacamata yang paling pas dan tajam.",
     detailedDesc:
       "Koleksi lengkap ratusan keping lensa optik berspesifikasi klinis dengan berbagai tingkatan ukuran sferis (minus/plus), silinder, prisma, dan filter uji. Digunakan secara bertahap oleh refraksionis optisien untuk mencari kombinasi ukuran lensa terbaik hingga penglihatan pasien mencapai ketajaman maksimal tanpa distorsi.",
     highlights: [
       "Ratusan Keping Lensa Ukuran Lengkap",
-      "Uji Koreksi Minus, Plus, & Silinder",
+      "Uji Koreksi Minus, Plus, dan Silinder",
       "Koreksi Akurat Tahap demi Tahap",
       "Standar Optometri Profesional",
     ],
@@ -133,7 +133,7 @@ const FACILITIES: FacilityItem[] = [
       "Bagan optometri berstandar internasional yang digunakan untuk menguji ketajaman penglihatan (visus) pasien dari jarak standar. Digunakan untuk menentukan seberapa tajam penglihatan alami pasien dan memastikan hasil koreksi lensa mencapai visus optimal (6/6 atau 20/20).",
     highlights: [
       "Standar Optometri Internasional",
-      "Uji Visus Mata Kanan & Kiri Terpisah",
+      "Uji Visus Mata Kanan dan Kiri Terpisah",
       "Ukur Progres Ketajaman Penglihatan",
       "Tahap Wajib di Setiap Pemeriksaan",
     ],
@@ -143,9 +143,9 @@ const FACILITIES: FacilityItem[] = [
 
 const TRUST_HIGHLIGHTS = [
   "Gratis Cek Mata di Semua Cabang",
-  "Lab & Mesin Faset Standar Modern",
+  "Lab dan Mesin Faset Standar Modern",
   "Dikerjakan Teknisi Berpengalaman",
-  "Pengerjaan Cepat & Bisa Ditunggu",
+  "Pengerjaan Cepat dan Bisa Ditunggu",
 ];
 
 export default function EyeExamFacilitySection() {
@@ -207,7 +207,7 @@ export default function EyeExamFacilitySection() {
 
           {/* Heading */}
           <h2 className="text-3xl font-black text-isy-green-deep sm:text-5xl leading-tight">
-            Fasilitas Pemeriksaan &amp;
+            Fasilitas Pemeriksaan dan
             <br />
             <span className="text-isy-green-bright">Mesin Faset Presisi</span>
           </h2>
@@ -219,7 +219,7 @@ export default function EyeExamFacilitySection() {
 
           {/* Category Filter Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-            {["Semua", "Pemeriksaan Mata", "Lab & Faset Lensa"].map((cat) => (
+            {["Semua", "Pemeriksaan Mata", "Lab dan Faset Lensa"].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -256,7 +256,7 @@ export default function EyeExamFacilitySection() {
                 <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-isy-ivory/60 to-isy-mist/40 border border-isy-line/60 flex items-center justify-center p-3 mb-5 shadow-xs group-hover:shadow-md group-hover:bg-white transition-all duration-500 ease-out">
                   <Image
                     src={item.image}
-                    alt={`${item.name} - Fasilitas Periksa Mata Komputerisasi & Faset Optik I See You`}
+                    alt={`${item.name} - Fasilitas Periksa Mata Komputerisasi dan Faset Optik I See You`}
                     fill
                     className="object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105"
                   />
@@ -389,7 +389,7 @@ export default function EyeExamFacilitySection() {
             {/* Detailed Explanation */}
             <div className="space-y-3 border-t border-isy-line/80 pt-4">
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-isy-green-deep">
-                Fungsi &amp; Peran dalam Pembuatan Kacamata:
+                Fungsi dan Peran dalam Pembuatan Kacamata:
               </h4>
               <p className="text-sm text-isy-ink/75 leading-relaxed font-normal">
                 {selectedFacility.detailedDesc}
@@ -399,7 +399,7 @@ export default function EyeExamFacilitySection() {
             {/* Key Highlights */}
             <div className="space-y-3 bg-isy-ivory/60 rounded-2xl p-4 border border-isy-line">
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-isy-green-deep">
-                Keunggulan &amp; Standar Presisi:
+                Keunggulan dan Standar Presisi:
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {selectedFacility.highlights.map((point, i) => (

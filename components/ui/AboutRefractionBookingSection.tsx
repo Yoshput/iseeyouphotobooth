@@ -31,7 +31,7 @@ export default function AboutRefractionBookingSection() {
 
     const message = `Halo Optik I See You Cabang ${selectedBranch.city},
 
-Saya ingin reservasi Cek Mata Gratis & Konsultasi Kacamata:
+Saya ingin reservasi Cek Mata Gratis dan Konsultasi Kacamata:
 - *Nama:* ${customerName.trim()}
 - *No. WhatsApp:* ${customerPhone.trim() || "-"}
 - *Cabang Tujuan:* ${selectedBranch.city}
@@ -53,7 +53,7 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
           <h2 className="text-3xl sm:text-5xl font-black text-isy-green-deep leading-tight">
             Cek Mata Gratis
             <br />
-            <span className="text-isy-green-bright">&amp; Konsultasi Refraksi Akurat</span>
+            <span className="text-isy-green-bright">dan Konsultasi Refraksi Akurat</span>
           </h2>
 
           <div className="space-y-4 text-xs sm:text-sm text-isy-ink/75 leading-relaxed">
@@ -77,7 +77,7 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
             </div>
             <div className="rounded-2xl border border-isy-line bg-isy-mist/40 p-4 space-y-1">
               <h4 className="text-xs font-bold text-isy-green-deep">100% Gratis</h4>
-              <p className="text-[11px] text-isy-ink/60">Tanpa biaya &amp; bebas konsultasi model</p>
+              <p className="text-[11px] text-isy-ink/60">Tanpa biaya dan bebas konsultasi model</p>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ Mohon konfirmasi ketersediaan slotnya ya. Terima kasih!`;
                 Jadwalkan Cek Mata Gratis
               </h3>
               <p className="text-xs text-isy-ink/60">
-                Pilih cabang &amp; waktu kunjungan, pesan terkirim otomatis ke WhatsApp cabang:
+                Pilih cabang dan waktu kunjungan, pesan terkirim otomatis ke WhatsApp cabang:
               </p>
             </div>
 

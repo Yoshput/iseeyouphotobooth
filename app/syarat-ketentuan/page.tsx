@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Syarat & Ketentuan | Optik I See You",
+  title: "Syarat dan Ketentuan | Optik I See You",
   description:
     "Syarat dan ketentuan resmi layanan periksa mata, pembuatan kacamata custom, garansi lensa, dan transaksi di Optik I See You.",
   alternates: {
@@ -27,7 +27,7 @@ export default function SyaratKetentuanPage() {
               priority
             />
             <span className="hidden sm:inline-block border-l border-slate-200 pl-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Syarat &amp; Ketentuan Layanan
+              Syarat dan Ketentuan Layanan
             </span>
           </Link>
           <Link
@@ -48,7 +48,7 @@ export default function SyaratKetentuanPage() {
               Dokumen Resmi &bull; Ketentuan Transaksi
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-slate-900">
-              Syarat &amp; Ketentuan
+              Syarat dan Ketentuan
             </h1>
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 pt-1">
               <p>Optik I See You (Purwokerto, Purbalingga, Wonosobo, Cilacap)</p>
@@ -59,7 +59,7 @@ export default function SyaratKetentuanPage() {
           {/* Quick Summary Box */}
           <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 space-y-2">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
-              Ringkasan Layanan &amp; Transaksi
+              Ringkasan Layanan dan Transaksi
             </h3>
             <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
               Optik I See You menyediakan layanan periksa mata gratis, perakitan kacamata faset presisi mesin CNC, dan penjualan softlens resmi. Seluruh pesanan lensa kustom dan produk diproses dengan standar mutu ketat demi menjamin kejernihan serta kenyamanan penglihatan Anda.
@@ -188,7 +188,7 @@ export default function SyaratKetentuanPage() {
             <span>&bull;</span>
             <Link href="/kebijakan-privasi" className="hover:text-emerald-700 transition-colors">Kebijakan Privasi</Link>
             <span>&bull;</span>
-            <Link href="/syarat-ketentuan" className="font-semibold text-emerald-800 hover:underline">Syarat &amp; Ketentuan</Link>
+            <Link href="/syarat-ketentuan" className="font-semibold text-emerald-800 hover:underline">Syarat dan Ketentuan</Link>
           </div>
         </div>
       </footer>

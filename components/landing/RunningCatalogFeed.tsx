@@ -102,7 +102,7 @@ export default function RunningCatalogFeed() {
         <span className="text-xs font-bold uppercase tracking-widest text-[#124734]">
           Pilihan Koleksi
         </span>
-        <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black text-[#183C30] tracking-tight">
+        <h2 className="font-sans text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#183C30] tracking-tight">
           Koleksi Frame Pilihan
         </h2>
         <p className="text-xs sm:text-sm md:text-base text-[#626C65] max-w-2xl mx-auto leading-relaxed">

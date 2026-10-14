@@ -113,11 +113,11 @@ export default function CabangIndexPage() {
           </nav>
 
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black font-serif text-[#124734] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-sans text-[#124734] tracking-tight">
               Cabang Resmi Optik I See You
             </h1>
             <p className="text-sm sm:text-base text-[#626C65] leading-relaxed">
-              Kunjungi gerai kami di Purwokerto, Purbalingga, Wonosobo, dan Cilacap untuk periksa mata komputerisasi gratis, pembuatan lensa express CNC, serta koleksi frame kacamata &amp; softlens terlengkap.
+              Kunjungi gerai kami di Purwokerto, Purbalingga, Wonosobo, dan Cilacap untuk periksa mata komputerisasi gratis, pembuatan lensa express CNC, serta koleksi frame kacamata dan softlens terlengkap.
             </p>
           </div>
         </div>
@@ -159,7 +159,7 @@ export default function CabangIndexPage() {
                     href={`/cabang/${branch.id}`}
                     className="focus:outline-none focus:ring-1 focus:ring-[#124734] rounded"
                   >
-                    <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#183C30] group-hover:text-[#124734] transition-colors mb-2">
+                    <h2 className="font-sans text-xl sm:text-2xl font-bold text-[#183C30] group-hover:text-[#124734] transition-colors mb-2">
                       {branch.name}
                     </h2>
                   </Link>
@@ -187,7 +187,7 @@ export default function CabangIndexPage() {
                     href={`/cabang/${branch.id}`}
                     className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#124734] px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#0C3527] focus:outline-none focus:ring-2 focus:ring-[#124734]"
                   >
-                    <span>Detail &amp; Fasilitas Cabang</span>
+                    <span>Detail dan Fasilitas Cabang</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
 

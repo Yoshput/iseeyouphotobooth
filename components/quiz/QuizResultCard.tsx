@@ -77,27 +77,27 @@ export default function QuizResultCard({
       > = {
         "quiet-luxe": {
           title: "The Quiet Luxe",
-          tagline: "Elegan, Bersih & Berkelas Tanpa Harus Berteriak",
+          tagline: "Elegan, Bersih dan Berkelas Tanpa Harus Berteriak",
           desc: "Karaktermu mengutamakan kesederhanaan mewah dengan presisi tinggi. Frame kacamata titanium murni dan bentuk minimalis adalah signature style-mu.",
-          collections: "Quiet Luxury Series & Titanium Edition",
+          collections: "Quiet Luxury Series dan Titanium Edition",
         },
         "bold-statement": {
           title: "The Bold Statement",
           tagline: "Kacamatamu Berbicara Sebelum Kamu Memulai Percakapan",
           desc: "Karaktermu tegas, visioner, dan percaya diri. Siluet acetate tebal geometris atau bingkai hitam pekat mempertegas aura kepemimpinanmu.",
-          collections: "The Onyx Enigma & The Skena Gaze",
+          collections: "The Onyx Enigma dan The Skena Gaze",
         },
         "everyday-chic": {
           title: "The Everyday Chic",
-          tagline: "Nyaman, Stylish & Fleksibel di Setiap Agenda Harian",
+          tagline: "Nyaman, Stylish dan Fleksibel di Setiap Agenda Harian",
           desc: "Karaktermu aktif dan adaptif. Kacamata yang ideal untukmu harus nyaman digunakan bekerja di laptop, meeting, hingga hangout santai.",
-          collections: "Metro Deek & Clarity Series",
+          collections: "Metro Deek dan Clarity Series",
         },
         "the-dreamer": {
           title: "The Dreamer",
-          tagline: "Eksploratif, Artsy & Selalu Memiliki Sudut Pandang Unik",
+          tagline: "Eksploratif, Artsy dan Selalu Memiliki Sudut Pandang Unik",
           desc: "Karaktermu kaya akan inspirasi dan tidak ragu mengekspresikan orisinalitas. Frame translucent bening atau siluet cat-eye artsy sangat klop untukmu.",
-          collections: "The Lucid Vision & The Feline Silhouette",
+          collections: "The Lucid Vision dan The Feline Silhouette",
         },
       };
 
@@ -134,11 +134,11 @@ export default function QuizResultCard({
           explanation:
             "Hasil tes dial kipas atau respon lampu malam menunjukkan kemungkinan berkas cahaya tidak terfokus sempurna pada satu titik fokus retina.",
           actionAdvice:
-            "Sangat disarankan melakukan Cek Mata Komputerisasi Gratis di Optik I See You terdekat untuk memastikan ukuran silinder & axis lensa yang tepat.",
+            "Sangat disarankan melakukan Cek Mata Komputerisasi Gratis di Optik I See You terdekat untuk memastikan ukuran silinder dan axis lensa yang tepat.",
           topPersona: "cylinder",
           icon: Eye,
           waMessage: (branchName: string) =>
-            `Halo Optik I See You ${branchName}, saya baru selesai skrining Tes Minus & Silinder di optikiseeyou.com dan ada indikasi silinder. Saya mau jadwalkan periksa mata komputerisasi gratis ya.`,
+            `Halo Optik I See You ${branchName}, saya baru selesai skrining Tes Minus dan Silinder di optikiseeyou.com dan ada indikasi silinder. Saya mau jadwalkan periksa mata komputerisasi gratis ya.`,
         };
       }
 
@@ -176,7 +176,7 @@ export default function QuizResultCard({
 
       return {
         badge: "Hasil Skrining Visual",
-        title: "Ketajaman Visus Prima & Seimbang",
+        title: "Ketajaman Visus Prima dan Seimbang",
         subtitle: "Kelengkungan kornea dan fokus mata dalam kondisi sangat baik",
         explanation:
           "Hasil tes dial kipas dan duochrome menunjukkan keseimbangan refraksi yang optimal antara mata kanan dan kiri.",
@@ -489,7 +489,7 @@ export default function QuizResultCard({
       <ContactCSModal
         isOpen={isCSModalOpen}
         onClose={() => setIsCSModalOpen(false)}
-        productName="Konsultasi & Cek Mata Gratis"
+        productName="Konsultasi dan Cek Mata Gratis"
         customMessage={evaluation.waMessage}
       />
     </div>

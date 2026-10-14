@@ -128,7 +128,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {
             "@type": "ListItem",
             position: 2,
-            name: "Blog & Edukasi",
+            name: "Blog dan Edukasi",
             item: "https://optikiseeyou.com/blog",
           },
           {

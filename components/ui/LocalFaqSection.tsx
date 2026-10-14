@@ -16,13 +16,13 @@ import { BRANCHES, konsultasiWhatsappUrl, mapsDirectionsUrl } from "@/lib/branch
 interface FaqItem {
   question: string;
   answer: string;
-  category: "Cabang & Lokasi" | "Layanan & Fasilitas" | "AR Try-On & Softlens";
+  category: "Cabang dan Lokasi" | "Layanan dan Fasilitas" | "AR Try-On dan Softlens";
   links?: { label: string; url: string; external?: boolean }[];
 }
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    category: "Cabang & Lokasi",
+    category: "Cabang dan Lokasi",
     question: "Di mana saja lokasi cabang Optik I See You?",
     answer:
       "Optik I See You memiliki 4 cabang resmi di Jawa Tengah: 1) Cabang Purwokerto (Jl. Sunan Ampel No.5, Sumbang), 2) Cabang Purbalingga (Jl. Onje No.1, Purbalingga Lor), 3) Cabang Wonosobo (Jl. Jenderal Soedirman, Sumberan Selatan), dan 4) Cabang Cilacap (Jl. Rinjani Depan Perum GRP No.2 Ruko No.3). Semua cabang menyediakan layanan periksa mata digital dan koleksi frame kacamata kekinian lengkap.",
@@ -33,16 +33,16 @@ const FAQ_ITEMS: FaqItem[] = [
     })),
   },
   {
-    category: "Cabang & Lokasi",
-    question: "Apakah Optik I See You di Purwokerto, Purbalingga, Wonosobo & Cilacap buka setiap hari?",
+    category: "Cabang dan Lokasi",
+    question: "Apakah Optik I See You di Purwokerto, Purbalingga, Wonosobo, dan Cilacap buka setiap hari?",
     answer:
       "Ya, seluruh cabang Optik I See You beroperasi setiap hari dengan jam buka fleksibel untuk kenyamanan pengunjung. Cabang Purwokerto dan Cilacap buka pukul 09.00 - 21.00 WIB, cabang Wonosobo buka pukul 09.00 - 18.00 WIB, dan cabang Purbalingga buka pukul 11.00 - 20.00 WIB (Senin–Jumat) serta 09.00 - 21.00 WIB (Sabtu–Minggu).",
   },
   {
-    category: "Layanan & Fasilitas",
-    question: "Apakah periksa mata di Optik I See You Purwokerto & cabang lainnya gratis?",
+    category: "Layanan dan Fasilitas",
+    question: "Apakah periksa mata di Optik I See You Purwokerto dan cabang lainnya gratis?",
     answer:
-      "Tentu saja! Kami menyediakan layanan Konsultasi & Cek Mata Gratis menggunakan Autorefractor (Refractometer Digital) komputerisasi dan Trial Lens Set oleh staf refraksi berpengalaman untuk memastikan ukuran minus, silinder, dan plus kamu 100% tepat dan nyaman dipakai seharian.",
+      "Tentu saja! Kami menyediakan layanan Konsultasi dan Cek Mata Gratis menggunakan Autorefractor (Refractometer Digital) komputerisasi dan Trial Lens Set oleh staf refraksi berpengalaman untuk memastikan ukuran minus, silinder, dan plus kamu 100% tepat dan nyaman dipakai seharian.",
     links: [
       {
         label: "Konsultasi Cek Mata via WhatsApp",
@@ -52,13 +52,13 @@ const FAQ_ITEMS: FaqItem[] = [
     ],
   },
   {
-    category: "Layanan & Fasilitas",
+    category: "Layanan dan Fasilitas",
     question: "Berapa lama proses pembuatan kacamata faset otomatis di Optik I See You?",
     answer:
       "Dengan dukungan Mesin Pemotong Lensa CNC Otomatis berteknologi 3D Frame Tracing berkecepatan tinggi di lab internal kami, pembuatan kacamata resep standar dapat diselesaikan secara Express (bisa ditunggu 20–30 menit) dengan presisi mikron yang sangat rapi.",
   },
   {
-    category: "Layanan & Fasilitas",
+    category: "Layanan dan Fasilitas",
     question: "Berapa biaya ganti lensa kacamata di Optik I See You? Apakah bisa bawa frame sendiri?",
     answer:
       "Biaya ganti lensa kacamata di Optik I See You sangat terjangkau, mulai dari Rp100.000-an tergantung jenis lensa yang dipilih (Lensa Standar CRMC, Anti Radiasi Blueray, Photochromic bunglon, Bluechromic 2-in-1, hingga Lensa Progresif). Dan ya! Anda bisa membawa frame kacamata sendiri dari rumah untuk diganti lensanya di seluruh cabang kami.",
@@ -76,13 +76,13 @@ const FAQ_ITEMS: FaqItem[] = [
     ],
   },
   {
-    category: "Layanan & Fasilitas",
+    category: "Layanan dan Fasilitas",
     question: "Apakah melayani kacamata minus tinggi dan silinder?",
     answer:
       "Tentu saja! Kami melayani pembuatan kacamata untuk resep minus tinggi (hingga -10.00 atau lebih) dan silinder (astigmatisme) menggunakan opsi lensa indeks tinggi (High Index 1.61, 1.67, 1.74) yang jauh lebih tipis, ringan, dan estetik saat terpasang di bingkai.",
   },
   {
-    category: "AR Try-On & Softlens",
+    category: "AR Try-On dan Softlens",
     question: "Bagaimana cara mencoba kacamata secara online dengan AR Try-On di optikiseeyou.com?",
     answer:
       "Kamu cukup membuka fitur 'Mulai Coba AR' di website ini menggunakan kamera HP, laptop, atau tablet. Teknologi AR Face Landmark 3D kami akan langsung memindai proporsi wajahmu secara real-time dan menampilkan bentuk frame kacamata secara presisi tanpa perlu instalasi aplikasi tambahan.",
@@ -100,7 +100,7 @@ const FAQ_ITEMS: FaqItem[] = [
     ],
   },
   {
-    category: "AR Try-On & Softlens",
+    category: "AR Try-On dan Softlens",
     question: "Apakah tersedia katalog softlens original dengan berbagai varian warna?",
     answer:
       "Ya, Optik I See You menyediakan koleksi softlens original terlengkap (Exoticon, Ice, Miss Ice, Moxie, Exo Clear) dengan berbagai pilihan warna Brown, Grey, Hazel, Natural, hingga aksesoris pencuci softlens yang bisa dipesan langsung secara online maupun di store.",

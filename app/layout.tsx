@@ -20,11 +20,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://optikiseeyou.com"),
   title: {
-    default: "Optik I See You | Rekomendasi Toko Kacamata Minus & Softlens Purwokerto",
+    default: "Optik I See You | Rekomendasi Toko Kacamata Minus dan Softlens Purwokerto",
     template: "%s | Optik I See You",
   },
   description:
-    "Rekomendasi optik terpercaya di Purwokerto, Purbalingga, Wonosobo & Cilacap. Periksa mata gratis, kacamata minus & silinder, ganti lensa express CNC, frame titanium, softlens original Kemenkes & AR Try-On real-time.",
+    "Rekomendasi optik terpercaya di Purwokerto, Purbalingga, Wonosobo dan Cilacap. Periksa mata gratis, kacamata minus dan silinder, ganti lensa express CNC, frame titanium, softlens original Kemenkes dan AR Try-On real-time.",
   keywords: [
     "optik i see you",
     "optik i see you purwokerto",
@@ -71,9 +71,9 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
   },
   openGraph: {
-    title: "Optik I See You: Kacamata, Softlens & AR Try-On Purwokerto",
+    title: "Optik I See You: Kacamata, Softlens dan AR Try-On Purwokerto",
     description:
-      "Periksa mata GRATIS, 100+ frame kacamata, softlens original, dan coba kacamata virtual AR di wajahmu. Tersedia di Purwokerto, Purbalingga, Wonosobo & Cilacap.",
+      "Periksa mata GRATIS, 100+ frame kacamata, softlens original, dan coba kacamata virtual AR di wajahmu. Tersedia di Purwokerto, Purbalingga, Wonosobo dan Cilacap.",
     url: "https://optikiseeyou.com",
     siteName: "Optik I See You",
     locale: "id_ID",
@@ -83,15 +83,15 @@ export const metadata: Metadata = {
         url: "/hero-bg.jpg",
         width: 1280,
         height: 853,
-        alt: "Optik I See You: Kacamata & Softlens Terbaik di Purwokerto",
+        alt: "Optik I See You: Kacamata dan Softlens Terbaik di Purwokerto",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Optik I See You: Kacamata, Softlens & AR Try-On Purwokerto",
+    title: "Optik I See You: Kacamata, Softlens dan AR Try-On Purwokerto",
     description:
-      "Periksa mata GRATIS, 100+ frame kacamata estetik, softlens original & coba virtual AR. 4 Cabang: Purwokerto, Purbalingga, Wonosobo, Cilacap.",
+      "Periksa mata GRATIS, 100+ frame kacamata estetik, softlens original dan coba virtual AR. 4 Cabang: Purwokerto, Purbalingga, Wonosobo, Cilacap.",
     images: ["/hero-bg.jpg"],
   },
 };
@@ -233,14 +233,14 @@ export default function RootLayout({
                       "@type": "SiteNavigationElement",
                       position: 1,
                       name: "Katalog Frame Kacamata",
-                      description: "Koleksi frame kacamata premium & pilihan bentuk wajah",
+                      description: "Koleksi frame kacamata premium dan pilihan bentuk wajah",
                       url: "https://optikiseeyou.com/katalog",
                     },
                     {
                       "@type": "SiteNavigationElement",
                       position: 2,
                       name: "Katalog Softlens Lengkap",
-                      description: "Katalog softlens original kadar air tinggi & aksesoris",
+                      description: "Katalog softlens original kadar air tinggi dan aksesoris",
                       url: "https://optikiseeyou.com/softlens",
                     },
                     {
@@ -253,14 +253,14 @@ export default function RootLayout({
                     {
                       "@type": "SiteNavigationElement",
                       position: 4,
-                      name: "AR Photobooth & Cetak",
+                      name: "AR Photobooth dan Cetak",
                       description: "Photobooth kacamata seru dengan animasi GIF dan cetak instan",
                       url: "https://optikiseeyou.com/photobooth",
                     },
                     {
                       "@type": "SiteNavigationElement",
                       position: 5,
-                      name: "Quiz Frame & Skrining Mata",
+                      name: "Quiz Frame dan Skrining Mata",
                       description: "Tes IQ kesehatan mata, uji minus silinder, dan analisis frame kacamata",
                       url: "https://optikiseeyou.com/quiz",
                     },
@@ -274,8 +274,8 @@ export default function RootLayout({
                     {
                       "@type": "SiteNavigationElement",
                       position: 7,
-                      name: "Blog & Edukasi Kacamata",
-                      description: "Tips memilih frame kacamata, cara merawat softlens, biaya ganti lensa & kesehatan mata",
+                      name: "Blog dan Edukasi Kacamata",
+                      description: "Tips memilih frame kacamata, cara merawat softlens, biaya ganti lensa dan kesehatan mata",
                       url: "https://optikiseeyou.com/blog",
                     },
                   ],

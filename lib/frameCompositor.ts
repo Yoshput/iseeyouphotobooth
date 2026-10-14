@@ -29,7 +29,7 @@ export const FRAME_THEMES: FrameTheme[] = [
     id: "classic-white",
     name: "Classic White",
     badge: "Favorit",
-    description: "Desain khas Optik I See You dengan nuansa putih bersih & hijau elegan.",
+    description: "Desain khas Optik I See You dengan nuansa putih bersih dan hijau elegan.",
     bgColor: "#FFFFFF",
     bgGradEnd: "#EAF6EC",
     topBarColor: "#116B3C",
@@ -61,7 +61,7 @@ export const FRAME_THEMES: FrameTheme[] = [
     id: "vintage-film-bw",
     name: "Vintage Film B&W",
     badge: "Tema Retro · 35mm",
-    description: "Hitam-putih analog dengan lubang sprocket roll film 35mm, grain, & stamp tanggal retro.",
+    description: "Hitam-putih analog dengan lubang sprocket roll film 35mm, grain, dan stamp tanggal retro.",
     bgColor: "#141414",
     bgGradEnd: "#0A0A0A",
     topBarColor: "#000000",
@@ -77,7 +77,7 @@ export const FRAME_THEMES: FrameTheme[] = [
     id: "pastel-pink",
     name: "Pastel Cute",
     badge: "Cute · Manis",
-    description: "Sentuhan warna pastel blush pink manis & playful ala studio estetik.",
+    description: "Sentuhan warna pastel blush pink manis dan playful ala studio estetik.",
     bgColor: "#FFF5F7",
     bgGradEnd: "#FCE4EC",
     topBarColor: "#EC4899",
@@ -653,7 +653,7 @@ async function drawNewspaperEditorialFrame(
   // Footer Column 1: Article Snippet
   ctx.font = "bold 14px Georgia, serif";
   ctx.fillStyle = "#116B3C";
-  ctx.fillText("THE ART OF ELEGANCE & CLARITY", margin, FOOTER_Y + 24);
+  ctx.fillText("THE ART OF ELEGANCE AND CLARITY", margin, FOOTER_Y + 24);
 
   ctx.font = "11px Georgia, serif";
   ctx.fillStyle = "#333333";

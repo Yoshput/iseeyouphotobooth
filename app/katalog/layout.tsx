@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Katalog Frame Kacamata & Lensa — Kacamata Minus Pria & Wanita | Optik I See You',
-  description: 'Temukan 100+ model frame kacamata minus & silinder terbaru: Titanium ultra ringan, Cat-Eye wanita, Acetate pria, Korean style. Biaya ganti lensa murah & periksa mata gratis di 4 cabang Purwokerto, Purbalingga, Wonosobo, Cilacap.',
+  title: 'Katalog Frame Kacamata dan Lensa — Kacamata Minus Pria dan Wanita | Optik I See You',
+  description: 'Temukan 100+ model frame kacamata minus dan silinder terbaru: Titanium ultra ringan, Cat-Eye wanita, Acetate pria, Korean style. Biaya ganti lensa murah dan periksa mata gratis di 4 cabang Purwokerto, Purbalingga, Wonosobo, Cilacap.',
   keywords: [
     'katalog kacamata',
     'kacamata minus purwokerto',
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     'optik i see you katalog',
   ],
   openGraph: {
-    title: 'Katalog Frame Kacamata & Lensa — Kacamata Minus Pria & Wanita | Optik I See You',
-    description: '100+ model frame kacamata estetik, titanium, cat-eye & softlens original. Coba virtual AR di wajahmu atau periksa mata gratis di 4 cabang!',
+    title: 'Katalog Frame Kacamata dan Lensa — Kacamata Minus Pria dan Wanita | Optik I See You',
+    description: '100+ model frame kacamata estetik, titanium, cat-eye dan softlens original. Coba virtual AR di wajahmu atau periksa mata gratis di 4 cabang!',
     url: 'https://optikiseeyou.com/katalog',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Katalog Frame Kacamata Optik I See You' }],
   },

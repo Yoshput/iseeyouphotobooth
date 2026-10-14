@@ -135,7 +135,7 @@ export async function POST(req: Request) {
       isCompressed,
       message: `File PDF berhasil diunggah${
         storageType === "cloudflare_r2" ? " ke Cloudflare R2" : ""
-      } & dioptimalkan${savedPercentage > 0 ? ` (hemat ${savedPercentage}%)` : ""}.`,
+      } dan dioptimalkan${savedPercentage > 0 ? ` (hemat ${savedPercentage}%)` : ""}.`,
     });
   } catch (err: any) {
     console.error("Error handling proposal upload:", err);

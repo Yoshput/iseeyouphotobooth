@@ -81,7 +81,7 @@ export default function GoogleReviewsSection() {
             </span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black text-[#124734] leading-tight tracking-tight">
+          <h2 className="font-sans text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#124734] leading-tight tracking-tight">
             Ulasan Pelanggan Asli
           </h2>
 

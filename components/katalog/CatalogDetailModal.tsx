@@ -308,7 +308,7 @@ export default function CatalogDetailModal({
                   </div>
                 ) : (
                   <div className="inline-flex items-center rounded-md bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-700">
-                    Harga &amp; paket lensa tersedia di cabang
+                    Harga dan paket lensa tersedia di cabang
                   </div>
                 )}
               </div>
@@ -471,7 +471,7 @@ export default function CatalogDetailModal({
               </a>
 
               <p className="text-[11px] text-stone-500 text-center">
-                Pemeriksaan mata (Free Eye Examination) &amp; fitting frame gratis di seluruh cabang.
+                Pemeriksaan mata (Free Eye Examination) dan fitting frame gratis di seluruh cabang.
               </p>
             </div>
           </div>

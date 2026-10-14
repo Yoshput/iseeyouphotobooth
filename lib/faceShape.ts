@@ -72,7 +72,7 @@ const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string
     label: "Oblong",
     glasses: "clubmaster-frame",
     style: "Clubmaster / Browline Frame",
-    tip: "Frame lebar & penuh membuat wajah panjang terlihat lebih proporsional.",
+    tip: "Frame lebar dan penuh membuat wajah panjang terlihat lebih proporsional.",
   },
 };
 

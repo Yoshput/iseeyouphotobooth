@@ -8,7 +8,6 @@ import {
   Phone,
   MessageCircle,
   Navigation,
-  Sparkles,
   Eye,
   Glasses,
   CheckCircle2,
@@ -54,8 +53,8 @@ export async function generateMetadata({
     };
   }
 
-  const title = `Optik I See You ${branch.city} - Kacamata Minus, Cek Mata Gratis & Ganti Lensa`;
-  const description = `Gerai kacamata resmi Optik I See You di ${branch.city}: ${branch.address}. Layanan periksa mata komputerisasi gratis, ratusan frame kacamata minus & silinder, softlens resmi Kemenkes RI, dan pengerjaan lensa faset express CNC. Jam buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
+  const title = `Optik I See You ${branch.city} - Kacamata Minus, Cek Mata Gratis dan Ganti Lensa`;
+  const description = `Gerai kacamata resmi Optik I See You di ${branch.city}: ${branch.address}. Layanan periksa mata komputerisasi gratis, ratusan frame kacamata minus dan silinder, softlens resmi Kemenkes RI, dan pengerjaan lensa faset express CNC. Jam buka: ${branch.hours}. Telp/WA: ${branch.phone}.`;
   const canonicalUrl = `https://optikiseeyou.com/cabang/${branch.id}`;
   const ogImage = branch.images[0] || "/hero-bg.jpg";
 
@@ -76,7 +75,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `Optik I See You ${branch.city} - Gerai Kacamata & Periksa Mata Gratis`,
+      title: `Optik I See You ${branch.city} - Gerai Kacamata dan Periksa Mata Gratis`,
       description,
       url: canonicalUrl,
       siteName: "Optik I See You",
@@ -93,7 +92,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `Optik I See You ${branch.city} - Periksa Mata & Kacamata Trendi`,
+      title: `Optik I See You ${branch.city} - Periksa Mata dan Kacamata Trendi`,
       description,
       images: [ogImage],
     },
@@ -111,7 +110,7 @@ const BRANCH_DESCRIPTIONS: Record<
   }
 > = {
   purwokerto: {
-    heroTagline: "Cabang Pusat & Laboratorium Faset CNC Utama Banyumas",
+    heroTagline: "Cabang Pusat dan Laboratorium Faset CNC Utama Banyumas",
     overview: [
       "Optik I See You Purwokerto hadir sebagai destinasi kacamata dan softlens modern terfavorit bagi mahasiswa, pelajar, dan masyarakat Banyumas. Terletak strategis di kawasan Sumbang (dekat kampus Unsoed), toko kami menyediakan pilihan frame kacamata dari berbagai gaya serta lensa resep berkualitas.",
       "Dilengkapi dengan fasilitas pemeriksaan mata komputerisasi Autorefractor digital serta Trial Lens Set lengkap, Anda dapat melakukan konsultasi dan cek minus/silinder mata secara GRATIS bersama tim refraksionis berpengalaman. Kami juga memiliki laboratorium faset otomatis berteknologi 3D Frame Tracing CNC untuk pengerjaan kacamata resep express yang bisa ditunggu.",
@@ -119,22 +118,22 @@ const BRANCH_DESCRIPTIONS: Record<
     highlights: [
       "Pemeriksaan Mata Komputerisasi Gratis (Autorefractor Digital)",
       "Pengerjaan Lensa Express dengan Mesin CNC 3D Tracing Presisi",
-      "Koleksi Lengkap Frame Kacamata Pria & Wanita Terbaru",
-      "Katalog Softlens Resmi Kemenkes RI Berbagai Warna & Kadar Air",
-      "Garansi Ketepatan Resep Kacamata & Penyetelan Frame",
+      "Koleksi Lengkap Frame Kacamata Pria dan Wanita Terbaru",
+      "Katalog Softlens Resmi Kemenkes RI Berbagai Warna dan Kadar Air",
+      "Garansi Ketepatan Resep Kacamata dan Penyetelan Frame",
     ],
     surroundings:
       "Lokasi sangat mudah diakses dari arah Purwokerto Kota maupun kampus Unsoed, berada di Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang, Sumbang dengan area parkir yang nyaman.",
   },
   purbalingga: {
-    heroTagline: "Pusat Kacamata & Periksa Mata Gratis di Jl. Onje",
+    heroTagline: "Pusat Kacamata dan Periksa Mata Gratis di Jl. Onje",
     overview: [
       "Optik I See You Purbalingga berlokasi strategis di Jl. Onje No.1, Purbalingga Lor. Kami menghadirkan solusi penglihatan terbaik dengan koleksi frame kacamata stylish, elegan, dan harga transparan yang ramah di kantong.",
       "Dapatkan layanan cek visus mata dan konsultasi kacamata gratis tanpa syarat. Kami menyediakan berbagai jenis lensa berkualitas: Lensa Anti Radiasi Blueray untuk pengguna gadget, Lensa Photochromic yang berubah gelap di bawah sinar matahari, Lensa Bluechromic serbaguna, hingga Lensa Progresif.",
     ],
     highlights: [
-      "Konsultasi & Cek Mata Gratis dengan Peralatan Refraksi Akurat",
-      "Pilihan Lensa Blueray, Photochromic, Bluechromic, & Progresif",
+      "Konsultasi dan Cek Mata Gratis dengan Peralatan Refraksi Akurat",
+      "Pilihan Lensa Blueray, Photochromic, Bluechromic, dan Progresif",
       "Frame Kacamata Berkualitas, Bergaransi, dan Nyaman Dipakai",
       "Layanan Ramah, Cepat, dan Pembersihan Kacamata Gratis",
       "Pilihan Softlens Berizin Kemenkes RI Lengkap dengan Cairan Steril",
@@ -150,24 +149,24 @@ const BRANCH_DESCRIPTIONS: Record<
     ],
     highlights: [
       "Cek Mata Digital Gratis dengan Tenaga Refraksi Berpengalaman",
-      "Kacamata Sunglasses Polarized & UV400 untuk Wisata Dieng",
-      "Lensa Anti-Embun & Anti-Refleksi untuk Kenyamanan Harian",
+      "Kacamata Sunglasses Polarized dan UV400 untuk Wisata Dieng",
+      "Lensa Anti-Embun dan Anti-Refleksi untuk Kenyamanan Harian",
       "Garansi Ketepatan Resep Lensa dan Garansi Frame",
-      "Pilihan Softlens Natural & Glamour Berizin Kemenkes RI",
+      "Pilihan Softlens Natural dan Glamour Berizin Kemenkes RI",
     ],
     surroundings:
       "Berada tepat di tepi Jl. Jenderal Soedirman, jalur utama kota Wonosobo, sangat mudah ditemukan dengan plang toko Optik I See You yang jelas dan terang.",
   },
   cilacap: {
-    heroTagline: "Pusat Frame Kacamata & Softlens di Jl. Rinjani",
+    heroTagline: "Pusat Frame Kacamata dan Softlens di Jl. Rinjani",
     overview: [
       "Optik I See You Cilacap menyapa masyarakat kota pesisir Cilacap dengan toko yang luas, nyaman, dan ber-AC di Jl. Rinjani (depan Perum GRP Ruko No.3, Sidanegara). Kami menyediakan ragam pilihan frame kacamata berbahan Acetate dan Titanium tahan korosi yang awet untuk iklim pesisir.",
       "Nikmati kenyamanan periksa mata digital secara gratis. Tim kami siap membantu Anda memilih bentuk kacamata yang paling sesuai dengan proporsi wajah, warna kulit, dan kebutuhan refraksi mata (minus, plus, silinder).",
     ],
     highlights: [
-      "Frame Kacamata Titanium Tahan Karat & Acetate Berkualitas",
+      "Frame Kacamata Titanium Tahan Karat dan Acetate Berkualitas",
       "Cek Mata Digital Komputerisasi Gratis Setiap Hari",
-      "Lensa Perlindungan UV Maksimal & Anti Radiasi Komputer",
+      "Lensa Perlindungan UV Maksimal dan Anti Radiasi Komputer",
       "Koleksi Softlens Lengkap dengan Cairan Pembersih Steril",
       "Area Toko Nyaman dan Parkir Mobil/Motor Lapang",
     ],
@@ -328,7 +327,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               <span>Gerai Resmi Jawa Tengah</span>
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black text-[#124734] tracking-tight leading-[1.15]">
+            <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#124734] tracking-tight leading-[1.15]">
               Optik I See You {branch.city}
             </h1>
 
@@ -425,7 +424,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
                 </div>
                 <div className="space-y-0.5 text-left">
                   <p className="text-[11px] font-bold text-[#626C65] uppercase">
-                    Kontak &amp; Sosial Media
+                    Kontak dan Media Sosial
                   </p>
                   <p className="text-xs font-bold text-[#183C30]">{branch.phone}</p>
                   <p className="text-xs text-[#626C65]">
@@ -454,7 +453,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
               <span className="text-xs font-bold uppercase tracking-wider text-[#124734]">
                 Dokumentasi Cabang
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30] mt-1">
+              <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-[#183C30] mt-1">
                 Suasana Toko Optik I See You {branch.city}
               </h2>
             </div>
@@ -493,8 +492,8 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             <span className="text-xs font-bold uppercase tracking-wider text-[#124734]">
               Peta Lokasi
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30]">
-              Lokasi &amp; Navigasi di {branch.city}
+            <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-[#183C30]">
+              Lokasi dan Navigasi di {branch.city}
             </h2>
             <p className="text-xs sm:text-sm text-[#626C65] leading-relaxed">
               {content.surroundings}
@@ -541,7 +540,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
       <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 bg-[#FAF8F3] border-b border-[#E3E7DF]">
         <div className="mx-auto max-w-4xl space-y-8">
           <div className="space-y-4">
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30]">
+            <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-[#183C30]">
               Layanan Optik I See You {branch.city}
             </h2>
             {content.overview.map((para, idx) => (
@@ -591,7 +590,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             <div className="rounded-xl border border-[#E3E7DF] bg-white p-5 space-y-2">
               <ShieldCheck className="w-5 h-5 text-[#124734]" />
               <h4 className="text-xs font-bold text-[#183C30] uppercase">
-                Garansi &amp; Faset CNC
+                Garansi dan Faset CNC
               </h4>
               <p className="text-xs text-[#626C65] leading-relaxed">
                 Pemotongan lensa express dengan mesin tracing presisi serta garansi kenyamanan resep.
@@ -605,11 +604,11 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
       <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 bg-[#124734] text-white">
         <div className="mx-auto max-w-3xl text-center space-y-5">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-semibold tracking-wider uppercase text-white/90">
-            <Sparkles className="w-3.5 h-3.5" />
+            <Glasses className="w-3.5 h-3.5" />
             Fitur Coba Kacamata Virtual
           </span>
 
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold leading-tight">
+          <h2 className="font-sans text-2xl sm:text-3xl font-extrabold leading-tight">
             Coba Kacamata Secara Virtual Sebelum Datang ke Toko
           </h2>
 
@@ -642,7 +641,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
             <span className="text-xs font-bold uppercase tracking-wider text-[#124734]">
               Jaringan Gerai
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#183C30]">
+            <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-[#183C30]">
               Cabang Optik I See You Lainnya
             </h2>
             <p className="text-xs text-[#626C65]">
@@ -666,7 +665,7 @@ export default async function BranchDetailPage({ params }: BranchPageProps) {
                       →
                     </span>
                   </div>
-                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#183C30]">
+                  <h3 className="font-sans text-base sm:text-lg font-bold text-[#183C30]">
                     {ob.name}
                   </h3>
                   <p className="text-xs text-[#626C65] line-clamp-2 leading-relaxed">
