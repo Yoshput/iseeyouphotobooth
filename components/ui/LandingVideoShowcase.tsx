@@ -83,39 +83,26 @@ export default function LandingVideoShowcase() {
     const container = containerRef.current;
     if (!video || !container) return;
 
-    // Force initial play
-    const startPlay = () => {
-      video.muted = true;
-      video.play().catch(() => {});
-    };
-
-    if (video.readyState >= 2) {
-      startPlay();
-    } else {
-      video.addEventListener("loadeddata", startPlay, { once: true });
-      video.addEventListener("canplay", startPlay, { once: true });
-    }
-
-    // IntersectionObserver: Turn sound ON when entering viewport, turn sound OFF when leaving
+    // IntersectionObserver: Play video and manage audio only when scrolled into viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
           isIntersectingRef.current = true;
           video.play().catch(() => {});
           if (hasUserInteractedRef.current) {
             attemptUnmute();
           } else {
-            // Attempt even without interaction (some browsers allow it based on domain MEI)
             attemptUnmute();
           }
-        } else if (!entry.isIntersecting || entry.intersectionRatio < 0.2) {
+        } else if (!entry.isIntersecting || entry.intersectionRatio < 0.1) {
           isIntersectingRef.current = false;
+          video.pause();
           // Mute audio immediately when out of view
           muteAudio();
         }
       },
       {
-        threshold: [0, 0.2, 0.35, 0.7],
+        threshold: [0, 0.1, 0.25, 0.5],
       }
     );
 
@@ -173,14 +160,13 @@ export default function LandingVideoShowcase() {
         title="Klik untuk memperbesar layar penuh"
         className="group relative w-full aspect-[4/3] xs:aspect-[16/9] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[85vh] min-h-[260px] overflow-hidden bg-black flex items-center justify-center cursor-pointer pointer-events-auto"
       >
-        {/* Continuous Autoplay HTML5 Video */}
+        {/* Cinematic HTML5 Video (plays when scrolled into view) */}
         <video
           ref={videoRef}
-          autoPlay
           loop
           muted
           playsInline
-          preload="auto"
+          preload="none"
           poster="/Video Landing/web-poster.webp"
           src={isMobile ? "/Video Landing/web-mobile.mp4" : "/Video Landing/web-optimized.mp4"}
           className="h-full w-full object-cover pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-[1.015]"

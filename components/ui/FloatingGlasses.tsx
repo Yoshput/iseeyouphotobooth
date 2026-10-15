@@ -53,34 +53,54 @@ export default function FloatingGlasses({
   const parallaxRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    // Disable mouse parallax on mobile/tablet or touch screens to save main-thread & battery
+    if (typeof window === "undefined" || window.innerWidth < 768) {
+      return;
+    }
+
+    let animationFrameId: number | null = null;
+    let currentX = 0;
+    let currentY = 0;
+    let isRunning = false;
+
+    const render = () => {
+      const diffX = parallaxRef.current.x - currentX;
+      const diffY = parallaxRef.current.y - currentY;
+      currentX += diffX * 0.06;
+      currentY += diffY * 0.06;
+
+      if (containerRef.current) {
+        containerRef.current.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+      }
+
+      // Stop loop when close to target to release CPU
+      if (Math.abs(diffX) > 0.1 || Math.abs(diffY) > 0.1) {
+        animationFrameId = requestAnimationFrame(render);
+      } else {
+        isRunning = false;
+        animationFrameId = null;
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       const nx = (e.clientX / innerWidth - 0.5) * 2;
       const ny = (e.clientY / innerHeight - 0.5) * 2;
       parallaxRef.current = { x: nx * 14, y: ny * 10 };
+
+      if (!isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    let animationFrameId: number;
-    let currentX = 0;
-    let currentY = 0;
-
-    const render = () => {
-      currentX += (parallaxRef.current.x - currentX) * 0.06;
-      currentY += (parallaxRef.current.y - currentY) * 0.06;
-
-      if (containerRef.current) {
-        containerRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-      }
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    animationFrameId = requestAnimationFrame(render);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 

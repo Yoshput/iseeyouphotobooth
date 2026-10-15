@@ -14,7 +14,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { gsap } from "gsap";
 import BranchCarousel from "@/components/ui/BranchCarousel";
 import FloatingGlasses from "@/components/ui/FloatingGlasses";
 import EyeExamFacilitySection from "@/components/ui/EyeExamFacilitySection";
@@ -83,13 +82,18 @@ export default function LandingPage() {
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(logoRef.current, { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.8 })
-        .fromTo(tagRef.current, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, "-=0.2")
-        .fromTo(ctaRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2");
+    let ctx: { revert: () => void } | null = null;
+    import("gsap").then(({ gsap }) => {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        tl.fromTo(logoRef.current, { opacity: 0.3, y: 16, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.5 })
+          .fromTo(tagRef.current, { opacity: 0.5, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, "-=0.2")
+          .fromTo(ctaRef.current, { opacity: 0.5, y: 8 }, { opacity: 1, y: 0, duration: 0.3 }, "-=0.2");
+      });
     });
-    return () => ctx.revert();
+    return () => {
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   const start = () => router.push("/start");
@@ -443,7 +447,7 @@ export default function LandingPage() {
                   width={220}
                   height={75}
                   className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                  priority
+                  loading="lazy"
                 />
               </Link>
               <p

@@ -167,7 +167,7 @@ export default function BlogShowcaseSection() {
                   alt={current.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 420px"
-                  priority
+                  loading="lazy"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               </Link>

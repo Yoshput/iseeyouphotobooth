@@ -258,6 +258,8 @@ export default function EyeExamFacilitySection() {
                     src={item.image}
                     alt={`${item.name} - Fasilitas Periksa Mata Komputerisasi dan Faset Optik I See You`}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
                     className="object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -369,6 +371,7 @@ export default function EyeExamFacilitySection() {
                   src={selectedFacility.image}
                   alt={selectedFacility.name}
                   fill
+                  sizes="(max-width: 640px) 100vw, 500px"
                   className="object-contain p-2"
                 />
                 <span className="absolute top-3 left-3 rounded-full bg-isy-green-deep text-white px-3.5 py-1 text-xs font-black shadow-md">

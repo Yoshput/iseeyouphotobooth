@@ -118,12 +118,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          rel="preload"
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Poppins:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
 
@@ -217,6 +212,7 @@ export default function RootLayout({
                       name: "Optik I See You Purwokerto",
                       url: "https://optikiseeyou.com/cabang/purwokerto",
                       telephone: "+62895-4156-14261",
+                      priceRange: "$$",
                       address: {
                         "@type": "PostalAddress",
                         streetAddress: "Jl. Sunan Ampel No.5, Sidamulya, Kedungmalang",
@@ -235,6 +231,7 @@ export default function RootLayout({
                       name: "Optik I See You Wonosobo",
                       url: "https://optikiseeyou.com/cabang/wonosobo",
                       telephone: "+62897-7129-039",
+                      priceRange: "$$",
                       address: {
                         "@type": "PostalAddress",
                         streetAddress: "Jl. Jenderal Soedirman, Sumberan Selatan",
@@ -253,6 +250,7 @@ export default function RootLayout({
                       name: "Optik I See You Cilacap",
                       url: "https://optikiseeyou.com/cabang/cilacap",
                       telephone: "+62851-3593-0533",
+                      priceRange: "$$",
                       address: {
                         "@type": "PostalAddress",
                         streetAddress: "Jl. Rinjani Depan Perum GRP No.2 Ruko No.3",
@@ -271,6 +269,7 @@ export default function RootLayout({
                       name: "Optik I See You Purbalingga",
                       url: "https://optikiseeyou.com/cabang/purbalingga",
                       telephone: "+62822-3486-2322",
+                      priceRange: "$$",
                       address: {
                         "@type": "PostalAddress",
                         streetAddress: "Jl. Onje No.1, Purbalingga Lor",
