@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog dan Edukasi Kacamata: Tips Memilih Frame, Softlens dan Biaya Ganti Lensa | Optik I See You',
-  description: 'Panduan lengkap perawatan mata, biaya ganti lensa kacamata di optik, cara merawat softlens untuk pemula, trik memilih frame sesuai bentuk wajah, dan rekomendasi kacamata minus.',
+  title: 'Blog Kacamata dan Tips Kesehatan Mata | Optik I See You',
+  description: 'Panduan lengkap perawatan mata, biaya ganti lensa kacamata, cara merawat softlens untuk pemula, trik memilih frame sesuai bentuk wajah, dan rekomendasi kacamata minus dari tim ahli Optik I See You.',
   keywords: [
     'blog kacamata',
     'biaya ganti lensa kacamata',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'edukasi kesehatan mata',
   ],
   openGraph: {
-    title: 'Blog Kesehatan Mata dan Tips Kacamata | Optik I See You',
+    title: 'Blog Kacamata dan Tips Kesehatan Mata | Optik I See You',
     description: 'Tips perawatan mata, cara pilih frame kacamata, tren frame 2026, dan edukasi softlens dari tim ahli Optik I See You.',
     url: 'https://optikiseeyou.com/blog',
     siteName: 'Optik I See You',
@@ -34,5 +34,33 @@ export const metadata: Metadata = {
 };
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": "https://optikiseeyou.com/blog#breadcrumb",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Beranda",
+        item: "https://optikiseeyou.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog Kacamata",
+        item: "https://optikiseeyou.com/blog",
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }

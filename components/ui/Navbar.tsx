@@ -118,7 +118,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Navigation — Aligned to Left near Logo */}
-            <nav className="hidden md:flex items-center gap-1.5 p-1 transition-all">
+            <nav aria-label="Navigasi Utama" className="hidden md:flex items-center gap-1.5 p-1 transition-all">
               {/* Home Icon Button */}
               <Link
                 href="/"

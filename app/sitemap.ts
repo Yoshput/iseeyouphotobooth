@@ -5,51 +5,118 @@ import { BLOG_POSTS } from "@/lib/blog";
 export const dynamic = "force-static";
 
 /**
- * app/sitemap.ts — High-Priority Lean Sitemap for Optik I See You
+ * app/sitemap.ts — Full Dynamic Sitemap for Optik I See You
  * Official Domain: https://optikiseeyou.com
  *
- * Difokuskan khusus pada TOP 5 halaman pilar paling populer & tinggi klik
- * untuk memusatkan crawl budget Googlebot dan mempercepat kemunculan Google Sitelinks.
+ * Mencakup SEMUA halaman publik yang dapat diindeks:
+ *  - Halaman utama & produk
+ *  - Semua detail cabang (4 kota)
+ *  - Semua artikel blog
+ *  - Halaman informasi & legal
+ * Ini penting agar Google dapat menemukan & mengindeks semua halaman
+ * sehingga Sitelinks dapat muncul di hasil pencarian.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://optikiseeyou.com";
-  const lastModified = new Date();
+  const now = new Date();
 
-  return [
-    // 1. Beranda Utama (Landing Page Utama Brand)
+  // ── 1. Core / Pilar Pages ────────────────────────────────────────────
+  const corePages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
-      lastModified,
+      lastModified: now,
       changeFrequency: "daily",
       priority: 1.0,
     },
-    // 2. Katalog Frame Kacamata & Lensa Minus (Produk Paling Banyak Diklik)
     {
       url: `${baseUrl}/katalog`,
-      lastModified,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/softlens`,
+      lastModified: now,
       changeFrequency: "daily",
       priority: 0.9,
     },
-    // 3. Virtual AR Try-On Kacamata Real-time (Fitur Unggulan Interaktif)
     {
       url: `${baseUrl}/try-on`,
-      lastModified,
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    // 4. Katalog Softlens Resmi Kemenkes RI (Produk Populer Audiens Muda)
-    {
-      url: `${baseUrl}/softlens`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    // 5. 4 Cabang Resmi & Layanan Periksa Mata (Intent Lokal Pelanggan Datang ke Toko)
     {
       url: `${baseUrl}/cabang`,
-      lastModified,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/quiz`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/photobooth`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/testimoni`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/home-service`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/sponsor`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/kebijakan-privasi`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/syarat-ketentuan`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
+
+  // ── 2. Branch Detail Pages (4 Cabang Resmi) ──────────────────────────
+  const branchPages: MetadataRoute.Sitemap = BRANCHES.map((branch) => ({
+    url: `${baseUrl}/cabang/${branch.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
+
+  // ── 3. Blog Article Pages ────────────────────────────────────────────
+  const blogPages: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.updatedAt || post.publishedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.65,
+  }));
+
+  return [...corePages, ...branchPages, ...blogPages];
 }
