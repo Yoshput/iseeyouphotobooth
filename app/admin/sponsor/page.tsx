@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { SponsorshipItem } from "@/app/api/sponsor/route";
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 
 export default function AdminSponsorPage() {
   // ── Authentication States ──────────────────────────────────────────────────
@@ -51,15 +52,8 @@ export default function AdminSponsorPage() {
   const [internalNotes, setInternalNotes] = useState("");
   const [isSavingNotes, setIsSavingNotes] = useState(false);
 
-  // ── Quick Toast Notification ───────────────────────────────────────────────
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
-
-  const showToast = (message: string, type: "success" | "error" | "info" = "success") => {
-    setToast({ message, type });
-    setTimeout(() => {
-      setToast((curr) => (curr?.message === message ? null : curr));
-    }, 3200);
-  };
+  // ── Quick Toast Notification — shared accessible component ───────────────
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   // ── Animation Refs ─────────────────────────────────────────────────────────
   const loginCardRef = useRef<HTMLDivElement>(null);
@@ -1411,12 +1405,8 @@ export default function AdminSponsorPage() {
         </div>
       )}
 
-      {/* ── Floating Quick Toast ── */}
-      {toast && (
-        <div className="fixed bottom-5 right-5 z-50 px-3.5 py-2.5 rounded-xl bg-[#0D2F1D] text-white text-xs font-semibold shadow-lg border border-white/10">
-          {toast.message}
-        </div>
-      )}
+      {/* Shared Accessible Toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
     </div>
   );
 }

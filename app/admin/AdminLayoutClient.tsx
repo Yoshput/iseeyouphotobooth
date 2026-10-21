@@ -66,13 +66,30 @@ export default function AdminLayoutClient({
   }
 
   if (checkingAuth && !currentUser) {
+    // Consistent with AdminEntryLoader visual language — ivory bg + brand logo + spinner
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-isy-ivory">
-        <div className="flex flex-col items-center gap-3 text-isy-emerald">
-          <div className="h-8 w-8 animate-spin rounded-full border-3 border-isy-emerald border-t-transparent" />
-          <span className="text-xs font-bold tracking-wider uppercase">
-            Memverifikasi Sesi Admin...
-          </span>
+      <div
+        role="status"
+        aria-label="Memverifikasi sesi admin..."
+        className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#F8F5ED] px-4"
+      >
+        <div className="flex flex-col items-center text-center max-w-sm mx-auto w-full">
+          <div className="mb-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.webp"
+              alt="Optik I See You"
+              className="h-10 w-auto object-contain mx-auto"
+            />
+          </div>
+          <div className="w-full rounded-2xl border border-isy-line bg-white/80 p-5 shadow-xs">
+            <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-isy-mist border border-isy-line/60 mb-4">
+              <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#124734] via-[#2FA84F] to-[#86EFAC] rounded-full animate-[progressIndeterminate_1.4s_ease-in-out_infinite]" />
+            </div>
+            <p className="text-xs font-bold text-isy-emerald tracking-wide">
+              Memverifikasi Sesi Admin...
+            </p>
+          </div>
         </div>
       </div>
     );

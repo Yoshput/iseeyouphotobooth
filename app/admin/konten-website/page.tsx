@@ -13,6 +13,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { WebsiteSettings } from "@/lib/db/types";
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 import { Branch } from "@/lib/branches";
 import SaveConfirmModal from "@/components/admin/SaveConfirmModal";
 
@@ -22,12 +23,7 @@ export default function AdminWebsiteContentPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [activeTab, setActiveTab] = useState<"hero" | "branches">("hero");
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
-  const showToast = (message: string, type: "success" | "error" = "success") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   const fetchSettings = async () => {
     setLoading(true);
@@ -98,24 +94,8 @@ export default function AdminWebsiteContentPage() {
 
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
-      {/* Toast Alert */}
-      {toast && (
-        <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl px-5 py-3 text-xs sm:text-sm font-bold shadow-xl border animate-in slide-in-from-bottom-5 duration-200 ${
-            toast.type === "success"
-              ? "bg-emerald-50 text-emerald-900 border-emerald-300"
-              : "bg-red-50 text-red-900 border-red-300"
-          }`}
-        >
-          {toast.type === "success" ? (
-            <CheckCircle className="h-4 w-4 text-emerald-600" />
-          ) : (
-            <XCircle className="h-4 w-4 text-red-600" />
-          )}
-          <span>{toast.message}</span>
-        </div>
-      )}
-
+      {/* Shared Accessible Toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
       {/* Top Header & Tab Switcher (FIXED — Tidak Ikut Ter-scroll) */}
       <div className="flex-shrink-0 space-y-3.5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -24,6 +24,7 @@ import { AuditLog } from "@/lib/db/types";
 import { SafeAdminUser } from "@/lib/auth/guard";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<SafeAdminUser[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
@@ -44,13 +45,8 @@ export default function AdminUsersPage() {
   const [userToDelete, setUserToDelete] = useState<SafeAdminUser | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Toast
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
-  const showToast = (message: string, type: "success" | "error" = "success") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  // Toast — shared accessible AdminToast hook
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   const loadData = async () => {
     setLoading(true);
@@ -148,24 +144,8 @@ export default function AdminUsersPage() {
 
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
-      {/* Toast Alert */}
-      {toast && (
-        <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl px-5 py-3 text-xs sm:text-sm font-bold shadow-xl border animate-in slide-in-from-bottom-5 duration-200 ${
-            toast.type === "success"
-              ? "bg-emerald-50 text-emerald-900 border-emerald-300"
-              : "bg-red-50 text-red-900 border-red-300"
-          }`}
-        >
-          {toast.type === "success" ? (
-            <CheckCircle className="h-4 w-4 text-emerald-600" />
-          ) : (
-            <XCircle className="h-4 w-4 text-red-600" />
-          )}
-          <span>{toast.message}</span>
-        </div>
-      )}
-
+      {/* Shared Accessible Toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
       {/* Top Header & Tab Switcher (FIXED — Tidak Ikut Ter-scroll) */}
       <div className="flex-shrink-0 space-y-3.5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

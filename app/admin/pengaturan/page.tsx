@@ -12,6 +12,7 @@ import {
   Phone,
 } from "lucide-react";
 import { WebsiteSettings } from "@/lib/db/types";
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 import SaveConfirmModal from "@/components/admin/SaveConfirmModal";
 
 export default function AdminSettingsPage() {
@@ -19,12 +20,7 @@ export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
-  const showToast = (message: string, type: "success" | "error" = "success") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   const fetchSettings = async () => {
     setLoading(true);
@@ -88,24 +84,8 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
-      {/* Toast Alert */}
-      {toast && (
-        <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl px-5 py-3 text-xs sm:text-sm font-bold shadow-xl border animate-in slide-in-from-bottom-5 duration-200 ${
-            toast.type === "success"
-              ? "bg-emerald-50 text-emerald-900 border-emerald-300"
-              : "bg-red-50 text-red-900 border-red-300"
-          }`}
-        >
-          {toast.type === "success" ? (
-            <CheckCircle className="h-4 w-4 text-emerald-600" />
-          ) : (
-            <XCircle className="h-4 w-4 text-red-600" />
-          )}
-          <span>{toast.message}</span>
-        </div>
-      )}
-
+      {/* Shared Accessible Toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
       {/* Header (FIXED — Tidak Ikut Ter-scroll) */}
       <div className="flex-shrink-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-3 border-b border-isy-line">
         <div>

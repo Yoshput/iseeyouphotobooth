@@ -23,6 +23,7 @@ import { FrameItem } from "@/lib/db/types";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import SaveConfirmModal from "@/components/admin/SaveConfirmModal";
 import MediaPickerModal from "@/components/admin/MediaPickerModal";
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 
 const FACE_SHAPES = ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"];
 const FRAME_SHAPES = ["Cat-Eye", "Square", "Oval", "Round", "Browline", "Hexagonal", "Aviator"];
@@ -50,13 +51,8 @@ export default function AdminFramesPage() {
   const [frameToDelete, setFrameToDelete] = useState<FrameItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Toast State
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
-  const showToast = (message: string, type: "success" | "error" = "success") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  // Toast State — using shared AdminToast for accessible, consistent feedback
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   // Form Field States
   const [name, setName] = useState("");
@@ -326,23 +322,8 @@ export default function AdminFramesPage() {
 
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
-      {/* Toast Alert */}
-      {toast && (
-        <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl px-5 py-3 text-xs sm:text-sm font-bold shadow-xl border animate-in slide-in-from-bottom-5 duration-200 ${
-            toast.type === "success"
-              ? "bg-emerald-50 text-emerald-900 border-emerald-300"
-              : "bg-red-50 text-red-900 border-red-300"
-          }`}
-        >
-          {toast.type === "success" ? (
-            <CheckCircle className="h-4 w-4 text-emerald-600" />
-          ) : (
-            <XCircle className="h-4 w-4 text-red-600" />
-          )}
-          <span>{toast.message}</span>
-        </div>
-      )}
+      {/* Shared Accessible Toast — replaces ad-hoc inline toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
 
       {/* Top Header & Search Section (FIXED — Tidak Ikut Ter-scroll) */}
       <div className="flex-shrink-0 space-y-3.5">

@@ -19,6 +19,7 @@ import {
 import { BlogPostItem } from "@/lib/db/types";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPostItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,13 +31,8 @@ export default function AdminBlogPage() {
   const [postToDelete, setPostToDelete] = useState<BlogPostItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Toast
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
-  const showToast = (message: string, type: "success" | "error" = "success") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  // Toast — shared accessible AdminToast hook
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   const fetchPosts = async () => {
     setLoading(true);

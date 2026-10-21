@@ -44,13 +44,21 @@ export function AdminNavigationProvider({
   const pathname = usePathname();
   const [phase, setPhase] = useState<NavigationPhase>("idle");
   const [statusMessage, setStatusMessage] = useState<string>("");
-  const watchdogTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Use ref for watchdog timer — prevents stale closure issues
+  const watchdogTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Use ref for reveal exit timer — prevents leak on fast unmount
+  const revealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Track previous pathname with ref, not state — avoids render cycle
   const prevPathnameRef = useRef<string>(pathname);
 
   const clearWatchdog = useCallback(() => {
-    if (watchdogTimerRef.current) {
+    if (watchdogTimerRef.current !== null) {
       clearTimeout(watchdogTimerRef.current);
       watchdogTimerRef.current = null;
+    }
+    if (revealTimerRef.current !== null) {
+      clearTimeout(revealTimerRef.current);
+      revealTimerRef.current = null;
     }
   }, []);
 
@@ -61,23 +69,25 @@ export function AdminNavigationProvider({
     finishTopProgress();
   }, [clearWatchdog]);
 
+  // FIX: markReady does NOT return cleanup — caller never uses it.
+  // Instead manage the reveal timer via ref for safe cleanup.
   const markReady = useCallback(() => {
     clearWatchdog();
     setPhase("revealing");
     finishTopProgress();
-    // Quick exit after brief reveal
-    const timer = setTimeout(() => {
+    revealTimerRef.current = setTimeout(() => {
       setPhase("idle");
       setStatusMessage("");
-    }, 250);
-    return () => clearTimeout(timer);
+      revealTimerRef.current = null;
+    }, 240);
   }, [clearWatchdog]);
 
   const startAuth = useCallback((customMessage?: string) => {
+    clearWatchdog();
     setPhase("authenticating");
     setStatusMessage(customMessage || "Memverifikasi akses admin...");
     startTopProgress();
-  }, []);
+  }, [clearWatchdog]);
 
   const markRedirecting = useCallback(
     (destination?: string, customMessage?: string) => {
@@ -86,8 +96,9 @@ export function AdminNavigationProvider({
       setStatusMessage(customMessage || "Mempersiapkan dashboard...");
       startTopProgress();
 
-      // Safety watchdog: after 9 seconds if still not ready, surface actionable recovery
+      // Watchdog: 9 seconds max — then surface actionable error, never silently hide
       watchdogTimerRef.current = setTimeout(() => {
+        watchdogTimerRef.current = null;
         setPhase("error");
         setStatusMessage(
           "Proses memuat membutuhkan waktu lebih lama dari biasanya. Silakan muat ulang halaman."
@@ -103,15 +114,14 @@ export function AdminNavigationProvider({
 
   const startNavigation = useCallback(
     (destination: string, customMessage?: string) => {
-      if (destination === pathname) {
-        return;
-      }
+      if (destination === pathname) return;
       clearWatchdog();
       setPhase("loading-route");
       setStatusMessage(customMessage || "Memuat konten halaman...");
       startTopProgress();
 
       watchdogTimerRef.current = setTimeout(() => {
+        watchdogTimerRef.current = null;
         setPhase("error");
         setStatusMessage("Gagal memuat rute tepat waktu. Silakan coba lagi.");
       }, 8000);
@@ -131,22 +141,38 @@ export function AdminNavigationProvider({
     [clearWatchdog]
   );
 
-  // Automatically detect route changes and resolve loading states
+  // Route change detection — resolves loading state when pathname actually changes
   useEffect(() => {
     if (prevPathnameRef.current !== pathname) {
       prevPathnameRef.current = pathname;
-      if (phase === "loading-route" || phase === "redirecting") {
-        markReady();
-      }
+      // Read phase directly from ref-captured closure won't work with state,
+      // so we use a functional setState pattern
+      setPhase((currentPhase) => {
+        if (currentPhase === "loading-route" || currentPhase === "redirecting") {
+          clearWatchdog();
+          finishTopProgress();
+          // Trigger reveal cycle
+          revealTimerRef.current = setTimeout(() => {
+            setPhase("idle");
+            setStatusMessage("");
+            revealTimerRef.current = null;
+          }, 240);
+          return "revealing";
+        }
+        return currentPhase;
+      });
     }
-  }, [pathname, phase, markReady]);
+  }, [pathname, clearWatchdog]);
 
-  // Cleanup on unmount
+  // Hard cleanup on unmount
   useEffect(() => {
     return () => clearWatchdog();
   }, [clearWatchdog]);
 
-  const isNavigating = phase !== "idle" && phase !== "revealing";
+  const isNavigating =
+    phase === "authenticating" ||
+    phase === "redirecting" ||
+    phase === "loading-route";
 
   return (
     <AdminNavigationContext.Provider
@@ -167,12 +193,12 @@ export function AdminNavigationProvider({
   );
 }
 
-export function useAdminNavigation() {
+export function useAdminNavigation(): AdminNavigationContextType {
   const context = useContext(AdminNavigationContext);
   if (!context) {
-    // Graceful fallback for non-provider components
+    // Safe no-op fallback — never throws in disconnected components
     return {
-      phase: "idle" as NavigationPhase,
+      phase: "idle",
       statusMessage: "",
       isNavigating: false,
       startAuth: () => {},

@@ -18,11 +18,15 @@ import {
 import { MediaFile } from "@/lib/db/types";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
+import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 export default function AdminMediaPage() {
   const [files, setFiles] = useState<MediaFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+
+  // Toast — shared accessible component
+  const { toast, showToast, dismissToast } = useAdminToast();
 
   // Upload States
   const [isUploading, setIsUploading] = useState(false);
@@ -108,6 +112,7 @@ export default function AdminMediaPage() {
       setSelectedFile(null);
       setPreviewUrl(null);
       setUploadAlt("");
+      showToast("File berhasil diunggah ke media library.", "success");
       fetchMedia();
     } catch (err: any) {
       setUploadError(err.message || "Gagal mengunggah file media.");
@@ -136,6 +141,7 @@ export default function AdminMediaPage() {
       if (previewModalFile?.id === fileToDelete.id) {
         setPreviewModalFile(null);
       }
+      showToast("File berhasil dihapus dari media library.", "success");
       fetchMedia();
     } catch (err: any) {
       setDeleteWarning(err.message || "Gagal menghapus file media.");
@@ -168,6 +174,9 @@ export default function AdminMediaPage() {
 
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
+      {/* Shared Accessible Toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
+
       {/* Top Header & Search Section (FIXED — Tidak Ikut Ter-scroll) */}
       <div className="flex-shrink-0 space-y-3.5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
