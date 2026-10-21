@@ -2,7 +2,10 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Navbar from "@/components/ui/Navbar";
 import SoftlensClient from "./SoftlensClient";
-import { SOFTLENS_SERIES_LIST } from "@/lib/softlens";
+import { SOFTLENS_SERIES_LIST, SoftlensSeries } from "@/lib/softlens";
+import { getSoftlens } from "@/lib/db/repository";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Katalog Softlens Resmi Kemenkes RI | Optik I See You",
@@ -22,7 +25,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SoftlensPage() {
+export default async function SoftlensPage() {
+  let seriesList: SoftlensSeries[] = SOFTLENS_SERIES_LIST;
+
+  try {
+    const liveItems = await getSoftlens({ onlyPublished: true });
+    if (liveItems && liveItems.length > 0) {
+      seriesList = liveItems as unknown as SoftlensSeries[];
+    }
+  } catch (err) {
+    console.warn("Falling back to static softlens catalog:", err);
+  }
+
   const softlensSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -32,7 +46,7 @@ export default function SoftlensPage() {
         name: "Katalog Softlens dan Perawatan Optik I See You",
         description:
           "Daftar softlens dan cairan pembersih steril resmi berizin Kemenkes RI di Optik I See You.",
-        itemListElement: SOFTLENS_SERIES_LIST.map((series, idx) => {
+        itemListElement: seriesList.map((series, idx) => {
           const itemObj: Record<string, any> = {
             "@type": "Product",
             name: series.name,
@@ -99,7 +113,7 @@ export default function SoftlensPage() {
           </div>
         }
       >
-        <SoftlensClient />
+        <SoftlensClient initialSeries={seriesList} />
       </Suspense>
     </main>
   );

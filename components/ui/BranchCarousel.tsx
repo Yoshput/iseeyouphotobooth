@@ -348,32 +348,42 @@ export default function BranchCarousel() {
   const [index, setIndex] = useState(0);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [modalBranch, setModalBranch] = useState<Branch | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const isInteractingRef = useRef(false);
+
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => { setIsInView(entry.isIntersecting); }, { rootMargin: "100px 0px" });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const branch = BRANCHES[index];
   const accentColor = CITY_COLORS[branch.id] ?? "#116B3C";
 
   // Auto-advance branch cards
   useEffect(() => {
-    if (modalBranch) return;
+    if (modalBranch || !isInView) return;
     const t = setInterval(() => {
       if (isInteractingRef.current) return;
       setIndex((p) => (p + 1) % BRANCHES.length);
       setPhotoIndex(0);
     }, AUTO_ADVANCE_MS);
     return () => clearInterval(t);
-  }, [modalBranch]);
+  }, [modalBranch, isInView]);
 
   // Auto-advance photos within current card
   useEffect(() => {
-    if (modalBranch || !branch.images?.length) return;
+    if (modalBranch || !isInView || !branch.images?.length) return;
     const t = setInterval(() => {
       if (isInteractingRef.current) return;
       setPhotoIndex((p) => (p + 1) % branch.images.length);
     }, AUTO_ADVANCE_MS + 500);
     return () => clearInterval(t);
-  }, [modalBranch, branch]);
+  }, [modalBranch, isInView, branch]);
 
   const goTo = (i: number) => {
     setIndex((i + BRANCHES.length) % BRANCHES.length);
@@ -395,7 +405,7 @@ export default function BranchCarousel() {
   };
 
   return (
-    <div className="w-full">
+    <div ref={carouselRef} className="w-full">
       {/* City Switcher Tabs */}
       <div className="mb-5 flex items-center justify-center gap-2 flex-wrap">
         {BRANCHES.map((b, i) => (

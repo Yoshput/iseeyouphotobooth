@@ -1,0 +1,25 @@
+[
+  {
+    "userId": "usr-owner-initial",
+    "userEmail": "admin@optikiseeyou.com",
+    "action": "login_success",
+    "module": "auth",
+    "ipAddress": "::1",
+    "details": {
+      "role": "owner"
+    },
+    "id": "log-1792556666060-446",
+    "createdAt": "2026-10-21T04:24:26.060Z"
+  },
+  {
+    "userEmail": "system",
+    "action": "seed",
+    "module": "auth",
+    "targetId": "usr-owner-initial",
+    "details": {
+      "message": "Akun owner awal otomatis diinisialisasi"
+    },
+    "id": "log-1792524385754-495",
+    "createdAt": "2026-10-20T19:26:25.754Z"
+  }
+]

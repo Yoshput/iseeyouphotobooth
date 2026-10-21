@@ -7,7 +7,7 @@
  * - Menggunakan aset foto produk asli transparan kualitas tinggi.
  * - Komposisi diagonal terarah (kacamata hitam atas & champagne bawah).
  * - Animasi floating naik-turun halus (keyframe CSS 60fps GPU-accelerated).
- * - Parallax mouse lembut pada desktop.
+ * - Parallax mouse lembut pada desktop dengan lerp tanpa frame drop.
  */
 
 import { useEffect, useRef } from "react";
@@ -29,8 +29,6 @@ interface FloatingGlassesProps {
 export default function FloatingGlasses({
   src,
   alt = "Kacamata Optik I See You",
-  width = 540,
-  height = 270,
   items,
 }: FloatingGlassesProps) {
   const glasses: GlassesItem[] =
@@ -108,7 +106,7 @@ export default function FloatingGlasses({
     <div
       ref={containerRef}
       data-motion="allow"
-      className="allow-motion relative w-full max-w-[560px] flex flex-col items-center justify-center pointer-events-none select-none transition-transform duration-100 ease-out"
+      className="allow-motion relative w-full max-w-[560px] flex flex-col items-center justify-center pointer-events-none select-none"
     >
       <style>{`
         @keyframes float-glasses-top {
@@ -116,7 +114,7 @@ export default function FloatingGlasses({
             transform: translate3d(0, 0px, 0) rotate(0deg);
           }
           50% {
-            transform: translate3d(0, -22px, 0) rotate(2.5deg);
+            transform: translate3d(0, -18px, 0) rotate(2deg);
           }
           100% {
             transform: translate3d(0, 0px, 0) rotate(0deg);
@@ -128,7 +126,7 @@ export default function FloatingGlasses({
             transform: translate3d(0, 0px, 0) rotate(0deg);
           }
           50% {
-            transform: translate3d(0, 20px, 0) rotate(-2deg);
+            transform: translate3d(0, 16px, 0) rotate(-1.5deg);
           }
           100% {
             transform: translate3d(0, 0px, 0) rotate(0deg);
@@ -136,13 +134,17 @@ export default function FloatingGlasses({
         }
 
         .glasses-float-top {
-          animation: float-glasses-top 3.8s ease-in-out infinite !important;
+          animation: float-glasses-top 4.2s ease-in-out infinite !important;
           will-change: transform;
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
 
         .glasses-float-bottom {
-          animation: float-glasses-bottom 4.5s ease-in-out infinite 0.7s !important;
+          animation: float-glasses-bottom 4.8s ease-in-out infinite 0.7s !important;
           will-change: transform;
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
       `}</style>
 
@@ -150,7 +152,7 @@ export default function FloatingGlasses({
       {glasses[0] && (
         <div
           data-motion="allow"
-          className="allow-motion glasses-float-top relative w-[82%] sm:w-[86%] aspect-[2/1] -mb-10 sm:-mb-14 z-20 drop-shadow-[0_18px_28px_rgba(18,71,52,0.18)]"
+          className="allow-motion glasses-float-top relative w-[82%] sm:w-[86%] aspect-[2/1] -mb-10 sm:-mb-14 z-20"
         >
           <Image
             src={glasses[0].src}
@@ -158,7 +160,7 @@ export default function FloatingGlasses({
             fill
             priority
             sizes="(max-width: 768px) 320px, 500px"
-            className="object-contain"
+            className="object-contain filter drop-shadow-[0_10px_14px_rgba(18,71,52,0.12)]"
           />
         </div>
       )}
@@ -167,7 +169,7 @@ export default function FloatingGlasses({
       {glasses[1] && (
         <div
           data-motion="allow"
-          className="allow-motion glasses-float-bottom relative w-[82%] sm:w-[86%] aspect-[2/1] ml-8 sm:ml-12 z-10 drop-shadow-[0_20px_32px_rgba(0,0,0,0.12)]"
+          className="allow-motion glasses-float-bottom relative w-[82%] sm:w-[86%] aspect-[2/1] ml-8 sm:ml-12 z-10"
         >
           <Image
             src={glasses[1].src}
@@ -175,7 +177,7 @@ export default function FloatingGlasses({
             fill
             priority
             sizes="(max-width: 768px) 320px, 500px"
-            className="object-contain"
+            className="object-contain filter drop-shadow-[0_10px_16px_rgba(0,0,0,0.08)]"
           />
         </div>
       )}

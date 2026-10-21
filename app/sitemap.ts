@@ -1,22 +1,21 @@
 import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/branches";
 import { BLOG_POSTS } from "@/lib/blog";
+import { getBlogPosts } from "@/lib/db/repository";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 /**
- * app/sitemap.ts — Full Dynamic Sitemap for Optik I See You
+ * app/sitemap.ts — Dynamic Sitemap for Optik I See You
  * Official Domain: https://optikiseeyou.com
  *
  * Mencakup SEMUA halaman publik yang dapat diindeks:
  *  - Halaman utama & produk
  *  - Semua detail cabang (4 kota)
- *  - Semua artikel blog
+ *  - Semua artikel blog (termasuk yang dipublikasikan via CMS)
  *  - Halaman informasi & legal
- * Ini penting agar Google dapat menemukan & mengindeks semua halaman
- * sehingga Sitelinks dapat muncul di hasil pencarian.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://optikiseeyou.com";
   const now = new Date();
 
@@ -111,9 +110,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // ── 3. Blog Article Pages ────────────────────────────────────────────
-  const blogPages: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+  let publishedPosts = BLOG_POSTS;
+  try {
+    const livePosts = await getBlogPosts({ onlyPublished: true });
+    if (livePosts && livePosts.length > 0) {
+      publishedPosts = livePosts as unknown as typeof BLOG_POSTS;
+    }
+  } catch {}
+
+  const blogPages: MetadataRoute.Sitemap = publishedPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.updatedAt || post.publishedAt),
+    lastModified: new Date(post.updatedAt || post.publishedAt || now),
     changeFrequency: "monthly" as const,
     priority: 0.65,
   }));

@@ -1,0 +1,2195 @@
+[
+  {
+    "id": "clarity-1",
+    "sku": "CF33013",
+    "name": "Luna Cat Eye CF33013",
+    "collection": "Clarity Series",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 52,
+      "frameWidth": 125,
+      "lensHeight": 41
+    },
+    "colors": [
+      {
+        "name": "Clear Gray",
+        "hex": "#949DA5",
+        "image": "/katalog/Clarity Series/1-medium.webp"
+      },
+      {
+        "name": "Transparent Caramel",
+        "hex": "#C68B59",
+        "image": "/katalog/Clarity Series/4-medium.webp"
+      }
+    ],
+    "image": "/katalog/Clarity Series/1-medium.webp",
+    "images": [
+      "/katalog/Clarity Series/1-medium.webp",
+      "/katalog/Clarity Series/4-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/Clarity Series/2-medium.webp"
+    ],
+    "posterImages": [],
+    "specsImage": "/katalog/Clarity Series/3-medium.webp",
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Definisi cateye frame yang effortless dengan material transparan ringan dan engsel metal kokoh presisi. Tersedia dalam dua pilihan warna: Clear Gray dan Transparent Caramel.",
+    "style": "Translucent Cat-Eye",
+    "isPublished": true,
+    "sortOrder": 1,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "ck81309",
+    "sku": "CK81309",
+    "name": "Clear Frame Acetate CK81309",
+    "collection": "Clear Frame Series (Acetate)",
+    "shape": "Square",
+    "material": "Acetate",
+    "dimensions": {
+      "lensWidth": 49,
+      "frameWidth": 118,
+      "lensHeight": 41,
+      "bridgeWidth": 20,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Clear Grey",
+        "hex": "#7D838A",
+        "image": "/katalog/Clear Frame Series (Acetate)/18-medium.webp"
+      },
+      {
+        "name": "Peach",
+        "hex": "#D49A89",
+        "image": "/katalog/Clear Frame Series (Acetate)/18-medium.webp"
+      }
+    ],
+    "image": "/katalog/Clear Frame Series (Acetate)/18-medium.webp",
+    "images": [
+      "/katalog/Clear Frame Series (Acetate)/18-medium.webp",
+      "/katalog/Clear Frame Series (Acetate)/20-medium.webp",
+      "/katalog/Clear Frame Series (Acetate)/19-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/Clear Frame Series (Acetate)/19-medium.webp"
+    ],
+    "posterImages": [],
+    "specsImage": "/katalog/Clear Frame Series (Acetate)/20-medium.webp",
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Heart"
+    ],
+    "description": "Frame transparan kekinian dengan material acetate yang siap menyempurnakan bentuk wajahmu.",
+    "style": "Translucent Square",
+    "isPublished": true,
+    "sortOrder": 2,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "ck1011",
+    "sku": "CK1011",
+    "name": "Clear Frame Modern CK1011",
+    "collection": "Clear Frame Series",
+    "shape": "Square",
+    "material": "Acetate",
+    "dimensions": {
+      "lensWidth": 45,
+      "frameWidth": 114,
+      "lensHeight": 41,
+      "bridgeWidth": 26,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Clear Grey",
+        "hex": "#B0B5BA",
+        "image": "/katalog/Clear Frame Series/21-medium.webp"
+      },
+      {
+        "name": "Peach",
+        "hex": "#D9A595",
+        "image": "/katalog/Clear Frame Series/21-medium.webp"
+      }
+    ],
+    "image": "/katalog/Clear Frame Series/21-medium.webp",
+    "images": [
+      "/katalog/Clear Frame Series/21-medium.webp",
+      "/katalog/Clear Frame Series/24-medium.webp",
+      "/katalog/Clear Frame Series/22-medium.webp",
+      "/katalog/Clear Frame Series/23-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/Clear Frame Series/22-medium.webp",
+      "/katalog/Clear Frame Series/23-medium.webp"
+    ],
+    "posterImages": [],
+    "specsImage": "/katalog/Clear Frame Series/24-medium.webp",
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
+    "description": "Clear acetate edition buat kamu yang suka tampilan clean dengan sentuhan modern. Frame bening bukan berarti penampilan harus biasa.",
+    "style": "Clear Acetate",
+    "isPublished": true,
+    "sortOrder": 3,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "ck2127",
+    "sku": "CK2127",
+    "name": "Frame Kotak CK2127",
+    "collection": "Acetate Square Series",
+    "shape": "Square",
+    "material": "Acetate",
+    "dimensions": {
+      "lensWidth": 50,
+      "frameWidth": 125,
+      "lensHeight": 44,
+      "bridgeWidth": 18,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Hitam",
+        "hex": "#1B1C1E",
+        "image": "/katalog/Plastik Kotak/10-medium.webp"
+      },
+      {
+        "name": "Clear Grey",
+        "hex": "#8C9298",
+        "image": "/katalog/Plastik Kotak/13-medium.webp"
+      },
+      {
+        "name": "Peach Transparan",
+        "hex": "#D59A8F",
+        "image": "/katalog/Plastik Kotak/11-medium.webp"
+      }
+    ],
+    "image": "/katalog/Plastik Kotak/10-medium.webp",
+    "images": [
+      "/katalog/Plastik Kotak/10-medium.webp",
+      "/katalog/Plastik Kotak/13-medium.webp",
+      "/katalog/Plastik Kotak/11-medium.webp",
+      "/katalog/Plastik Kotak/12-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/Plastik Kotak/12-medium.webp"
+    ],
+    "posterImages": [],
+    "specsImage": "/katalog/Plastik Kotak/13-medium.webp",
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Frame acetate kekinian dengan engsel solid. Desain kotak yang aesthetic buat OOTD hijab atau casual.",
+    "style": "Square Acetate",
+    "isPublished": true,
+    "sortOrder": 4,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "ck2501",
+    "sku": "CK2501",
+    "name": "Square Browline CK2501",
+    "collection": "The Daily Essential",
+    "shape": "Browline",
+    "dimensions": {
+      "lensWidth": 54,
+      "frameWidth": 127,
+      "lensHeight": 42,
+      "bridgeWidth": 19,
+      "templeLength": 145
+    },
+    "colors": [
+      {
+        "name": "Hitam Glossy",
+        "hex": "#181818",
+        "image": "/katalog/The Daily Essesintial/1-medium.webp"
+      },
+      {
+        "name": "Clear Grey",
+        "hex": "#7E848B",
+        "image": "/katalog/The Daily Essesintial/4-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Daily Essesintial/1-medium.webp",
+    "images": [
+      "/katalog/The Daily Essesintial/1-medium.webp",
+      "/katalog/The Daily Essesintial/4-medium.webp",
+      "/katalog/The Daily Essesintial/2-medium.webp",
+      "/katalog/The Daily Essesintial/3-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/The Daily Essesintial/3-medium.webp"
+    ],
+    "posterImages": [
+      "/katalog/The Daily Essesintial/1-medium.webp"
+    ],
+    "specsImage": "/katalog/The Daily Essesintial/4-medium.webp",
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Clean look, zero effort. Ngedongkrak daily fit kamu tanpa perlu try hard.",
+    "style": "Square Browline",
+    "isPublished": true,
+    "sortOrder": 5,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "celni-1",
+    "sku": "CELNI",
+    "name": "CELNI Oval Sunglasses",
+    "collection": "CELNI Edition",
+    "shape": "Oval",
+    "dimensions": {
+      "lensWidth": 54,
+      "frameWidth": 128,
+      "lensHeight": 39,
+      "bridgeWidth": 23,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Black",
+        "hex": "#181818",
+        "image": "/katalog/CELNI/1-medium.webp"
+      },
+      {
+        "name": "Amber",
+        "hex": "#9E6534",
+        "image": "/katalog/CELNI/3-medium.webp"
+      }
+    ],
+    "image": "/katalog/CELNI/1-medium.webp",
+    "images": [
+      "/katalog/CELNI/1-medium.webp",
+      "/katalog/CELNI/3-medium.webp",
+      "/katalog/CELNI/2-medium.webp",
+      "/katalog/CELNI/4-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/CELNI/2-medium.webp"
+    ],
+    "posterImages": [
+      "/katalog/CELNI/1-medium.webp"
+    ],
+    "specsImage": "/katalog/CELNI/3-medium.webp",
+    "recommendedFor": [
+      "Square",
+      "Heart",
+      "Diamond"
+    ],
+    "description": "Less is more, but make it bold. Kacamata hitam siluet oval dengan aksen bintang elegan pada engsel.",
+    "style": "Oval Sunglasses",
+    "isPublished": true,
+    "sortOrder": 6,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "ci5003",
+    "sku": "CI5003",
+    "name": "Bold Frame CI5003",
+    "collection": "CI5003 Sun Series",
+    "shape": "Square",
+    "dimensions": {
+      "lensWidth": 54,
+      "frameWidth": 127,
+      "lensHeight": 49,
+      "bridgeWidth": 12,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Hitam",
+        "hex": "#181818",
+        "image": "/katalog/Sun - Glasses 51003/1-medium.webp"
+      }
+    ],
+    "image": "/katalog/Sun - Glasses 51003/1-medium.webp",
+    "images": [
+      "/katalog/Sun - Glasses 51003/1-medium.webp",
+      "/katalog/Sun - Glasses 51003/4-medium.webp",
+      "/katalog/Sun - Glasses 51003/2-medium.webp",
+      "/katalog/Sun - Glasses 51003/3-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/Sun - Glasses 51003/2-medium.webp"
+    ],
+    "posterImages": [
+      "/katalog/Sun - Glasses 51003/1-medium.webp"
+    ],
+    "specsImage": "/katalog/Sun - Glasses 51003/4-medium.webp",
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Bold frame, zero drama. Auto level-up look kamu dengan aksen presisi di sudut bingkai.",
+    "style": "Square Sunglasses",
+    "isPublished": true,
+    "sortOrder": 7,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "ci5033",
+    "sku": "CI5033",
+    "name": "Cat Eye Sun CI5033",
+    "collection": "CI5033 Sun Series",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 148,
+      "lensHeight": 50,
+      "bridgeWidth": 14,
+      "templeLength": 145
+    },
+    "colors": [
+      {
+        "name": "Hitam",
+        "hex": "#181818",
+        "image": "/katalog/Sun Glasses/15-medium.webp"
+      }
+    ],
+    "image": "/katalog/Sun Glasses/15-medium.webp",
+    "images": [
+      "/katalog/Sun Glasses/15-medium.webp",
+      "/katalog/Sun Glasses/17-medium.webp",
+      "/katalog/Sun Glasses/16-medium.webp"
+    ],
+    "lifestyleImages": [
+      "/katalog/Sun Glasses/16-medium.webp"
+    ],
+    "posterImages": [
+      "/katalog/Sun Glasses/15-medium.webp"
+    ],
+    "specsImage": "/katalog/Sun Glasses/17-medium.webp",
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round"
+    ],
+    "description": "Simpel tapi stand out. Cocok untuk hangout atau driving dengan 100% UV Protection.",
+    "style": "Cat-Eye Sunglasses",
+    "isPublished": true,
+    "sortOrder": 8,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "cateye-1",
+    "sku": "SKU-CATEYE-1",
+    "name": "Cat Eye Signature - Gloss Black",
+    "collection": "Cat Eye Edition",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 52,
+      "frameWidth": 135,
+      "lensHeight": 45,
+      "bridgeWidth": 16,
+      "templeLength": 141
+    },
+    "colors": [
+      {
+        "name": "Hitam Glossy",
+        "hex": "#181818",
+        "image": "/katalog/Cat Eye Edition/1.webp"
+      }
+    ],
+    "image": "/katalog/Cat Eye Edition/1.webp",
+    "images": [
+      "/katalog/Cat Eye Edition/1.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Cat Eye Edition/Product Specs.webp",
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round"
+    ],
+    "description": "Frame cat-eye elegan dengan sudut tegas dan finishing gloss premium.",
+    "style": "Cat-Eye",
+    "isPublished": true,
+    "sortOrder": 9,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "cateye-2",
+    "sku": "SKU-CATEYE-2",
+    "name": "Cat Eye Velvet - Nude Peach",
+    "collection": "Cat Eye Edition",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 52,
+      "frameWidth": 135,
+      "lensHeight": 45,
+      "bridgeWidth": 16,
+      "templeLength": 141
+    },
+    "colors": [
+      {
+        "name": "Nude Peach",
+        "hex": "#E8B8A6",
+        "image": "/katalog/Cat Eye Edition/2.webp"
+      }
+    ],
+    "image": "/katalog/Cat Eye Edition/2.webp",
+    "images": [
+      "/katalog/Cat Eye Edition/2.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Cat Eye Edition/Product Specs.webp",
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Diamond"
+    ],
+    "description": "Warna peach elegan dengan sudut lengkung yang mempermanis garis wajah.",
+    "style": "Cat-Eye",
+    "isPublished": true,
+    "sortOrder": 10,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "new-1",
+    "sku": "SKU-NEW-1",
+    "name": "Aero Cat Eye - Gloss Black",
+    "collection": "New Collection",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 139,
+      "lensHeight": 48,
+      "bridgeWidth": 19,
+      "templeLength": 139
+    },
+    "colors": [
+      {
+        "name": "Hitam Gloss",
+        "hex": "#181818",
+        "image": "/katalog/New Collection/1.webp"
+      }
+    ],
+    "image": "/katalog/New Collection/1.webp",
+    "images": [
+      "/katalog/New Collection/1.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/New Collection/Product Specs.webp",
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Diamond"
+    ],
+    "description": "Desain cat-eye modern dengan siluet ramping dan sudut halus, cocok untuk aktivitas harian.",
+    "style": "Cat-Eye",
+    "isPublished": true,
+    "sortOrder": 11,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "new-2",
+    "sku": "SKU-NEW-2",
+    "name": "Aero Cat Eye - Nude Peach",
+    "collection": "New Collection",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 139,
+      "lensHeight": 48,
+      "bridgeWidth": 19,
+      "templeLength": 139
+    },
+    "colors": [
+      {
+        "name": "Nude Peach",
+        "hex": "#E8B8A6",
+        "image": "/katalog/New Collection/2.webp"
+      }
+    ],
+    "image": "/katalog/New Collection/2.webp",
+    "images": [
+      "/katalog/New Collection/2.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/New Collection/Product Specs.webp",
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Square",
+      "Heart",
+      "Diamond"
+    ],
+    "description": "Frame cat-eye transparan peach yang lembut dan ringan, memberikan kesan feminin modern.",
+    "style": "Cat-Eye",
+    "isPublished": true,
+    "sortOrder": 12,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "titanium-1",
+    "sku": "SKU-TITANIUM-1",
+    "name": "Titanium Pure - Matte Steel",
+    "collection": "Titanium Edition",
+    "shape": "Oval",
+    "material": "Titanium",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 125,
+      "lensHeight": 47,
+      "bridgeWidth": 17,
+      "templeLength": 145
+    },
+    "colors": [
+      {
+        "name": "Hitam Steel",
+        "hex": "#181818",
+        "image": "/katalog/Titanium Edition/1.webp"
+      }
+    ],
+    "image": "/katalog/Titanium Edition/1.webp",
+    "images": [
+      "/katalog/Titanium Edition/1.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Titanium Edition/Product Specs.webp",
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Square",
+      "Heart"
+    ],
+    "description": "Frame titanium murni dengan bobot ultra ringan dan ketahanan luar biasa.",
+    "style": "Titanium",
+    "isPublished": true,
+    "sortOrder": 13,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "titanium-2",
+    "sku": "SKU-TITANIUM-2",
+    "name": "Titanium Air - Rose Gold",
+    "collection": "Titanium Edition",
+    "shape": "Oval",
+    "material": "Titanium",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 125,
+      "lensHeight": 47,
+      "bridgeWidth": 17,
+      "templeLength": 145
+    },
+    "colors": [
+      {
+        "name": "Rose Gold",
+        "hex": "#E2B5A0",
+        "image": "/katalog/Titanium Edition/2.webp"
+      }
+    ],
+    "image": "/katalog/Titanium Edition/2.webp",
+    "images": [
+      "/katalog/Titanium Edition/2.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Titanium Edition/Product Specs.webp",
+    "glassesId": "oval-frame",
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
+    "description": "Gaya profesional yang tipis, presisi, dan sangat nyaman dipakai seharian.",
+    "style": "Titanium",
+    "isPublished": true,
+    "sortOrder": 14,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "metro-1",
+    "sku": "SKU-METRO-1",
+    "name": "Metro Deek Urban - Black Acetate",
+    "collection": "Metro Deek",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Hitam",
+        "hex": "#181818",
+        "image": "/katalog/Metro Deek/Feed 1.webp"
+      }
+    ],
+    "image": "/katalog/Metro Deek/Feed 1.webp",
+    "images": [
+      "/katalog/Metro Deek/Feed 1.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Heart"
+    ],
+    "description": "Frame tebal bergaya urban dengan siluet modern untuk penampilan bold.",
+    "style": "Urban Square",
+    "isPublished": true,
+    "sortOrder": 15,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "metro-2",
+    "sku": "SKU-METRO-2",
+    "name": "Metro Deek Minimalist - Crystal Clear",
+    "collection": "Metro Deek",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Crystal Clear",
+        "hex": "#D6DADF",
+        "image": "/katalog/Metro Deek/Feed 2.webp"
+      }
+    ],
+    "image": "/katalog/Metro Deek/Feed 2.webp",
+    "images": [
+      "/katalog/Metro Deek/Feed 2.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Square"
+    ],
+    "description": "Frame transparan bening dengan detail engsel yang kokoh dan estetik.",
+    "style": "Transparan",
+    "isPublished": true,
+    "sortOrder": 16,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "metro-3",
+    "sku": "SKU-METRO-3",
+    "name": "Metro Deek Executive - Deep Brown",
+    "collection": "Metro Deek",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Deep Brown",
+        "hex": "#4A3222",
+        "image": "/katalog/Metro Deek/Feed 3.webp"
+      }
+    ],
+    "image": "/katalog/Metro Deek/Feed 3.webp",
+    "images": [
+      "/katalog/Metro Deek/Feed 3.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Square",
+      "Oblong"
+    ],
+    "description": "Sentuhan nuansa warna cokelat hangat untuk gaya profesional sehari-hari.",
+    "style": "Classic Square",
+    "isPublished": true,
+    "sortOrder": 17,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "luxury-1",
+    "sku": "BP30367",
+    "name": "Quiet Luxury BP30367 - Subtle Gold Rim",
+    "collection": "Quiet Luxury",
+    "shape": "Oval",
+    "dimensions": {
+      "lensWidth": 49,
+      "frameWidth": 139,
+      "lensHeight": 47,
+      "bridgeWidth": 15,
+      "templeLength": 140
+    },
+    "colors": [
+      {
+        "name": "Tortoise Light",
+        "hex": "#8B5436",
+        "image": "/katalog/Quiet Luxury/CATALOG NEW-01.webp"
+      },
+      {
+        "name": "Grey",
+        "hex": "#665F64",
+        "image": "/katalog/Quiet Luxury/Detail Spec.webp"
+      },
+      {
+        "name": "Tortoise Dark",
+        "hex": "#693B22",
+        "image": "/katalog/Quiet Luxury/CATALOG NEW-02.webp"
+      }
+    ],
+    "image": "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+    "images": [
+      "/katalog/Quiet Luxury/CATALOG NEW-01.webp",
+      "/katalog/Quiet Luxury/CATALOG NEW-02.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Quiet Luxury/Detail Spec.webp",
+    "glassesId": "oval-frame",
+    "recommendedFor": [
+      "Square",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Keanggunan minimalis dengan aksen tortoise halus yang sangat berkelas.",
+    "style": "Luxury Oval",
+    "isPublished": true,
+    "sortOrder": 18,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "luxury-2",
+    "sku": "BP30367",
+    "name": "Quiet Luxury BP30367 - Dark Amber",
+    "collection": "Quiet Luxury",
+    "shape": "Oval",
+    "dimensions": {
+      "lensWidth": 49,
+      "frameWidth": 139,
+      "lensHeight": 47,
+      "bridgeWidth": 15,
+      "templeLength": 140
+    },
+    "colors": [
+      {
+        "name": "Tortoise Dark",
+        "hex": "#693B22",
+        "image": "/katalog/Quiet Luxury/CATALOG NEW-02.webp"
+      }
+    ],
+    "image": "/katalog/Quiet Luxury/CATALOG NEW-02.webp",
+    "images": [
+      "/katalog/Quiet Luxury/CATALOG NEW-02.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Quiet Luxury/Detail Spec.webp",
+    "glassesId": "round-frame",
+    "fitWidthRatio": 1.46,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Oval Bulat Metal Gold",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/metal_round_glasses.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#334155",
+      "metalColor": "#c0a050",
+      "style": "Oval",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Diamond"
+    ],
+    "description": "Finishing tortoise amber pekat untuk kenyamanan dan keanggunan ekstra.",
+    "style": "Luxury Oval",
+    "isPublished": true,
+    "sortOrder": 19,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "elegance-1",
+    "sku": "SKU-ELEGANCE-1",
+    "name": "Shades Of Elegance Alpha - Clear Grey",
+    "collection": "Shades Of Elegance",
+    "shape": "Round",
+    "dimensions": {
+      "lensWidth": 49,
+      "frameWidth": 120,
+      "lensHeight": 49,
+      "bridgeWidth": 20,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Clear Grey Tint",
+        "hex": "#8F9397",
+        "image": "/katalog/Shades Of Elegance/1.webp"
+      }
+    ],
+    "image": "/katalog/Shades Of Elegance/1.webp",
+    "images": [
+      "/katalog/Shades Of Elegance/1.webp",
+      "/katalog/Shades Of Elegance/2.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Shades Of Elegance/Product Specs.webp",
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round"
+    ],
+    "description": "Frame anggun dengan lengkungan halus, menonjolkan fitur estetis wajah.",
+    "style": "Cat-Eye Elegance",
+    "isPublished": true,
+    "sortOrder": 20,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "elegance-2",
+    "sku": "SKU-ELEGANCE-2",
+    "name": "Shades Of Elegance Beta - Smoke Grey",
+    "collection": "Shades Of Elegance",
+    "shape": "Round",
+    "dimensions": {
+      "lensWidth": 49,
+      "frameWidth": 120,
+      "lensHeight": 49,
+      "bridgeWidth": 20,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Smoke Grey",
+        "hex": "#6B7075",
+        "image": "/katalog/Shades Of Elegance/2.webp"
+      }
+    ],
+    "image": "/katalog/Shades Of Elegance/2.webp",
+    "images": [
+      "/katalog/Shades Of Elegance/2.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Shades Of Elegance/Product Specs.webp",
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Diamond"
+    ],
+    "description": "Kombinasi warna kristal gelap dengan kilau mewah yang menonjolkan percaya diri.",
+    "style": "Soft Square",
+    "isPublished": true,
+    "sortOrder": 21,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "shades-1",
+    "sku": "SKU-SHADES-1",
+    "name": "Shades Edition Classic - Dark Smoke",
+    "collection": "Shades Edition",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 126,
+      "lensHeight": 49,
+      "bridgeWidth": 19,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Dark Smoke",
+        "hex": "#181818",
+        "image": "/katalog/Shades Edition/1.webp"
+      }
+    ],
+    "image": "/katalog/Shades Edition/1.webp",
+    "images": [
+      "/katalog/Shades Edition/1.webp",
+      "/katalog/Shades Edition/3.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Shades Edition/Product Specs.webp",
+    "glassesId": "sunglasses-black",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1,
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Heart"
+    ],
+    "description": "Kacamata hitam gaya klasik dengan lensa dark smoke anti-glare dan proteksi UV400 maksimal.",
+    "style": "Sunglasses Square",
+    "isPublished": true,
+    "sortOrder": 22,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "shades-2",
+    "sku": "SKU-SHADES-2",
+    "name": "Shades Edition Modern - Amber Gold",
+    "collection": "Shades Edition",
+    "shape": "Cat-Eye",
+    "dimensions": {
+      "lensWidth": 55,
+      "frameWidth": 126,
+      "lensHeight": 49,
+      "bridgeWidth": 19,
+      "templeLength": 150
+    },
+    "colors": [
+      {
+        "name": "Amber Gold",
+        "hex": "#B87538",
+        "image": "/katalog/Shades Edition/3.webp"
+      }
+    ],
+    "image": "/katalog/Shades Edition/3.webp",
+    "images": [
+      "/katalog/Shades Edition/3.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "specsImage": "/katalog/Shades Edition/Product Specs.webp",
+    "glassesId": "sunglasses-square-metal",
+    "fitWidthRatio": 1.4,
+    "ipdScaleRef": 0.98,
+    "model3D": {
+      "name": "Sunglasses Aviator Gold",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/cyberpunk_johnny_silverhand_glasses.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "isTinted": true,
+      "style": "Aviator",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Square",
+      "Oval",
+      "Diamond"
+    ],
+    "description": "Siluet modern dengan aksen warna amber gold yang elegan untuk penampilan outdoor stylish.",
+    "style": "Sunglasses Aviator",
+    "isPublished": true,
+    "sortOrder": 23,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "feline-1",
+    "sku": "SKU-FELINE-1",
+    "name": "The Feline Silhouette 01 - Onyx Black",
+    "collection": "The Feline Silhouette",
+    "shape": "Cat-Eye",
+    "colors": [
+      {
+        "name": "Onyx Black",
+        "hex": "#181818",
+        "image": "/katalog/The Feline Silhouette/5-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Feline Silhouette/5-thumb.webp",
+    "images": [
+      "/katalog/The Feline Silhouette/5-medium.webp",
+      "/katalog/The Feline Silhouette/5.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round"
+    ],
+    "description": "Siluet cat-eye bold dengan warna hitam pekat elegan yang memikat dan penuh percaya diri.",
+    "style": "Cat-Eye Luxury",
+    "isPublished": true,
+    "sortOrder": 24,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "feline-2",
+    "sku": "SKU-FELINE-2",
+    "name": "The Feline Silhouette 02 - Tortoise Luxe",
+    "collection": "The Feline Silhouette",
+    "shape": "Cat-Eye",
+    "colors": [
+      {
+        "name": "Tortoise Luxe",
+        "hex": "#7A4B2A",
+        "image": "/katalog/The Feline Silhouette/6-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Feline Silhouette/6-thumb.webp",
+    "images": [
+      "/katalog/The Feline Silhouette/6-medium.webp",
+      "/katalog/The Feline Silhouette/6.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Oval",
+      "Diamond",
+      "Heart"
+    ],
+    "description": "Aksen motif tortoise hangat berpadu dengan sudut cat-eye yang tajam dan dinamis.",
+    "style": "Cat-Eye Statement",
+    "isPublished": true,
+    "sortOrder": 25,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "feline-3",
+    "sku": "SKU-FELINE-3",
+    "name": "The Feline Silhouette 03 - Crimson Haze",
+    "collection": "The Feline Silhouette",
+    "shape": "Cat-Eye",
+    "colors": [
+      {
+        "name": "Crimson Haze",
+        "hex": "#8B2B38",
+        "image": "/katalog/The Feline Silhouette/7-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Feline Silhouette/7-thumb.webp",
+    "images": [
+      "/katalog/The Feline Silhouette/7-medium.webp",
+      "/katalog/The Feline Silhouette/7.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Nuansa crimson modern dengan kilau mewah yang memberikan sentuhan visual mempesona.",
+    "style": "Cat-Eye Modern",
+    "isPublished": true,
+    "sortOrder": 26,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "feline-4",
+    "sku": "SKU-FELINE-4",
+    "name": "The Feline Silhouette 04 - Amber Glow",
+    "collection": "The Feline Silhouette",
+    "shape": "Cat-Eye",
+    "colors": [
+      {
+        "name": "Amber Glow",
+        "hex": "#B87538",
+        "image": "/katalog/The Feline Silhouette/8-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Feline Silhouette/8-thumb.webp",
+    "images": [
+      "/katalog/The Feline Silhouette/8-medium.webp",
+      "/katalog/The Feline Silhouette/8.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "cateye-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Sunglasses Bellagio Havana",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#8B4513",
+      "metalColor": "#d4af37",
+      "style": "Cat-Eye",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
+    },
+    "recommendedFor": [
+      "Heart",
+      "Diamond",
+      "Oval"
+    ],
+    "description": "Gradasi amber natural yang ringan, harmonis, dan sangat anggun untuk pemakaian harian.",
+    "style": "Cat-Eye Minimalist",
+    "isPublished": true,
+    "sortOrder": 27,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "lucid-1",
+    "sku": "SKU-LUCID-1",
+    "name": "The Lucid Vision 01 - Pure Crystal",
+    "collection": "The Lucid Vision",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Pure Crystal",
+        "hex": "#E5E9EC",
+        "image": "/katalog/The Lucid Vision/14-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Lucid Vision/14-thumb.webp",
+    "images": [
+      "/katalog/The Lucid Vision/14-medium.webp",
+      "/katalog/The Lucid Vision/14.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Square"
+    ],
+    "description": "Material transparan murni berkilau tinggi yang memberikan kesan wajah lebih cerah dan bersih.",
+    "style": "Transparent Clear",
+    "isPublished": true,
+    "sortOrder": 28,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "lucid-2",
+    "sku": "SKU-LUCID-2",
+    "name": "The Lucid Vision 02 - Smoked Glass",
+    "collection": "The Lucid Vision",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Smoked Glass",
+        "hex": "#8A9096",
+        "image": "/katalog/The Lucid Vision/15-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Lucid Vision/15-thumb.webp",
+    "images": [
+      "/katalog/The Lucid Vision/15-medium.webp",
+      "/katalog/The Lucid Vision/15.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Diamond"
+    ],
+    "description": "Transparansi abu-abu halus dengan sentuhan industrial yang sophisticated.",
+    "style": "Smoked Crystal",
+    "isPublished": true,
+    "sortOrder": 29,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "lucid-3",
+    "sku": "SKU-LUCID-3",
+    "name": "The Lucid Vision 03 - Champagne Hue",
+    "collection": "The Lucid Vision",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Champagne Hue",
+        "hex": "#D4C4A8",
+        "image": "/katalog/The Lucid Vision/16-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Lucid Vision/16-thumb.webp",
+    "images": [
+      "/katalog/The Lucid Vision/16-medium.webp",
+      "/katalog/The Lucid Vision/16.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Heart",
+      "Diamond"
+    ],
+    "description": "Nuansa champagne lembut dengan kejernihan optik premium untuk penampilan berkelas.",
+    "style": "Warm Crystal",
+    "isPublished": true,
+    "sortOrder": 30,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "skena-1",
+    "sku": "SKU-SKENA-1",
+    "name": "The Skena Gaze 01 - Bold Noir",
+    "collection": "The Skena Gaze",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Bold Noir",
+        "hex": "#181818",
+        "image": "/katalog/The Skena Gaze/9-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Skena Gaze/9-thumb.webp",
+    "images": [
+      "/katalog/The Skena Gaze/9-medium.webp",
+      "/katalog/The Skena Gaze/9.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Siluet chunky persegi tebal bergaya skena modern yang langsung menarik perhatian.",
+    "style": "Chunky Square",
+    "isPublished": true,
+    "sortOrder": 31,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "skena-2",
+    "sku": "SKU-SKENA-2",
+    "name": "The Skena Gaze 02 - Forest Edge",
+    "collection": "The Skena Gaze",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Forest Edge",
+        "hex": "#2A3B2F",
+        "image": "/katalog/The Skena Gaze/10-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Skena Gaze/10-thumb.webp",
+    "images": [
+      "/katalog/The Skena Gaze/10-medium.webp",
+      "/katalog/The Skena Gaze/10.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Square",
+      "Diamond"
+    ],
+    "description": "Desain geometris tajam dengan warna hijau lumut gelap yang berkarakter kuat.",
+    "style": "Geometric Bold",
+    "isPublished": true,
+    "sortOrder": 32,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "skena-3",
+    "sku": "SKU-SKENA-3",
+    "name": "The Skena Gaze 03 - Retro Havana",
+    "collection": "The Skena Gaze",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Retro Havana",
+        "hex": "#82502A",
+        "image": "/katalog/The Skena Gaze/11-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Skena Gaze/11-thumb.webp",
+    "images": [
+      "/katalog/The Skena Gaze/11-medium.webp",
+      "/katalog/The Skena Gaze/11.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Oval"
+    ],
+    "description": "Sentuhan retro havana vintage dengan bridge proporsional untuk kenyamanan optimal.",
+    "style": "Vintage Skena",
+    "isPublished": true,
+    "sortOrder": 33,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "skena-4",
+    "sku": "SKU-SKENA-4",
+    "name": "The Skena Gaze 04 - Modern Slate",
+    "collection": "The Skena Gaze",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Modern Slate",
+        "hex": "#63686E",
+        "image": "/katalog/The Skena Gaze/12-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Skena Gaze/12-thumb.webp",
+    "images": [
+      "/katalog/The Skena Gaze/12-medium.webp",
+      "/katalog/The Skena Gaze/12.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Round",
+      "Diamond",
+      "Heart"
+    ],
+    "description": "Garis arsitektural tegas dengan warna abu batu modern yang bersih dan berwibawa.",
+    "style": "Architectural Square",
+    "isPublished": true,
+    "sortOrder": 34,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "skena-5",
+    "sku": "SKU-SKENA-5",
+    "name": "The Skena Gaze 05 - Deep Amber",
+    "collection": "The Skena Gaze",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Deep Amber",
+        "hex": "#A86928",
+        "image": "/katalog/The Skena Gaze/13-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Skena Gaze/13-thumb.webp",
+    "images": [
+      "/katalog/The Skena Gaze/13-medium.webp",
+      "/katalog/The Skena Gaze/13.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Heart",
+      "Square"
+    ],
+    "description": "Warna madu amber pekat dengan kilau mewah yang menonjol.",
+    "style": "Statement Acetate",
+    "isPublished": true,
+    "sortOrder": 35,
+    "createdAt": "2026-10-20T19:26:19.345Z",
+    "updatedAt": "2026-10-20T19:26:19.345Z"
+  },
+  {
+    "id": "onyx-1",
+    "sku": "SKU-ONYX-1",
+    "name": "The Onyx Enigma 01 - Shadow Noir",
+    "collection": "The Onyx Enigma",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Shadow Noir",
+        "hex": "#181818",
+        "image": "/katalog/The Onyx Enigma/21-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Onyx Enigma/21-thumb.webp",
+    "images": [
+      "/katalog/The Onyx Enigma/21-medium.webp",
+      "/katalog/The Onyx Enigma/21.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
+    "description": "Desain hitam elegan dengan siluet tegas yang menonjolkan karakter kuat dan karismatik.",
+    "style": "Onyx Square",
+    "isPublished": true,
+    "sortOrder": 36,
+    "createdAt": "2026-10-20T19:26:19.346Z",
+    "updatedAt": "2026-10-20T19:26:19.346Z"
+  },
+  {
+    "id": "onyx-2",
+    "sku": "SKU-ONYX-2",
+    "name": "The Onyx Enigma 02 - Obsidian Gloss",
+    "collection": "The Onyx Enigma",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Obsidian Gloss",
+        "hex": "#181818",
+        "image": "/katalog/The Onyx Enigma/22-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Onyx Enigma/22-thumb.webp",
+    "images": [
+      "/katalog/The Onyx Enigma/22-medium.webp",
+      "/katalog/The Onyx Enigma/22.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Heart"
+    ],
+    "description": "Finishing hitam gloss premium dengan lengkungan sudut yang presisi dan mewah.",
+    "style": "Gloss Bold",
+    "isPublished": true,
+    "sortOrder": 37,
+    "createdAt": "2026-10-20T19:26:19.346Z",
+    "updatedAt": "2026-10-20T19:26:19.346Z"
+  },
+  {
+    "id": "onyx-3",
+    "sku": "SKU-ONYX-3",
+    "name": "The Onyx Enigma 03 - Dark Tortoise",
+    "collection": "The Onyx Enigma",
+    "shape": "Oval",
+    "colors": [
+      {
+        "name": "Dark Tortoise",
+        "hex": "#5C3D24",
+        "image": "/katalog/The Onyx Enigma/23-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Onyx Enigma/23-thumb.webp",
+    "images": [
+      "/katalog/The Onyx Enigma/23-medium.webp",
+      "/katalog/The Onyx Enigma/23.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "oval-frame",
+    "recommendedFor": [
+      "Square",
+      "Oval",
+      "Diamond"
+    ],
+    "description": "Kombinasi motif gelap misterius dengan daya pikat estetika vintage modern.",
+    "style": "Modern Tortoise",
+    "isPublished": true,
+    "sortOrder": 38,
+    "createdAt": "2026-10-20T19:26:19.346Z",
+    "updatedAt": "2026-10-20T19:26:19.346Z"
+  },
+  {
+    "id": "onyx-4",
+    "sku": "SKU-ONYX-4",
+    "name": "The Onyx Enigma 04 - Midnight Slate",
+    "collection": "The Onyx Enigma",
+    "shape": "Square",
+    "colors": [
+      {
+        "name": "Midnight Slate",
+        "hex": "#484E55",
+        "image": "/katalog/The Onyx Enigma/24-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Onyx Enigma/24-thumb.webp",
+    "images": [
+      "/katalog/The Onyx Enigma/24-medium.webp",
+      "/katalog/The Onyx Enigma/24.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "square-frame",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "model3D": {
+      "name": "Kotak Plastik Hitam",
+      "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+      "fitWidthRatio": 2.8,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
+      "frameColor": "#1a1a1a",
+      "metalColor": "#d4af37",
+      "style": "Square",
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.65
+    },
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Square"
+    ],
+    "description": "Profil ramping yang ringan dan proporsional untuk tampilan rapi sehari-hari.",
+    "style": "Minimalist Slate",
+    "isPublished": true,
+    "sortOrder": 39,
+    "createdAt": "2026-10-20T19:26:19.346Z",
+    "updatedAt": "2026-10-20T19:26:19.346Z"
+  },
+  {
+    "id": "onyx-5",
+    "sku": "SKU-ONYX-5",
+    "name": "The Onyx Enigma 05 - Eclipse Crystal",
+    "collection": "The Onyx Enigma",
+    "shape": "Oval",
+    "colors": [
+      {
+        "name": "Eclipse Crystal",
+        "hex": "#5B6168",
+        "image": "/katalog/The Onyx Enigma/25-medium.webp"
+      }
+    ],
+    "image": "/katalog/The Onyx Enigma/25-thumb.webp",
+    "images": [
+      "/katalog/The Onyx Enigma/25-medium.webp",
+      "/katalog/The Onyx Enigma/25.webp"
+    ],
+    "lifestyleImages": [],
+    "posterImages": [],
+    "glassesId": "oval-frame",
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Oblong"
+    ],
+    "description": "Sentuhan transparansi abu gelap pekat dengan kilau eksklusif berkarakter.",
+    "style": "Dark Crystal",
+    "isPublished": true,
+    "sortOrder": 40,
+    "createdAt": "2026-10-20T19:26:19.346Z",
+    "updatedAt": "2026-10-20T19:26:19.346Z"
+  }
+]

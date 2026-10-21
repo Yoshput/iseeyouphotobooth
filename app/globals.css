@@ -11,10 +11,6 @@
   --font-inter: var(--font-poppins);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 html,
 body {
   padding: 0;
@@ -22,8 +18,13 @@ body {
   font-family: var(--font-poppins);
   background-color: #F8F5ED;
   color: #183C30;
-  overscroll-behavior: none;
-  touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -32,18 +33,19 @@ body {
   }
 }
 
+/* Photobooth kiosk specific gesture locks */
+.kiosk-mode {
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
 /* Disable tap highlight & text selection on interactive elements */
 button,
-a {
+a,
+[role="button"] {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-}
-
-/* Also disable tap highlight on clickable divs/cards */
-[role="button"],
-[onClick] {
-  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── Shutter flash ─────────────────────────────────────────────────────────
@@ -60,10 +62,40 @@ a {
   animation: shutter-flash 0.32s ease-in-out forwards;
 }
 
-/* ── Thin custom scrollbar (tablet result/picker views) ──────────────────── */
-::-webkit-scrollbar        { width: 4px; }
+/* ── Clean custom scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: #E3ECE6; border-radius: 2px; }
+::-webkit-scrollbar-thumb  { background: #D5E2DA; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #124734; }
+
+/* ── Admin Dashboard High-Visibility Smooth Scrollbar ──────────────────── */
+.admin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #BCD2C7 #F4EFE6;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.admin-scrollbar::-webkit-scrollbar-track {
+  background: #F4EFE6;
+  border-radius: 4px;
+}
+
+.admin-scrollbar::-webkit-scrollbar-thumb {
+  background: #BCD2C7;
+  border-radius: 4px;
+  border: 1px solid #E5ECE7;
+  transition: background-color 0.2s ease;
+}
+
+.admin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #124734;
+}
 
 /* ── AR face-scan sweeping line animation ─────────────────────────────────── */
 @keyframes scanline {
@@ -79,15 +111,15 @@ a {
   100% { transform: translateY(0px)   scale(1);    opacity: 0.55; }
 }
 
-/* ── Marquee Auto-Scroll Animations (Infinite Seamless Loop) ─────────────── */
+/* ── Marquee Auto-Scroll Animations (Infinite Seamless Loop with GPU 3D acceleration) ── */
 @keyframes marquee-left {
-  0%   { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0%   { transform: translate3d(0%, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 @keyframes marquee-right {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
+  0%   { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0%, 0, 0); }
 }
 
 .animate-marquee-left {
@@ -95,6 +127,8 @@ a {
   width: max-content;
   animation: marquee-left 42s linear infinite;
   will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .animate-marquee-right {
@@ -102,6 +136,8 @@ a {
   width: max-content;
   animation: marquee-right 42s linear infinite;
   will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .marquee-group:hover .animate-marquee-left,
@@ -157,7 +193,6 @@ body.scroll-locked {
   -webkit-backdrop-filter: blur(var(--tw-backdrop-blur, 12px));
 }
 
-
 /* -- Article Content Styles (Blog) ------------------------ */
 .article-content { color: #16241C; font-size: 1.125rem; line-height: 1.75; font-family: var(--font-poppins); }
 .article-content p { margin-bottom: 1.5em; }
@@ -191,5 +226,3 @@ video {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
 }
-
-

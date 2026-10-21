@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /remote-camera/
+Disallow: /download/
 
 Sitemap: https://optikiseeyou.com/sitemap.xml
 Host: https://optikiseeyou.com

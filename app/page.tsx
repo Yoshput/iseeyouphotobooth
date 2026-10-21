@@ -139,7 +139,7 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="relative w-full overflow-x-hidden bg-isy-gradient">
+    <main className="relative w-full overflow-x-clip bg-isy-gradient">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -155,14 +155,14 @@ export default function LandingPage() {
           <div className="flex flex-col items-start text-left justify-center">
 
             {/* Eyebrow badge */}
-            <div ref={logoRef} className="mb-4">
+            <div className="mb-4 animate-in fade-in duration-500 ease-out">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#124734]">
                 Optik I See You • For Every You
               </span>
             </div>
 
             {/* Editorial Headline with vibrant 2-tone colors */}
-            <div ref={tagRef}>
+            <div className="animate-in fade-in duration-600 delay-100 ease-out">
               <h1 className="font-extrabold leading-[1.14] tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem]">
                 <span className="text-[#124734] block">Temukan frame</span>
                 <span className="bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] bg-clip-text text-transparent block">
@@ -175,7 +175,7 @@ export default function LandingPage() {
             </div>
 
             {/* Action Buttons: Stacked layout with vibrant gradient matching Screenshot 3 */}
-            <div ref={ctaRef} className="mt-7 w-full max-w-[440px] space-y-3.5">
+            <div className="mt-7 w-full max-w-[440px] space-y-3.5 animate-in fade-in duration-700 delay-200 ease-out">
               {/* Primary CTA: Mulai Try-On / Photobooth */}
               <button
                 type="button"

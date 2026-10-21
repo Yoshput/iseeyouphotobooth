@@ -5,9 +5,8 @@
  *
  * Full-width, borderless cinematic luxury video showcase for Optik I See You.
  * - Clean edge-to-edge luxury aesthetic with zero overlaid toggle pills.
- * - Auto-plays video seamlessly.
- * - Intelligent Audio: Automatically enables audio when scrolled into view (once user interacts with the page),
- *   and automatically mutes audio when scrolled out of view.
+ * - Plays video seamlessly when scrolled into view.
+ * - Auto-pauses and frees CPU/battery when scrolled out of view.
  * - Click to Scale-Up: Fullscreen toggle upon clicking the video.
  */
 
@@ -34,14 +33,13 @@ export default function LandingVideoShowcase() {
   // Attempt to enable audio safely
   const attemptUnmute = useCallback(() => {
     const video = videoRef.current;
-    if (!video || !isIntersectingRef.current) return;
+    if (!video || !isIntersectingRef.current || !hasUserInteractedRef.current) return;
 
     video.muted = false;
     video.volume = 1.0;
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Browser blocked audio autoplay before interaction; fallback to muted until gesture
         video.muted = true;
         video.play().catch(() => {});
       });
@@ -55,7 +53,7 @@ export default function LandingVideoShowcase() {
     video.muted = true;
   }, []);
 
-  // Listen for initial user interaction (scroll, touch, click) to unlock browser audio context
+  // Listen for initial user gesture
   useEffect(() => {
     const handleFirstInteraction = () => {
       hasUserInteractedRef.current = true;
@@ -65,15 +63,11 @@ export default function LandingVideoShowcase() {
     };
 
     window.addEventListener("pointerdown", handleFirstInteraction, { passive: true, once: true });
-    window.addEventListener("touchstart", handleFirstInteraction, { passive: true, once: true });
     window.addEventListener("click", handleFirstInteraction, { passive: true, once: true });
-    window.addEventListener("scroll", handleFirstInteraction, { passive: true, once: true });
 
     return () => {
       window.removeEventListener("pointerdown", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
       window.removeEventListener("click", handleFirstInteraction);
-      window.removeEventListener("scroll", handleFirstInteraction);
     };
   }, [attemptUnmute]);
 
@@ -91,18 +85,15 @@ export default function LandingVideoShowcase() {
           video.play().catch(() => {});
           if (hasUserInteractedRef.current) {
             attemptUnmute();
-          } else {
-            attemptUnmute();
           }
         } else if (!entry.isIntersecting || entry.intersectionRatio < 0.1) {
           isIntersectingRef.current = false;
           video.pause();
-          // Mute audio immediately when out of view
           muteAudio();
         }
       },
       {
-        threshold: [0, 0.1, 0.25, 0.5],
+        threshold: [0, 0.15],
       }
     );
 
@@ -128,7 +119,6 @@ export default function LandingVideoShowcase() {
     if (!container || !video) return;
 
     hasUserInteractedRef.current = true;
-    // Unmute when explicitly clicked
     video.muted = false;
     video.volume = 1.0;
     video.play().catch(() => {});
@@ -136,7 +126,6 @@ export default function LandingVideoShowcase() {
     if (!document.fullscreenElement) {
       if (container.requestFullscreen) {
         container.requestFullscreen().catch(() => {
-          // iOS Safari fallback
           if ((video as unknown as { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen) {
             (video as unknown as { webkitEnterFullscreen: () => void }).webkitEnterFullscreen();
           }
@@ -152,7 +141,10 @@ export default function LandingVideoShowcase() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-black select-none">
+    <section
+      className="relative w-full overflow-hidden bg-black select-none"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "0 400px" }}
+    >
       {/* Edge-to-Edge Full Width Video Container (Clickable to Scale-Up Fullscreen) */}
       <div
         ref={containerRef}

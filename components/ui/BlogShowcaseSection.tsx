@@ -35,6 +35,16 @@ export default function BlogShowcaseSection() {
   const [activeCategory, setActiveCategory] = useState<string>("semua");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => { setIsInView(entry.isIntersecting); }, { rootMargin: "100px 0px" });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Filtered articles based on active category
   const filteredArticles: BlogPost[] = useMemo(() => {
@@ -64,13 +74,13 @@ export default function BlogShowcaseSection() {
 
   // Auto-cycle slides gently every 5.5s
   useEffect(() => {
-    if (isPaused || totalArticles <= 1) return;
+    if (isPaused || !isInView || totalArticles <= 1) return;
     const interval = setInterval(() => {
       nextSlide();
     }, 5500);
 
     return () => clearInterval(interval);
-  }, [isPaused, nextSlide, totalArticles]);
+  }, [isPaused, isInView, nextSlide, totalArticles]);
 
   if (totalArticles === 0) return null;
 
@@ -78,7 +88,7 @@ export default function BlogShowcaseSection() {
   const badgeInfo = getCategoryBadge(current.category);
 
   return (
-    <section className="w-full bg-[#FAF6EC] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-isy-line relative overflow-hidden">
+    <section ref={sectionRef} className="w-full bg-[#FAF6EC] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-isy-line relative overflow-hidden">
       {/* Subtle ambient lighting */}
       <div className="pointer-events-none absolute right-1/4 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-isy-green-bright/5 blur-[120px]" />
 

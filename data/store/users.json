@@ -1,0 +1,14 @@
+[
+  {
+    "id": "usr-owner-initial",
+    "email": "admin@optikiseeyou.com",
+    "name": "Owner Optik I See You",
+    "passwordHash": "817604821afbb5d53370a1c714dbcb46fe02a5cd1de8dd48c9c33ac22b4fadd6426d19d23ecb0ee087f0ce3f009561593e5b8a28ddae5e69c8189eb28dfee7f6",
+    "salt": "aa4de60a5a7c83fae45308ef357a496f",
+    "role": "owner",
+    "isActive": true,
+    "createdAt": "2026-10-20T19:26:24.416Z",
+    "updatedAt": "2026-10-21T04:24:25.638Z",
+    "lastLoginAt": "2026-10-21T04:24:24.796Z"
+  }
+]

@@ -437,7 +437,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="overscroll-none bg-isy-ivory font-sans antialiased">
+      <body className="bg-isy-ivory font-sans antialiased">
         {/* Luxury Brand Opening Splash Screen */}
         <PWASplashScreen />
 
@@ -455,3 +455,4 @@ export default function RootLayout({
     </html>
   );
 }
+

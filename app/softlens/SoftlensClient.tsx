@@ -18,7 +18,13 @@ import SoftlensDetailModal from "@/components/katalog/SoftlensDetailModal";
 import SoftlensCartDrawer from "@/components/katalog/SoftlensCartDrawer";
 import ProductImageZoomModal from "@/components/katalog/ProductImageZoomModal";
 
-export default function SoftlensClient() {
+interface SoftlensClientProps {
+  initialSeries?: SoftlensSeries[];
+}
+
+export default function SoftlensClient({
+  initialSeries = SOFTLENS_SERIES_LIST,
+}: SoftlensClientProps) {
   const [activeTab, setActiveTab] = useState<"all" | "lens" | "accessory">("all");
   const [selectedColor, setSelectedColor] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -140,7 +146,9 @@ export default function SoftlensClient() {
   const filteredSeries = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
 
-    return SOFTLENS_SERIES_LIST.filter((series) => {
+    const listToFilter = initialSeries && initialSeries.length > 0 ? initialSeries : SOFTLENS_SERIES_LIST;
+
+    return listToFilter.filter((series) => {
       // Tab filter
       if (activeTab === "lens" && series.type !== "lens") return false;
       if (activeTab === "accessory" && series.type !== "accessory") return false;

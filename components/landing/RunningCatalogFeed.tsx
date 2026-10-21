@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ZoomIn, MessageCircle, ArrowRight, X } from "lucide-react";
@@ -47,6 +47,21 @@ const FEED_ROW_2: FeedItem[] = [
 export default function RunningCatalogFeed() {
   const [activeItem, setActiveItem] = useState<FeedItem | null>(null);
   const [zoomItem, setZoomItem] = useState<FeedItem | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "200px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const getWaUrl = (item: FeedItem) => {
     const msg = `Halo CS Optik I See You 👋, saya tertarik dengan frame pada katalog "${item.name}" (${item.tag}). Boleh info rekomendasi model dan stoknya? Terima kasih! 🙏`;
@@ -58,7 +73,11 @@ export default function RunningCatalogFeed() {
   const row2Items = [...FEED_ROW_2, ...FEED_ROW_2];
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#FAF8F3] py-16 sm:py-24 border-y border-[#E3E7DF]">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-[#FAF8F3] py-16 sm:py-24 border-y border-[#E3E7DF]"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "0 600px" }}
+    >
       <style>{`
         @keyframes marquee-scroll-left {
           0% {
@@ -81,15 +100,21 @@ export default function RunningCatalogFeed() {
         .marquee-track-left {
           display: flex !important;
           width: max-content !important;
-          animation: marquee-scroll-left 32s linear infinite !important;
+          animation: marquee-scroll-left 34s linear infinite !important;
+          animation-play-state: ${isInView ? "running" : "paused"} !important;
           will-change: transform;
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
 
         .marquee-track-right {
           display: flex !important;
           width: max-content !important;
-          animation: marquee-scroll-right 32s linear infinite !important;
+          animation: marquee-scroll-right 34s linear infinite !important;
+          animation-play-state: ${isInView ? "running" : "paused"} !important;
           will-change: transform;
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
 
         .marquee-container:hover .marquee-track-left,
@@ -113,7 +138,7 @@ export default function RunningCatalogFeed() {
       {/* Marquee Showcase (2 Rows, Opposite Directions, Smooth Infinite Loop) */}
       <div className="w-full space-y-4 sm:space-y-6 overflow-hidden">
         {/* Row 1: Leftward Infinite Marquee */}
-        <div className="marquee-container relative w-full overflow-hidden py-1">
+        <div className="marquee-container relative w-full overflow-hidden py-1" style={{ contain: "paint" }}>
           <div className="marquee-track-left flex items-center gap-4 sm:gap-6">
             {row1Items.map((item, idx) => (
               <button
@@ -149,7 +174,7 @@ export default function RunningCatalogFeed() {
         </div>
 
         {/* Row 2: Rightward Infinite Marquee */}
-        <div className="marquee-container relative w-full overflow-hidden py-1">
+        <div className="marquee-container relative w-full overflow-hidden py-1" style={{ contain: "paint" }}>
           <div className="marquee-track-right flex items-center gap-4 sm:gap-6">
             {row2Items.map((item, idx) => (
               <button

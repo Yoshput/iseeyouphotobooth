@@ -1,12 +1,58 @@
 import { Suspense } from "react";
-import { CATALOG_COLLECTIONS } from "@/lib/catalog";
+import { CATALOG_COLLECTIONS, CatalogCollection, CatalogItem } from "@/lib/catalog";
 import { SOFTLENS_PRODUCTS } from "@/lib/softlens";
+import { getFrames } from "@/lib/db/repository";
 import KatalogClient from "./KatalogClient";
 import Navbar from "@/components/ui/Navbar";
 
-export default function KatalogPage() {
+export const dynamic = "force-dynamic";
+
+export default async function KatalogPage() {
+  let collections: CatalogCollection[] = CATALOG_COLLECTIONS;
+
+  try {
+    const liveFrames = await getFrames({ onlyPublished: true });
+    if (liveFrames && liveFrames.length > 0) {
+      // Group live frames by collection
+      const collectionMap = new Map<string, CatalogCollection>();
+
+      // Pre-populate with existing collection meta
+      for (const col of CATALOG_COLLECTIONS) {
+        collectionMap.set(col.title.toLowerCase(), {
+          ...col,
+          items: [],
+        });
+      }
+
+      for (const frame of liveFrames) {
+        const key = frame.collection.toLowerCase();
+        let targetCol = collectionMap.get(key);
+
+        if (!targetCol) {
+          targetCol = {
+            id: `col-${frame.collection.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+            title: frame.collection,
+            badge: frame.shape,
+            description: frame.description || `Koleksi ${frame.collection} Optik I See You`,
+            coverImage: frame.image,
+            images: frame.images || [frame.image],
+            items: [],
+          };
+          collectionMap.set(key, targetCol);
+        }
+
+        targetCol.items.push(frame as unknown as CatalogItem);
+      }
+
+      // Filter out empty collections and convert to array
+      collections = Array.from(collectionMap.values()).filter((col) => col.items.length > 0);
+    }
+  } catch (err) {
+    console.warn("Falling back to static catalog collections:", err);
+  }
+
   // Extract all catalog items for metadata schema with verified data only
-  const allProducts = CATALOG_COLLECTIONS.flatMap((col) => col.items);
+  const allProducts = collections.flatMap((col) => col.items);
 
   const catalogSchema = {
     "@context": "https://schema.org",
@@ -92,7 +138,7 @@ export default function KatalogPage() {
         }
       >
         <KatalogClient
-          initialCollections={CATALOG_COLLECTIONS}
+          initialCollections={collections}
           initialSoftlens={SOFTLENS_PRODUCTS}
         />
       </Suspense>

@@ -1,0 +1,903 @@
+[
+  {
+    "id": "exoticon-ice-no5",
+    "name": "Exoticon ICE N°5",
+    "brand": "Exoticon",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "brown",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Exoticon ice-no5-brown.webp",
+    "description": "Softlens Exoticon ICE N°5 dengan kenyamanan tingkat tinggi dan warna berkelas untuk mata indah bercahaya alami.",
+    "specs": [
+      "Exoticon Series",
+      "High Oxygen",
+      "All Day Comfort",
+      "UV Protection"
+    ],
+    "diameter": "14.5 mm",
+    "waterContent": "42%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 55000,
+    "basePriceFormatted": "Rp 55.000",
+    "badgeText": "Best Seller Exoticon",
+    "variants": [
+      {
+        "id": "ice-no5-brown",
+        "name": "Brown",
+        "colorFamily": "brown",
+        "hex": "#8B5A2B",
+        "image": "/Katalog Soflens/Assets Soflens/Exoticon ice-no5-brown.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Exoticon N5.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Exoticon N5.webp",
+        "price": 55000,
+        "priceFormatted": "Rp 55.000",
+        "badgeText": "Brown Glow"
+      },
+      {
+        "id": "ice-no5-grey",
+        "name": "Grey",
+        "colorFamily": "grey",
+        "hex": "#7A8B8B",
+        "image": "/Katalog Soflens/Assets Soflens/Exoticon ice-no5-grey.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Exoticon Ice no5-Grey-Detail.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Exoticon Ice no5-Grey-Detail.webp",
+        "price": 55000,
+        "priceFormatted": "Rp 55.000",
+        "badgeText": "Crystal Grey"
+      },
+      {
+        "id": "ice-no5-black",
+        "name": "Black",
+        "colorFamily": "natural",
+        "hex": "#222222",
+        "image": "/Katalog Soflens/Assets Soflens/Ice no5-Black.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Exoticon N5.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Exoticon N5.webp",
+        "price": 55000,
+        "priceFormatted": "Rp 55.000",
+        "badgeText": "Deep Black"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 1,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "exoticon-miss-ice",
+    "name": "Exoticon Miss ICE",
+    "brand": "Exoticon",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "grey",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Exoticon Miss Ice-Selena Grey.webp",
+    "description": "Varian eksklusif Exoticon Miss ICE Selena Grey dengan warna abu-abu lembut nan manis khas K-Beauty.",
+    "specs": [
+      "Miss ICE Series",
+      "K-Beauty Velvet",
+      "Ultra Soft Lens",
+      "UV Protection"
+    ],
+    "diameter": "14.5 mm",
+    "waterContent": "42%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 55000,
+    "basePriceFormatted": "Rp 55.000",
+    "badgeText": "Miss ICE Series",
+    "variants": [
+      {
+        "id": "miss-ice-selena-grey",
+        "name": "Selena Grey",
+        "colorFamily": "grey",
+        "hex": "#708090",
+        "image": "/Katalog Soflens/Assets Soflens/Exoticon Miss Ice-Selena Grey.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Exoticon Miss Ice.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Exoticon Miss Ice.webp",
+        "price": 55000,
+        "priceFormatted": "Rp 55.000",
+        "badgeText": "K-Beauty Grey"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 2,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "russian-velvet",
+    "name": "Russian Velvet Series",
+    "brand": "Russian Velvet",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "grey",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Rusian-velvet-Irina Grey.webp",
+    "description": "Gaya beludru mewah tanpa garis tepi luar (no limbal ring) untuk gradasi mata natural ala idol Korea.",
+    "specs": [
+      "No Limbal Ring",
+      "K-Beauty Velvet",
+      "All Day Comfort",
+      "Soft Blend"
+    ],
+    "diameter": "14.0 mm",
+    "waterContent": "45%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "K-Idol Favorite",
+    "variants": [
+      {
+        "id": "russian-velvet-irina-grey",
+        "name": "Irina Grey",
+        "colorFamily": "grey",
+        "hex": "#808A87",
+        "image": "/Katalog Soflens/Assets Soflens/Rusian-velvet-Irina Grey.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Rusian Velvet - Edited.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Rusian Velvet - Edited.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000",
+        "badgeText": "Irina Grey"
+      },
+      {
+        "id": "russian-velvet-sofiya-dark-glow",
+        "name": "Sofiya Dark Glow",
+        "colorFamily": "grey",
+        "hex": "#4F5D58",
+        "image": "/Katalog Soflens/Assets Soflens/Rusian-velvet-Sofiya Dark Glow.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Rusian Velvet - Edited.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Rusian Velvet - Edited.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000",
+        "badgeText": "Dark Glow"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 3,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "exoticon-exo-clear",
+    "name": "Exoticon EXO CLEAR",
+    "brand": "Exoticon",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "natural",
+    "coverImage": "/Katalog Soflens/Assets Soflens/exoticon-exo clear.webp",
+    "description": "Softlens bening bulanan ultrathin berbahan Etafilcon A, memberikan penglihatan super tajam dan sangat nyaman.",
+    "specs": [
+      "Monthly Disposable",
+      "Super Thin Vision",
+      "For Sensitive Eyes",
+      "Etafilcon A"
+    ],
+    "diameter": "14.2 mm",
+    "waterContent": "55%",
+    "usageDuration": "1 Bulan",
+    "isAccessory": false,
+    "basePrice": 45000,
+    "basePriceFormatted": "Rp 45.000",
+    "badgeText": "Lensa Bening",
+    "variants": [
+      {
+        "id": "exo-clear",
+        "name": "Clear Bening",
+        "colorFamily": "natural",
+        "hex": "#E0F2FE",
+        "image": "/Katalog Soflens/Assets Soflens/exoticon-exo clear.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Exoticon Exo Clear.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Exoticon Exo Clear.webp",
+        "price": 45000,
+        "priceFormatted": "Rp 45.000",
+        "badgeText": "Bening Bulanan"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 4,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "golden-eye-prestige",
+    "name": "Golden Eye Prestige",
+    "brand": "Golden Eye",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "hazel",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Golden Eye Prestige.webp",
+    "description": "Warna hazel emas berkelas ala Golden Eye Prestige untuk efek kilau mata mewah dan berkarakter.",
+    "specs": [
+      "Prestige Color",
+      "High Moisture",
+      "All Day Comfort",
+      "Golden Glow"
+    ],
+    "diameter": "14.5 mm",
+    "waterContent": "45%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "Prestige Series",
+    "variants": [
+      {
+        "id": "golden-eye-prestige-gold",
+        "name": "Golden Hazel",
+        "colorFamily": "hazel",
+        "hex": "#C5A059",
+        "image": "/Katalog Soflens/Assets Soflens/Golden Eye Prestige.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Golden Eye Prestige.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Golden Eye Prestige.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 5,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "new-more-dubai",
+    "name": "New More Dubai",
+    "brand": "New More",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "hazel",
+    "coverImage": "/Katalog Soflens/Assets Soflens/New More Dubai.webp",
+    "description": "Sentuhan warna eksotis ala Timur Tengah yang mewah, memberikan gradasi mata cantik dan memikat.",
+    "specs": [
+      "Exotic Dubai",
+      "Rich Pigment",
+      "Smooth Surface",
+      "All Day Comfort"
+    ],
+    "diameter": "14.5 mm",
+    "waterContent": "45%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "Dubai Series",
+    "variants": [
+      {
+        "id": "new-more-dubai-hazel",
+        "name": "Dubai Hazel",
+        "colorFamily": "hazel",
+        "hex": "#B8860B",
+        "image": "/Katalog Soflens/Assets Soflens/New More Dubai.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/New More Dubai.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/New More Dubai.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 6,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "living-color-miracle",
+    "name": "Living Color Miracle",
+    "brand": "Living Color",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "brown",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Miracle.webp",
+    "description": "Sentuhan warna cokelat eksotis dengan gradasi warna hidup yang memberikan kilau natural setiap hari.",
+    "specs": [
+      "Exotic Glow",
+      "Living Color",
+      "Smooth Surface",
+      "UV Protection"
+    ],
+    "diameter": "14.2 mm",
+    "waterContent": "45%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "Living Color",
+    "variants": [
+      {
+        "id": "miracle-brown",
+        "name": "Miracle Brown",
+        "colorFamily": "brown",
+        "hex": "#704214",
+        "image": "/Katalog Soflens/Assets Soflens/Miracle.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Miracle-Edit.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Miracle-Edit.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 7,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "exoticon-moxie",
+    "name": "Exoticon Moxie",
+    "brand": "Exoticon",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "brown",
+    "coverImage": "/Katalog Soflens/Assets Soflens/moxie.webp",
+    "description": "Warna cokelat kontemporer kemasan Exoticon Moxie untuk gaya hidup aktif dan modis.",
+    "specs": [
+      "Exoticon Series",
+      "Modern Style",
+      "Smooth Surface",
+      "All Day Comfort"
+    ],
+    "diameter": "14.2 mm",
+    "waterContent": "45%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "Exoticon Moxie",
+    "variants": [
+      {
+        "id": "moxie-brown",
+        "name": "Moxie Brown",
+        "colorFamily": "brown",
+        "hex": "#5C4033",
+        "image": "/Katalog Soflens/Assets Soflens/moxie.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Exoticon-Moxie-Detail.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Exoticon-Moxie-Detail.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 8,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "pure-color-comfort",
+    "name": "Pure Color Comfort",
+    "brand": "Pure Color",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "natural",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Pure Color Comfort.webp",
+    "description": "Desain warna lembut berteknologi High-Moisture yang sangat ramah dan sejuk untuk mata sensitif.",
+    "specs": [
+      "High Moisture",
+      "For Sensitive Eyes",
+      "Smooth Surface",
+      "All Day Comfort"
+    ],
+    "diameter": "14.2 mm",
+    "waterContent": "48%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "Comfort Series",
+    "variants": [
+      {
+        "id": "pure-color-comfort-choco",
+        "name": "Natural Choco",
+        "colorFamily": "natural",
+        "hex": "#4A2E18",
+        "image": "/Katalog Soflens/Assets Soflens/Pure Color Comfort.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Pure Color Comfort.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Pure Color Comfort.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 9,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "color-twilight",
+    "name": "Color Twilight Anti Blue Light",
+    "brand": "Twilight",
+    "category": "Softlens",
+    "type": "lens",
+    "colorFamily": "colorful",
+    "coverImage": "/Katalog Soflens/Assets Soflens/Twilight.webp",
+    "description": "Teknologi Anti Blue Light dengan bahan Phosphorylcholine (PC) murni untuk perlindungan mata dari radiasi gadget.",
+    "specs": [
+      "Anti Blue Light",
+      "Phosphorylcholine PC",
+      "Smooth Surface",
+      "Eye Protection"
+    ],
+    "diameter": "14.2 mm",
+    "waterContent": "48%",
+    "usageDuration": "6 Bulan",
+    "isAccessory": false,
+    "basePrice": 35000,
+    "basePriceFormatted": "Rp 35.000",
+    "badgeText": "Anti Blue Light",
+    "variants": [
+      {
+        "id": "twilight-blue",
+        "name": "Twilight Tint",
+        "colorFamily": "colorful",
+        "hex": "#3A506B",
+        "image": "/Katalog Soflens/Assets Soflens/Twilight.webp",
+        "hoverImage": "/Katalog Soflens/Assets detail produk soflens/Twilight-Katalog.webp",
+        "detailPoster": "/Katalog Soflens/Assets detail produk soflens/Twilight-Katalog.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 10,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "ice-solution",
+    "name": "ICE Solution Multi-Purpose",
+    "brand": "ICE",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Cairan Soflens Ice-150ml.webp",
+    "description": "Cairan pembersih dan perendam softlens ICE dengan kandungan Pro-Vitamin B5 untuk kelembaban optimal.",
+    "specs": [
+      "Pro-Vitamin B5",
+      "Multi-Purpose",
+      "All-In-One Sterile",
+      "Menjaga Kelembaban"
+    ],
+    "isAccessory": true,
+    "basePrice": 20000,
+    "basePriceFormatted": "Rp 20.000",
+    "hasPriceRange": true,
+    "maxPrice": 30000,
+    "maxPriceFormatted": "Rp 30.000",
+    "badgeText": "Cairan Steril",
+    "variants": [
+      {
+        "id": "ice-150ml",
+        "name": "Botol Besar 150ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Cairan Soflens Ice-150ml.webp",
+        "price": 30000,
+        "priceFormatted": "Rp 30.000",
+        "badgeText": "150ML"
+      },
+      {
+        "id": "ice-60ml",
+        "name": "Travel Size 60ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/cairan soflens ice-60ml.webp",
+        "price": 20000,
+        "priceFormatted": "Rp 20.000",
+        "badgeText": "60ML"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 11,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "x2-solution",
+    "name": "X2 Solution Multi-Purpose",
+    "brand": "X2",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Cairan Soflens X2.webp",
+    "description": "Cairan pembersih softlens X2 dengan sertifikasi Halal MUI untuk higienitas ekstra dan rasa lembut di mata.",
+    "specs": [
+      "Advanced Formula",
+      "Extra Delicate Care",
+      "MUI Halal Certified",
+      "Anti-Bakteri"
+    ],
+    "isAccessory": true,
+    "basePrice": 20000,
+    "basePriceFormatted": "Rp 20.000",
+    "hasPriceRange": true,
+    "maxPrice": 30000,
+    "maxPriceFormatted": "Rp 30.000",
+    "badgeText": "Halal MUI",
+    "variants": [
+      {
+        "id": "x2-120ml",
+        "name": "Botol Sedang 120ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Cairan Soflens X2.webp",
+        "price": 30000,
+        "priceFormatted": "Rp 30.000",
+        "badgeText": "120ML"
+      },
+      {
+        "id": "x2-60ml",
+        "name": "Travel Size 60ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Cairan Soflens X2.webp",
+        "price": 20000,
+        "priceFormatted": "Rp 20.000",
+        "badgeText": "60ML"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 12,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "x2-contacts-15ml",
+    "name": "X2 Contacts Tetes Mata (15ML)",
+    "brand": "X2",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/X2 Contacts.webp",
+    "description": "Tetes mata khusus pengguna softlens X2 Contacts 15ml untuk meredakan mata kering di ruangan ber-AC.",
+    "specs": [
+      "Eye Drops 15ml",
+      "Anti-Dryness",
+      "Instant Refresh",
+      "Khusus Softlens"
+    ],
+    "volume": "15ML",
+    "isAccessory": true,
+    "basePrice": 25000,
+    "basePriceFormatted": "Rp 25.000",
+    "badgeText": "Tetes Mata",
+    "variants": [
+      {
+        "id": "x2-contacts-15ml",
+        "name": "Kemasan 15ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/X2 Contacts.webp",
+        "price": 25000,
+        "priceFormatted": "Rp 25.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 13,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "pure-n-soft-60ml",
+    "name": "Pure N'Soft Solution (60ML)",
+    "brand": "Pure N'Soft",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Cairan Soflens  Men Soft.webp",
+    "description": "Cairan pembersih dan perendam softlens Pure N'Soft 60ml menjaga lensa tetap higienis dan nyaman seharian.",
+    "specs": [
+      "Hyaluronic Gentle",
+      "Ekonomis dan Steril",
+      "Lepas Endapan Protein",
+      "Kemasan 60ML"
+    ],
+    "volume": "60ML",
+    "isAccessory": true,
+    "basePrice": 8000,
+    "basePriceFormatted": "Rp 8.000",
+    "badgeText": "Hemat dan Steril",
+    "variants": [
+      {
+        "id": "pure-n-soft-60ml",
+        "name": "Botol 60ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Cairan Soflens  Men Soft.webp",
+        "price": 8000,
+        "priceFormatted": "Rp 8.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 14,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "case-magnet-series",
+    "name": "Case Magnet Kacamata dan Softlens",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Case Magnet Coklat.webp",
+    "description": "Kotak kacamata dan softlens hardcase bermagnet mewah dengan interior beludru lembut pelindung goresan.",
+    "specs": [
+      "Magnetic Closure",
+      "Hard Case Protection",
+      "Luxury Finish",
+      "Interior Beludru"
+    ],
+    "isAccessory": true,
+    "basePrice": 30000,
+    "basePriceFormatted": "Rp 30.000",
+    "hasPriceRange": true,
+    "maxPrice": 35000,
+    "maxPriceFormatted": "Rp 35.000",
+    "badgeText": "Hardcase Magnet",
+    "variants": [
+      {
+        "id": "case-magnet-coklat",
+        "name": "Motif Coklat",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Case Magnet Coklat.webp",
+        "price": 35000,
+        "priceFormatted": "Rp 35.000",
+        "badgeText": "Exclusive Coklat"
+      },
+      {
+        "id": "case-magnet-pastel",
+        "name": "Edisi Pastel",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Case Magnet.webp",
+        "price": 30000,
+        "priceFormatted": "Rp 30.000",
+        "badgeText": "Pastel Lock"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 15,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "cleaner-lensa-nex",
+    "name": "Cleaner Lensa NEX Anti-Fog (30ML)",
+    "brand": "NEX",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Cleaner Lensa Nex.webp",
+    "description": "Cairan semprot pembersih lensa kacamata NEX anti-embun dan anti-static untuk kejernihan HD seketika.",
+    "specs": [
+      "Anti-Fog Spray",
+      "High Definition Clean",
+      "Streak-Free",
+      "Aman untuk Coating"
+    ],
+    "volume": "30ML",
+    "isAccessory": true,
+    "basePrice": 20000,
+    "basePriceFormatted": "Rp 20.000",
+    "badgeText": "Anti-Fog Spray",
+    "variants": [
+      {
+        "id": "cleaner-lensa-nex",
+        "name": "Botol Spray 30ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Cleaner Lensa Nex.webp",
+        "price": 20000,
+        "priceFormatted": "Rp 20.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 16,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "cleaner-biasa",
+    "name": "Spray Cleaner Lensa Standard (30ML)",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Cleaner Biasa.webp",
+    "description": "Pembersih semprot praktis efektif mengangkat noda minyak dan debu seketika pada lensa dan frame.",
+    "specs": [
+      "Sanitizer Spray",
+      "Pocket Size",
+      "Debu dan Minyak Hilang",
+      "Jernih Maksimal"
+    ],
+    "volume": "30ML",
+    "isAccessory": true,
+    "basePrice": 10000,
+    "basePriceFormatted": "Rp 10.000",
+    "badgeText": "Pembersih Lensa",
+    "variants": [
+      {
+        "id": "cleaner-biasa",
+        "name": "Standard 30ML",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Cleaner Biasa.webp",
+        "price": 10000,
+        "priceFormatted": "Rp 10.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 17,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "mesin-pencuci-soflens",
+    "name": "Mesin Pencuci Softlens (Ultrasonic)",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Mesin Pencuci Soflens.webp",
+    "description": "Mesin getar ultrasonic otomatis membersihkan kotoran dan endapan protein pada softlens tanpa merusak pori lensa.",
+    "specs": [
+      "Vibrasi Otomatis",
+      "USB Rechargeable",
+      "Pembersih Kuman Deep Clean",
+      "Steril 3 Menit"
+    ],
+    "isAccessory": true,
+    "basePrice": 15000,
+    "basePriceFormatted": "Rp 15.000",
+    "badgeText": "Ultrasonic Cleaner",
+    "variants": [
+      {
+        "id": "mesin-pencuci-soflens",
+        "name": "Unit Ultrasonic",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Mesin Pencuci Soflens.webp",
+        "price": 15000,
+        "priceFormatted": "Rp 15.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 18,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "wadah-soflens-series",
+    "name": "Wadah Softlens Travel Kit",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Wadah Soflens.webp",
+    "description": "Set wadah perendam softlens higienis lengkap dengan cermin mini, pinset, dan aplikator steril.",
+    "specs": [
+      "Sterile Storage",
+      "Includes Tweezers",
+      "Soft Applicator",
+      "Cermin Mini"
+    ],
+    "isAccessory": true,
+    "basePrice": 15000,
+    "basePriceFormatted": "Rp 15.000",
+    "badgeText": "Travel Kit",
+    "variants": [
+      {
+        "id": "wadah-soflens-set",
+        "name": "Kit Cermin Lengkap",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Wadah Soflens.webp",
+        "price": 15000,
+        "priceFormatted": "Rp 15.000",
+        "badgeText": "Travel Set"
+      },
+      {
+        "id": "wadah-soflens-hijau",
+        "name": "Edisi Hijau Mint",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Wadah Soflens Hijau.webp",
+        "price": 15000,
+        "priceFormatted": "Rp 15.000",
+        "badgeText": "Hijau Mint"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 19,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "ear-hook",
+    "name": "Ear Hook Anti-Slip Kacamata",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Ear Hook.webp",
+    "description": "Pengait telinga berbahan silikon lembut mencegah kacamata melorot saat berolahraga dan beraktivitas.",
+    "specs": [
+      "Silikon Premium",
+      "Anti-Melorot Olahraga",
+      "Sangat Empuk",
+      "Cocok Semua Gagang"
+    ],
+    "isAccessory": true,
+    "basePrice": 10000,
+    "basePriceFormatted": "Rp 10.000",
+    "badgeText": "Anti-Slip Hook",
+    "variants": [
+      {
+        "id": "ear-hook",
+        "name": "Sepasang (Kiri dan Kanan)",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Ear Hook.webp",
+        "price": 10000,
+        "priceFormatted": "Rp 10.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 20,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "nose-pad-tempel",
+    "name": "Nose Pad Tempel Silikon Soft",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Nose pad Tempel.webp",
+    "description": "Bantalan hidung silikon fleksibel menambah kenyamanan dan mencegah kacamata meninggalkan bekas di hidung.",
+    "specs": [
+      "Silikon Air-Cushion",
+      "Perekat Kuat",
+      "Bebas Bekas di Hidung",
+      "Anti-Sakit"
+    ],
+    "isAccessory": true,
+    "basePrice": 12000,
+    "basePriceFormatted": "Rp 12.000",
+    "badgeText": "Nosepad Cushion",
+    "variants": [
+      {
+        "id": "nose-pad-tempel",
+        "name": "Sepasang Nosepad",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Nose pad Tempel.webp",
+        "price": 12000,
+        "priceFormatted": "Rp 12.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 21,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  },
+  {
+    "id": "strap-kacamata",
+    "name": "Strap Tali Kacamata Sport / Etnik",
+    "brand": "Optik I See You",
+    "category": "Aksesoris dan Perawatan",
+    "type": "accessory",
+    "colorFamily": "accessory",
+    "coverImage": "/Katalog Soflens/Aksesoris/Strap Kacamata.webp",
+    "description": "Tali gantungan kacamata stylish dan kuat menjaga kacamata tetap aman di leher saat tidak dipakai.",
+    "specs": [
+      "Tali Flexible Adjustable",
+      "Pengunci Karet Kuat",
+      "Trendy dan Modis",
+      "Mencegah Kacamata Jatuh"
+    ],
+    "isAccessory": true,
+    "basePrice": 15000,
+    "basePriceFormatted": "Rp 15.000",
+    "badgeText": "Strap Kacamata",
+    "variants": [
+      {
+        "id": "strap-kacamata",
+        "name": "1 Pcs Tali Kacamata",
+        "colorFamily": "accessory",
+        "image": "/Katalog Soflens/Aksesoris/Strap Kacamata.webp",
+        "price": 15000,
+        "priceFormatted": "Rp 15.000"
+      }
+    ],
+    "isPublished": true,
+    "sortOrder": 22,
+    "createdAt": "2026-10-20T19:26:20.686Z",
+    "updatedAt": "2026-10-20T19:26:20.686Z"
+  }
+]

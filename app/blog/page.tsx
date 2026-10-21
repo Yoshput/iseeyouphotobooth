@@ -1,32 +1,55 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BLOG_POSTS, BlogCategory } from "@/lib/blog";
+import { BLOG_POSTS, BlogCategory, BlogPost } from "@/lib/blog";
+import { getBlogPosts } from "@/lib/db/repository";
 import Navbar from "@/components/ui/Navbar";
+
+export const dynamic = "force-dynamic";
 
 function getCategoryColor(category: BlogCategory) {
   switch (category) {
-    case "edukasi-mata": return "bg-blue-100 text-blue-800";
-    case "tips-pilih-frame": return "bg-green-100 text-green-800";
-    case "perawatan-softlens": return "bg-purple-100 text-purple-800";
-    case "tren-gaya": return "bg-orange-100 text-orange-800";
-    case "info-cabang-promo": return "bg-emerald-50 text-emerald-900 font-semibold border border-emerald-200/80";
-    default: return "bg-gray-100 text-gray-800";
+    case "edukasi-mata":
+      return "bg-blue-100 text-blue-800";
+    case "tips-pilih-frame":
+      return "bg-green-100 text-green-800";
+    case "perawatan-softlens":
+      return "bg-purple-100 text-purple-800";
+    case "tren-gaya":
+      return "bg-orange-100 text-orange-800";
+    case "info-cabang-promo":
+      return "bg-emerald-50 text-emerald-900 font-semibold border border-emerald-200/80";
+    default:
+      return "bg-gray-100 text-gray-800";
   }
 }
 
 function getCategoryLabel(category: BlogCategory) {
   if (category === "info-cabang-promo") return "Event dan Promo";
-  return category.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  return category
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
-export default function BlogIndex() {
-  const featuredArticle = BLOG_POSTS[0];
-  const restArticles = BLOG_POSTS.slice(1);
+export default async function BlogIndex() {
+  let articles: BlogPost[] = BLOG_POSTS;
+
+  try {
+    const livePosts = await getBlogPosts({ onlyPublished: true });
+    if (livePosts && livePosts.length > 0) {
+      articles = livePosts as unknown as BlogPost[];
+    }
+  } catch (err) {
+    console.warn("Falling back to static blog posts:", err);
+  }
+
+  const featuredArticle = articles[0];
+  const restArticles = articles.slice(1);
 
   return (
     <main className="min-h-screen bg-isy-gradient">
       <Navbar />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
         {/* Top-Left Back Button to Home */}
         <div className="mb-6">
@@ -52,20 +75,21 @@ export default function BlogIndex() {
         </div>
 
         <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight mb-3">Blog dan Edukasi Mata</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-isy-green-deep tracking-tight mb-3">
+            Blog dan Edukasi Mata
+          </h1>
           <p className="text-base sm:text-lg text-isy-ink/70 max-w-2xl mx-auto">
             Temukan panduan lengkap seputar kesehatan mata, tips memilih kacamata yang tepat, hingga tren gaya frame terbaru.
           </p>
         </div>
-
 
         {/* Featured Article */}
         {featuredArticle && (
           <Link href={`/blog/${featuredArticle.slug}`} className="block group mb-16">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-isy-line transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
               <div className="md:col-span-5 relative aspect-[4/5] w-full max-w-sm mx-auto md:max-w-none rounded-2xl overflow-hidden bg-isy-mist shadow-xs">
-                <Image 
-                  src={featuredArticle.coverImage} 
+                <Image
+                  src={featuredArticle.coverImage}
                   alt={featuredArticle.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
@@ -75,10 +99,15 @@ export default function BlogIndex() {
               </div>
               <div className="md:col-span-7 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-4 flex-wrap">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold w-fit ${getCategoryColor(featuredArticle.category)}`}>
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold w-fit ${getCategoryColor(
+                      featuredArticle.category
+                    )}`}
+                  >
                     {getCategoryLabel(featuredArticle.category)}
                   </span>
-                  {featuredArticle.slug === 'optik-i-see-you-banyumas-wedding-expo-rita-supermall' && (
+                  {featuredArticle.slug ===
+                    "optik-i-see-you-banyumas-wedding-expo-rita-supermall" && (
                     <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
                       Event Selesai
                     </span>
@@ -96,14 +125,30 @@ export default function BlogIndex() {
                   {featuredArticle.excerpt}
                 </p>
                 <div className="flex items-center text-sm text-isy-ink/50 space-x-4 mb-6">
-                  <span>{new Date(featuredArticle.publishedAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                  <span>
+                    {new Date(featuredArticle.publishedAt).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
                   <span>•</span>
                   <span>{featuredArticle.readingTime} min baca</span>
                 </div>
                 <span className="font-semibold text-isy-green-deep group-hover:text-isy-green-bright transition-colors flex items-center text-sm sm:text-base">
                   Baca Selengkapnya
-                  <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 </span>
               </div>
@@ -113,13 +158,12 @@ export default function BlogIndex() {
 
         {/* Article Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {restArticles.map(article => (
+          {restArticles.map((article) => (
             <Link key={article.slug} href={`/blog/${article.slug}`} className="block group">
               <div className="bg-white rounded-3xl p-5 shadow-sm border border-isy-line transition-transform duration-300 hover:-translate-y-1 hover:shadow-md h-full flex flex-col">
-                {/* Clean Image Container - Zero Overlay */}
                 <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden mb-5 bg-isy-mist shadow-xs">
-                  <Image 
-                    src={article.coverImage} 
+                  <Image
+                    src={article.coverImage}
                     alt={article.title}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -128,12 +172,16 @@ export default function BlogIndex() {
                 </div>
 
                 <div className="flex-grow px-2 flex flex-col">
-                  {/* Category Tag cleanly below image */}
                   <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(article.category)}`}>
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(
+                        article.category
+                      )}`}
+                    >
                       {getCategoryLabel(article.category)}
                     </span>
-                    {article.slug === 'optik-i-see-you-banyumas-wedding-expo-rita-supermall' && (
+                    {article.slug ===
+                      "optik-i-see-you-banyumas-wedding-expo-rita-supermall" && (
                       <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
                         Event Selesai
                       </span>
@@ -147,7 +195,13 @@ export default function BlogIndex() {
                     {article.excerpt}
                   </p>
                   <div className="flex items-center justify-between text-xs text-isy-ink/50 pt-4 border-t border-isy-line">
-                    <span>{new Date(article.publishedAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                    <span>
+                      {new Date(article.publishedAt).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
                     <span>{article.readingTime} min baca</span>
                   </div>
                 </div>
