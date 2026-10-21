@@ -99,7 +99,12 @@ export default function AdminLayoutClient({
         />
 
         <main className="flex-1 flex flex-col h-full min-h-0 overflow-hidden p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto relative">
-          {children}
+          <div
+            key={pathname}
+            className="flex-1 flex flex-col h-full min-h-0 overflow-hidden animate-in fade-in-50 slide-in-from-bottom-2 duration-300 ease-out"
+          >
+            {children}
+          </div>
           <ScrollToTop />
         </main>
       </div>

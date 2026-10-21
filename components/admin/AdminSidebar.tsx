@@ -153,11 +153,16 @@ export default function AdminSidebar({
                   }`}
                 >
                   <Icon
-                    className={`h-5 w-5 transition-colors ${
-                      active ? "text-white" : "text-isy-text-secondary group-hover:text-isy-emerald"
+                    className={`h-5 w-5 transition-transform duration-200 ${
+                      active ? "text-white scale-105" : "text-isy-text-secondary group-hover:text-isy-emerald group-hover:scale-105"
                     }`}
                   />
-                  <span>{item.name}</span>
+                  <span className="truncate">{item.name}</span>
+                  {active && (
+                    <span className="ml-auto flex h-2 w-2 items-center justify-center">
+                      <span className="h-1.5 w-1.5 rounded-full bg-isy-green-bright shadow-[0_0_8px_#2FA84F] animate-pulse" />
+                    </span>
+                  )}
                 </Link>
               );
             })}

@@ -473,24 +473,14 @@ export default function AdminFramesPage() {
                       </div>
                     </td>
 
-                    {/* Column 3: AR Try-On Badge */}
+                    {/* Column 3: Material & Dimensi */}
                     <td className="px-4 py-3.5">
-                      {frame.glassesId ? (
-                        <div className="flex flex-col gap-1 items-start">
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-800 border border-emerald-200">
-                            <Sparkles className="h-3 w-3 text-emerald-600" />
-                            <span>AR 2D Siap</span>
-                          </span>
-                          {frame.model3D && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-extrabold text-blue-800 border border-blue-200">
-                              <Box className="h-3 w-3 text-blue-600" />
-                              <span>Model 3D Aktif</span>
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-[11px] text-isy-text-secondary/60">Non-AR</span>
-                      )}
+                      <div className="text-xs font-semibold text-isy-emerald">
+                        {frame.material || "Asetat Premium"}
+                      </div>
+                      <div className="text-[11px] text-isy-text-secondary mt-0.5">
+                        {frame.dimensions ? `${frame.dimensions.lensWidth}-${frame.dimensions.bridgeWidth}-${frame.dimensions.templeLength} mm` : "Ukuran Standar"}
+                      </div>
                     </td>
 
                     {/* Column 4: Color Variants */}

@@ -4,6 +4,7 @@ import PWARegister from "@/components/ui/PWARegister";
 import PWAInstallPrompt from "@/components/ui/PWAInstallPrompt";
 import PWASplashScreen from "@/components/pwa/PWASplashScreen";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
+import TopProgressBar from "@/components/ui/TopProgressBar";
 import "./globals.css";
 
 /**
