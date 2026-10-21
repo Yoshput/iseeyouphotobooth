@@ -439,6 +439,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-isy-ivory font-sans antialiased">
+        {/* Real-Time Glowing Top Navigation Progress Bar */}
+        <TopProgressBar />
+
         {/* Luxury Brand Opening Splash Screen */}
         <PWASplashScreen />
 

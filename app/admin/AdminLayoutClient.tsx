@@ -5,6 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 import ScrollToTop from "@/components/admin/ScrollToTop";
+import { AdminNavigationProvider } from "@/components/admin/navigation/AdminNavigationProvider";
+import { AdminOnboardingProvider } from "@/components/admin/onboarding/AdminOnboardingProvider";
+import AdminEntryLoader from "@/components/admin/motion/AdminEntryLoader";
+import AdminPageReveal from "@/components/admin/motion/AdminPageReveal";
 import { SafeAdminUser } from "@/lib/auth/guard";
 
 interface AdminLayoutClientProps {
@@ -75,39 +79,46 @@ export default function AdminLayoutClient({
   }
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-isy-ivory font-sans selection:bg-isy-green-bright selection:text-white">
-      {/* Sidebar — Fixed left panel on desktop with its own smooth scroll */}
-      <AdminSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
+    <AdminNavigationProvider>
+      <AdminOnboardingProvider
+        userId={currentUser?.id}
         userRole={currentUser?.role}
-      />
+        onOpenSidebar={() => setSidebarOpen(true)}
+        onCloseSidebar={() => setSidebarOpen(false)}
+      >
+        <AdminEntryLoader />
+        <div className="flex h-screen w-full overflow-hidden bg-isy-ivory font-sans selection:bg-isy-green-bright selection:text-white">
+          {/* Sidebar — Fixed left panel on desktop with its own smooth scroll */}
+          <AdminSidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+            userRole={currentUser?.role}
+          />
 
-      {/* Main Content Area — Fixed header + Independent smooth scrolling content area */}
-      <div className="flex flex-1 flex-col h-full min-w-0 overflow-hidden">
-        <AdminHeader
-          onMenuClick={() => setSidebarOpen(true)}
-          user={
-            currentUser
-              ? {
-                  name: currentUser.name,
-                  email: currentUser.email,
-                  role: currentUser.role,
-                }
-              : undefined
-          }
-        />
+          {/* Main Content Area — Fixed header + Independent smooth scrolling content area */}
+          <div className="flex flex-1 flex-col h-full min-w-0 overflow-hidden">
+            <AdminHeader
+              onMenuClick={() => setSidebarOpen(true)}
+              user={
+                currentUser
+                  ? {
+                      name: currentUser.name,
+                      email: currentUser.email,
+                      role: currentUser.role,
+                    }
+                  : undefined
+              }
+            />
 
-        <main className="flex-1 flex flex-col h-full min-h-0 overflow-hidden p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto relative">
-          <div
-            key={pathname}
-            className="flex-1 flex flex-col h-full min-h-0 overflow-hidden animate-in fade-in-50 slide-in-from-bottom-2 duration-300 ease-out"
-          >
-            {children}
+            <main className="flex-1 flex flex-col h-full min-h-0 overflow-hidden p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto relative">
+              <AdminPageReveal key={pathname}>
+                {children}
+              </AdminPageReveal>
+              <ScrollToTop />
+            </main>
           </div>
-          <ScrollToTop />
-        </main>
-      </div>
-    </div>
+        </div>
+      </AdminOnboardingProvider>
+    </AdminNavigationProvider>
   );
 }

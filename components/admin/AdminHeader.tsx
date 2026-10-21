@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, CircleHelp } from "lucide-react";
 import ConfirmModal from "./ConfirmModal";
 
 interface AdminHeaderProps {
@@ -55,10 +55,30 @@ export default function AdminHeader({ onMenuClick, user }: AdminHeaderProps) {
           </div>
         </div>
 
-        {/* Right: User Profile & Logout */}
+        {/* Right: User Profile, Tour Replay & Logout */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Interactive Guided Tour Replay Button */}
+          <button
+            type="button"
+            data-tour="admin-help"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("admin:start-tour"));
+              }
+            }}
+            className="flex items-center gap-1.5 rounded-xl border border-isy-line bg-isy-mist/70 px-2.5 py-1.5 text-xs font-bold text-isy-emerald hover:bg-isy-emerald hover:text-white transition-all touch-manipulation shadow-2xs"
+            title="Buka panduan interaktif dashboard"
+            aria-label="Buka panduan dashboard"
+          >
+            <CircleHelp className="h-4 w-4 shrink-0 text-isy-green-bright" />
+            <span className="hidden md:inline">Panduan</span>
+          </button>
+
           {user && (
-            <div className="flex items-center gap-2 sm:gap-3 rounded-full border border-isy-line bg-isy-ivory/60 py-1 pl-1.5 pr-2.5 sm:py-1.5 sm:pl-3 sm:pr-4 shadow-2xs">
+            <div
+              data-tour="header-user"
+              className="flex items-center gap-2 sm:gap-3 rounded-full border border-isy-line bg-isy-ivory/60 py-1 pl-1.5 pr-2.5 sm:py-1.5 sm:pl-3 sm:pr-4 shadow-2xs"
+            >
               <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-isy-emerald text-white text-[11px] sm:text-xs font-bold shrink-0">
                 {user.name.charAt(0).toUpperCase()}
               </div>

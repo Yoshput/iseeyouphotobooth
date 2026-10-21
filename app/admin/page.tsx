@@ -77,23 +77,29 @@ export default async function AdminDashboardOverview() {
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
       {/* Welcome Banner (FIXED — Tidak Ikut Ter-scroll) */}
-      <div className="flex-shrink-0 rounded-3xl border border-isy-line bg-white p-5 sm:p-6 shadow-xs">
+      <div
+        data-tour="dashboard-overview"
+        className="flex-shrink-0 rounded-3xl border border-isy-line bg-white p-5 sm:p-6 shadow-xs"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 rounded-full bg-isy-mist px-3 py-1 text-xs font-bold text-isy-emerald border border-isy-line mb-2">
-              <span className="h-2 w-2 rounded-full bg-isy-green-bright animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-isy-green-bright shadow-[0_0_6px_rgba(47,168,79,0.8)]" />
               <span>Sistem Manajemen Konten Aktif</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-isy-emerald">
               Ringkasan Data Website
             </h2>
             <p className="mt-0.5 text-xs sm:text-sm text-isy-text-secondary">
-              Semua angka dan data di bawah ini terhubung langsung secara real-time ke penyimpanan permanen.
+              Semua angka dan data di bawah ini terhubung langsung ke basis data penyimpanan permanen.
             </p>
           </div>
 
           {/* Quick Action Button Group */}
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div
+            data-tour="dashboard-quick-actions"
+            className="flex flex-wrap items-center gap-2.5"
+          >
             <Link
               href="/admin/katalog-frame"
               className="inline-flex items-center gap-2 rounded-xl bg-isy-emerald px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-isy-emerald-hover transition-colors"
@@ -122,7 +128,10 @@ export default async function AdminDashboardOverview() {
       {/* Dashboard Body (SCROLLABLE AREA) */}
       <div id="admin-table-scroll" className="flex-1 min-h-0 overflow-y-auto admin-scrollbar pr-1 sm:pr-2 space-y-6">
         {/* Real Statistics Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+          data-tour="dashboard-stats"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        >
         {/* Metric 1: Frame */}
         <Link
           href="/admin/katalog-frame"

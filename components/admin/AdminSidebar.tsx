@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import {
@@ -36,41 +37,49 @@ export default function AdminSidebar({
       href: "/admin",
       icon: LayoutDashboard,
       exact: true,
+      tourId: "sidebar-dashboard",
     },
     {
       name: "Katalog Frame",
       href: "/admin/katalog-frame",
       icon: Glasses,
+      tourId: "sidebar-frame",
     },
     {
       name: "Katalog Softlens",
       href: "/admin/softlens",
       icon: Eye,
+      tourId: "sidebar-softlens",
     },
     {
       name: "Blog & Artikel",
       href: "/admin/blog",
       icon: BookOpen,
+      tourId: "sidebar-blog",
     },
     {
       name: "Media Library",
       href: "/admin/media",
       icon: ImageIcon,
+      tourId: "sidebar-media",
     },
     {
       name: "Konten Website",
       href: "/admin/konten-website",
       icon: Globe,
+      tourId: "sidebar-content",
     },
     {
       name: "Pengaturan Global",
       href: "/admin/pengaturan",
       icon: Settings,
+      tourId: "sidebar-settings",
     },
     {
       name: "Proposal Sponsor",
       href: "/admin/sponsor",
       icon: Handshake,
+      tourId: "sidebar-sponsor",
     },
     ...(userRole === "owner"
       ? [
@@ -78,6 +87,7 @@ export default function AdminSidebar({
             name: "Pengguna & Audit",
             href: "/admin/pengguna",
             icon: Users,
+            tourId: "sidebar-users",
           },
         ]
       : []),
@@ -89,6 +99,16 @@ export default function AdminSidebar({
     }
     return pathname.startsWith(item.href);
   };
+
+  // Close mobile drawer on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   return (
     <>
@@ -123,7 +143,7 @@ export default function AdminSidebar({
           </Link>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-isy-text-secondary hover:bg-isy-mist lg:hidden"
+            className="rounded-lg p-2 text-isy-text-secondary hover:bg-isy-mist lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
             aria-label="Tutup sidebar"
           >
             <X className="h-5 w-5" />
@@ -143,6 +163,7 @@ export default function AdminSidebar({
                 <Link
                   key={item.href}
                   href={item.href}
+                  data-tour={item.tourId}
                   onClick={() => {
                     if (window.innerWidth < 1024) onClose();
                   }}
@@ -160,7 +181,7 @@ export default function AdminSidebar({
                   <span className="truncate">{item.name}</span>
                   {active && (
                     <span className="ml-auto flex h-2 w-2 items-center justify-center">
-                      <span className="h-1.5 w-1.5 rounded-full bg-isy-green-bright shadow-[0_0_8px_#2FA84F] animate-pulse" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-isy-green-bright shadow-[0_0_8px_#2FA84F]" />
                     </span>
                   )}
                 </Link>

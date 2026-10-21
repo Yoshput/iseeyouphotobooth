@@ -16,11 +16,17 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import AdminCaptcha from "@/components/admin/AdminCaptcha";
+import {
+  AdminNavigationProvider,
+  useAdminNavigation,
+} from "@/components/admin/navigation/AdminNavigationProvider";
+import AdminEntryLoader from "@/components/admin/motion/AdminEntryLoader";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const noticeParam = searchParams.get("notice");
+  const { phase, startAuth, markRedirecting, failNavigation } = useAdminNavigation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,6 +61,7 @@ function LoginForm() {
 
     setIsLoading(true);
     setErrorMessage("");
+    startAuth("Memverifikasi kredensial akun...");
 
     try {
       const res = await fetch("/api/admin/auth/login", {
@@ -78,12 +85,12 @@ function LoginForm() {
         throw new Error(data.error || "Gagal melakukan verifikasi akun.");
       }
 
-      // Login Successful
-      router.push("/admin");
+      // Login Successful — Hand off smoothly to Admin Entry Loader & Dashboard
+      markRedirecting("/admin", "Mempersiapkan dashboard admin...");
       router.refresh();
     } catch (err: any) {
+      failNavigation(err.message || "Gagal verifikasi login");
       setErrorMessage(err.message || "Terjadi kesalahan saat login.");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -224,13 +231,17 @@ function LoginForm() {
           type="submit"
           disabled={isLoading || lockoutSeconds > 0}
           className={`w-full flex items-center justify-center gap-2 rounded-2xl bg-isy-emerald py-3.5 px-4 text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:bg-isy-emerald-hover active:scale-[0.99] cursor-pointer mt-2 ${
-            isLoading || lockoutSeconds > 0 ? "opacity-60 cursor-not-allowed" : ""
+            isLoading || lockoutSeconds > 0 ? "opacity-75 cursor-not-allowed" : ""
           }`}
         >
-          {isLoading ? (
+          {isLoading || phase === "authenticating" || phase === "redirecting" ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Memverifikasi Keamanan & Kredensial...</span>
+              <span>
+                {phase === "redirecting"
+                  ? "Mempersiapkan Dashboard Admin..."
+                  : "Memverifikasi Keamanan & Akses..."}
+              </span>
             </>
           ) : (
             <span>Masuk ke Panel Admin</span>
@@ -247,38 +258,41 @@ function LoginForm() {
 
 export default function AdminLoginPage() {
   return (
-    <main className="min-h-screen w-full flex flex-col justify-between bg-isy-ivory p-4 sm:p-8 font-sans selection:bg-isy-green-bright selection:text-white">
-      {/* Top Bar Navigation */}
-      <div className="max-w-md w-full mx-auto flex items-center justify-between pt-2">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-isy-emerald hover:text-isy-green-bright transition-colors bg-white/90 px-3.5 py-1.5 rounded-full border border-isy-line shadow-xs"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Kembali ke Website</span>
-        </Link>
-        <span className="text-xs font-bold text-isy-emerald bg-isy-mist px-3 py-1 rounded-full border border-isy-line">
-          Portal Internal
-        </span>
-      </div>
+    <AdminNavigationProvider>
+      <AdminEntryLoader />
+      <main className="min-h-screen w-full flex flex-col justify-between bg-isy-ivory p-4 sm:p-8 font-sans selection:bg-isy-green-bright selection:text-white">
+        {/* Top Bar Navigation */}
+        <div className="max-w-md w-full mx-auto flex items-center justify-between pt-2">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-isy-emerald hover:text-isy-green-bright transition-colors bg-white/90 px-3.5 py-1.5 rounded-full border border-isy-line shadow-xs"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Kembali ke Website</span>
+          </Link>
+          <span className="text-xs font-bold text-isy-emerald bg-isy-mist px-3 py-1 rounded-full border border-isy-line">
+            Portal Internal
+          </span>
+        </div>
 
-      {/* Login Card with Suspense for useSearchParams */}
-      <div className="my-auto py-6">
-        <Suspense
-          fallback={
-            <div className="flex h-64 items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-isy-emerald" />
-            </div>
-          }
-        >
-          <LoginForm />
-        </Suspense>
-      </div>
+        {/* Login Card with Suspense for useSearchParams */}
+        <div className="my-auto py-6">
+          <Suspense
+            fallback={
+              <div className="flex h-64 items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-isy-emerald" />
+              </div>
+            }
+          >
+            <LoginForm />
+          </Suspense>
+        </div>
 
-      {/* Footer Note */}
-      <div className="max-w-md w-full mx-auto text-center pb-2 text-[11px] text-isy-text-secondary/70">
-        © 2026 Optik I See You. Seluruh hak cipta dilindungi undang-undang.
-      </div>
-    </main>
+        {/* Footer Note */}
+        <div className="max-w-md w-full mx-auto text-center pb-2 text-[11px] text-isy-text-secondary/70">
+          © 2026 Optik I See You. Seluruh hak cipta dilindungi undang-undang.
+        </div>
+      </main>
+    </AdminNavigationProvider>
   );
 }

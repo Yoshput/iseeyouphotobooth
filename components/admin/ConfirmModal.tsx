@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertTriangle, X } from "lucide-react";
+import { useEffect } from "react";
+import { AlertTriangle, X, Loader2 } from "lucide-react";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -25,10 +26,26 @@ export default function ConfirmModal({
   confirmVariant = "primary",
   isLoading = false,
 }: ConfirmModalProps) {
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen || isLoading) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, isLoading, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+    <div
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="confirm-modal-title"
+      aria-describedby="confirm-modal-desc"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150"
+    >
       <div
         className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-xl border border-isy-line transition-all scale-100 animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
@@ -36,7 +53,8 @@ export default function ConfirmModal({
         <button
           onClick={onClose}
           disabled={isLoading}
-          className="absolute top-4 right-4 rounded-lg p-1.5 text-isy-text-secondary hover:bg-isy-mist"
+          className="absolute top-4 right-4 rounded-lg p-2 text-isy-text-secondary hover:bg-isy-mist min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
+          aria-label="Tutup dialog"
         >
           <X className="h-4 w-4" />
         </button>
@@ -51,9 +69,11 @@ export default function ConfirmModal({
           >
             <AlertTriangle className="h-5 w-5" />
           </div>
-          <div>
-            <h3 className="text-base font-bold text-isy-emerald">{title}</h3>
-            <p className="mt-1 text-xs sm:text-sm text-isy-text-secondary leading-relaxed">
+          <div className="pr-6">
+            <h3 id="confirm-modal-title" className="text-base font-bold text-isy-emerald">
+              {title}
+            </h3>
+            <p id="confirm-modal-desc" className="mt-1 text-xs sm:text-sm text-isy-text-secondary leading-relaxed">
               {description}
             </p>
           </div>
@@ -64,7 +84,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="rounded-xl border border-isy-line bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-isy-text-primary hover:bg-isy-mist transition-colors"
+            className="rounded-xl border border-isy-line bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-isy-text-primary hover:bg-isy-mist transition-colors min-h-[44px] touch-manipulation"
           >
             {cancelText}
           </button>
@@ -72,13 +92,14 @@ export default function ConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className={`rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-xs transition-colors ${
+            className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs transition-colors min-h-[44px] touch-manipulation ${
               confirmVariant === "danger"
                 ? "bg-red-600 hover:bg-red-700"
                 : "bg-isy-emerald hover:bg-isy-emerald-hover"
             } ${isLoading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
-            {confirmText}
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+            <span>{confirmText}</span>
           </button>
         </div>
       </div>
