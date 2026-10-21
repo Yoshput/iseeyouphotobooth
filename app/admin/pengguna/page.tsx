@@ -15,6 +15,10 @@ import {
   UserX,
   X,
   Lock,
+  Laptop,
+  Smartphone,
+  Tablet,
+  Globe,
 } from "lucide-react";
 import { AuditLog } from "@/lib/db/types";
 import { SafeAdminUser } from "@/lib/auth/guard";
@@ -318,31 +322,80 @@ export default function AdminUsersPage() {
                 <thead className="sticky top-0 z-10 border-b border-isy-line bg-[#FAF7F0] text-[11px] font-bold uppercase tracking-wider text-isy-text-secondary backdrop-blur-xs shadow-2xs">
                   <tr>
                     <th className="px-4 py-3">Waktu</th>
-                    <th className="px-4 py-3">Pengguna</th>
+                    <th className="px-4 py-3">Akun & Email</th>
+                    <th className="px-4 py-3">Perangkat / Device</th>
                     <th className="px-4 py-3">Aksi & Modul</th>
                     <th className="px-4 py-3">Detail Aktivitas</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-isy-line">
-                  {filteredLogs.map((log) => (
-                    <tr key={log.id} className="hover:bg-isy-mist/30">
-                      <td className="px-4 py-3 text-xs text-isy-text-secondary whitespace-nowrap">
-                        {new Date(log.createdAt).toLocaleString("id-ID")}
-                      </td>
-                      <td className="px-4 py-3 font-semibold text-isy-emerald">
-                        {log.userEmail}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="inline-block rounded-md bg-isy-mist px-2 py-0.5 text-[10px] font-bold text-isy-emerald border border-isy-line mr-2">
-                          {log.module}
-                        </span>
-                        <span className="font-bold text-xs uppercase">{log.action}</span>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-isy-ink font-mono">
-                        {log.details ? JSON.stringify(log.details) : "-"}
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredLogs.map((log) => {
+                    const deviceName = log.device || (log.details?.device as string | undefined);
+                    const isMobile = log.deviceType === "mobile" || deviceName?.toLowerCase().includes("hp") || deviceName?.toLowerCase().includes("iphone") || deviceName?.toLowerCase().includes("android");
+                    const isTablet = log.deviceType === "tablet" || deviceName?.toLowerCase().includes("ipad") || deviceName?.toLowerCase().includes("tablet");
+
+                    return (
+                      <tr key={log.id} className="hover:bg-isy-mist/30">
+                        <td className="px-4 py-3 text-xs text-isy-text-secondary whitespace-nowrap">
+                          {new Date(log.createdAt).toLocaleString("id-ID", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-xs font-bold text-isy-emerald">
+                            {log.userName || (log.details?.userName as string) || "Admin"}
+                          </div>
+                          <div className="text-[11px] text-isy-text-secondary">
+                            {log.userEmail}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          {deviceName ? (
+                            <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#FAF7F0] border border-isy-line px-2.5 py-1 text-xs font-semibold text-[#183C30]">
+                              {isMobile ? (
+                                <Smartphone className="h-3.5 w-3.5 text-emerald-700" />
+                              ) : isTablet ? (
+                                <Tablet className="h-3.5 w-3.5 text-emerald-700" />
+                              ) : (
+                                <Laptop className="h-3.5 w-3.5 text-emerald-700" />
+                              )}
+                              <span>{deviceName}</span>
+                            </span>
+                          ) : (
+                            <span className="text-xs text-isy-text-secondary/60">-</span>
+                          )}
+                          {log.ipAddress && log.ipAddress !== "127.0.0.1" && log.ipAddress !== "::1" && (
+                            <div className="text-[10px] text-isy-text-secondary/60 mt-0.5">
+                              IP: {log.ipAddress}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span className="inline-block rounded-md bg-isy-mist px-2 py-0.5 text-[10px] font-bold text-isy-emerald border border-isy-line mr-2">
+                            {log.module}
+                          </span>
+                          <span className="font-bold text-xs uppercase">{log.action}</span>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-isy-ink font-mono max-w-xs truncate">
+                          {log.details ? (
+                            log.details.message || log.details.reason ? (
+                              <span className="font-sans font-medium text-isy-text-primary">
+                                {log.details.message || log.details.reason}
+                              </span>
+                            ) : (
+                              JSON.stringify(log.details)
+                            )
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

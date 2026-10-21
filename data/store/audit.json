@@ -1,23 +1,34 @@
 [
   {
     "userId": "usr-owner-initial",
+    "userName": "Owner Optik I See You",
     "userEmail": "admin@optikiseeyou.com",
     "action": "login_success",
     "module": "auth",
-    "ipAddress": "::1",
+    "ipAddress": "127.0.0.1",
+    "device": "Laptop (Windows 11) • Chrome",
+    "deviceType": "desktop",
     "details": {
-      "role": "owner"
+      "role": "owner",
+      "userName": "Owner Optik I See You",
+      "device": "Laptop (Windows 11) • Chrome",
+      "browser": "Google Chrome",
+      "os": "Windows 11"
     },
     "id": "log-1792556666060-446",
     "createdAt": "2026-10-21T04:24:26.060Z"
   },
   {
     "userEmail": "system",
+    "userName": "Sistem Internal",
     "action": "seed",
     "module": "auth",
     "targetId": "usr-owner-initial",
+    "device": "Server (System Process)",
+    "deviceType": "desktop",
     "details": {
-      "message": "Akun owner awal otomatis diinisialisasi"
+      "message": "Akun owner awal otomatis diinisialisasi",
+      "device": "Server (System Process)"
     },
     "id": "log-1792524385754-495",
     "createdAt": "2026-10-20T19:26:25.754Z"

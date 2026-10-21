@@ -5,6 +5,8 @@ import {
   addAuditLog,
 } from "@/lib/db/repository";
 import { verifyPassword } from "@/lib/auth/passwords";
+import { parseUserAgent } from "@/lib/auth/device";
+import { verifyCaptcha } from "@/lib/auth/captcha";
 import {
   createSession,
   SESSION_COOKIE_NAME,
@@ -38,11 +40,41 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { email, password } = body;
+    const { email, password, captchaAnswer, captchaToken, admin_trap_code } = body;
+
+    // 1. Honeypot check for bots
+    if (admin_trap_code) {
+      await addAuditLog({
+        userEmail: String(email || "unknown_bot"),
+        action: "bot_honeypot_triggered",
+        module: "auth",
+        ipAddress: ip,
+        userAgent,
+        device: "Automated Bot / Malicious Crawler",
+        details: { reason: "Honeypot trap triggered" },
+      });
+      return NextResponse.json(
+        { success: false, error: "Akses ditolak: Aktivitas mencurigakan terdeteksi." },
+        { status: 403 }
+      );
+    }
 
     if (!email || !password) {
       return NextResponse.json(
         { success: false, error: "Email dan password wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    // 2. CAPTCHA verification
+    const captchaCheck = verifyCaptcha(captchaAnswer, captchaToken);
+    if (!captchaCheck.valid) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: captchaCheck.error || "Verifikasi keamanan (CAPTCHA) tidak sesuai.",
+          requiresNewCaptcha: true,
+        },
         { status: 400 }
       );
     }
@@ -76,12 +108,23 @@ export async function POST(req: Request) {
         lockedUntil: willLock ? now + LOCKOUT_MS : 0,
       };
 
+      const failedDev = parseUserAgent(userAgent);
       await addAuditLog({
+        userId: user.id,
+        userName: user.name,
         userEmail: user.email,
         action: "login_failed",
         module: "auth",
         ipAddress: ip,
-        details: { reason: "Password salah" },
+        userAgent,
+        device: failedDev.device,
+        deviceType: failedDev.deviceType,
+        details: {
+          reason: "Password salah",
+          device: failedDev.device,
+          os: failedDev.os,
+          browser: failedDev.browser,
+        },
       });
 
       return NextResponse.json(
@@ -104,13 +147,24 @@ export async function POST(req: Request) {
     user.lastLoginAt = new Date().toISOString();
     await saveAdminUser(user);
 
+    const devInfo = parseUserAgent(userAgent);
     await addAuditLog({
       userId: user.id,
+      userName: user.name,
       userEmail: user.email,
       action: "login_success",
       module: "auth",
       ipAddress: ip,
-      details: { role: user.role },
+      userAgent,
+      device: devInfo.device,
+      deviceType: devInfo.deviceType,
+      details: {
+        role: user.role,
+        userName: user.name,
+        device: devInfo.device,
+        os: devInfo.os,
+        browser: devInfo.browser,
+      },
     });
 
     const isProd = process.env.NODE_ENV === "production";

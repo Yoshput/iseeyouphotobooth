@@ -10,6 +10,10 @@ import {
   ShieldCheck,
   CheckCircle2,
   FileEdit,
+  Laptop,
+  Smartphone,
+  Tablet,
+  Globe,
 } from "lucide-react";
 import {
   getFrames,
@@ -304,32 +308,90 @@ export default async function AdminDashboardOverview() {
               </div>
             ) : (
               <div className="space-y-3">
-                {auditLogs.slice(0, 6).map((log) => (
-                  <div
-                    key={log.id}
-                    className="flex items-start gap-3 pb-3 border-b border-isy-line/60 last:border-b-0 last:pb-0"
-                  >
-                    <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-isy-mist text-isy-emerald">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-isy-green-bright" />
+                {auditLogs.slice(0, 6).map((log) => {
+                  const deviceName = log.device || (log.details?.device as string | undefined);
+                  const isMobile = log.deviceType === "mobile" || deviceName?.toLowerCase().includes("hp") || deviceName?.toLowerCase().includes("iphone") || deviceName?.toLowerCase().includes("android");
+                  const isTablet = log.deviceType === "tablet" || deviceName?.toLowerCase().includes("ipad") || deviceName?.toLowerCase().includes("tablet");
+                  const isAuth = log.module === "auth" || log.action.includes("login");
+
+                  return (
+                    <div
+                      key={log.id}
+                      className="flex items-start gap-3 pb-3 border-b border-isy-line/60 last:border-b-0 last:pb-0"
+                    >
+                      <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-isy-mist text-isy-emerald border border-isy-line/70">
+                        {isAuth ? (
+                          isMobile ? (
+                            <Smartphone className="h-4 w-4 text-emerald-700" />
+                          ) : isTablet ? (
+                            <Tablet className="h-4 w-4 text-emerald-700" />
+                          ) : (
+                            <Laptop className="h-4 w-4 text-emerald-700" />
+                          )
+                        ) : (
+                          <CheckCircle2 className="h-4 w-4 text-isy-green-bright" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-bold text-isy-emerald">
+                            {log.action.toUpperCase()}
+                          </span>
+                          <span className="rounded-md bg-isy-mist px-1.5 py-0.5 text-[9px] font-bold text-isy-emerald border border-isy-line">
+                            {log.module}
+                          </span>
+                        </div>
+
+                        {/* Nama Admin & Email */}
+                        <div className="text-[11px] text-isy-ink font-medium mt-0.5 truncate">
+                          {log.userName ? (
+                            <span>
+                              <strong className="text-isy-emerald">{log.userName}</strong>{" "}
+                              <span className="text-isy-text-secondary">({log.userEmail})</span>
+                            </span>
+                          ) : (
+                            <span>
+                              Oleh: <strong className="text-isy-emerald">{log.userEmail}</strong>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Nama Perangkat Laptop / HP */}
+                        {deviceName && (
+                          <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-[#FAF7F0] px-2 py-0.5 text-[10px] font-semibold text-[#183C30] border border-isy-line">
+                              {isMobile ? (
+                                <Smartphone className="h-3 w-3 text-isy-emerald" />
+                              ) : isTablet ? (
+                                <Tablet className="h-3 w-3 text-isy-emerald" />
+                              ) : (
+                                <Laptop className="h-3 w-3 text-isy-emerald" />
+                              )}
+                              <span>{deviceName}</span>
+                            </span>
+                            {log.ipAddress && log.ipAddress !== "127.0.0.1" && log.ipAddress !== "::1" && (
+                              <span className="text-[10px] text-isy-text-secondary/60">
+                                IP: {log.ipAddress}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Waktu Login */}
+                        <div className="text-[10px] text-isy-text-secondary/70 mt-1">
+                          {new Date(log.createdAt).toLocaleDateString("id-ID", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}{" "}
+                          WIB
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-bold text-isy-emerald truncate">
-                        {log.action.toUpperCase()} — {log.module}
-                      </div>
-                      <div className="text-[11px] text-isy-text-secondary">
-                        Oleh: {log.userEmail}
-                      </div>
-                      <div className="text-[10px] text-isy-text-secondary/70">
-                        {new Date(log.createdAt).toLocaleDateString("id-ID", {
-                          day: "numeric",
-                          month: "short",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

@@ -37,7 +37,7 @@ export default function AdminFramesPage() {
   // Form Modal States
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingFrame, setEditingFrame] = useState<FrameItem | null>(null);
-  const [formTab, setFormTab] = useState<"info" | "images" | "specs" | "ar">("info");
+  const [formTab, setFormTab] = useState<"info" | "images" | "specs">("info");
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [formError, setFormError] = useState("");
@@ -353,7 +353,7 @@ export default function AdminFramesPage() {
               <span>Katalog Frame Kacamata</span>
             </h2>
             <p className="mt-0.5 text-xs sm:text-sm text-isy-text-secondary">
-              Kelola model kacamata, koleksi, spesifikasi dimensi, dan sinkronisasi AR Try-On
+              Kelola model kacamata, koleksi, spesifikasi material, dimensi, dan foto katalog
             </p>
           </div>
 
@@ -429,7 +429,7 @@ export default function AdminFramesPage() {
                 <tr>
                   <th className="px-4 py-3.5">Produk</th>
                   <th className="px-4 py-3.5">Koleksi & Bentuk</th>
-                  <th className="px-4 py-3.5">Fitur AR Try-On</th>
+                  <th className="px-4 py-3.5">Material & Dimensi</th>
                   <th className="px-4 py-3.5">Varian Warna</th>
                   <th className="px-4 py-3.5">Status</th>
                   <th className="px-4 py-3.5 text-right">Aksi</th>
@@ -568,7 +568,7 @@ export default function AdminFramesPage() {
                   {editingFrame ? "Edit Frame Kacamata" : "Tambah Frame Kacamata Baru"}
                 </h3>
                 <p className="text-xs text-isy-text-secondary">
-                  Konfigurasikan informasi katalog, foto, dimensi, dan AR Try-On
+                  Konfigurasikan informasi katalog, foto produk, dimensi, dan varian warna
                 </p>
               </div>
               <button
@@ -614,17 +614,7 @@ export default function AdminFramesPage() {
               >
                 Dimensi & Varian
               </button>
-              <button
-                type="button"
-                onClick={() => setFormTab("ar")}
-                className={`border-b-2 px-4 py-3 text-xs sm:text-sm font-bold transition-colors ${
-                  formTab === "ar"
-                    ? "border-isy-emerald text-isy-emerald"
-                    : "border-transparent text-isy-text-secondary hover:text-isy-emerald"
-                }`}
-              >
-                AR Try-On & Wajah
-              </button>
+
             </div>
 
             {/* Form Content */}
@@ -993,96 +983,6 @@ export default function AdminFramesPage() {
                           </button>
                         </div>
                       ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 4: AR Try-On & Recommendations */}
-              {formTab === "ar" && (
-                <div className="space-y-4">
-                  <div className="p-3.5 rounded-2xl bg-isy-mist border border-isy-line text-xs text-isy-emerald leading-relaxed">
-                    <strong>Sinkronisasi AR Otomatis:</strong> Konfigurasi di bawah ini langsung terhubung dengan fitur kamera AR Try-On 2D & 3D di website tanpa merusak aset manifest yang sedang aktif.
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-isy-emerald mb-1">
-                        Glasses ID di AR Manifest (manifest.json)
-                      </label>
-                      <input
-                        type="text"
-                        value={glassesId}
-                        onChange={(e) => setGlassesId(e.target.value)}
-                        placeholder="Contoh: cateye-frame, square-frame"
-                        className="w-full rounded-xl border border-isy-line bg-white px-3.5 py-2 text-xs sm:text-sm text-isy-ink font-mono focus:border-isy-emerald focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-isy-emerald mb-1">
-                        URL Model 3D (.glb)
-                      </label>
-                      <input
-                        type="text"
-                        value={model3DGlb}
-                        onChange={(e) => setModel3DGlb(e.target.value)}
-                        placeholder="https://.../glasses.glb"
-                        className="w-full rounded-xl border border-isy-line bg-white px-3.5 py-2 text-xs sm:text-sm text-isy-ink focus:border-isy-emerald focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-isy-emerald mb-1">
-                        Fit Width Ratio AR (~1.4 - 1.5)
-                      </label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={fitWidthRatio || ""}
-                        onChange={(e) => setFitWidthRatio(e.target.value ? Number(e.target.value) : undefined)}
-                        placeholder="1.44"
-                        className="w-full rounded-xl border border-isy-line bg-white px-3.5 py-2 text-xs sm:text-sm text-isy-ink font-mono focus:border-isy-emerald focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-isy-emerald mb-1">
-                        IPD Scale Ref (~1.0 - 1.05)
-                      </label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={ipdScaleRef || ""}
-                        onChange={(e) => setIpdScaleRef(e.target.value ? Number(e.target.value) : undefined)}
-                        placeholder="1.02"
-                        className="w-full rounded-xl border border-isy-line bg-white px-3.5 py-2 text-xs sm:text-sm text-isy-ink font-mono focus:border-isy-emerald focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-isy-emerald mb-2">
-                      Rekomendasi Bentuk Wajah (AI Face Matching)
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {FACE_SHAPES.map((shapeName) => {
-                        const isSelected = recommendedFor.includes(shapeName);
-                        return (
-                          <button
-                            key={shapeName}
-                            type="button"
-                            onClick={() => toggleFaceShape(shapeName)}
-                            className={`rounded-full px-3.5 py-1 text-xs font-bold transition-colors ${
-                              isSelected
-                                ? "bg-isy-emerald text-white shadow-xs"
-                                : "bg-isy-ivory text-isy-text-secondary border border-isy-line hover:border-isy-emerald"
-                            }`}
-                          >
-                            {shapeName} {isSelected && "✓"}
-                          </button>
-                        );
-                      })}
                     </div>
                   </div>
                 </div>

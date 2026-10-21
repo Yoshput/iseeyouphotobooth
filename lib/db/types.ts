@@ -28,12 +28,16 @@ export interface AdminSession {
 export interface AuditLog {
   id: string;
   userId?: string;
+  userName?: string;
   userEmail: string;
-  action: string; // "create", "update", "delete", "publish", "unpublish", "login"
+  action: string; // "create", "update", "delete", "publish", "unpublish", "login_success", "login_failed", "seed", etc.
   module: "frames" | "softlens" | "blog" | "media" | "settings" | "auth" | "users";
   targetId?: string;
   details?: Record<string, any>;
   ipAddress?: string;
+  userAgent?: string;
+  device?: string; // e.g. "Laptop (Windows 11) • Chrome"
+  deviceType?: "desktop" | "mobile" | "tablet" | "unknown";
   createdAt: string;
 }
 
