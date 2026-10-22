@@ -26,12 +26,12 @@ export default function AdminLayoutClient({
   const [currentUser, setCurrentUser] = useState<SafeAdminUser | null>(initialUser);
   const [checkingAuth, setCheckingAuth] = useState(!initialUser);
 
-  // If on login or standalone sponsor page, render children directly
+  // If on login page, render children directly
   const isAuthPage = pathname === "/admin/login";
-  const isStandalonePage = pathname.startsWith("/admin/sponsor");
+  
 
   useEffect(() => {
-    if (isAuthPage || isStandalonePage) {
+    if (isAuthPage) {
       setCheckingAuth(false);
       return;
     }
@@ -59,9 +59,9 @@ export default function AdminLayoutClient({
     } else {
       setCheckingAuth(false);
     }
-  }, [pathname, currentUser, isAuthPage, isStandalonePage, router]);
+  }, [pathname, currentUser, isAuthPage, router]);
 
-  if (isAuthPage || isStandalonePage) {
+  if (isAuthPage) {
     return <>{children}</>;
   }
 

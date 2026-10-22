@@ -743,3 +743,18 @@ export async function revokeAdminSession(token: string): Promise<void> {
   const active = sessions.filter((s) => s.token !== token);
   await writeStore("sessions", active);
 }
+
+// =============================================================================
+// REPOSITORY METHODS: SPONSORSHIPS
+// =============================================================================
+
+export async function getSponsorships(): Promise<any[]> {
+  try {
+    const { readSponsorships } = await import("@/lib/db/sponsorships");
+    return await readSponsorships();
+  } catch (err) {
+    console.error("Failed to read sponsorships:", err);
+    return [];
+  }
+}
+

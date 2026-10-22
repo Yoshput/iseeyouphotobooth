@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   FileEdit,
+  FileSpreadsheet,
   Laptop,
   Smartphone,
   Tablet,
@@ -21,18 +22,23 @@ import {
   getBlogPosts,
   getMediaFiles,
   getAuditLogs,
+  getSponsorships,
 } from "@/lib/db/repository";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardOverview() {
-  const [frames, softlens, blogPosts, mediaFiles, auditLogs] = await Promise.all([
+  const [frames, softlens, blogPosts, mediaFiles, auditLogs, sponsorships] = await Promise.all([
     getFrames(),
     getSoftlens(),
     getBlogPosts(),
     getMediaFiles(),
     getAuditLogs({ limit: 10 }),
+    getSponsorships(),
   ]);
+
+  const totalSponsor = sponsorships.length;
+  const pendingSponsor = sponsorships.filter((s: any) => s.status === "Menunggu Review").length;
 
   const totalFrames = frames.length;
   const publishedFrames = frames.filter((f) => f.isPublished).length;
@@ -69,6 +75,14 @@ export default async function AdminDashboardOverview() {
       moduleHref: "/admin/blog",
       updatedAt: b.updatedAt,
       status: b.status === "published" ? "Terbit" : b.status === "draft" ? "Draft" : "Arsip",
+    })),
+    ...sponsorships.map((s) => ({
+      id: s.id,
+      title: `${s.instansi} • ${s.namaKegiatan}`,
+      module: "Proposal Sponsor",
+      moduleHref: "/admin/sponsor",
+      updatedAt: s.createdAt,
+      status: s.status,
     })),
   ]
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
@@ -130,7 +144,7 @@ export default async function AdminDashboardOverview() {
         {/* Real Statistics Metric Cards */}
         <div
           data-tour="dashboard-stats"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
         >
         {/* Metric 1: Frame */}
         <Link
@@ -201,6 +215,31 @@ export default async function AdminDashboardOverview() {
           </div>
           <p className="mt-2 text-[11px] text-isy-text-secondary flex items-center justify-between">
             <span>Artikel blog terbit</span>
+            <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+          </p>
+        </Link>
+
+        {/* Metric 5: Proposal Sponsor */}
+        <Link
+          href="/admin/sponsor"
+          className="group rounded-2xl border border-isy-line bg-white p-5 shadow-xs hover:border-isy-emerald hover:shadow-md transition-all"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-isy-text-secondary">
+              Proposal Sponsor
+            </span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-isy-mist text-isy-emerald group-hover:bg-isy-emerald group-hover:text-white transition-colors">
+              <FileSpreadsheet className="h-5 w-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline justify-between">
+            <div className="text-3xl font-extrabold text-isy-emerald">{totalSponsor}</div>
+            <div className="text-xs font-bold text-amber-700">
+              {pendingSponsor} Review
+            </div>
+          </div>
+          <p className="mt-2 text-[11px] text-isy-text-secondary flex items-center justify-between">
+            <span>Kegiatan & kemitraan</span>
             <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
           </p>
         </Link>

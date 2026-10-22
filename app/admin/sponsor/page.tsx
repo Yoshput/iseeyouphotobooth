@@ -1,42 +1,26 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
-  Lock,
   Search,
   ExternalLink,
   Download,
   RefreshCw,
   FileSpreadsheet,
-  ArrowLeft,
   ChevronDown,
-  Eye,
-  EyeOff,
-  LogOut,
   X,
   FileText,
   ArrowUpDown,
   RotateCcw,
 } from "lucide-react";
-import gsap from "gsap";
-import { SponsorshipItem } from "@/app/api/sponsor/route";
+import { SponsorshipItem } from "@/lib/db/sponsorships";
 import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
 
 export default function AdminSponsorPage() {
-  // ── Authentication States ──────────────────────────────────────────────────
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [pinInput, setPinInput] = useState("");
-  const [showPin, setShowPin] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [pinError, setPinError] = useState("");
-  const [attemptsLeft, setAttemptsLeft] = useState<number | null>(null);
-  const [isLocked, setIsLocked] = useState(false);
-  const [lockoutTimer, setLockoutTimer] = useState(0);
-
   // ── Data & Filter States ───────────────────────────────────────────────────
   const [items, setItems] = useState<SponsorshipItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCabang, setSelectedCabang] = useState("Semua");
   const [selectedStatus, setSelectedStatus] = useState("Semua");
@@ -54,132 +38,6 @@ export default function AdminSponsorPage() {
 
   // ── Quick Toast Notification — shared accessible component ───────────────
   const { toast, showToast, dismissToast } = useAdminToast();
-
-  // ── Animation Refs ─────────────────────────────────────────────────────────
-  const loginCardRef = useRef<HTMLDivElement>(null);
-
-  // ── Check Session Token on Mount ───────────────────────────────────────────
-  useEffect(() => {
-    try {
-      const storedToken = sessionStorage.getItem("isy_admin_session_token");
-      if (storedToken) {
-        setIsAuthenticated(true);
-      }
-    } catch {}
-
-    // Check IP rate-limit / lockout status
-    fetch("/api/admin/verify")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.locked && data.remainingSeconds > 0) {
-          setIsLocked(true);
-          setLockoutTimer(data.remainingSeconds);
-        } else if (typeof data.attemptsLeft === "number") {
-          setAttemptsLeft(data.attemptsLeft);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  // ── Lockout Countdown Timer ───────────────────────────────────────────────
-  useEffect(() => {
-    if (!isLocked || lockoutTimer <= 0) return;
-    const interval = setInterval(() => {
-      setLockoutTimer((prev) => {
-        if (prev <= 1) {
-          setIsLocked(false);
-          setPinError("");
-          setAttemptsLeft(5);
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isLocked, lockoutTimer]);
-
-  // ── GSAP Entrance Animation for Login Card ─────────────────────────────────
-  useEffect(() => {
-    if (!isAuthenticated && loginCardRef.current) {
-      gsap.fromTo(
-        loginCardRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
-      );
-    }
-  }, [isAuthenticated]);
-
-  const triggerErrorShake = () => {
-    if (loginCardRef.current) {
-      gsap.to(loginCardRef.current, {
-        x: 8,
-        duration: 0.05,
-        repeat: 5,
-        yoyo: true,
-        ease: "power2.inOut",
-        onComplete: () => {
-          gsap.set(loginCardRef.current, { x: 0 });
-        },
-      });
-    }
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isLocked) return;
-    if (!pinInput.trim()) {
-      setPinError("Silakan masukkan PIN otorisasi.");
-      triggerErrorShake();
-      return;
-    }
-
-    setIsVerifying(true);
-    setPinError("");
-
-    try {
-      const res = await fetch("/api/admin/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pin: pinInput }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        setIsAuthenticated(true);
-        setPinError("");
-        try {
-          sessionStorage.setItem("isy_admin_session_token", data.token);
-        } catch {}
-      } else {
-        triggerErrorShake();
-        if (data.locked) {
-          setIsLocked(true);
-          setLockoutTimer(data.remainingSeconds || 300);
-          setPinError(data.error || "Akses dikunci selama 5 menit karena alasan keamanan.");
-        } else {
-          setPinError(data.error || "PIN salah. Periksa kembali Security PIN Anda.");
-          if (typeof data.attemptsLeft === "number") {
-            setAttemptsLeft(data.attemptsLeft);
-          }
-        }
-      }
-    } catch {
-      setPinError("Gagal menghubungi server verifikasi.");
-      triggerErrorShake();
-    } finally {
-      setIsVerifying(false);
-    }
-  };
-
-  const handleLogout = () => {
-    try {
-      sessionStorage.removeItem("isy_admin_session_token");
-    } catch {}
-    setIsAuthenticated(false);
-    setPinInput("");
-    showToast("Berhasil keluar dari sesi admin", "info");
-  };
 
   // ── Fetch Sponsorship Data ─────────────────────────────────────────────────
   const loadData = async () => {
@@ -199,10 +57,8 @@ export default function AdminSponsorPage() {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      loadData();
-    }
-  }, [isAuthenticated]);
+    loadData();
+  }, []);
 
   // Sync internal notes state when detail item changes
   useEffect(() => {
@@ -219,25 +75,25 @@ export default function AdminSponsorPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: newStatus }),
       });
-      const json = await res.json();
-      if (json.success) {
+      const data = await res.json();
+
+      if (res.ok && data.success) {
         setItems((prev) =>
           prev.map((item) => (item.id === id ? { ...item, status: newStatus } : item))
         );
         if (selectedDetailItem && selectedDetailItem.id === id) {
           setSelectedDetailItem((prev) => (prev ? { ...prev, status: newStatus } : null));
         }
-        showToast(`Status #${id} diperbarui ke "${newStatus}"`, "success");
+        showToast(`Status berhasil diubah ke: ${newStatus}`, "success");
       } else {
-        showToast("Gagal memperbarui status proposal", "error");
+        showToast(data.error || "Gagal mengubah status proposal", "error");
       }
-    } catch (err) {
-      console.error("Error updating status:", err);
-      showToast("Gagal menghubungi server", "error");
+    } catch {
+      showToast("Gagal menghubungi server untuk update status", "error");
     }
   };
 
-  // ── Save Internal Notes ────────────────────────────────────────────────────
+  // ── Save Internal Notes Handler ────────────────────────────────────────────
   const handleSaveInternalNotes = async () => {
     if (!selectedDetailItem) return;
     setIsSavingNotes(true);
@@ -250,17 +106,21 @@ export default function AdminSponsorPage() {
           catatanInternal: internalNotes,
         }),
       });
-      const json = await res.json();
-      if (json.success) {
+      const data = await res.json();
+      if (res.ok && data.success) {
         setItems((prev) =>
           prev.map((item) =>
-            item.id === selectedDetailItem.id ? { ...item, catatanInternal: internalNotes } : item
+            item.id === selectedDetailItem.id
+              ? { ...item, catatanInternal: internalNotes }
+              : item
           )
         );
-        setSelectedDetailItem((prev) => (prev ? { ...prev, catatanInternal: internalNotes } : null));
+        setSelectedDetailItem((prev) =>
+          prev ? { ...prev, catatanInternal: internalNotes } : null
+        );
         showToast("Catatan internal berhasil disimpan", "success");
       } else {
-        showToast("Gagal menyimpan catatan", "error");
+        showToast(data.error || "Gagal menyimpan catatan", "error");
       }
     } catch {
       showToast("Terjadi kesalahan saat menyimpan catatan", "error");
@@ -274,343 +134,157 @@ export default function AdminSponsorPage() {
     if (!itemToDelete) return;
     setIsDeleting(true);
     try {
-      const res = await fetch(`/api/sponsor?id=${itemToDelete.id}`, {
+      const res = await fetch(`/api/sponsor?id=${encodeURIComponent(itemToDelete.id)}`, {
         method: "DELETE",
       });
-      const json = await res.json();
-      if (json.success) {
-        setItems((prev) => prev.filter((item) => item.id !== itemToDelete.id));
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setItems((prev) => prev.filter((i) => i.id !== itemToDelete.id));
         if (selectedDetailItem?.id === itemToDelete.id) {
           setSelectedDetailItem(null);
         }
-        showToast(`Proposal #${itemToDelete.id} berhasil dihapus`, "success");
+        setItemToDelete(null);
+        showToast("Proposal berhasil dihapus", "success");
       } else {
-        showToast("Gagal menghapus proposal", "error");
+        showToast(data.error || "Gagal menghapus proposal", "error");
       }
-    } catch (err) {
-      console.error("Error deleting proposal:", err);
-      showToast("Gagal menghapus proposal", "error");
+    } catch {
+      showToast("Terjadi kesalahan saat menghapus proposal", "error");
     } finally {
       setIsDeleting(false);
-      setItemToDelete(null);
     }
   };
 
-  // ── Export CSV with UTF-8 BOM ──────────────────────────────────────────────
+  // ── Export CSV Handler ─────────────────────────────────────────────────────
   const handleExportCSV = () => {
     if (items.length === 0) {
-      showToast("Belum ada data untuk diexport", "info");
+      showToast("Tidak ada data untuk diekspor", "info");
       return;
     }
 
     const headers = [
       "ID",
-      "Tanggal Submit",
+      "Tanggal Pengajuan",
+      "Instansi / Organisasi",
       "Nama PIC",
-      "Instansi",
       "WhatsApp",
       "Email",
-      "Cabang",
+      "Cabang ISY",
       "Nama Kegiatan",
       "Tanggal Kegiatan",
       "Target Peserta",
       "Bentuk Sponsor",
-      "Resume Kegiatan",
-      "Link Proposal",
       "Status",
+      "Proposal URL",
       "Catatan Internal",
     ];
 
     const rows = items.map((i) => [
-      `"${i.id}"`,
-      `"${new Date(i.createdAt).toLocaleString("id-ID")}"`,
-      `"${i.nama}"`,
-      `"${i.instansi}"`,
-      `"'${i.whatsapp}"`,
-      `"${i.email || ""}"`,
-      `"${i.cabang}"`,
-      `"${i.namaKegiatan}"`,
-      `"${i.tanggalKegiatan || ""}"`,
-      `"${i.targetPeserta || ""}"`,
-      `"${(i.bentukSponsor || []).join("; ")}"`,
-      `"${(i.resumeKegiatan || "").replace(/"/g, '""')}"`,
-      `"${i.proposalUrl || ""}"`,
-      `"${i.status}"`,
+      i.id,
+      new Date(i.createdAt).toLocaleString("id-ID"),
+      `"${(i.instansi || "").replace(/"/g, '""')}"`,
+      `"${(i.nama || "").replace(/"/g, '""')}"`,
+      `'${i.whatsapp}`,
+      i.email || "",
+      i.cabang || "",
+      `"${(i.namaKegiatan || "").replace(/"/g, '""')}"`,
+      i.tanggalKegiatan || "",
+      i.targetPeserta || "",
+      `"${(i.bentukSponsor || []).join(", ").replace(/"/g, '""')}"`,
+      i.status || "Menunggu Review",
+      i.proposalUrl || "",
       `"${(i.catatanInternal || "").replace(/"/g, '""')}"`,
     ]);
 
     const csvContent =
-      "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+      "data:text/csv;charset=utf-8,\uFEFF" +
+      [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
+    const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
-    link.setAttribute("href", url);
+    link.setAttribute("href", encodedUri);
     link.setAttribute(
       "download",
-      `Sponsor-OptikISeeYou-${new Date().toISOString().slice(0, 10)}.csv`
+      `Sponsorship_Optik_I_See_You_${new Date().toISOString().split("T")[0]}.csv`
     );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    showToast("File CSV berhasil diunduh", "success");
+    showToast("Data proposal berhasil diekspor ke CSV", "success");
   };
 
-  // ── Filtered & Sorted Items ────────────────────────────────────────────────
+  // ── Filter & Search Logic ──────────────────────────────────────────────────
   const filteredItems = useMemo(() => {
     return items
       .filter((item) => {
-        const query = searchQuery.toLowerCase().trim();
-        const matchSearch =
-          !query ||
-          item.nama.toLowerCase().includes(query) ||
-          item.instansi.toLowerCase().includes(query) ||
-          item.namaKegiatan.toLowerCase().includes(query) ||
-          item.whatsapp.includes(query) ||
-          item.id.toLowerCase().includes(query) ||
-          (item.email && item.email.toLowerCase().includes(query));
-
-        const matchCabang = selectedCabang === "Semua" || item.cabang === selectedCabang;
-        const matchStatus = selectedStatus === "Semua" || item.status === selectedStatus;
-
-        return matchSearch && matchCabang && matchStatus;
+        // Cabang filter
+        if (selectedCabang !== "Semua" && item.cabang !== selectedCabang) {
+          return false;
+        }
+        // Status filter
+        if (selectedStatus !== "Semua" && item.status !== selectedStatus) {
+          return false;
+        }
+        // Search query
+        if (searchQuery.trim() !== "") {
+          const q = searchQuery.toLowerCase();
+          const matchInstansi = item.instansi?.toLowerCase().includes(q);
+          const matchNama = item.nama?.toLowerCase().includes(q);
+          const matchAcara = item.namaKegiatan?.toLowerCase().includes(q);
+          const matchWA = item.whatsapp?.includes(q);
+          const matchId = item.id?.toLowerCase().includes(q);
+          return matchInstansi || matchNama || matchAcara || matchWA || matchId;
+        }
+        return true;
       })
       .sort((a, b) => {
-        const timeA = new Date(a.createdAt).getTime();
-        const timeB = new Date(b.createdAt).getTime();
-        return sortBy === "terbaru" ? timeB - timeA : timeA - timeB;
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return sortBy === "terbaru" ? dateB - dateA : dateA - dateB;
       });
-  }, [items, searchQuery, selectedCabang, selectedStatus, sortBy]);
+  }, [items, selectedCabang, selectedStatus, searchQuery, sortBy]);
 
-  // Counts
+  // ── Stat Counter Computations ──────────────────────────────────────────────
   const totalCount = items.length;
   const pendingCount = items.filter((i) => i.status === "Menunggu Review").length;
   const approvedCount = items.filter((i) => i.status === "Disetujui").length;
-  const inProgressCount = items.filter((i) => i.status === "Dalam Proses").length;
   const rejectedCount = items.filter((i) => i.status === "Ditolak").length;
 
-  const formatTimer = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  // Clean status color badge helper
-  const getStatusBadgeStyle = (status: SponsorshipItem["status"]) => {
-    switch (status) {
-      case "Disetujui":
-        return "bg-emerald-50 text-emerald-800 border-emerald-300";
-      case "Ditolak":
-        return "bg-rose-50 text-rose-800 border-rose-300";
-      case "Dalam Proses":
-        return "bg-blue-50 text-blue-800 border-blue-300";
-      default:
-        return "bg-amber-50 text-amber-900 border-amber-300";
-    }
-  };
-
-  // ══════════════════════════════════════════════════════════════════
-  // VIEW 1: AUTHENTICATION / LOGIN (CLEAN MODERN SANS, NO AI SLOP)
-  // ══════════════════════════════════════════════════════════════════
-  if (!isAuthenticated) {
-    return (
-      <main className="h-screen h-dvh w-full overflow-y-auto bg-[#FAF6EC] text-[#0D2F1D] flex flex-col justify-between p-4 sm:p-8 font-sans selection:bg-[#116B3C] selection:text-white">
-        {/* Top Minimal Bar */}
-        <div className="max-w-md w-full mx-auto flex items-center justify-between pt-2">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-[#0D2F1D]/70 hover:text-[#0D2F1D] transition-colors bg-white/80 px-3.5 py-1.5 rounded-full border border-[#0D2F1D]/10"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Kembali ke Beranda</span>
-          </Link>
-          <span className="text-xs font-semibold text-[#116B3C] bg-[#EAF6EE] px-3 py-1 rounded-full border border-[#116B3C]/20">
-            Optik I See You
-          </span>
-        </div>
-
-        {/* Centered Login Card */}
-        <div className="my-auto py-8">
-          <div
-            ref={loginCardRef}
-            className="w-full max-w-[400px] mx-auto bg-white border border-[#0D2F1D]/10 rounded-3xl p-7 sm:p-9 shadow-sm text-center"
-          >
-            {/* Brand Logo Header */}
-            <div className="flex flex-col items-center justify-center mb-4">
-              <span className="text-[10px] font-bold tracking-[0.2em] text-[#116B3C] uppercase">
-                Optik
-              </span>
-              <h1 className="text-2xl font-black text-[#0D2F1D] tracking-tight">
-                I See You
-              </h1>
-              <span className="text-xs font-medium text-[#116B3C] italic tracking-wider mt-0.5">
-                for every you
-              </span>
-            </div>
-
-            <div className="inline-block bg-[#FAF6EC] px-3.5 py-1 rounded-full border border-[#0D2F1D]/10 mb-4">
-              <span className="text-[11px] font-bold text-[#0D2F1D]/80">
-                Portal Admin Sponsorship
-              </span>
-            </div>
-
-            <p className="text-xs text-[#0D2F1D]/70 leading-relaxed mb-6 font-normal">
-              Masukkan Security PIN Staff Marketing untuk mengelola pengajuan sponsor kegiatan.
-            </p>
-
-            {/* Security Rate Limit Status */}
-            {isLocked ? (
-              <div className="mb-5 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-left space-y-2">
-                <span className="text-xs font-bold text-rose-800 block">
-                  Akses Dikunci Sementara
-                </span>
-                <p className="text-xs text-rose-700 leading-tight">
-                  Terlalu banyak percobaan PIN salah. Demi keamanan, sistem dibekukan sementara selama:
-                </p>
-                <div className="text-center py-2">
-                  <span className="font-mono text-2xl font-black text-rose-800 tracking-wider">
-                    {formatTimer(lockoutTimer)}
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-1.5 text-left">
-                  <label className="text-[11px] font-bold text-[#0D2F1D]/70 uppercase tracking-wider pl-1">
-                    Security PIN
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPin ? "text" : "password"}
-                      maxLength={24}
-                      disabled={isVerifying || isLocked}
-                      placeholder="Masukkan PIN otorisasi..."
-                      value={pinInput}
-                      onChange={(e) => {
-                        setPinInput(e.target.value);
-                        if (pinError) setPinError("");
-                      }}
-                      className="w-full px-4 py-3 rounded-2xl border border-[#0D2F1D]/15 bg-[#FAF6EC]/50 text-center text-sm font-mono tracking-widest text-[#0D2F1D] focus:outline-none focus:ring-2 focus:ring-[#116B3C] focus:bg-white transition-all placeholder:text-[#0D2F1D]/35 placeholder:tracking-normal disabled:opacity-50"
-                      autoFocus
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPin(!showPin)}
-                      className="absolute right-3.5 top-3 text-[#0D2F1D]/45 hover:text-[#0D2F1D] transition-colors p-1"
-                      tabIndex={-1}
-                      title={showPin ? "Sembunyikan PIN" : "Tampilkan PIN"}
-                    >
-                      {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                {pinError && (
-                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium text-center">
-                    {pinError}
-                  </div>
-                )}
-
-                {/* Sisa Kesempatan */}
-                {attemptsLeft !== null && attemptsLeft < 5 && !isLocked && (
-                  <p className="text-[11px] text-amber-800 font-medium">
-                    Sisa percobaan: <span className="font-bold font-mono text-amber-900">{attemptsLeft}</span> kali sebelum dikunci.
-                  </p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={isVerifying || isLocked}
-                  className="w-full py-3 px-4 rounded-2xl bg-[#116B3C] hover:bg-[#0D2F1D] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-xs disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
-                >
-                  {isVerifying ? (
-                    <>
-                      <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Memverifikasi...</span>
-                    </>
-                  ) : (
-                    <span>Masuk ke Dashboard</span>
-                  )}
-                </button>
-              </form>
-            )}
-
-            {/* Bottom Security Note */}
-            <div className="mt-6 pt-4 border-t border-[#0D2F1D]/8 text-center text-[11px] text-[#0D2F1D]/50 font-normal">
-              Sesi terenkripsi dan terlindungi anti-bruteforce
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Minimal Copyright */}
-        <div className="max-w-md w-full mx-auto text-center pb-2 text-[11px] text-[#0D2F1D]/40">
-          Hak Cipta Optik I See You. Seluruh hak dilindungi.
-        </div>
-      </main>
-    );
-  }
-
-  // ══════════════════════════════════════════════════════════════════
-  // VIEW 2: ADMIN DASHBOARD
-  // ── IMPORTANT ARCHITECTURE:
-  // Top Navbar, Stat Cards, Search/Filter, and Counter ARE 100% FIXED!
-  // ONLY THE TABLE ITSELF HAS SCROLL!
-  // ══════════════════════════════════════════════════════════════════
   return (
-    <div className="h-screen h-dvh w-full overflow-hidden bg-[#FAF6EC] text-[#0D2F1D] flex flex-col font-sans selection:bg-[#116B3C] selection:text-white">
-      {/* ── 1. TOP HEADER (Fixed at top, never scrolls) ── */}
-      <header className="shrink-0 z-30 bg-white border-b border-[#0D2F1D]/10 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Brand Logo & Back Link */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0D2F1D]/70 hover:text-[#0D2F1D] transition-colors p-2 rounded-xl hover:bg-[#FAF6EC]"
-              title="Kembali ke Beranda Publik"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden md:inline">Beranda</span>
-            </Link>
+    <div className="flex flex-col h-full min-h-0 space-y-4">
+      {/* Shared Accessible Toast */}
+      <AdminToast toast={toast} onDismiss={dismissToast} />
 
-            <span className="text-[#0D2F1D]/20">|</span>
-
-            <div className="flex items-center gap-2.5">
-              <div className="flex flex-col leading-none">
-                <span className="text-[9px] font-bold tracking-[0.2em] text-[#116B3C] uppercase">
-                  Optik
-                </span>
-                <span className="text-base font-extrabold text-[#0D2F1D] tracking-tight">
-                  I See You
-                </span>
-              </div>
-              <span className="text-[#0D2F1D]/30 font-light text-base">|</span>
-              <span className="hidden sm:inline text-xs font-medium text-[#116B3C] italic tracking-wide">
-                for every you
-              </span>
-              <span className="ml-1 rounded-full bg-[#EAF6EE] text-[#116B3C] text-[10px] font-bold px-2.5 py-0.5 border border-[#116B3C]/20">
-                Sponsor Hub
-              </span>
-            </div>
+      {/* ── 1. TOP HEADER & CONTROLS (FIXED — Tidak Ikut Ter-scroll) ── */}
+      <div className="flex-shrink-0 space-y-3.5">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-isy-emerald flex items-center gap-2.5">
+              <FileSpreadsheet className="h-6 w-6 sm:h-7 sm:w-7 text-isy-emerald" />
+              <span>Proposal Sponsorship</span>
+            </h2>
+            <p className="mt-0.5 text-xs sm:text-sm text-isy-text-secondary">
+              Kelola pengajuan proposal sponsor kegiatan masuk, status approval, dan sinkronisasi data
+            </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Link
               href="/sponsor"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#0D2F1D]/15 bg-white hover:bg-[#FAF6EC] text-[#0D2F1D]/80 hover:text-[#0D2F1D] text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-isy-emerald text-xs font-bold transition-colors shadow-xs"
               title="Buka form pengajuan sponsorship publik (/sponsor)"
             >
               <span>Form Publik</span>
-              <ExternalLink className="w-3 h-3 text-[#116B3C]" />
+              <ExternalLink className="w-3.5 h-3.5" />
             </Link>
 
             <button
               type="button"
               onClick={() => setIsGSheetModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#116B3C]/25 bg-[#EAF6EE] hover:bg-[#116B3C] text-[#116B3C] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-isy-emerald text-xs font-bold transition-colors shadow-xs cursor-pointer"
             >
               <FileSpreadsheet className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Google Sheets</span>
@@ -619,27 +293,24 @@ export default function AdminSponsorPage() {
             <button
               type="button"
               onClick={handleExportCSV}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0D2F1D]/15 bg-white hover:bg-[#FAF6EC] text-[#0D2F1D] text-xs font-semibold transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-isy-emerald text-xs font-bold transition-colors shadow-xs cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 text-[#116B3C]" />
+              <Download className="w-3.5 h-3.5" />
               <span className="hidden xs:inline">Export CSV</span>
             </button>
 
             <button
               type="button"
-              onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 text-xs text-[#0D2F1D]/70 hover:text-rose-600 transition-colors px-3 py-1.5 rounded-xl hover:bg-rose-50 cursor-pointer font-medium"
-              title="Keluar dari sesi admin"
+              onClick={loadData}
+              disabled={isLoading}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-isy-emerald hover:bg-isy-emerald-hover text-white text-xs font-bold transition-colors shadow-xs cursor-pointer disabled:opacity-50"
             >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Keluar</span>
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+              <span className="hidden xs:inline">Muat Ulang</span>
             </button>
           </div>
         </div>
-      </header>
 
-      {/* ── 2. FIXED CONTROLS AREA (Stat Cards + Search/Filter + Counter) (NEVER SCROLLS!) ── */}
-      <div className="shrink-0 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 space-y-3">
         {/* Clean Interactive Stat Cards (Click to Filter) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
           {/* Card 1: Total Pengajuan */}
@@ -648,25 +319,25 @@ export default function AdminSponsorPage() {
             onClick={() => setSelectedStatus("Semua")}
             className={`rounded-2xl border bg-white p-3.5 sm:p-4 text-left transition-all cursor-pointer ${
               selectedStatus === "Semua"
-                ? "border-[#116B3C] ring-2 ring-[#116B3C]/20 shadow-xs"
-                : "border-[#0D2F1D]/10 hover:border-[#116B3C]/40"
+                ? "border-isy-emerald ring-2 ring-isy-emerald/20 shadow-xs"
+                : "border-isy-line hover:border-isy-emerald/40"
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-[#0D2F1D]/60 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-isy-text-secondary uppercase tracking-wider">
                 Total Pengajuan
               </span>
               {selectedStatus === "Semua" && (
-                <span className="text-[9px] font-bold uppercase tracking-wider text-[#116B3C] bg-[#EAF6EE] px-2 py-0.5 rounded-full">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-isy-emerald bg-isy-mist px-2 py-0.5 rounded-full border border-isy-line">
                   Aktif
                 </span>
               )}
             </div>
             <div className="flex items-baseline justify-between mt-2">
-              <span className="text-2xl sm:text-3xl font-black text-[#0D2F1D] font-mono">
+              <span className="text-2xl sm:text-3xl font-black text-isy-emerald font-mono">
                 {totalCount}
               </span>
-              <span className="text-[11px] text-[#0D2F1D]/50 font-medium">Semua data</span>
+              <span className="text-[11px] text-isy-text-secondary font-medium">Semua data</span>
             </div>
           </button>
 
@@ -702,27 +373,27 @@ export default function AdminSponsorPage() {
           <button
             type="button"
             onClick={() => setSelectedStatus("Disetujui")}
-            className={`rounded-2xl border bg-[#EAF6EE] p-3.5 sm:p-4 text-left transition-all cursor-pointer ${
+            className={`rounded-2xl border bg-emerald-50/70 p-3.5 sm:p-4 text-left transition-all cursor-pointer ${
               selectedStatus === "Disetujui"
-                ? "border-[#116B3C] ring-2 ring-[#116B3C]/25 shadow-xs"
-                : "border-[#116B3C]/20 hover:border-[#116B3C]/50"
+                ? "border-isy-emerald ring-2 ring-isy-emerald/25 shadow-xs bg-emerald-50"
+                : "border-emerald-200 hover:border-emerald-400"
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-[#116B3C] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-isy-emerald uppercase tracking-wider">
                 Disetujui
               </span>
               {selectedStatus === "Disetujui" && (
-                <span className="text-[9px] font-bold uppercase tracking-wider text-[#116B3C] bg-white px-2 py-0.5 rounded-full">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-isy-emerald bg-white px-2 py-0.5 rounded-full border border-isy-line">
                   Aktif
                 </span>
               )}
             </div>
             <div className="flex items-baseline justify-between mt-2">
-              <span className="text-2xl sm:text-3xl font-black text-[#0D2F1D] font-mono">
+              <span className="text-2xl sm:text-3xl font-black text-isy-emerald font-mono">
                 {approvedCount}
               </span>
-              <span className="text-[11px] text-[#116B3C] font-medium">Bekerjasama</span>
+              <span className="text-[11px] text-isy-green-bright font-medium">Bekerjasama</span>
             </div>
           </button>
 
@@ -738,7 +409,7 @@ export default function AdminSponsorPage() {
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-rose-900 uppercase tracking-wider">
-                Ditolak / Selesai
+                Ditolak
               </span>
               {selectedStatus === "Ditolak" && (
                 <span className="text-[9px] font-bold uppercase tracking-wider text-rose-900 bg-rose-100 px-2 py-0.5 rounded-full">
@@ -756,22 +427,22 @@ export default function AdminSponsorPage() {
         </div>
 
         {/* Clean Search & Filter Bar */}
-        <div className="rounded-2xl border border-[#0D2F1D]/10 bg-white p-2.5 shadow-2xs flex flex-col lg:flex-row items-center justify-between gap-2.5">
+        <div className="rounded-2xl border border-isy-line bg-white p-2.5 shadow-2xs flex flex-col lg:flex-row items-center justify-between gap-2.5">
           {/* Search Input */}
           <div className="relative w-full lg:w-96">
-            <Search className="w-4 h-4 text-[#0D2F1D]/40 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-isy-text-secondary absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Cari PIC, instansi, acara, no WA, ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-8 py-2 rounded-xl border border-[#0D2F1D]/10 bg-[#FAF6EC]/40 text-xs text-[#0D2F1D] placeholder:text-[#0D2F1D]/40 focus:outline-none focus:ring-2 focus:ring-[#116B3C] focus:bg-white transition-all"
+              className="w-full pl-9 pr-8 py-2 rounded-xl border border-isy-line bg-isy-mist/40 text-xs text-isy-emerald placeholder:text-isy-text-secondary focus:outline-none focus:ring-2 focus:ring-isy-emerald focus:bg-white transition-all"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-2 p-0.5 text-[#0D2F1D]/40 hover:text-[#0D2F1D] transition-colors"
+                className="absolute right-2.5 top-2 p-0.5 text-isy-text-secondary hover:text-isy-emerald transition-colors"
                 title="Hapus pencarian"
               >
                 <X className="w-3.5 h-3.5" />
@@ -786,7 +457,7 @@ export default function AdminSponsorPage() {
               <select
                 value={selectedCabang}
                 onChange={(e) => setSelectedCabang(e.target.value)}
-                className="px-3 py-2 rounded-xl border border-[#0D2F1D]/10 bg-white text-xs font-semibold text-[#0D2F1D] focus:outline-none focus:ring-2 focus:ring-[#116B3C] cursor-pointer pr-7 appearance-none"
+                className="px-3 py-2 rounded-xl border border-isy-line bg-white text-xs font-semibold text-isy-emerald focus:outline-none focus:ring-2 focus:ring-isy-emerald cursor-pointer pr-7 appearance-none"
               >
                 <option value="Semua">Semua Cabang</option>
                 <option value="Purwokerto">Purwokerto</option>
@@ -794,7 +465,7 @@ export default function AdminSponsorPage() {
                 <option value="Wonosobo">Wonosobo</option>
                 <option value="Cilacap">Cilacap</option>
               </select>
-              <div className="pointer-events-none absolute right-2 top-2.5 text-[#0D2F1D]/40">
+              <div className="pointer-events-none absolute right-2 top-2.5 text-isy-text-secondary">
                 <ChevronDown className="w-3.5 h-3.5" />
               </div>
             </div>
@@ -804,7 +475,7 @@ export default function AdminSponsorPage() {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="px-3 py-2 rounded-xl border border-[#0D2F1D]/10 bg-white text-xs font-semibold text-[#0D2F1D] focus:outline-none focus:ring-2 focus:ring-[#116B3C] cursor-pointer pr-7 appearance-none"
+                className="px-3 py-2 rounded-xl border border-isy-line bg-white text-xs font-semibold text-isy-emerald focus:outline-none focus:ring-2 focus:ring-isy-emerald cursor-pointer pr-7 appearance-none"
               >
                 <option value="Semua">Semua Status</option>
                 <option value="Menunggu Review">Menunggu Review</option>
@@ -812,7 +483,7 @@ export default function AdminSponsorPage() {
                 <option value="Disetujui">Disetujui</option>
                 <option value="Ditolak">Ditolak</option>
               </select>
-              <div className="pointer-events-none absolute right-2 top-2.5 text-[#0D2F1D]/40">
+              <div className="pointer-events-none absolute right-2 top-2.5 text-isy-text-secondary">
                 <ChevronDown className="w-3.5 h-3.5" />
               </div>
             </div>
@@ -821,10 +492,10 @@ export default function AdminSponsorPage() {
             <button
               type="button"
               onClick={() => setSortBy((prev) => (prev === "terbaru" ? "terlama" : "terbaru"))}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#0D2F1D]/10 bg-white hover:bg-[#FAF6EC] text-xs font-semibold text-[#0D2F1D] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-xs font-semibold text-isy-emerald transition-colors cursor-pointer"
               title={`Urutkan: ${sortBy === "terbaru" ? "Terbaru" : "Terlama"}`}
             >
-              <ArrowUpDown className="w-3.5 h-3.5 text-[#116B3C]" />
+              <ArrowUpDown className="w-3.5 h-3.5 text-isy-emerald" />
               <span className="capitalize">{sortBy}</span>
             </button>
 
@@ -844,214 +515,205 @@ export default function AdminSponsorPage() {
                 <span>Reset</span>
               </button>
             )}
-
-            {/* Refresh Button */}
-            <button
-              type="button"
-              onClick={loadData}
-              title="Refresh Data"
-              className="p-2 rounded-xl border border-[#0D2F1D]/10 bg-white hover:bg-[#FAF6EC] text-[#0D2F1D] transition-colors cursor-pointer shrink-0"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-[#116B3C]" : ""}`} />
-            </button>
           </div>
         </div>
 
         {/* Counter Summary */}
-        <div className="flex items-center justify-between px-1 text-xs text-[#0D2F1D]/60 font-medium">
+        <div className="flex items-center justify-between px-1 text-xs text-isy-text-secondary font-medium">
           <span>
-            Menampilkan <strong className="text-[#0D2F1D] font-bold">{filteredItems.length}</strong> dari {totalCount} total pengajuan
+            Menampilkan <strong className="text-isy-emerald font-bold">{filteredItems.length}</strong> dari {totalCount} total pengajuan
           </span>
           {selectedStatus !== "Semua" && (
-            <span className="text-[11px] text-[#116B3C] font-semibold">
+            <span className="text-[11px] text-isy-emerald font-semibold">
               Filter: {selectedStatus}
             </span>
           )}
         </div>
       </div>
 
-      {/* ── 3. TABLE CONTAINER (THIS AND ONLY THIS PART SCROLLS!) ── */}
-      <div className="flex-1 min-h-0 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-4 flex flex-col">
-        <div className="flex-1 min-h-0 rounded-2xl border border-[#0D2F1D]/10 bg-white shadow-xs overflow-hidden flex flex-col">
-          {/* Scrollable table viewport */}
-          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-auto">
-            {filteredItems.length === 0 ? (
-              <div className="py-20 text-center text-[#0D2F1D]/50 text-xs space-y-2 px-4">
-                <FileText className="w-8 h-8 mx-auto text-[#0D2F1D]/30" />
-                <p className="font-bold text-sm text-[#0D2F1D]/80">
-                  {isLoading ? "Memuat data proposal..." : "Tidak ada pengajuan yang sesuai filter."}
-                </p>
-                <p className="text-xs text-[#0D2F1D]/50">
-                  Ubah kata kunci pencarian atau reset filter untuk menampilkan semua data.
-                </p>
-              </div>
-            ) : (
-              <table className="w-full text-left text-xs border-collapse min-w-[950px]">
-                <thead>
-                  <tr className="border-b border-[#0D2F1D]/10 bg-[#FAF6EC] text-[#0D2F1D]/70 font-bold uppercase tracking-wider text-[10px] sticky top-0 z-10 backdrop-blur-xs">
-                    <th className="py-3 px-4">Tanggal / ID</th>
-                    <th className="py-3 px-4">Instansi dan PIC</th>
-                    <th className="py-3 px-4">Nama Acara dan Cabang</th>
-                    <th className="py-3 px-4">Target dan Bentuk</th>
-                    <th className="py-3 px-4">Proposal</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#0D2F1D]/6">
-                  {filteredItems.map((item) => {
-                    const waClean = item.whatsapp.replace(/\D/g, "").replace(/^0/, "62");
-                    const chatText = encodeURIComponent(
-                      `Halo Kak ${item.nama} (${item.instansi}), mengenai proposal sponsorship "${item.namaKegiatan}" yang diajukan ke Optik I See You #${item.id}:`
-                    );
+      {/* ── 2. TABLE CONTAINER (SCROLLABLE BODY) ── */}
+      <div className="flex-1 min-h-0 rounded-2xl border border-isy-line bg-white shadow-xs overflow-hidden flex flex-col">
+        {/* Scrollable table viewport */}
+        <div id="admin-table-scroll" className="flex-1 min-h-0 overflow-y-auto overflow-x-auto admin-scrollbar">
+          {filteredItems.length === 0 ? (
+            <div className="py-20 text-center text-isy-text-secondary text-xs space-y-2 px-4">
+              <FileText className="w-8 h-8 mx-auto text-isy-text-secondary/40" />
+              <p className="font-bold text-sm text-isy-emerald">
+                {isLoading ? "Memuat data proposal..." : "Tidak ada pengajuan yang sesuai filter."}
+              </p>
+              <p className="text-xs text-isy-text-secondary">
+                Ubah kata kunci pencarian atau reset filter untuk menampilkan semua data.
+              </p>
+            </div>
+          ) : (
+            <table className="w-full text-left text-xs border-collapse min-w-[950px]">
+              <thead>
+                <tr className="border-b border-isy-line bg-isy-mist/50 text-isy-emerald font-bold uppercase tracking-wider text-[10px] sticky top-0 z-10 backdrop-blur-xs">
+                  <th className="py-3 px-4">Tanggal / ID</th>
+                  <th className="py-3 px-4">Instansi dan PIC</th>
+                  <th className="py-3 px-4">Nama Acara dan Cabang</th>
+                  <th className="py-3 px-4">Target dan Bentuk</th>
+                  <th className="py-3 px-4">Proposal</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-isy-line">
+                {filteredItems.map((item) => {
+                  const waClean = item.whatsapp.replace(/\D/g, "").replace(/^0/, "62");
+                  const chatText = encodeURIComponent(
+                    `Halo Kak ${item.nama} (${item.instansi}), mengenai proposal sponsorship "${item.namaKegiatan}" yang diajukan ke Optik I See You #${item.id}:`
+                  );
 
-                    return (
-                      <tr
-                        key={item.id}
-                        className="hover:bg-[#FAF6EC]/30 transition-colors"
-                      >
-                        {/* Tanggal & ID */}
-                        <td className="py-3 px-4 whitespace-nowrap align-top">
-                          <span className="font-mono text-[11px] text-[#0D2F1D]/50 font-bold block">
-                            #{item.id}
-                          </span>
-                          <span className="text-xs text-[#0D2F1D]/80 font-medium block mt-0.5">
-                            {new Date(item.createdAt).toLocaleDateString("id-ID", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </span>
-                          <span className="text-[10px] text-[#0D2F1D]/40 font-mono">
-                            {new Date(item.createdAt).toLocaleTimeString("id-ID", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </span>
-                        </td>
+                  return (
+                    <tr
+                      key={item.id}
+                      className="hover:bg-isy-mist/30 transition-colors"
+                    >
+                      {/* Tanggal & ID */}
+                      <td className="py-3 px-4 whitespace-nowrap align-top">
+                        <span className="font-mono text-[11px] text-isy-text-secondary font-bold block">
+                          #{item.id}
+                        </span>
+                        <span className="text-xs text-isy-emerald font-medium block mt-0.5">
+                          {new Date(item.createdAt).toLocaleDateString("id-ID", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                        <span className="text-[10px] text-isy-text-secondary/60 font-mono">
+                          {new Date(item.createdAt).toLocaleTimeString("id-ID", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </td>
 
-                        {/* Instansi dan PIC */}
-                        <td className="py-3 px-4 align-top max-w-[240px]">
-                          <strong className="text-[#0D2F1D] block font-bold text-xs leading-snug">
-                            {item.instansi}
-                          </strong>
-                          <span className="text-[#0D2F1D]/70 text-[11px] block mt-0.5">
-                            PIC: <span className="font-medium text-[#0D2F1D]">{item.nama}</span>
+                      {/* Instansi dan PIC */}
+                      <td className="py-3 px-4 align-top max-w-[240px]">
+                        <strong className="text-isy-emerald block font-bold text-xs leading-snug">
+                          {item.instansi}
+                        </strong>
+                        <span className="text-isy-text-secondary text-[11px] block mt-0.5">
+                          PIC: <span className="font-medium text-isy-emerald">{item.nama}</span>
+                        </span>
+                        <a
+                          href={`https://wa.me/${waClean}?text=${chatText}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block text-[11px] text-isy-emerald font-mono hover:underline mt-0.5 font-medium"
+                        >
+                          {item.whatsapp}
+                        </a>
+                      </td>
+
+                      {/* Nama Acara dan Cabang */}
+                      <td className="py-3 px-4 align-top max-w-[240px]">
+                        <span className="text-xs font-semibold text-isy-emerald block leading-snug">
+                          {item.namaKegiatan}
+                        </span>
+                        <div className="flex items-center gap-2 mt-1 flex-wrap">
+                          <span className="inline-block text-[10px] font-bold text-isy-emerald bg-isy-mist px-2 py-0.5 rounded-md border border-isy-line">
+                            Cabang: {item.cabang}
                           </span>
+                          <span className="text-[10px] text-isy-text-secondary">
+                            Tgl: {item.tanggalKegiatan || "-"}
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Target Peserta & Bentuk Sponsor */}
+                      <td className="py-3 px-4 align-top max-w-[200px]">
+                        <span className="text-[11px] text-isy-text-secondary block">
+                          Target: <strong className="text-isy-emerald">{item.targetPeserta || "-"}</strong>
+                        </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {Array.isArray(item.bentukSponsor) && item.bentukSponsor.length > 0 ? (
+                            item.bentukSponsor.map((b, idx) => (
+                              <span
+                                key={idx}
+                                className="text-[9.5px] font-medium bg-isy-mist px-1.5 py-0.5 rounded text-isy-emerald border border-isy-line"
+                              >
+                                {b}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-[10px] text-isy-text-secondary italic">Tidak ditentukan</span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Proposal File */}
+                      <td className="py-3 px-4 whitespace-nowrap align-top">
+                        {item.proposalUrl ? (
                           <a
-                            href={`https://wa.me/${waClean}?text=${chatText}`}
+                            href={item.proposalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block text-[11px] text-[#116B3C] font-mono hover:underline mt-0.5 font-medium"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-isy-line bg-isy-mist/50 hover:bg-isy-emerald hover:text-white text-isy-emerald text-xs font-semibold transition-colors"
                           >
-                            {item.whatsapp}
+                            <FileText className="w-3.5 h-3.5" />
+                            <span>Buka PDF</span>
                           </a>
-                        </td>
+                        ) : (
+                          <span className="text-[10px] text-isy-text-secondary italic">Via WhatsApp</span>
+                        )}
+                      </td>
 
-                        {/* Nama Acara dan Cabang */}
-                        <td className="py-3 px-4 align-top max-w-[240px]">
-                          <strong className="text-[#0D2F1D] block font-semibold text-xs leading-snug">
-                            {item.namaKegiatan}
-                          </strong>
-                          <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-[#0D2F1D]/70">
-                            <span className="font-medium text-[#116B3C]">Optik {item.cabang}</span>
-                            {item.tanggalKegiatan && (
-                              <>
-                                <span>•</span>
-                                <span>{item.tanggalKegiatan}</span>
-                              </>
-                            )}
-                          </div>
-                        </td>
+                      {/* Status Dropdown */}
+                      <td className="py-3 px-4 whitespace-nowrap align-top">
+                        <select
+                          value={item.status || "Menunggu Review"}
+                          onChange={(e) =>
+                            handleStatusChange(
+                              item.id,
+                              e.target.value as SponsorshipItem["status"]
+                            )
+                          }
+                          className={`text-xs font-bold px-2.5 py-1 rounded-lg border appearance-none pr-6 relative cursor-pointer focus:outline-none focus:ring-2 ${
+                            item.status === "Disetujui"
+                              ? "bg-emerald-50 text-emerald-800 border-emerald-200 focus:ring-emerald-500"
+                              : item.status === "Menunggu Review"
+                              ? "bg-amber-50 text-amber-800 border-amber-200 focus:ring-amber-500"
+                              : item.status === "Dalam Proses"
+                              ? "bg-blue-50 text-blue-800 border-blue-200 focus:ring-blue-500"
+                              : "bg-rose-50 text-rose-800 border-rose-200 focus:ring-rose-500"
+                          }`}
+                        >
+                          <option value="Menunggu Review">Menunggu Review</option>
+                          <option value="Dalam Proses">Dalam Proses</option>
+                          <option value="Disetujui">Disetujui</option>
+                          <option value="Ditolak">Ditolak</option>
+                        </select>
+                      </td>
 
-                        {/* Target dan Bentuk Sponsor */}
-                        <td className="py-3 px-4 align-top max-w-[220px]">
-                          <span className="font-semibold text-xs text-[#0D2F1D] block">
-                            {item.targetPeserta} Peserta
-                          </span>
-                          <span
-                            className="text-[11px] text-[#0D2F1D]/60 block mt-0.5 line-clamp-1"
-                            title={item.bentukSponsor?.join(", ")}
+                      {/* Aksi Button */}
+                      <td className="py-3 px-4 whitespace-nowrap text-right align-top">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedDetailItem(item)}
+                            className="px-2.5 py-1 rounded-lg border border-isy-line bg-white hover:bg-isy-mist text-xs font-semibold text-isy-emerald transition-colors cursor-pointer"
                           >
-                            {item.bentukSponsor?.join(", ") || "-"}
-                          </span>
-                        </td>
-
-                        {/* Proposal Link */}
-                        <td className="py-3 px-4 whitespace-nowrap align-top">
-                          {item.proposalUrl ? (
-                            <a
-                              href={item.proposalUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs text-[#116B3C] font-semibold hover:underline"
-                            >
-                              <span>Buka File</span>
-                              <span className="text-[10px]">↗</span>
-                            </a>
-                          ) : (
-                            <span className="text-[#0D2F1D]/40 text-xs italic">Via WhatsApp</span>
-                          )}
-                        </td>
-
-                        {/* Status Dropdown */}
-                        <td className="py-3 px-4 whitespace-nowrap align-top">
-                          <select
-                            value={item.status}
-                            onChange={(e) =>
-                              handleStatusChange(item.id, e.target.value as any)
-                            }
-                            className={`px-2.5 py-1 rounded-full text-xs font-semibold border cursor-pointer focus:outline-none transition-colors ${getStatusBadgeStyle(
-                              item.status
-                            )}`}
+                            Detail
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setItemToDelete(item)}
+                            className="p-1 rounded-lg border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer"
+                            title="Hapus Proposal"
                           >
-                            <option value="Menunggu Review">Menunggu Review</option>
-                            <option value="Dalam Proses">Dalam Proses</option>
-                            <option value="Disetujui">Disetujui</option>
-                            <option value="Ditolak">Ditolak</option>
-                          </select>
-                        </td>
-
-                        {/* Aksi */}
-                        <td className="py-3 px-4 text-right whitespace-nowrap align-top">
-                          <div className="flex items-center justify-end gap-1.5">
-                            {/* Open Detail Drawer */}
-                            <button
-                              type="button"
-                              onClick={() => setSelectedDetailItem(item)}
-                              className="px-2.5 py-1 rounded-lg border border-[#0D2F1D]/15 bg-white hover:bg-[#FAF6EC] text-[#0D2F1D] text-xs font-semibold transition-colors cursor-pointer"
-                            >
-                              Detail
-                            </button>
-
-                            {/* WhatsApp Direct Chat */}
-                            <a
-                              href={`https://wa.me/${waClean}?text=${chatText}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-2.5 py-1 rounded-lg border border-[#116B3C]/30 bg-[#EAF6EE] hover:bg-[#116B3C] hover:text-white text-[#116B3C] text-xs font-semibold transition-colors cursor-pointer"
-                            >
-                              Chat WA
-                            </a>
-
-                            {/* Delete button */}
-                            <button
-                              type="button"
-                              onClick={() => setItemToDelete(item)}
-                              className="px-2 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer"
-                              title="Hapus proposal"
-                            >
-                              Hapus
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
-          </div>
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 
@@ -1059,170 +721,147 @@ export default function AdminSponsorPage() {
           DETAIL DRAWER / MODAL
       ══════════════════════════════════════════════════════════════════ */}
       {selectedDetailItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center sm:justify-end bg-black/40 backdrop-blur-xs p-0 sm:p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
           <div
-            className="w-full sm:max-w-xl h-full sm:h-[94vh] bg-white rounded-t-3xl sm:rounded-3xl border border-[#0D2F1D]/10 shadow-xl flex flex-col overflow-hidden text-left"
+            className="w-full max-w-xl max-h-[90vh] rounded-2xl border border-isy-line bg-white shadow-xl flex flex-col overflow-hidden text-left"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
-            <div className="p-5 border-b border-[#0D2F1D]/10 bg-[#FAF6EC] flex items-start justify-between gap-3 shrink-0">
+            {/* Drawer Header */}
+            <div className="p-4 sm:p-5 border-b border-isy-line bg-isy-mist/40 flex items-center justify-between shrink-0">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs font-bold text-[#116B3C]">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs text-isy-text-secondary font-bold">
                     #{selectedDetailItem.id}
                   </span>
-                  <span className="text-xs text-[#0D2F1D]/60 font-medium">
-                    {new Date(selectedDetailItem.createdAt).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      selectedDetailItem.status === "Disetujui"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : selectedDetailItem.status === "Menunggu Review"
+                        ? "bg-amber-100 text-amber-800"
+                        : selectedDetailItem.status === "Dalam Proses"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-rose-100 text-rose-800"
+                    }`}
+                  >
+                    {selectedDetailItem.status}
                   </span>
                 </div>
-                <h3 className="font-bold text-base text-[#0D2F1D] leading-tight">
-                  {selectedDetailItem.namaKegiatan}
-                </h3>
-                <p className="text-xs text-[#0D2F1D]/70 font-semibold mt-0.5">
+                <h3 className="font-extrabold text-base text-isy-emerald mt-1">
                   {selectedDetailItem.instansi}
-                </p>
+                </h3>
               </div>
-
               <button
                 type="button"
                 onClick={() => setSelectedDetailItem(null)}
-                className="p-1.5 rounded-full hover:bg-white text-[#0D2F1D]/50 hover:text-[#0D2F1D] cursor-pointer"
+                className="p-1.5 rounded-full hover:bg-isy-mist text-isy-text-secondary hover:text-isy-emerald cursor-pointer"
                 title="Tutup"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs text-[#0D2F1D]">
-              {/* Status Row */}
-              <div className="p-3.5 rounded-xl bg-[#FAF6EC] border border-[#0D2F1D]/10 flex items-center justify-between gap-3">
-                <span className="text-xs font-bold text-[#0D2F1D]">
-                  Status Proposal
-                </span>
-                <select
-                  value={selectedDetailItem.status}
-                  onChange={(e) =>
-                    handleStatusChange(selectedDetailItem.id, e.target.value as any)
-                  }
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border cursor-pointer focus:outline-none ${getStatusBadgeStyle(
-                    selectedDetailItem.status
-                  )}`}
-                >
-                  <option value="Menunggu Review">Menunggu Review</option>
-                  <option value="Dalam Proses">Dalam Proses</option>
-                  <option value="Disetujui">Disetujui</option>
-                  <option value="Ditolak">Ditolak</option>
-                </select>
-              </div>
-
-              {/* Contact Info */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs text-[#0D2F1D]/70 uppercase tracking-wider">
-                  Informasi PIC dan Kontak
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl border border-[#0D2F1D]/10">
-                  <div>
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">Nama PIC:</span>
-                    <strong className="text-xs font-bold text-[#0D2F1D]">
-                      {selectedDetailItem.nama}
-                    </strong>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">Instansi:</span>
-                    <strong className="text-xs font-bold text-[#0D2F1D]">
-                      {selectedDetailItem.instansi}
-                    </strong>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">WhatsApp:</span>
-                    <a
-                      href={`https://wa.me/${selectedDetailItem.whatsapp.replace(/\D/g, "").replace(/^0/, "62")}?text=${encodeURIComponent(
-                        `Halo Kak ${selectedDetailItem.nama} (${selectedDetailItem.instansi}), mengenai proposal sponsorship "${selectedDetailItem.namaKegiatan}" yang diajukan ke Optik I See You #${selectedDetailItem.id}:`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-bold text-[#116B3C] hover:underline"
-                    >
-                      {selectedDetailItem.whatsapp} ↗
-                    </a>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">Email:</span>
-                    <span className="text-xs font-medium text-[#0D2F1D]">
-                      {selectedDetailItem.email || "-"}
-                    </span>
-                  </div>
+            {/* Drawer Body */}
+            <div className="p-5 space-y-4 overflow-y-auto flex-1 admin-scrollbar">
+              {/* Info Grid */}
+              <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-isy-mist/30 border border-isy-line text-xs">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                    Nama PIC
+                  </span>
+                  <span className="font-semibold text-isy-emerald block mt-0.5">
+                    {selectedDetailItem.nama}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                    No WhatsApp
+                  </span>
+                  <span className="font-mono font-medium text-isy-emerald block mt-0.5">
+                    {selectedDetailItem.whatsapp}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                    Email
+                  </span>
+                  <span className="text-isy-emerald block mt-0.5 truncate">
+                    {selectedDetailItem.email || "-"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                    Cabang Pilihan
+                  </span>
+                  <span className="font-bold text-isy-emerald block mt-0.5">
+                    {selectedDetailItem.cabang}
+                  </span>
                 </div>
               </div>
 
-              {/* Event Details */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs text-[#0D2F1D]/70 uppercase tracking-wider">
-                  Detail Kegiatan
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl border border-[#0D2F1D]/10">
+              {/* Rincian Kegiatan */}
+              <div className="p-3.5 rounded-xl bg-isy-mist/30 border border-isy-line text-xs space-y-2">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                    Nama Kegiatan
+                  </span>
+                  <span className="font-bold text-isy-emerald block mt-0.5">
+                    {selectedDetailItem.namaKegiatan}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-isy-line">
                   <div>
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">Cabang Target:</span>
-                    <span className="font-bold text-xs text-[#0D2F1D]">
-                      Optik {selectedDetailItem.cabang}
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                      Tanggal Pelaksanaan
                     </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">Tanggal Pelaksanaan:</span>
-                    <span className="font-bold text-xs text-[#0D2F1D]">
+                    <span className="text-isy-emerald block mt-0.5">
                       {selectedDetailItem.tanggalKegiatan || "-"}
                     </span>
                   </div>
-                  <div className="sm:col-span-2">
-                    <span className="text-[11px] text-[#0D2F1D]/50 block">Target Peserta:</span>
-                    <strong className="text-xs font-bold text-[#0D2F1D]">
-                      {selectedDetailItem.targetPeserta}
-                    </strong>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                      Target Peserta
+                    </span>
+                    <span className="text-isy-emerald block mt-0.5">
+                      {selectedDetailItem.targetPeserta || "-"}
+                    </span>
                   </div>
                 </div>
-              </div>
-
-              {/* Requested Sponsorship */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs text-[#0D2F1D]/70 uppercase tracking-wider">
-                  Bentuk Sponsorship yang Diajukan
-                </h4>
-                <div className="p-3.5 rounded-xl border border-[#0D2F1D]/10">
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedDetailItem.bentukSponsor?.length > 0 ? (
+                <div className="pt-1 border-t border-isy-line">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                    Bentuk Dukungan Diajukan
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    {Array.isArray(selectedDetailItem.bentukSponsor) &&
+                    selectedDetailItem.bentukSponsor.length > 0 ? (
                       selectedDetailItem.bentukSponsor.map((b, idx) => (
                         <span
                           key={idx}
-                          className="px-2.5 py-1 rounded-lg bg-[#EAF6EE] text-[#116B3C] font-semibold text-xs border border-[#116B3C]/20"
+                          className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-semibold text-xs border border-emerald-200"
                         >
                           {b}
                         </span>
                       ))
                     ) : (
-                      <span className="text-[#0D2F1D]/40 italic">Tidak ada rincian</span>
+                      <span className="text-isy-text-secondary italic">Tidak ada rincian</span>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Resume / Deskripsi */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs text-[#0D2F1D]/70 uppercase tracking-wider">
+              <div className="space-y-1.5">
+                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
                   Resume dan Deskripsi Kegiatan
                 </h4>
-                <div className="p-3.5 rounded-xl bg-[#FAF6EC]/60 border border-[#0D2F1D]/10 text-xs leading-relaxed whitespace-pre-line font-normal">
+                <div className="p-3.5 rounded-xl bg-isy-mist/30 border border-isy-line text-xs leading-relaxed whitespace-pre-line font-normal text-isy-emerald">
                   {selectedDetailItem.resumeKegiatan || "Tidak ada resume tertulis dari pemohon."}
                 </div>
               </div>
 
               {/* Proposal File */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs text-[#0D2F1D]/70 uppercase tracking-wider">
+              <div className="space-y-1.5">
+                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
                   Berkas Proposal
                 </h4>
                 {selectedDetailItem.proposalUrl ? (
@@ -1230,21 +869,21 @@ export default function AdminSponsorPage() {
                     href={selectedDetailItem.proposalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3.5 rounded-xl bg-[#EAF6EE] border border-[#116B3C]/20 text-[#116B3C] hover:bg-[#116B3C] hover:text-white transition-colors"
+                    className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-isy-emerald hover:text-white transition-colors"
                   >
                     <span className="font-bold text-xs">Buka Berkas Proposal PDF</span>
                     <span className="text-xs">↗</span>
                   </a>
                 ) : (
-                  <div className="p-3.5 rounded-xl border border-[#0D2F1D]/10 text-center text-[#0D2F1D]/50 italic">
+                  <div className="p-3.5 rounded-xl border border-isy-line text-center text-isy-text-secondary italic text-xs">
                     Berkas proposal dikirim melalui chat WhatsApp.
                   </div>
                 )}
               </div>
 
               {/* Catatan Internal Admin */}
-              <div className="space-y-2 pt-1">
-                <h4 className="font-bold text-xs text-[#0D2F1D]/70 uppercase tracking-wider">
+              <div className="space-y-1.5 pt-1">
+                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
                   Catatan Internal Marketing
                 </h4>
                 <div className="space-y-2">
@@ -1253,14 +892,14 @@ export default function AdminSponsorPage() {
                     placeholder="Tulis catatan internal di sini..."
                     value={internalNotes}
                     onChange={(e) => setInternalNotes(e.target.value)}
-                    className="w-full p-3 rounded-xl border border-[#0D2F1D]/15 bg-white text-xs text-[#0D2F1D] focus:outline-none focus:ring-2 focus:ring-[#116B3C] transition-all resize-y"
+                    className="w-full p-3 rounded-xl border border-isy-line bg-white text-xs text-isy-emerald focus:outline-none focus:ring-2 focus:ring-isy-emerald transition-all resize-y"
                   />
                   <div className="flex justify-end">
                     <button
                       type="button"
                       disabled={isSavingNotes}
                       onClick={handleSaveInternalNotes}
-                      className="px-4 py-1.5 rounded-lg bg-[#116B3C] hover:bg-[#0D2F1D] text-white text-xs font-bold transition-colors cursor-pointer disabled:opacity-50"
+                      className="px-4 py-1.5 rounded-lg bg-isy-emerald hover:bg-isy-emerald-hover text-white text-xs font-bold transition-colors cursor-pointer disabled:opacity-50"
                     >
                       {isSavingNotes ? "Menyimpan..." : "Simpan Catatan"}
                     </button>
@@ -1270,7 +909,7 @@ export default function AdminSponsorPage() {
             </div>
 
             {/* Drawer Footer Actions */}
-            <div className="p-4 border-t border-[#0D2F1D]/10 bg-white flex items-center justify-between gap-2 shrink-0">
+            <div className="p-4 border-t border-isy-line bg-white flex items-center justify-between gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => {
@@ -1289,7 +928,7 @@ export default function AdminSponsorPage() {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg bg-[#116B3C] hover:bg-[#0D2F1D] text-white text-xs font-bold transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-lg bg-isy-emerald hover:bg-isy-emerald-hover text-white text-xs font-bold transition-colors cursor-pointer"
               >
                 Chat WhatsApp PIC
               </a>
@@ -1304,13 +943,13 @@ export default function AdminSponsorPage() {
       {itemToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
           <div
-            className="w-full max-w-sm rounded-2xl border border-[#0D2F1D]/10 bg-white p-5 shadow-xl text-left"
+            className="w-full max-w-sm rounded-2xl border border-isy-line bg-white p-5 shadow-xl text-left"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="font-bold text-sm text-[#0D2F1D] mb-1.5">
+            <h3 className="font-bold text-sm text-isy-emerald mb-1.5">
               Hapus Pengajuan Sponsorship?
             </h3>
-            <p className="text-xs text-[#0D2F1D]/70 leading-relaxed mb-4">
+            <p className="text-xs text-isy-text-secondary leading-relaxed mb-4">
               Pengajuan dari <strong>{itemToDelete.instansi}</strong> (#{itemToDelete.id}) akan dihapus permanen.
             </p>
 
@@ -1319,7 +958,7 @@ export default function AdminSponsorPage() {
                 type="button"
                 disabled={isDeleting}
                 onClick={() => setItemToDelete(null)}
-                className="px-3 py-1.5 rounded-lg border border-[#0D2F1D]/15 hover:bg-[#FAF6EC] text-xs font-semibold text-[#0D2F1D] transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-lg border border-isy-line hover:bg-isy-mist text-xs font-semibold text-isy-emerald transition-colors cursor-pointer"
               >
                 Batal
               </button>
@@ -1342,39 +981,39 @@ export default function AdminSponsorPage() {
       {isGSheetModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
           <div
-            className="w-full max-w-lg rounded-2xl border border-[#0D2F1D]/10 bg-white p-6 shadow-xl text-left relative"
+            className="w-full max-w-lg rounded-2xl border border-isy-line bg-white p-6 shadow-xl text-left relative"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-bold text-base text-[#0D2F1D]">
+                <h3 className="font-bold text-base text-isy-emerald">
                   Sinkronisasi Google Drive dan Spreadsheet
                 </h3>
-                <p className="text-xs text-[#0D2F1D]/60 mt-0.5">
+                <p className="text-xs text-isy-text-secondary mt-0.5">
                   Koneksi data pengajuan sponsor real-time tanpa database berbayar.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsGSheetModalOpen(false)}
-                className="p-1.5 rounded-full hover:bg-[#FAF6EC] text-[#0D2F1D]/50 hover:text-[#0D2F1D] cursor-pointer"
+                className="p-1.5 rounded-full hover:bg-isy-mist text-isy-text-secondary hover:text-isy-emerald cursor-pointer"
                 title="Tutup"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3.5 text-xs text-[#0D2F1D]/80">
-              <div className="p-3.5 rounded-xl bg-[#FAF6EC] border border-[#0D2F1D]/10 space-y-2">
-                <p className="font-semibold text-[#0D2F1D]">Cara kerja webhook otomatis:</p>
-                <ol className="list-decimal pl-4 space-y-1 text-[11px] text-[#0D2F1D]/75">
+            <div className="space-y-3.5 text-xs text-isy-emerald">
+              <div className="p-3.5 rounded-xl bg-isy-mist/50 border border-isy-line space-y-2">
+                <p className="font-semibold text-isy-emerald">Cara kerja webhook otomatis:</p>
+                <ol className="list-decimal pl-4 space-y-1 text-[11px] text-isy-text-secondary">
                   <li>Buat Google Spreadsheet baru di Google Drive Optik I See You.</li>
                   <li>
                     Buka <strong>Extensions &gt; Apps Script</strong> dan buat endpoint webhook web app sederhana (POST).
                   </li>
                   <li>
                     Masukkan URL Apps Script ke environment variable:
-                    <code className="block mt-1 p-2 rounded-lg bg-white border border-[#0D2F1D]/10 font-mono text-[10px] text-[#116B3C] select-all break-all">
+                    <code className="block mt-1 p-2 rounded-lg bg-white border border-isy-line font-mono text-[10px] text-isy-emerald select-all break-all">
                       GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/.../exec
                     </code>
                   </li>
@@ -1384,8 +1023,8 @@ export default function AdminSponsorPage() {
                 </ol>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#EAF6EE] border border-[#116B3C]/20 text-[11.5px] text-[#0D2F1D] space-y-1">
-                <p className="font-bold text-[#116B3C]">Keuntungan Metode Ini:</p>
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[11.5px] text-emerald-900 space-y-1">
+                <p className="font-bold text-emerald-950">Keuntungan Metode Ini:</p>
                 <p>&bull; 100% Gratis selamanya dari Google Workspace.</p>
                 <p>&bull; Berkas PDF proposal otomatis tersimpan di Cloudflare R2 / Drive.</p>
                 <p>&bull; Tim marketing cabang mana saja bisa langsung membuka spreadsheet dari ponsel tanpa instal aplikasi.</p>
@@ -1396,7 +1035,7 @@ export default function AdminSponsorPage() {
               <button
                 type="button"
                 onClick={() => setIsGSheetModalOpen(false)}
-                className="px-4 py-2 rounded-lg bg-[#116B3C] text-white font-bold text-xs hover:bg-[#0D2F1D] transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-lg bg-isy-emerald text-white font-bold text-xs hover:bg-isy-emerald-hover transition-colors cursor-pointer"
               >
                 Tutup
               </button>
@@ -1404,9 +1043,6 @@ export default function AdminSponsorPage() {
           </div>
         </div>
       )}
-
-      {/* Shared Accessible Toast */}
-      <AdminToast toast={toast} onDismiss={dismissToast} />
     </div>
   );
 }
