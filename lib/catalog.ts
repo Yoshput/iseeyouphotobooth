@@ -119,7 +119,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         },
         colors: [
           { name: "Clear Grey", hex: "#7D838A", image: "/katalog/Clear Frame Series (Acetate)/18-medium.webp" },
-          { name: "Peach", hex: "#D49A89", image: "/katalog/Clear Frame Series (Acetate)/18-medium.webp" },
+          { name: "Peach", hex: "#D49A89", image: "/katalog/Clear Frame Series (Acetate)/19-medium.webp" },
         ],
         image: "/katalog/Clear Frame Series (Acetate)/18-medium.webp",
         images: [
@@ -164,7 +164,7 @@ export const CATALOG_COLLECTIONS: CatalogCollection[] = [
         },
         colors: [
           { name: "Clear Grey", hex: "#B0B5BA", image: "/katalog/Clear Frame Series/21-medium.webp" },
-          { name: "Peach", hex: "#D9A595", image: "/katalog/Clear Frame Series/21-medium.webp" },
+          { name: "Peach", hex: "#D9A595", image: "/katalog/Clear Frame Series/22-medium.webp" },
         ],
         image: "/katalog/Clear Frame Series/21-medium.webp",
         images: [
