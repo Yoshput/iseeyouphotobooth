@@ -7,17 +7,41 @@ import type { NextConfig } from "next";
  */
 const cspHeader = `
   default-src 'self' https://optikiseeyou.com;
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net;
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  img-src 'self' data: blob: https: https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval'
+    https://cdn.jsdelivr.net
+    https://www.googletagmanager.com
+    https://ssl.google-analytics.com
+    https://www.google-analytics.com
+    https://tagmanager.google.com
+    https://www.googleadservices.com
+    https://googleads.g.doubleclick.net
+    https://www.google.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://tagmanager.google.com;
+  img-src 'self' data: blob: https: https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com
+    https://www.googletagmanager.com
+    https://www.google-analytics.com
+    https://www.google.com
+    https://googleads.g.doubleclick.net
+    https://www.googleadservices.com
+    https://stats.g.doubleclick.net;
   font-src 'self' https://fonts.gstatic.com data:;
-  connect-src 'self' https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com https://cdn.jsdelivr.net https://*.peerjs.com wss://*.peerjs.com https://fonts.googleapis.com https://fonts.gstatic.com https://storage.googleapis.com data: blob:;
+  connect-src 'self' https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com https://cdn.jsdelivr.net https://*.peerjs.com wss://*.peerjs.com https://fonts.googleapis.com https://fonts.gstatic.com https://storage.googleapis.com data: blob:
+    https://www.google-analytics.com
+    https://analytics.google.com
+    https://stats.g.doubleclick.net
+    https://www.googletagmanager.com
+    https://www.googleadservices.com
+    https://googleads.g.doubleclick.net
+    https://region1.google-analytics.com;
   media-src 'self' blob: data: https://*.r2.dev https://*.cloudflarestorage.com;
   worker-src 'self' blob:;
   object-src 'none';
   base-uri 'self';
   form-action 'self' https://api.whatsapp.com https://wa.me;
-  frame-src 'self' https://www.google.com https://maps.google.com;
+  frame-src 'self' https://www.google.com https://maps.google.com
+    https://www.googletagmanager.com
+    https://td.doubleclick.net
+    https://bid.g.doubleclick.net;
   frame-ancestors 'none';
   upgrade-insecure-requests;
 `.replace(/\s{2,}/g, " ").trim();
