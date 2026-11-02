@@ -24,9 +24,12 @@ import {
   Building2,
   User,
   Copy,
+  QrCode,
+  Printer,
 } from "lucide-react";
 import { SponsorshipItem } from "@/lib/db/sponsorships";
 import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
+import SponsorQRModal from "@/components/admin/SponsorQRModal";
 
 export default function AdminSponsorPage() {
   // ── Data & Filter States ───────────────────────────────────────────────────
@@ -39,6 +42,7 @@ export default function AdminSponsorPage() {
 
   // ── Modals & Drawers ───────────────────────────────────────────────────────
   const [isGSheetModalOpen, setIsGSheetModalOpen] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [selectedDetailItem, setSelectedDetailItem] = useState<SponsorshipItem | null>(null);
   const [itemToDelete, setItemToDelete] = useState<SponsorshipItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -85,11 +89,12 @@ export default function AdminSponsorPage() {
         if (selectedDetailItem) setSelectedDetailItem(null);
         if (itemToDelete) setItemToDelete(null);
         if (isGSheetModalOpen) setIsGSheetModalOpen(false);
+        if (isQRModalOpen) setIsQRModalOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedDetailItem, itemToDelete, isGSheetModalOpen]);
+  }, [selectedDetailItem, itemToDelete, isGSheetModalOpen, isQRModalOpen]);
 
   // Copy to clipboard helper
   const handleCopyText = (text: string, label: string) => {
@@ -301,6 +306,16 @@ export default function AdminSponsorPage() {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsQRModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-isy-emerald text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95"
+              title="Cetak dan Unduh QR Standee Meja Sponsor"
+            >
+              <QrCode className="w-3.5 h-3.5 text-isy-emerald" />
+              <span>QR Standee Meja</span>
+            </button>
+
             <Link
               href="/sponsor"
               target="_blank"
@@ -1227,6 +1242,14 @@ export default function AdminSponsorPage() {
           </div>
         </div>
       )}
+      {/* ══════════════════════════════════════════════════════════════════
+          QR CODE / STANDEE SPONSOR MODAL
+      ══════════════════════════════════════════════════════════════════ */}
+      <SponsorQRModal
+        isOpen={isQRModalOpen}
+        onClose={() => setIsQRModalOpen(false)}
+        onShowToast={showToast}
+      />
     </div>
   );
 }
