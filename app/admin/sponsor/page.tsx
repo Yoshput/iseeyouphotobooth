@@ -13,6 +13,17 @@ import {
   FileText,
   ArrowUpDown,
   RotateCcw,
+  Eye,
+  Check,
+  Trash2,
+  MessageCircle,
+  Calendar,
+  MapPin,
+  Mail,
+  Phone,
+  Building2,
+  User,
+  Copy,
 } from "lucide-react";
 import { SponsorshipItem } from "@/lib/db/sponsorships";
 import AdminToast, { useAdminToast } from "@/components/admin/AdminToast";
@@ -66,6 +77,26 @@ export default function AdminSponsorPage() {
       setInternalNotes(selectedDetailItem.catatanInternal || "");
     }
   }, [selectedDetailItem]);
+
+  // Close modals on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (selectedDetailItem) setSelectedDetailItem(null);
+        if (itemToDelete) setItemToDelete(null);
+        if (isGSheetModalOpen) setIsGSheetModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedDetailItem, itemToDelete, isGSheetModalOpen]);
+
+  // Copy to clipboard helper
+  const handleCopyText = (text: string, label: string) => {
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(text);
+    showToast(`${label} berhasil disalin!`, "info");
+  };
 
   // ── Update Status Handler ──────────────────────────────────────────────────
   const handleStatusChange = async (id: string, newStatus: SponsorshipItem["status"]) => {
@@ -568,11 +599,12 @@ export default function AdminSponsorPage() {
                   return (
                     <tr
                       key={item.id}
-                      className="hover:bg-isy-mist/30 transition-colors"
+                      onClick={() => setSelectedDetailItem(item)}
+                      className="hover:bg-emerald-50/40 transition-colors cursor-pointer group"
                     >
                       {/* Tanggal & ID */}
-                      <td className="py-3 px-4 whitespace-nowrap align-top">
-                        <span className="font-mono text-[11px] text-isy-text-secondary font-bold block">
+                      <td className="py-3.5 px-4 whitespace-nowrap align-top">
+                        <span className="font-mono text-[11px] text-isy-text-secondary font-bold block group-hover:text-isy-emerald transition-colors">
                           #{item.id}
                         </span>
                         <span className="text-xs text-isy-emerald font-medium block mt-0.5">
@@ -591,8 +623,8 @@ export default function AdminSponsorPage() {
                       </td>
 
                       {/* Instansi dan PIC */}
-                      <td className="py-3 px-4 align-top max-w-[240px]">
-                        <strong className="text-isy-emerald block font-bold text-xs leading-snug">
+                      <td className="py-3.5 px-4 align-top max-w-[240px]">
+                        <strong className="text-isy-emerald block font-bold text-xs leading-snug group-hover:underline">
                           {item.instansi}
                         </strong>
                         <span className="text-isy-text-secondary text-[11px] block mt-0.5">
@@ -602,14 +634,17 @@ export default function AdminSponsorPage() {
                           href={`https://wa.me/${waClean}?text=${chatText}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-block text-[11px] text-isy-emerald font-mono hover:underline mt-0.5 font-medium"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-mono hover:underline mt-0.5 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200"
+                          title="Chat langsung via WhatsApp"
                         >
-                          {item.whatsapp}
+                          <MessageCircle className="w-3 h-3 text-emerald-600" />
+                          <span>{item.whatsapp}</span>
                         </a>
                       </td>
 
                       {/* Nama Acara dan Cabang */}
-                      <td className="py-3 px-4 align-top max-w-[240px]">
+                      <td className="py-3.5 px-4 align-top max-w-[240px]">
                         <span className="text-xs font-semibold text-isy-emerald block leading-snug">
                           {item.namaKegiatan}
                         </span>
@@ -624,7 +659,7 @@ export default function AdminSponsorPage() {
                       </td>
 
                       {/* Target Peserta & Bentuk Sponsor */}
-                      <td className="py-3 px-4 align-top max-w-[200px]">
+                      <td className="py-3.5 px-4 align-top max-w-[200px]">
                         <span className="text-[11px] text-isy-text-secondary block">
                           Target: <strong className="text-isy-emerald">{item.targetPeserta || "-"}</strong>
                         </span>
@@ -645,13 +680,14 @@ export default function AdminSponsorPage() {
                       </td>
 
                       {/* Proposal File */}
-                      <td className="py-3 px-4 whitespace-nowrap align-top">
+                      <td className="py-3.5 px-4 whitespace-nowrap align-top">
                         {item.proposalUrl ? (
                           <a
                             href={item.proposalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-isy-line bg-isy-mist/50 hover:bg-isy-emerald hover:text-white text-isy-emerald text-xs font-semibold transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-isy-emerald hover:text-white text-emerald-800 text-xs font-semibold transition-colors shadow-2xs"
                           >
                             <FileText className="w-3.5 h-3.5" />
                             <span>Buka PDF</span>
@@ -662,49 +698,54 @@ export default function AdminSponsorPage() {
                       </td>
 
                       {/* Status Dropdown */}
-                      <td className="py-3 px-4 whitespace-nowrap align-top">
-                        <select
-                          value={item.status || "Menunggu Review"}
-                          onChange={(e) =>
-                            handleStatusChange(
-                              item.id,
-                              e.target.value as SponsorshipItem["status"]
-                            )
-                          }
-                          className={`text-xs font-bold px-2.5 py-1 rounded-lg border appearance-none pr-6 relative cursor-pointer focus:outline-none focus:ring-2 ${
-                            item.status === "Disetujui"
-                              ? "bg-emerald-50 text-emerald-800 border-emerald-200 focus:ring-emerald-500"
-                              : item.status === "Menunggu Review"
-                              ? "bg-amber-50 text-amber-800 border-amber-200 focus:ring-amber-500"
-                              : item.status === "Dalam Proses"
-                              ? "bg-blue-50 text-blue-800 border-blue-200 focus:ring-blue-500"
-                              : "bg-rose-50 text-rose-800 border-rose-200 focus:ring-rose-500"
-                          }`}
-                        >
-                          <option value="Menunggu Review">Menunggu Review</option>
-                          <option value="Dalam Proses">Dalam Proses</option>
-                          <option value="Disetujui">Disetujui</option>
-                          <option value="Ditolak">Ditolak</option>
-                        </select>
+                      <td className="py-3.5 px-4 whitespace-nowrap align-top" onClick={(e) => e.stopPropagation()}>
+                        <div className="relative inline-block">
+                          <select
+                            value={item.status || "Menunggu Review"}
+                            onChange={(e) =>
+                              handleStatusChange(
+                                item.id,
+                                e.target.value as SponsorshipItem["status"]
+                              )
+                            }
+                            className={`text-xs font-bold px-2.5 py-1 rounded-lg border appearance-none pr-6 relative cursor-pointer focus:outline-none focus:ring-2 shadow-2xs ${
+                              item.status === "Disetujui"
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-300 focus:ring-emerald-500"
+                                : item.status === "Menunggu Review"
+                                ? "bg-amber-50 text-amber-800 border-amber-300 focus:ring-amber-500"
+                                : item.status === "Dalam Proses"
+                                ? "bg-blue-50 text-blue-800 border-blue-300 focus:ring-blue-500"
+                                : "bg-rose-50 text-rose-800 border-rose-300 focus:ring-rose-500"
+                            }`}
+                          >
+                            <option value="Menunggu Review">Menunggu Review</option>
+                            <option value="Dalam Proses">Dalam Proses</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Ditolak">Ditolak</option>
+                          </select>
+                          <ChevronDown className="w-3.5 h-3.5 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                        </div>
                       </td>
 
                       {/* Aksi Button */}
-                      <td className="py-3 px-4 whitespace-nowrap text-right align-top">
+                      <td className="py-3.5 px-4 whitespace-nowrap text-right align-top" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             type="button"
                             onClick={() => setSelectedDetailItem(item)}
-                            className="px-2.5 py-1 rounded-lg border border-isy-line bg-white hover:bg-isy-mist text-xs font-semibold text-isy-emerald transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-200 bg-white hover:bg-isy-emerald hover:text-white text-xs font-bold text-emerald-800 transition-all cursor-pointer shadow-2xs group-hover:border-isy-emerald"
+                            title="Buka rincian lengkap proposal"
                           >
-                            Detail
+                            <Eye className="w-3.5 h-3.5 text-isy-emerald group-hover:text-inherit" />
+                            <span>Detail</span>
                           </button>
                           <button
                             type="button"
                             onClick={() => setItemToDelete(item)}
-                            className="p-1 rounded-lg border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer"
                             title="Hapus Proposal"
                           >
-                            <X className="w-3.5 h-3.5" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </td>
@@ -718,178 +759,302 @@ export default function AdminSponsorPage() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════════════
-          DETAIL DRAWER / MODAL
+          DETAIL MODAL
       ══════════════════════════════════════════════════════════════════ */}
       {selectedDetailItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-3 sm:p-6 overflow-y-auto"
+          onClick={() => setSelectedDetailItem(null)}
+        >
           <div
-            className="w-full max-w-xl max-h-[90vh] rounded-2xl border border-isy-line bg-white shadow-xl flex flex-col overflow-hidden text-left"
+            className="w-full max-w-3xl max-h-[92vh] rounded-2xl border border-isy-line bg-white shadow-2xl flex flex-col overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150 my-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Drawer Header */}
-            <div className="p-4 sm:p-5 border-b border-isy-line bg-isy-mist/40 flex items-center justify-between shrink-0">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-isy-text-secondary font-bold">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-isy-line bg-isy-mist/40 flex items-start justify-between gap-3 shrink-0">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                  <span className="font-mono text-xs text-isy-text-secondary font-bold bg-white px-2.5 py-0.5 rounded-md border border-isy-line">
                     #{selectedDetailItem.id}
                   </span>
-                  <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      selectedDetailItem.status === "Disetujui"
-                        ? "bg-emerald-100 text-emerald-800"
-                        : selectedDetailItem.status === "Menunggu Review"
-                        ? "bg-amber-100 text-amber-800"
-                        : selectedDetailItem.status === "Dalam Proses"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-rose-100 text-rose-800"
-                    }`}
-                  >
-                    {selectedDetailItem.status}
+
+                  {/* Status Dropdown inside Modal */}
+                  <div className="relative inline-block">
+                    <select
+                      value={selectedDetailItem.status || "Menunggu Review"}
+                      onChange={(e) =>
+                        handleStatusChange(
+                          selectedDetailItem.id,
+                          e.target.value as SponsorshipItem["status"]
+                        )
+                      }
+                      className={`text-xs font-bold px-3 py-1 rounded-lg border appearance-none pr-7 cursor-pointer focus:outline-none focus:ring-2 shadow-2xs ${
+                        selectedDetailItem.status === "Disetujui"
+                          ? "bg-emerald-50 text-emerald-800 border-emerald-300 focus:ring-emerald-500"
+                          : selectedDetailItem.status === "Menunggu Review"
+                          ? "bg-amber-50 text-amber-800 border-amber-300 focus:ring-amber-500"
+                          : selectedDetailItem.status === "Dalam Proses"
+                          ? "bg-blue-50 text-blue-800 border-blue-300 focus:ring-blue-500"
+                          : "bg-rose-50 text-rose-800 border-rose-300 focus:ring-rose-500"
+                      }`}
+                    >
+                      <option value="Menunggu Review">Status: Menunggu Review</option>
+                      <option value="Dalam Proses">Status: Dalam Proses</option>
+                      <option value="Disetujui">Status: Disetujui</option>
+                      <option value="Ditolak">Status: Ditolak</option>
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                  </div>
+
+                  <span className="text-[11px] text-isy-text-secondary hidden sm:inline">
+                    Diajukan: {new Date(selectedDetailItem.createdAt).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
-                <h3 className="font-extrabold text-base text-isy-emerald mt-1">
+
+                <h3 className="font-black text-base sm:text-lg text-isy-emerald truncate">
                   {selectedDetailItem.instansi}
                 </h3>
               </div>
+
+              {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setSelectedDetailItem(null)}
-                className="p-1.5 rounded-full hover:bg-isy-mist text-isy-text-secondary hover:text-isy-emerald cursor-pointer"
-                title="Tutup"
+                className="p-2 rounded-xl border border-isy-line bg-white hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 text-isy-text-secondary transition-colors cursor-pointer shrink-0 shadow-2xs"
+                title="Tutup (Esc)"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Drawer Body */}
-            <div className="p-5 space-y-4 overflow-y-auto flex-1 admin-scrollbar">
-              {/* Info Grid */}
-              <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-isy-mist/30 border border-isy-line text-xs">
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                    Nama PIC
-                  </span>
-                  <span className="font-semibold text-isy-emerald block mt-0.5">
-                    {selectedDetailItem.nama}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                    No WhatsApp
-                  </span>
-                  <span className="font-mono font-medium text-isy-emerald block mt-0.5">
-                    {selectedDetailItem.whatsapp}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                    Email
-                  </span>
-                  <span className="text-isy-emerald block mt-0.5 truncate">
-                    {selectedDetailItem.email || "-"}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                    Cabang Pilihan
-                  </span>
-                  <span className="font-bold text-isy-emerald block mt-0.5">
-                    {selectedDetailItem.cabang}
-                  </span>
-                </div>
-              </div>
+            {/* Modal Body */}
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1 admin-scrollbar">
+              {/* 2-Column Grid on sm+ */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Card 1: Data PIC & Kontak */}
+                <div className="p-4 rounded-xl bg-isy-mist/30 border border-isy-line space-y-3">
+                  <div className="flex items-center justify-between border-b border-isy-line pb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-isy-emerald flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-isy-emerald" />
+                      <span>Data Pemohon & PIC</span>
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-isy-line text-isy-emerald">
+                      Cabang: {selectedDetailItem.cabang}
+                    </span>
+                  </div>
 
-              {/* Rincian Kegiatan */}
-              <div className="p-3.5 rounded-xl bg-isy-mist/30 border border-isy-line text-xs space-y-2">
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                    Nama Kegiatan
-                  </span>
-                  <span className="font-bold text-isy-emerald block mt-0.5">
-                    {selectedDetailItem.namaKegiatan}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-isy-line">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                      Tanggal Pelaksanaan
-                    </span>
-                    <span className="text-isy-emerald block mt-0.5">
-                      {selectedDetailItem.tanggalKegiatan || "-"}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                      Target Peserta
-                    </span>
-                    <span className="text-isy-emerald block mt-0.5">
-                      {selectedDetailItem.targetPeserta || "-"}
-                    </span>
-                  </div>
-                </div>
-                <div className="pt-1 border-t border-isy-line">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
-                    Bentuk Dukungan Diajukan
-                  </span>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    {Array.isArray(selectedDetailItem.bentukSponsor) &&
-                    selectedDetailItem.bentukSponsor.length > 0 ? (
-                      selectedDetailItem.bentukSponsor.map((b, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-semibold text-xs border border-emerald-200"
-                        >
-                          {b}
+                  <div className="space-y-2.5 text-xs">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                        Nama PIC
+                      </span>
+                      <span className="font-bold text-isy-emerald text-sm block mt-0.5">
+                        {selectedDetailItem.nama}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                        No. WhatsApp
+                      </span>
+                      <div className="flex items-center justify-between gap-2 mt-0.5">
+                        <span className="font-mono font-bold text-isy-emerald text-sm">
+                          {selectedDetailItem.whatsapp}
                         </span>
-                      ))
-                    ) : (
-                      <span className="text-isy-text-secondary italic">Tidak ada rincian</span>
-                    )}
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleCopyText(selectedDetailItem.whatsapp, "No WhatsApp")}
+                            className="px-2 py-1 rounded-md border border-isy-line bg-white hover:bg-isy-mist text-[11px] font-semibold text-isy-text-secondary hover:text-isy-emerald transition-colors cursor-pointer shadow-2xs"
+                            title="Salin No WA"
+                          >
+                            Salin
+                          </button>
+                          <a
+                            href={`https://wa.me/${selectedDetailItem.whatsapp.replace(/\D/g, "").replace(/^0/, "62")}?text=${encodeURIComponent(
+                              `Halo Kak ${selectedDetailItem.nama} (${selectedDetailItem.instansi}), mengenai proposal sponsorship "${selectedDetailItem.namaKegiatan}" yang diajukan ke Optik I See You #${selectedDetailItem.id}:`
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold transition-colors flex items-center gap-1 shadow-2xs"
+                          >
+                            <MessageCircle className="w-3 h-3" />
+                            <span>Chat</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                        Email
+                      </span>
+                      <div className="flex items-center justify-between gap-2 mt-0.5">
+                        <span className="text-isy-emerald truncate block">
+                          {selectedDetailItem.email || "-"}
+                        </span>
+                        {selectedDetailItem.email && (
+                          <button
+                            type="button"
+                            onClick={() => handleCopyText(selectedDetailItem.email!, "Email")}
+                            className="px-2 py-1 rounded-md border border-isy-line bg-white hover:bg-isy-mist text-[11px] font-semibold text-isy-text-secondary hover:text-isy-emerald transition-colors shrink-0 cursor-pointer shadow-2xs"
+                          >
+                            Salin
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card 2: Rincian Kegiatan */}
+                <div className="p-4 rounded-xl bg-isy-mist/30 border border-isy-line space-y-3">
+                  <div className="flex items-center justify-between border-b border-isy-line pb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-isy-emerald flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-isy-emerald" />
+                      <span>Rincian Kegiatan</span>
+                    </span>
+                  </div>
+
+                  <div className="space-y-2.5 text-xs">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                        Nama Kegiatan / Event
+                      </span>
+                      <span className="font-bold text-isy-emerald text-sm block mt-0.5 leading-snug">
+                        {selectedDetailItem.namaKegiatan}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-isy-line/60">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                          Tanggal Pelaksanaan
+                        </span>
+                        <span className="font-semibold text-isy-emerald block mt-0.5">
+                          {selectedDetailItem.tanggalKegiatan || "-"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block">
+                          Target Peserta
+                        </span>
+                        <span className="font-semibold text-isy-emerald block mt-0.5">
+                          {selectedDetailItem.targetPeserta || "-"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="pt-1 border-t border-isy-line/60">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-isy-text-secondary block mb-1">
+                        Bentuk Dukungan Diajukan
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {Array.isArray(selectedDetailItem.bentukSponsor) &&
+                        selectedDetailItem.bentukSponsor.length > 0 ? (
+                          selectedDetailItem.bentukSponsor.map((b, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 font-bold text-xs border border-emerald-200 shadow-2xs"
+                            >
+                              {b}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-isy-text-secondary italic">Tidak ada rincian</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Resume / Deskripsi */}
+              {/* Card 3: Berkas Proposal PDF */}
               <div className="space-y-1.5">
-                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
-                  Resume dan Deskripsi Kegiatan
-                </h4>
-                <div className="p-3.5 rounded-xl bg-isy-mist/30 border border-isy-line text-xs leading-relaxed whitespace-pre-line font-normal text-isy-emerald">
-                  {selectedDetailItem.resumeKegiatan || "Tidak ada resume tertulis dari pemohon."}
-                </div>
-              </div>
-
-              {/* Proposal File */}
-              <div className="space-y-1.5">
-                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
-                  Berkas Proposal
+                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5 text-isy-emerald" />
+                  <span>Berkas Proposal</span>
                 </h4>
                 {selectedDetailItem.proposalUrl ? (
-                  <a
-                    href={selectedDetailItem.proposalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-isy-emerald hover:text-white transition-colors"
-                  >
-                    <span className="font-bold text-xs">Buka Berkas Proposal PDF</span>
-                    <span className="text-xs">↗</span>
-                  </a>
+                  <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <FileText className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-bold text-xs text-emerald-950 truncate">
+                          Proposal_{selectedDetailItem.instansi.replace(/\s+/g, "_")}.pdf
+                        </p>
+                        <p className="text-[11px] text-emerald-700">
+                          Tersimpan aman di Cloud Storage &bull; Siap di-review / cetak
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleCopyText(selectedDetailItem.proposalUrl, "Link Berkas Proposal")}
+                        className="px-3 py-1.5 rounded-lg border border-emerald-300 bg-white hover:bg-emerald-100 text-emerald-800 font-semibold text-xs transition-colors cursor-pointer shadow-2xs"
+                      >
+                        Salin Link
+                      </button>
+                      <a
+                        href={selectedDetailItem.proposalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-isy-emerald hover:bg-isy-emerald-hover text-white font-bold text-xs transition-colors shadow-xs cursor-pointer"
+                      >
+                        <span>Buka Berkas PDF</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
                 ) : (
-                  <div className="p-3.5 rounded-xl border border-isy-line text-center text-isy-text-secondary italic text-xs">
-                    Berkas proposal dikirim melalui chat WhatsApp.
+                  <div className="p-3.5 rounded-xl border border-dashed border-isy-line text-center text-isy-text-secondary italic text-xs bg-isy-mist/20">
+                    Berkas proposal tidak diunggah via form (dikirim langsung melalui chat WhatsApp).
                   </div>
                 )}
               </div>
 
-              {/* Catatan Internal Admin */}
-              <div className="space-y-1.5 pt-1">
-                <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
-                  Catatan Internal Marketing
-                </h4>
+              {/* Card 4: Resume & Deskripsi Kegiatan */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
+                    Resume dan Deskripsi Kegiatan
+                  </h4>
+                  {selectedDetailItem.resumeKegiatan && (
+                    <button
+                      type="button"
+                      onClick={() => handleCopyText(selectedDetailItem.resumeKegiatan, "Deskripsi Kegiatan")}
+                      className="text-[10px] font-semibold text-isy-emerald hover:underline cursor-pointer"
+                    >
+                      Salin Teks
+                    </button>
+                  )}
+                </div>
+                <div className="p-4 rounded-xl bg-isy-mist/30 border border-isy-line text-xs leading-relaxed whitespace-pre-line font-normal text-isy-emerald max-h-48 overflow-y-auto admin-scrollbar">
+                  {selectedDetailItem.resumeKegiatan || "Tidak ada resume tertulis dari pemohon."}
+                </div>
+              </div>
+
+              {/* Card 5: Catatan Internal Marketing */}
+              <div className="space-y-1.5 pt-1 border-t border-isy-line">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-xs text-isy-emerald uppercase tracking-wider">
+                    Catatan Internal Marketing & Follow Up
+                  </h4>
+                  <span className="text-[10px] text-isy-text-secondary">
+                    Hanya dapat dilihat oleh admin internal
+                  </span>
+                </div>
                 <div className="space-y-2">
                   <textarea
                     rows={3}
-                    placeholder="Tulis catatan internal di sini..."
+                    placeholder="Contoh: Sudah dikontak via WA, sedang menunggu konfirmasi tanggal dari panitia..."
                     value={internalNotes}
                     onChange={(e) => setInternalNotes(e.target.value)}
                     className="w-full p-3 rounded-xl border border-isy-line bg-white text-xs text-isy-emerald focus:outline-none focus:ring-2 focus:ring-isy-emerald transition-all resize-y"
@@ -899,17 +1064,18 @@ export default function AdminSponsorPage() {
                       type="button"
                       disabled={isSavingNotes}
                       onClick={handleSaveInternalNotes}
-                      className="px-4 py-1.5 rounded-lg bg-isy-emerald hover:bg-isy-emerald-hover text-white text-xs font-bold transition-colors cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-isy-emerald hover:bg-isy-emerald-hover text-white text-xs font-bold transition-all shadow-xs cursor-pointer disabled:opacity-50"
                     >
-                      {isSavingNotes ? "Menyimpan..." : "Simpan Catatan"}
+                      <Check className="w-3.5 h-3.5" />
+                      <span>{isSavingNotes ? "Menyimpan Catatan..." : "Simpan Catatan"}</span>
                     </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Drawer Footer Actions */}
-            <div className="p-4 border-t border-isy-line bg-white flex items-center justify-between gap-2 shrink-0">
+            {/* Modal Footer Actions */}
+            <div className="p-4 sm:p-5 border-t border-isy-line bg-white flex flex-wrap items-center justify-between gap-3 shrink-0">
               <button
                 type="button"
                 onClick={() => {
@@ -917,21 +1083,33 @@ export default function AdminSponsorPage() {
                   setSelectedDetailItem(null);
                   setItemToDelete(toDel);
                 }}
-                className="px-3 py-2 rounded-lg border border-rose-200 text-rose-700 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer"
               >
-                Hapus Proposal
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Hapus Proposal</span>
               </button>
 
-              <a
-                href={`https://wa.me/${selectedDetailItem.whatsapp.replace(/\D/g, "").replace(/^0/, "62")}?text=${encodeURIComponent(
-                  `Halo Kak ${selectedDetailItem.nama} (${selectedDetailItem.instansi}), mengenai proposal sponsorship "${selectedDetailItem.namaKegiatan}" yang diajukan ke Optik I See You #${selectedDetailItem.id}:`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg bg-isy-emerald hover:bg-isy-emerald-hover text-white text-xs font-bold transition-colors cursor-pointer"
-              >
-                Chat WhatsApp PIC
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedDetailItem(null)}
+                  className="px-4 py-2 rounded-xl border border-isy-line bg-white hover:bg-isy-mist text-xs font-bold text-isy-emerald transition-colors cursor-pointer shadow-2xs"
+                >
+                  Tutup
+                </button>
+
+                <a
+                  href={`https://wa.me/${selectedDetailItem.whatsapp.replace(/\D/g, "").replace(/^0/, "62")}?text=${encodeURIComponent(
+                    `Halo Kak ${selectedDetailItem.nama} (${selectedDetailItem.instansi}), mengenai proposal sponsorship "${selectedDetailItem.namaKegiatan}" yang diajukan ke Optik I See You #${selectedDetailItem.id}:`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat WhatsApp PIC</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -941,7 +1119,10 @@ export default function AdminSponsorPage() {
           DELETE CONFIRMATION MODAL
       ══════════════════════════════════════════════════════════════════ */}
       {itemToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
+          onClick={() => setItemToDelete(null)}
+        >
           <div
             className="w-full max-w-sm rounded-2xl border border-isy-line bg-white p-5 shadow-xl text-left"
             onClick={(e) => e.stopPropagation()}
@@ -979,7 +1160,10 @@ export default function AdminSponsorPage() {
           GOOGLE SHEET / DRIVE INTEGRATION MODAL
       ══════════════════════════════════════════════════════════════════ */}
       {isGSheetModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
+          onClick={() => setIsGSheetModalOpen(false)}
+        >
           <div
             className="w-full max-w-lg rounded-2xl border border-isy-line bg-white p-6 shadow-xl text-left relative"
             onClick={(e) => e.stopPropagation()}
