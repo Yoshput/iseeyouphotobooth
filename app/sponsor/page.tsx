@@ -25,7 +25,9 @@ import {
   FileCheck,
   X,
   RefreshCw,
+  QrCode,
 } from "lucide-react";
+import SponsorQRModal from "@/components/admin/SponsorQRModal";
 
 function formatBytes(bytes: number) {
   if (bytes === 0) return "0 B";
@@ -71,6 +73,7 @@ export default function SponsorPage() {
     waUrl?: string;
   } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
 
   const bentukOptions = [
     "Voucher Diskon Peserta",
@@ -292,9 +295,20 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
             <span>Kembali ke Beranda</span>
           </Link>
 
-          <span className="text-[11px] font-medium text-slate-400 hidden sm:inline">
-            Official Partnership • Optik I See You
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsQRModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-black/5 text-xs font-bold text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] active:scale-95 transition-all cursor-pointer"
+              title="Buka QR Barcode Standee Meja Sponsor"
+            >
+              <QrCode className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Barcode Sponsor</span>
+            </button>
+            <span className="text-[11px] font-medium text-slate-400 hidden sm:inline">
+              Official Partnership • Optik I See You
+            </span>
+          </div>
         </div>
 
         {/* Hero Section */}
@@ -818,6 +832,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
           </a>
         </div>
       </div>
+      <SponsorQRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </main>
   );
 }
