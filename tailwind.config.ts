@@ -35,7 +35,7 @@ const config: Config = {
         serif:      ["var(--font-playfair)", "Playfair Display", "Georgia", "serif"],
         playfair:   ["var(--font-playfair)", "Playfair Display", "Georgia", "serif"],
         'dm-serif': ["var(--font-playfair)", "Playfair Display", "Georgia", "serif"],
-        pjs:        ["var(--font-poppins)", "Poppins", "system-ui", "sans-serif"],
+        pjs:        ["var(--font-pjs)", "Plus Jakarta Sans", "Poppins", "system-ui", "sans-serif"],
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgba(0, 0, 0, 0.06)",
