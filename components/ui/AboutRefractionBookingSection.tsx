@@ -11,6 +11,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { BRANCHES } from "@/lib/branches";
+import { trackAntrianBooking } from "@/lib/telemetry";
 
 export default function AboutRefractionBookingSection() {
   const [selectedBranchId, setSelectedBranchId] = useState<string>("purwokerto");
@@ -28,6 +29,15 @@ export default function AboutRefractionBookingSection() {
       alert("Mohon masukkan nama Anda.");
       return;
     }
+
+    // Rekam event antrian cek mata riil ke Cloudflare R2 & Marketing Intelligence
+    trackAntrianBooking({
+      branch: selectedBranch.id,
+      customerName: customerName.trim(),
+      customerPhone: customerPhone.trim(),
+      bookingDate: bookingDate || "Hari Ini",
+      bookingTime: bookingTime,
+    });
 
     const message = `Halo Optik I See You Cabang ${selectedBranch.city},
 

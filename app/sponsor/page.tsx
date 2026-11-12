@@ -48,7 +48,7 @@ export default function SponsorPage() {
     tanggalKegiatan: "",
     targetPeserta: "",
     resumeKegiatan: "",
-    bentukSponsor: ["Voucher Diskon Peserta", "Stan Cek Mata Gratis"] as string[],
+    bentukSponsor: [] as string[],
     proposalUrl: "",
   });
 
@@ -211,6 +211,12 @@ export default function SponsorPage() {
       return;
     }
 
+    if (formData.bentukSponsor.length === 0) {
+      setErrorMsg("Mohon pilih minimal 1 bentuk kemitraan yang diajukan.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/sponsor", {
         method: "POST",
@@ -225,6 +231,11 @@ export default function SponsorPage() {
       }
 
       const proposalId = json.data?.id || `SPN-${Date.now().toString(36).toUpperCase()}`;
+
+      // Bersihkan teks peserta agar tidak dobel "orang orang"
+      const rawPeserta = (formData.targetPeserta || "").trim();
+      const cleanPeserta = rawPeserta.replace(/\s*orang$/i, "").trim();
+      const displayPeserta = cleanPeserta ? `${cleanPeserta} orang` : "-";
 
       // Build structured WhatsApp message to staff marketing (087778683766)
       const marketingPhone = "6287778683766";
@@ -242,8 +253,8 @@ Saya bermaksud mengajukan proposal sponsorship untuk kegiatan kami:
 • No. WhatsApp PIC: ${formData.whatsapp}
 • Cabang Tertuju: Optik I See You ${formData.cabang}
 • Tanggal Acara: ${formData.tanggalKegiatan || "-"}
-• Target Peserta: ${formData.targetPeserta || "-"} orang
-• Bentuk Kerjasama: ${formData.bentukSponsor.join(", ") || "Fleksibel"}
+• Target Peserta: ${displayPeserta}
+• Bentuk Kerjasama: ${formData.bentukSponsor.join(", ")}
 
 *2. RINGKASAN KEGIATAN*
 "${formData.resumeKegiatan || "Terlampir lengkap di dalam berkas proposal resmi."}"
@@ -439,7 +450,7 @@ Mohon kesediaan waktu Kak Yossika untuk berdiskusi lebih lanjut mengenai bentuk 
                       tanggalKegiatan: "",
                       targetPeserta: "",
                       resumeKegiatan: "",
-                      bentukSponsor: ["Voucher Diskon Peserta"],
+                      bentukSponsor: [],
                       proposalUrl: "",
                     });
                   }}

@@ -20,7 +20,14 @@ export async function GET(req: NextRequest) {
     const id = searchParams.get("id");
     const type = searchParams.get("type") || "jpg"; // "jpg" or "gif"
 
-    const targetKey = key || (id ? `photos/${id}.${type}` : null);
+    let targetKey = key;
+    if (!targetKey && id) {
+      if (id.startsWith("photos/")) {
+        targetKey = id.endsWith(`.${type}`) ? id : `${id}.${type}`;
+      } else {
+        targetKey = `photos/${id}.${type}`;
+      }
+    }
 
     if (!targetKey) {
       return new NextResponse("Parameter 'key' atau 'id' wajib disertakan.", {
@@ -33,12 +40,52 @@ export async function GET(req: NextRequest) {
     }
 
     const s3 = getR2Client();
-    const command = new GetObjectCommand({
-      Bucket: R2_BUCKET_NAME,
-      Key: targetKey,
-    });
+    let s3Res;
+    try {
+      s3Res = await s3.send(
+        new GetObjectCommand({
+          Bucket: R2_BUCKET_NAME,
+          Key: targetKey,
+        })
+      );
+    } catch (primaryErr: unknown) {
+      // Fallback: check alternate partition (monthly vs legacy flat)
+      const primaryS3Err = primaryErr as { $metadata?: { httpStatusCode?: number }; name?: string };
+      if (
+        (primaryS3Err?.$metadata?.httpStatusCode === 404 || primaryS3Err?.name === "NoSuchKey") &&
+        id
+      ) {
+        const now = new Date();
+        const currentYearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+        let fallbackKey: string | null = null;
 
-    const s3Res = await s3.send(command);
+        if (!id.includes("/")) {
+          // Try monthly folder
+          fallbackKey = `photos/${currentYearMonth}/${id}.${type}`;
+        } else {
+          // Has month prefix (e.g. 2026-11/isy-xxx) -> try legacy flat photos/isy-xxx
+          const pureId = id.split("/").pop();
+          if (pureId) fallbackKey = `photos/${pureId}.${type}`;
+        }
+
+        if (fallbackKey && fallbackKey !== targetKey) {
+          try {
+            s3Res = await s3.send(
+              new GetObjectCommand({
+                Bucket: R2_BUCKET_NAME,
+                Key: fallbackKey,
+              })
+            );
+          } catch {
+            throw primaryErr;
+          }
+        } else {
+          throw primaryErr;
+        }
+      } else {
+        throw primaryErr;
+      }
+    }
 
     if (!s3Res.Body) {
       return new NextResponse("Foto tidak ditemukan atau sudah expired.", {

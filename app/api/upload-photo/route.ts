@@ -40,18 +40,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Generate clean unique photo ID
-    const uniqueId =
+    // 1. Generate clean unique photo ID organized by month (YYYY-MM/isy-...)
+    const now = new Date();
+    const currentYearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+    let fullPhotoId =
       photoId ||
       `isy-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
-    // 2. Upload Photo Strip if present
+    // Ensure photoId has the monthly folder prefix (e.g. "2026-11/isy-...")
+    if (!/^\d{4}-\d{2}\//.test(fullPhotoId)) {
+      fullPhotoId = `${currentYearMonth}/${fullPhotoId}`;
+    }
+
+    // 2. Upload Photo Strip if present into photos/YYYY-MM/...
     let stripResult: { key: string; publicUrl: string } | null = null;
     if (stripDataUrl && typeof stripDataUrl === "string") {
       try {
         const stripBase64 = stripDataUrl.replace(/^data:image\/\w+;base64,/, "");
         const stripBuffer = Buffer.from(stripBase64, "base64");
-        const stripKey = `photos/${uniqueId}.jpg`;
+        const stripKey = `photos/${fullPhotoId}.jpg`;
         stripResult = await uploadBufferToR2(stripBuffer, stripKey, "image/jpeg");
       } catch (stripErr) {
         console.error("Upload strip ke R2 gagal:", stripErr);
@@ -61,13 +69,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 3. Upload Animated GIF if present
+    // 3. Upload Animated GIF if present into photos/YYYY-MM/...
     let gifResult: { key: string; publicUrl: string } | null = null;
     if (gifDataUrl && typeof gifDataUrl === "string") {
       try {
         const gifBase64 = gifDataUrl.replace(/^data:image\/\w+;base64,/, "");
         const gifBuffer = Buffer.from(gifBase64, "base64");
-        const gifKey = `photos/${uniqueId}.gif`;
+        const gifKey = `photos/${fullPhotoId}.gif`;
         gifResult = await uploadBufferToR2(gifBuffer, gifKey, "image/gif");
       } catch (gifErr) {
         console.warn("Upload GIF ke R2 gagal (melanjutkan tanpa GIF):", gifErr);
@@ -88,21 +96,24 @@ export async function POST(req: NextRequest) {
     const finalStripUrl = stripResult
       ? isCustomDomain
         ? stripResult.publicUrl
-        : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=jpg`
-      : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=jpg`;
+        : `${siteUrl}/api/photo?id=${encodeURIComponent(fullPhotoId)}&type=jpg`
+      : `${siteUrl}/api/photo?id=${encodeURIComponent(fullPhotoId)}&type=jpg`;
 
     const finalGifUrl = gifResult
       ? isCustomDomain
         ? gifResult.publicUrl
-        : `${siteUrl}/api/photo?id=${encodeURIComponent(uniqueId)}&type=gif`
+        : `${siteUrl}/api/photo?id=${encodeURIComponent(fullPhotoId)}&type=gif`
       : null;
 
-    const qrPageUrl = `${siteUrl}/download?id=${encodeURIComponent(uniqueId)}`;
+    const qrPageUrl = `${siteUrl}/download?id=${encodeURIComponent(fullPhotoId)}`;
 
     return NextResponse.json(
       {
         ok: true,
-        photoId: uniqueId,
+        photoId: fullPhotoId,
+        month: currentYearMonth,
+        stripKey: stripResult?.key || `photos/${fullPhotoId}.jpg`,
+        gifKey: gifResult?.key || (gifDataUrl ? `photos/${fullPhotoId}.gif` : null),
         stripUrl: finalStripUrl,
         gifUrl: finalGifUrl,
         qrPageUrl,

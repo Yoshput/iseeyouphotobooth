@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { downloadOrShareImage } from "@/lib/saveImage";
+import { trackPhotoShare } from "@/lib/telemetry";
 
 function DownloadPortalContent() {
   const searchParams = useSearchParams();
@@ -86,9 +87,11 @@ function DownloadPortalContent() {
   const handleDownloadStrip = async () => {
     if (!stripUrl) return;
     showToast("Mengunduh foto HD ke galeri...");
+    trackPhotoShare(photoId);
+    const cleanId = (photoId || `${Date.now()}`).replace(/[\\/]/g, "-");
     const res = await downloadOrShareImage(
       stripUrl,
-      `iseeyou-photobooth-${photoId || Date.now()}.jpg`,
+      `iseeyou-photobooth-${cleanId}.jpg`,
       "Optik I See You - Foto Strip HD"
     );
     if (res.success) {
@@ -101,9 +104,11 @@ function DownloadPortalContent() {
   const handleDownloadGif = async () => {
     if (!gifUrl) return;
     showToast("Mengunduh GIF animasi ke galeri...");
+    trackPhotoShare(photoId);
+    const cleanId = (photoId || `${Date.now()}`).replace(/[\\/]/g, "-");
     const res = await downloadOrShareImage(
       gifUrl,
-      `iseeyou-animasi-${photoId || Date.now()}.gif`,
+      `iseeyou-animasi-${cleanId}.gif`,
       "Optik I See You - Animasi GIF"
     );
     if (res.success) {
@@ -115,6 +120,7 @@ function DownloadPortalContent() {
 
   const handleCopyLink = async () => {
     try {
+      trackPhotoShare(photoId);
       if (typeof window !== "undefined" && navigator.clipboard) {
         await navigator.clipboard.writeText(window.location.href);
         showToast("Link foto berhasil disalin! 📋");

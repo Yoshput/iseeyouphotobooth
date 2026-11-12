@@ -34,6 +34,7 @@ import ThermalPrintModal from "@/components/ui/ThermalPrintModal";
 import { downloadOrShareImage } from "@/lib/saveImage";
 import QRCode from "qrcode";
 import manifestRaw from "@/public/glasses/manifest.json";
+import { trackTryOn, trackPhotoShare } from "@/lib/telemetry";
 
 type BoothPhase =
   | "frame-select"
@@ -371,19 +372,23 @@ function ShareModal({ compositeUrl, gifUrl, onClose, onToast }: {
 }) {
   const downloadStrip = async () => {
     onToast("Mengunduh foto ke galeri...");
+    trackPhotoShare();
     await downloadOrShareImage(compositeUrl, `iseeyou-strip-${Date.now()}.jpg`, "Optik I See You — Photo");
     onToast("Foto berhasil diunduh dan tersimpan di galeri!");
   };
   const downloadGif = async () => {
     if (!gifUrl) return;
     onToast("Mengunduh GIF animasi...");
+    trackPhotoShare();
     await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
     onToast("GIF animasi berhasil diunduh dan tersimpan di galeri!");
   };
   const shareWA = async () => {
+    trackPhotoShare();
     setTimeout(() => window.open("https://wa.me/?text=" + encodeURIComponent("Coba kacamata di @iseeyou.glasses AR Photobooth! https://optikiseeyou.com/photobooth"), "_blank"), 300);
   };
   const shareIG = async () => {
+    trackPhotoShare();
     setTimeout(() => { window.open("https://www.instagram.com/iseeyou.glasses/", "_blank"); onToast("Buka Instagram @iseeyou.glasses ✨"); }, 300);
   };
 
@@ -868,6 +873,13 @@ export default function PhotoboothPage() {
   const glasses = manifest[glassesIndex] || manifest[0];
   const faceTrackerRef = useRef<FaceTrackerHandle>(null);
 
+  // Track Virtual Try-On frame trial in Cloudflare R2 and IMI telemetry
+  useEffect(() => {
+    if (glasses?.name && glasses.id !== "none") {
+      trackTryOn(glasses.name);
+    }
+  }, [glassesIndex, glasses?.name]);
+
   const openRemoteCameraModal = async () => {
     setIsRemoteModalOpen(true);
     let activeRoomId = remoteRoomId;
@@ -1096,6 +1108,7 @@ export default function PhotoboothPage() {
   const downloadStrip = useCallback(async () => {
     if (!compositeUrl) return;
     showToast("Mengunduh foto ke galeri...");
+    trackPhotoShare();
     const res = await downloadOrShareImage(compositeUrl, `iseeyou-foto-${Date.now()}.jpg`, "Optik I See You — Photo");
     if (res.success) {
       showToast("Foto berhasil diunduh dan tersimpan di galeri!");
@@ -1107,6 +1120,7 @@ export default function PhotoboothPage() {
   const downloadGif = useCallback(async () => {
     if (!gifUrl) return;
     showToast("Mengunduh GIF animasi ke galeri...");
+    trackPhotoShare();
     const res = await downloadOrShareImage(gifUrl, `iseeyou-animasi-${Date.now()}.gif`, "Optik I See You — GIF");
     if (res.success) {
       showToast("GIF animasi berhasil diunduh dan tersimpan di galeri!");
