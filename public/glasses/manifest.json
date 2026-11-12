@@ -4,7 +4,7 @@
     "name": "Tanpa Kacamata",
     "file": "",
     "fitWidthRatio": 0,
-    "ipdScaleRef": 1.0,
+    "ipdScaleRef": 1,
     "style": "Normal",
     "recommendedFor": [],
     "color": "#94a3b8",
@@ -17,20 +17,33 @@
     "fitWidthRatio": 1.48,
     "ipdScaleRef": 1.03,
     "style": "Hexagonal",
-    "recommendedFor": ["Square", "Oblong", "Heart", "Diamond"],
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Heart",
+      "Diamond"
+    ],
     "color": "#E8C5C8",
     "lensType": "open",
     "model3D": {
       "name": "Hexagonal Crystal Transparan",
       "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_transparan.glb",
       "fitWidthRatio": 2.8,
-      "ipdScaleRef": 1.0,
-      "yOffsetRatio": 0.0,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
       "frameColor": "#E8C5C8",
       "metalColor": "#d4af37",
       "style": "Hexagonal",
-      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
-      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
       "templeFadeStart": 0.65
     }
   },
@@ -41,20 +54,32 @@
     "fitWidthRatio": 1.46,
     "ipdScaleRef": 1.02,
     "style": "Oval",
-    "recommendedFor": ["Square", "Oblong", "Diamond"],
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Diamond"
+    ],
     "color": "#334155",
     "lensType": "open",
     "model3D": {
       "name": "Oval Bulat Metal Gold",
       "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/metal_round_glasses.glb",
       "fitWidthRatio": 2.8,
-      "ipdScaleRef": 1.0,
-      "yOffsetRatio": 0.0,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
       "frameColor": "#334155",
       "metalColor": "#c0a050",
       "style": "Oval",
-      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
-      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
       "templeFadeStart": 0.65
     }
   },
@@ -65,7 +90,12 @@
     "fitWidthRatio": 1.45,
     "ipdScaleRef": 1.01,
     "style": "Semi-Square",
-    "recommendedFor": ["Heart", "Oval", "Round", "Diamond"],
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
     "color": "#C4956A",
     "lensType": "open"
   },
@@ -76,21 +106,35 @@
     "fitWidthRatio": 1.44,
     "ipdScaleRef": 1.02,
     "style": "Cat-Eye",
-    "recommendedFor": ["Heart", "Oval", "Round", "Diamond", "Square"],
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round",
+      "Diamond",
+      "Square"
+    ],
     "color": "#8B4513",
     "lensType": "open",
     "model3D": {
       "name": "Sunglasses Bellagio Havana",
       "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
       "fitWidthRatio": 2.8,
-      "ipdScaleRef": 1.0,
-      "yOffsetRatio": 0.0,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
       "frameColor": "#8B4513",
       "metalColor": "#d4af37",
       "style": "Cat-Eye",
-      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
-      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
-      "templeFadeStart": 0.60
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
     }
   },
   {
@@ -98,9 +142,14 @@
     "name": "Cat-Eye Pastel",
     "file": "cateye-pastel-v2.png",
     "fitWidthRatio": 1.44,
-    "ipdScaleRef": 1.0,
+    "ipdScaleRef": 1,
     "style": "Cat-Eye",
-    "recommendedFor": ["Heart", "Oval", "Round", "Diamond"],
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
     "color": "#C8B8A2",
     "lensType": "open"
   },
@@ -111,20 +160,32 @@
     "fitWidthRatio": 1.44,
     "ipdScaleRef": 1.02,
     "style": "Square",
-    "recommendedFor": ["Round", "Oval", "Oblong"],
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Oblong"
+    ],
     "color": "#1a1a1a",
     "lensType": "open",
     "model3D": {
       "name": "Kotak Plastik Hitam",
       "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
       "fitWidthRatio": 2.8,
-      "ipdScaleRef": 1.0,
-      "yOffsetRatio": 0.0,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
       "frameColor": "#1a1a1a",
       "metalColor": "#d4af37",
       "style": "Square",
-      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
-      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
       "templeFadeStart": 0.65
     }
   },
@@ -135,20 +196,35 @@
     "fitWidthRatio": 1.74,
     "ipdScaleRef": 1.02,
     "style": "Browline",
-    "recommendedFor": ["Oval", "Round", "Square", "Heart", "Diamond", "Oblong"],
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Square",
+      "Heart",
+      "Diamond",
+      "Oblong"
+    ],
     "color": "#262626",
     "lensType": "open",
     "model3D": {
       "name": "Kotak Clubmaster Metal",
       "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses1/glasses01.glb",
       "fitWidthRatio": 3.32,
-      "ipdScaleRef": 1.0,
-      "yOffsetRatio": 0.0,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
       "frameColor": "#262626",
       "metalColor": "#d4af37",
       "style": "Browline",
-      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
-      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
       "templeFadeStart": 0.65
     }
   },
@@ -157,7 +233,7 @@
     "name": "Sunglasses Hitam",
     "file": "sunglasses-black.png",
     "fitWidthRatio": 1.44,
-    "ipdScaleRef": 1.0,
+    "ipdScaleRef": 1,
     "style": "Sunglasses",
     "recommendedFor": [],
     "color": "#111111",
@@ -168,7 +244,7 @@
     "id": "sunglasses-square-metal",
     "name": "Sunglasses Aviator Gold",
     "file": "sunglasses-square-metal.png",
-    "fitWidthRatio": 1.40,
+    "fitWidthRatio": 1.4,
     "ipdScaleRef": 0.98,
     "style": "Aviator",
     "recommendedFor": [],
@@ -179,15 +255,169 @@
       "name": "Sunglasses Aviator Gold",
       "glbFile": "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/cyberpunk_johnny_silverhand_glasses.glb",
       "fitWidthRatio": 2.8,
-      "ipdScaleRef": 1.0,
-      "yOffsetRatio": 0.0,
+      "ipdScaleRef": 1,
+      "yOffsetRatio": 0,
       "frameColor": "#1a1a1a",
       "metalColor": "#d4af37",
       "isTinted": true,
       "style": "Aviator",
-      "pivotOffset": { "x": 0, "y": 0, "z": 0 },
-      "rotationOffsetDeg": { "x": 0, "y": 0, "z": 0 },
-      "templeFadeStart": 0.60
+      "pivotOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationOffsetDeg": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "templeFadeStart": 0.6
     }
+  },
+  {
+    "id": "cateye-lebar-real",
+    "name": "Cat-Eye Lebar Real",
+    "file": "cateye-lebar-real.png",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "style": "Cat-Eye",
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round",
+      "Diamond",
+      "Square"
+    ],
+    "color": "#8B4513",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "cateye-pastel-real",
+    "name": "Cat-Eye Pastel Real",
+    "file": "cateye-pastel-real.png",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1,
+    "style": "Cat-Eye",
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
+    "color": "#C8B8A2",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "hexagonal-real",
+    "name": "Hexagonal Real",
+    "file": "hexagonal-real.png",
+    "fitWidthRatio": 1.48,
+    "ipdScaleRef": 1.03,
+    "style": "Hexagonal",
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Heart",
+      "Diamond"
+    ],
+    "color": "#E8C5C8",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "clubmaster-real",
+    "name": "Kotak Clubmaster Real",
+    "file": "clubmaster-real.png",
+    "fitWidthRatio": 1.74,
+    "ipdScaleRef": 1.02,
+    "style": "Browline",
+    "recommendedFor": [
+      "Oval",
+      "Round",
+      "Square",
+      "Heart",
+      "Diamond",
+      "Oblong"
+    ],
+    "color": "#262626",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "square-plastik-real",
+    "name": "Kotak Plastik Hitam Real",
+    "file": "square-real.png",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1.02,
+    "style": "Square",
+    "recommendedFor": [
+      "Round",
+      "Oval",
+      "Oblong"
+    ],
+    "color": "#1a1a1a",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "oval-kecil-real",
+    "name": "Oval Kecil Real",
+    "file": "oval-kecil-real.png",
+    "fitWidthRatio": 1.46,
+    "ipdScaleRef": 1.02,
+    "style": "Oval",
+    "recommendedFor": [
+      "Square",
+      "Oblong",
+      "Diamond"
+    ],
+    "color": "#334155",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "semi-kotak-real",
+    "name": "Semi Kotak Plastik Real",
+    "file": "semi-kotak-real.png",
+    "fitWidthRatio": 1.45,
+    "ipdScaleRef": 1.01,
+    "style": "Semi-Square",
+    "recommendedFor": [
+      "Heart",
+      "Oval",
+      "Round",
+      "Diamond"
+    ],
+    "color": "#C4956A",
+    "lensType": "open",
+    "isRealPhoto": true
+  },
+  {
+    "id": "sunglasses-real",
+    "name": "Sun Glasses Hitam Real",
+    "file": "sunglasses-real.png",
+    "fitWidthRatio": 1.44,
+    "ipdScaleRef": 1,
+    "style": "Sunglasses",
+    "recommendedFor": [],
+    "color": "#111111",
+    "lensType": "tinted",
+    "excludeFromAiMatch": true,
+    "isRealPhoto": true
+  },
+  {
+    "id": "aviator-real",
+    "name": "Sunglasses Aviator Real",
+    "file": "aviator-real.png",
+    "fitWidthRatio": 1.4,
+    "ipdScaleRef": 0.98,
+    "style": "Aviator",
+    "recommendedFor": [],
+    "color": "#c0a050",
+    "lensType": "tinted",
+    "excludeFromAiMatch": true,
+    "isRealPhoto": true
   }
 ]
