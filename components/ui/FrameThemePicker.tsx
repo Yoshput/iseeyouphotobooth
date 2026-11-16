@@ -9,6 +9,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { ArrowLeft, Check } from "lucide-react";
 import { gsap } from "gsap";
 import {
   FRAME_THEMES,
@@ -370,8 +371,8 @@ function ThemeCard({
     >
       {/* Selected Badge */}
       {isSelected && (
-        <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-isy-green-bright text-white shadow-md text-xs font-black z-10 animate-in zoom-in-50 duration-200">
-          ✓
+        <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#103F31] text-white shadow-sm z-10 animate-in zoom-in-50 duration-200">
+          <Check className="w-3.5 h-3.5 stroke-[3]" />
         </span>
       )}
 
@@ -473,28 +474,28 @@ export default function FrameThemePicker({
     >
       <div className="relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-3xl bg-white/95 p-6 shadow-2xl backdrop-blur-xl border border-isy-line sm:p-8 overflow-y-auto">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between border-b border-isy-line pb-4">
+        <div className="mb-6 flex items-center justify-between border-b border-[#DDE8E1] pb-4">
           <div className="flex items-center gap-3">
             <button
               onClick={onBack}
-              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-isy-mist text-isy-green-deep hover:bg-isy-green-bright hover:text-white transition-all active:scale-95 shadow-2xs cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#F8F7F3] border border-[#DDE8E1] text-[#68756D] hover:text-[#103F31] hover:bg-white transition-all active:scale-95 shadow-2xs cursor-pointer"
               aria-label="Kembali"
             >
-              ←
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <h2 className="text-2xl font-black text-isy-green-deep">
+              <h2 className="text-xl sm:text-2xl font-semibold text-[#18251F] tracking-tight">
                 Pilih Template Desain Frame
               </h2>
-              <p className="text-xs text-isy-ink/60 font-medium mt-0.5">
-                Layout: <span className="font-bold text-isy-green-deep">{layout.label} ({layout.sublabel})</span> · Pilih template sebelum mulai foto
+              <p className="text-xs sm:text-sm text-[#68756D] mt-0.5">
+                Format: <span className="font-semibold text-[#103F31]">{layout.label} ({layout.sublabel})</span> · Pilih template favorit sebelum mulai berfoto
               </p>
             </div>
           </div>
 
           <div className="hidden sm:flex items-center gap-2">
-            <span className="rounded-full bg-isy-green-bright/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-isy-green-bright border border-isy-green-bright/20">
-              {availableThemes.length} Pilihan Tema
+            <span className="rounded-md bg-[#103F31]/5 border border-[#103F31]/15 px-3 py-1 text-xs font-semibold text-[#103F31]">
+              {availableThemes.length} Pilihan Desain
             </span>
           </div>
         </div>

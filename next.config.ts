@@ -116,6 +116,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    cpus: 1,
+    workerThreads: false,
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -161,4 +165,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
