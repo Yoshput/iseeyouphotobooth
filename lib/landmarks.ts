@@ -67,7 +67,7 @@ export const GLASSES_SCALE_MAX = 700;  // face very close, still sane
  * offsetNorm = ipdNorm × 0.22 ≈ 0.047 → ~5% of frame width downward.
  * This keeps glasses correctly on the nose at all face distances.
  */
-export const Y_OFFSET_FACTOR = 0.12;
+export const Y_OFFSET_FACTOR = 0.02;
 
 // ---------------------------------------------------------------------------
 // GlassesAnchor
