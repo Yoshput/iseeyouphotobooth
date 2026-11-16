@@ -166,17 +166,23 @@ export default function ResultPreview({
   // ── GSAP entrance ──────────────────────────────────────────────────────────
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration: 0.28 });
-      gsap.fromTo(
-        photoRef.current,
-        { y: 24, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4, ease: "power2.out", delay: 0.12 }
-      );
-      gsap.fromTo(
-        actionsRef.current,
-        { y: 16, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.36, ease: "power2.out", delay: 0.22 }
-      );
+      if (ref.current) {
+        gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration: 0.28 });
+      }
+      if (photoRef.current) {
+        gsap.fromTo(
+          photoRef.current,
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out", delay: 0.12 }
+        );
+      }
+      if (actionsRef.current) {
+        gsap.fromTo(
+          actionsRef.current,
+          { y: 16, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.36, ease: "power2.out", delay: 0.22 }
+        );
+      }
     });
     return () => ctx.revert();
   }, []);

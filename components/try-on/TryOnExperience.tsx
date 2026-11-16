@@ -343,7 +343,7 @@ export default function TryOnExperience() {
       </header>
 
       {/* ══ MAIN BODY (SPLIT VIEW ON DESKTOP, STACK ON MOBILE) ════════════ */}
-      <main className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-6 gap-4 lg:gap-6">
+      <main className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-6 gap-4 lg:gap-6 min-w-0 overflow-x-hidden">
         {/* ── LEFT: CAMERA / PHOTO TRY-ON VIEWPORT ───────────────────────── */}
         <section className="flex-1 flex flex-col min-w-0">
           {/* Mode Switcher Tabs */}
@@ -665,7 +665,7 @@ export default function TryOnExperience() {
         </section>
 
         {/* ── RIGHT: PRODUCT CAROUSEL & FRAME DETAILS ───────────────────── */}
-        <section className="lg:w-[380px] xl:w-[420px] shrink-0 flex flex-col gap-3.5">
+        <section className="w-full lg:w-[380px] xl:w-[420px] shrink-0 flex flex-col gap-3.5 min-w-0">
           {/* Active Product Info Card */}
           <div className="bg-white rounded-2xl p-4 border border-[#E5E9E4] shadow-xs">
             <div className="flex items-start justify-between gap-3">
@@ -750,7 +750,7 @@ export default function TryOnExperience() {
           </div>
 
           {/* Product Cards Grid / Scroll Area */}
-          <div className="flex-1 max-h-[380px] lg:max-h-[440px] overflow-y-auto space-y-2 pr-1">
+          <div className="flex-1 max-h-[420px] lg:max-h-[500px] overflow-y-auto space-y-2 pr-1">
             {filteredGlasses.map((g) => {
               const isSelected = activeGlasses.id === g.id;
               const globalIndex = tryOnManifest.findIndex((m) => m.id === g.id);
@@ -759,22 +759,24 @@ export default function TryOnExperience() {
                   key={g.id}
                   type="button"
                   onClick={() => handleSelectGlasses(globalIndex)}
-                  className={`w-full text-left p-2.5 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${
+                  className={`w-full text-left p-2.5 sm:p-3 rounded-2xl border transition-all cursor-pointer flex items-center gap-3 min-w-0 ${
                     isSelected
-                      ? "bg-[#104D37]/5 border-[#104D37] shadow-xs"
+                      ? "bg-[#104D37]/5 border-[#104D37] shadow-xs ring-1 ring-[#104D37]/20"
                       : "bg-white border-[#E5E9E4] hover:border-[#104D37]/40 hover:bg-[#F7F8F5]"
                   }`}
                 >
-                  {/* Thumbnail */}
-                  <div className="relative h-13 w-18 bg-[#F7F8F5] rounded-lg overflow-hidden border border-[#E5E9E4] flex items-center justify-center p-1 shrink-0">
+                  {/* Thumbnail: Explicit 96x72 (Desktop) / 80x56 (Mobile) container with contained Image */}
+                  <div className="relative w-20 h-14 sm:w-24 sm:h-[72px] shrink-0 bg-[#F7F8F5] rounded-xl overflow-hidden border border-[#E5E9E4] flex items-center justify-center p-1.5">
                     {g.file ? (
-                      <Image
-                        src={`/glasses/${g.file}?v=5`}
-                        alt={g.name}
-                        width={72}
-                        height={36}
-                        className="h-full w-full object-contain"
-                      />
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <Image
+                          src={`/glasses/${g.file}?v=5`}
+                          alt={g.name}
+                          fill
+                          sizes="(max-width: 640px) 80px, 96px"
+                          className="object-contain object-center"
+                        />
+                      </div>
                     ) : (
                       <span className="text-[10px] font-medium text-[#68756D]">Polos</span>
                     )}
@@ -782,10 +784,17 @@ export default function TryOnExperience() {
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-medium text-[#104D37] truncate mb-0.5">
-                      {g.style}
-                    </p>
-                    <h3 className="text-xs font-semibold text-[#18251F] truncate leading-tight">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <p className="text-[10px] font-medium text-[#104D37] truncate uppercase tracking-wider">
+                        {g.style || "Frame"}
+                      </p>
+                      {g.isRealPhoto && (
+                        <span className="text-[9px] font-bold text-[#16835B] bg-[#16835B]/10 px-1.5 py-0.2 rounded border border-[#16835B]/20">
+                          REAL
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-xs sm:text-sm font-semibold text-[#18251F] truncate leading-tight">
                       {g.name}
                     </h3>
                     <p className="text-[11px] text-[#68756D] truncate mt-0.5">
@@ -796,14 +805,14 @@ export default function TryOnExperience() {
 
                   {/* Radio / Selection Circle */}
                   <div
-                    className={`h-4.5 w-4.5 rounded-full border flex items-center justify-center shrink-0 transition-all ${
+                    className={`h-5 w-5 rounded-full border flex items-center justify-center shrink-0 transition-all ${
                       isSelected
-                        ? "border-[#104D37] bg-[#104D37] text-white"
-                        : "border-[#E5E9E4] bg-white"
+                        ? "border-[#104D37] bg-[#104D37] text-white shadow-xs"
+                        : "border-[#CCD3CA] bg-[#F7F8F5]"
                     }`}
                   >
                     {isSelected && (
-                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                      <Check className="w-3 h-3 stroke-[3]" />
                     )}
                   </div>
                 </button>

@@ -72,6 +72,19 @@ export const FRAME_CALIBRATIONS: Record<string, FrameCalibration> = {
     color: "#B76E79",
     recommendedFor: ["Square", "Oblong", "Heart", "Diamond"],
   },
+  "clubmaster-real": {
+    id: "clubmaster-real",
+    name: "Kotak Clubmaster Real",
+    asset: "/glasses/clubmaster-real.png",
+    scaleMultiplier: 1.0,
+    offsetX: 0,
+    offsetY: -3,
+    rotationOffset: 0,
+    style: "Browline",
+    material: "Acetate & Metal",
+    color: "#262626",
+    recommendedFor: ["Oval", "Round", "Square", "Heart"],
+  },
 };
 
 /** Get calibration for a given product ID, with sensible default fallbacks. */

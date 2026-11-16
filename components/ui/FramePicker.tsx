@@ -192,7 +192,7 @@ export default function FramePicker({
       if (overlayRef.current) {
         gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.25 });
       }
-      if (cardsRef.current) {
+      if (cardsRef.current && cardsRef.current.children.length > 0) {
         const cards = Array.from(cardsRef.current.children);
         gsap.fromTo(
           cards,

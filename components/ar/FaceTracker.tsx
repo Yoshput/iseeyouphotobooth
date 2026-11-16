@@ -21,7 +21,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { gsap } from "gsap";
 import { useFaceTracking } from "@/hooks/useFaceTracking";
 import { useGestureTracking } from "@/hooks/useGestureTracking";
 import { useElementSize } from "@/hooks/useElementSize";

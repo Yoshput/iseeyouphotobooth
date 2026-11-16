@@ -83,15 +83,25 @@ export default function LandingPage() {
 
   useEffect(() => {
     let ctx: { revert: () => void } | null = null;
+    let isMounted = true;
     import("gsap").then(({ gsap }) => {
+      if (!isMounted) return;
+      if (!logoRef.current || !tagRef.current || !ctaRef.current) return;
       ctx = gsap.context(() => {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-        tl.fromTo(logoRef.current, { opacity: 0.3, y: 16, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.5 })
-          .fromTo(tagRef.current, { opacity: 0.5, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, "-=0.2")
-          .fromTo(ctaRef.current, { opacity: 0.5, y: 8 }, { opacity: 1, y: 0, duration: 0.3 }, "-=0.2");
+        if (logoRef.current) {
+          tl.fromTo(logoRef.current, { opacity: 0.3, y: 16, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.5 });
+        }
+        if (tagRef.current) {
+          tl.fromTo(tagRef.current, { opacity: 0.5, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, "-=0.2");
+        }
+        if (ctaRef.current) {
+          tl.fromTo(ctaRef.current, { opacity: 0.5, y: 8 }, { opacity: 1, y: 0, duration: 0.3 }, "-=0.2");
+        }
       });
     });
     return () => {
+      isMounted = false;
       if (ctx) ctx.revert();
     };
   }, []);
