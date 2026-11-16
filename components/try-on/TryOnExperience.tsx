@@ -250,7 +250,7 @@ export default function TryOnExperience() {
             {/* FaceTracker AR engine */}
             <FaceTracker
               ref={faceTrackerRef}
-              glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}` : ""}
+              glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}?v=3` : ""}
               fitWidthRatio={activeGlasses.fitWidthRatio || 1.45}
               ipdScaleRef={((activeGlasses as any).ipdScaleRef ?? 1.0) * userScaleMultiplier}
               numFaces={1}
@@ -493,7 +493,7 @@ export default function TryOnExperience() {
                   <div className="relative h-14 w-20 bg-isy-mist rounded-xl overflow-hidden border border-isy-line flex items-center justify-center p-1 shrink-0">
                     {g.file ? (
                       <Image
-                        src={`/glasses/${g.file}`}
+                        src={`/glasses/${g.file}?v=3`}
                         alt={g.name}
                         width={80}
                         height={40}
