@@ -2,16 +2,18 @@
 
 /**
  * TryOnExperience.tsx · Optik I See You
- * Dedicated Virtual Try-On 2D Experience inspired by Heykama's product-first UX.
+ * Master 2D Virtual Try-On Experience with Live Camera & Photo Upload modes.
  *
- * Key Principles:
- * - Camera-first hero viewport (responsive desktop & mobile)
- * - 2D Face-tracked real product glasses (19 styles, including 9 real product photos)
- * - Zero page-reload or camera-restart on frame swap
- * - Interactive visual scale slider (- / + %) with clear visual-only disclaimer
- * - Clean, non-distracting UI (no gimmicky laser/scan animations)
- * - High-resolution single-photo capture with instant download & WhatsApp CS stock inquiry
- * - Cross-promotion to Photobooth 4-grid and Face Shape Quiz
+ * Key Capabilities:
+ * - Dual Mode: Live Camera (continuous face tracking) & Photo Upload (client-side MediaPipe)
+ * - Two Featured Real Products: Cateye Pastel & Hexagonal Rose Gold (+ 7 additional real frames)
+ * - Transparent 2D overlays with 100% clear lens interior and clean studio extraction
+ * - Comprehensive Manual Adjustment: Ukuran (Scale), Posisi (X/Y Offsets), Rotasi (Tilt), and Reset
+ * - Independent per-product calibration via lib/tryOnCalibration.ts
+ * - Seamless zero-reload frame swapping
+ * - Single-click high-resolution photo capture & instant download
+ * - Direct WhatsApp stock consultation with branch options
+ * - 100% Client-side processing with full privacy preservation
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -19,7 +21,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import FaceTracker, { type FaceTrackerHandle } from "@/components/ar/FaceTracker";
+import PhotoTryOnCanvas, { type PhotoTryOnHandle } from "./PhotoTryOnCanvas";
 import manifestRaw from "@/public/glasses/manifest.json";
+import { getFrameCalibration } from "@/lib/tryOnCalibration";
 import { trackTryOn, trackPhotoShare } from "@/lib/telemetry";
 import { CS_WHATSAPP_NUMBER } from "@/lib/branches";
 
@@ -30,6 +34,7 @@ interface GlassesMeta {
   fitWidthRatio: number;
   ipdScaleRef?: number;
   style: string;
+  material?: string;
   recommendedFor: string[];
   color: string;
   lensType?: string;
@@ -37,7 +42,7 @@ interface GlassesMeta {
   excludeFromAiMatch?: boolean;
 }
 
-// Only show the 9 new real product photo glasses (+ Tanpa Kacamata) as requested
+// Strictly include the real product photo frames (+ Tanpa Kacamata)
 const tryOnManifest = (manifestRaw as GlassesMeta[]).filter(
   (g) => g.id === "none" || g.isRealPhoto === true
 );
@@ -47,17 +52,31 @@ export default function TryOnExperience() {
   const isDebugAR = searchParams?.get("debugAR") === "1";
 
   const faceTrackerRef = useRef<FaceTrackerHandle>(null);
+  const photoCanvasRef = useRef<PhotoTryOnHandle>(null);
   const cameraContainerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Default to first real photo asset (index 1 if none is index 0)
+  // Default to first real photo asset (Cateye Pastel or Hexagonal)
   const initialIndex = useMemo(() => {
     const realIdx = tryOnManifest.findIndex((g) => g.isRealPhoto);
     return realIdx >= 0 ? realIdx : 0;
   }, []);
 
+  // Mode: Live Camera vs. Uploaded Photo
+  const [tryOnMode, setTryOnMode] = useState<"camera" | "photo">("camera");
+  const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
+
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [userScaleMultiplier, setUserScaleMultiplier] = useState<number>(1.0);
+
+  // Manual Adjustment States (Size, X/Y Position, Rotation) - Persists across modes
+  const [manualScale, setManualScale] = useState<number>(1.0);
+  const [manualOffsetX, setManualOffsetX] = useState<number>(0);
+  const [manualOffsetY, setManualOffsetY] = useState<number>(0);
+  const [manualRotation, setManualRotation] = useState<number>(0);
+  const [showAdjustDrawer, setShowAdjustDrawer] = useState<boolean>(false);
+
+  // Camera & Tracking states
   const [beautyMode, setBeautyMode] = useState<boolean>(true);
   const [cameraFacing, setCameraFacing] = useState<"user" | "environment">("user");
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
@@ -67,39 +86,45 @@ export default function TryOnExperience() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const activeGlasses = tryOnManifest[selectedIndex] || tryOnManifest[0];
+  const activeCalibration = useMemo(() => getFrameCalibration(activeGlasses.id), [activeGlasses.id]);
+
+  // Combined scale factor: manifest base × calibration multiplier × manual scale
+  const effectiveFitWidthRatio = (activeGlasses.fitWidthRatio || 1.45) * activeCalibration.scaleMultiplier;
 
   // Toast feedback helper
   const showToast = useCallback((msg: string) => {
     setToastMessage(msg);
     setTimeout(() => {
       setToastMessage((prev) => (prev === msg ? null : prev));
-    }, 2400);
+    }, 2800);
   }, []);
 
-  // Filter categories for the 9 new real frames
+  // Filter categories
   const categories = useMemo(() => {
     const realCount = tryOnManifest.filter((g) => g.isRealPhoto).length;
     return [
       { id: "all", label: `Semua (${realCount})` },
       { id: "Cat-Eye", label: "Cat-Eye" },
+      { id: "Hexagonal", label: "Hexagonal" },
       { id: "Square", label: "Kotak" },
       { id: "Oval", label: "Oval" },
-      { id: "Hexagonal", label: "Hexagonal" },
       { id: "Sunglasses", label: "Sunglasses" },
     ];
   }, []);
 
   const filteredGlasses = useMemo(() => {
     return tryOnManifest.filter((g) => {
-      if (g.id === "none") return true; // keep Tanpa Kacamata accessible
+      if (g.id === "none") return true;
       if (selectedCategory === "all") return true;
+      if (selectedCategory === "Cat-Eye") return g.style?.toLowerCase().includes("cat-eye");
+      if (selectedCategory === "Hexagonal") return g.style?.toLowerCase().includes("hexagonal");
       if (selectedCategory === "Sunglasses") return g.style === "Sunglasses" || g.style === "Aviator";
       if (selectedCategory === "Square") return g.style === "Square" || g.style === "Semi-Square" || g.style === "Browline";
       return g.style === selectedCategory;
     });
   }, [selectedCategory]);
 
-  // Track try-on whenever user switches glasses
+  // Select frame
   const handleSelectGlasses = useCallback(
     (index: number) => {
       setSelectedIndex(index);
@@ -109,6 +134,42 @@ export default function TryOnExperience() {
       }
     },
     []
+  );
+
+  // Reset all manual fitting adjustments
+  const handleResetFitting = useCallback(() => {
+    setManualScale(1.0);
+    setManualOffsetX(0);
+    setManualOffsetY(0);
+    setManualRotation(0);
+    showToast("Fitting dikembalikan ke posisi awal (Reset)");
+  }, [showToast]);
+
+  // Handle Photo Upload
+  const handlePhotoUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const validTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) {
+        showToast("Format file tidak didukung. Harap pilih foto JPG, PNG, atau WebP.");
+        return;
+      }
+
+      // Check file size (max 15MB)
+      if (file.size > 15 * 1024 * 1024) {
+        showToast("Ukuran file terlalu besar. Maksimum 15MB.");
+        return;
+      }
+
+      const url = URL.createObjectURL(file);
+      setUploadedPhotoUrl(url);
+      setTryOnMode("photo");
+      showToast("Foto dimuat! Sistem sedang mendeteksi wajah...");
+      e.target.value = "";
+    },
+    [showToast]
   );
 
   // Switch camera facing mode
@@ -139,23 +200,31 @@ export default function TryOnExperience() {
     return () => document.removeEventListener("fullscreenchange", onFsChange);
   }, []);
 
-  // Single photo capture
+  // Single photo capture in either Camera or Photo mode
   const handleCapture = useCallback(() => {
-    if (!faceTrackerRef.current) return;
     setIsCapturing(true);
 
-    // Visual flash
     setTimeout(() => {
-      const dataUrl = faceTrackerRef.current?.captureFrame();
+      let dataUrl: string | null = null;
+      if (tryOnMode === "camera") {
+        dataUrl = faceTrackerRef.current?.captureFrame() ?? null;
+      } else {
+        dataUrl = photoCanvasRef.current?.captureComposite() ?? null;
+      }
+
       setIsCapturing(false);
       if (dataUrl) {
         setCapturedPhoto(dataUrl);
-        showToast("Foto berhasil diambil!");
+        showToast("Foto try-on berhasil diambil!");
       } else {
-        showToast("Gagal mengambil foto. Pastikan kamera aktif.");
+        showToast(
+          tryOnMode === "camera"
+            ? "Gagal mengambil foto. Pastikan izin kamera aktif dan wajah terdeteksi."
+            : "Gagal menyimpan foto. Pastikan foto telah dimuat dengan benar."
+        );
       }
     }, 150);
-  }, [showToast]);
+  }, [tryOnMode, showToast]);
 
   // Direct download captured photo
   const handleDownloadPhoto = useCallback(() => {
@@ -168,7 +237,7 @@ export default function TryOnExperience() {
     document.body.removeChild(link);
 
     trackPhotoShare(activeGlasses.id);
-    showToast("Foto tersimpan di perangkat!");
+    showToast("Foto tersimpan di galeri/perangkat Anda!");
   }, [capturedPhoto, activeGlasses, showToast]);
 
   // WhatsApp consultation
@@ -184,10 +253,19 @@ export default function TryOnExperience() {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-isy-ink flex flex-col font-sans selection:bg-isy-green-bright selection:text-white">
+      {/* Hidden File Input for Photo Upload */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="hidden"
+        onChange={handlePhotoUpload}
+      />
+
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-3 duration-200">
-          <div className="rounded-full bg-isy-green-deep/95 text-white px-4 py-2 text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md flex items-center gap-2">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-3 duration-200 pointer-events-none">
+          <div className="rounded-full bg-isy-green-deep/95 text-white px-5 py-2.5 text-xs font-bold shadow-2xl border border-white/20 backdrop-blur-md flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-isy-green-bright animate-pulse" />
             <span>{toastMessage}</span>
           </div>
@@ -236,8 +314,56 @@ export default function TryOnExperience() {
 
       {/* ══ MAIN BODY (SPLIT VIEW ON DESKTOP, STACK ON MOBILE) ════════════ */}
       <main className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-6 gap-4 lg:gap-6">
-        {/* ── LEFT: CAMERA HERO VIEW ────────────────────────────────────── */}
+        {/* ── LEFT: CAMERA / PHOTO TRY-ON VIEWPORT ───────────────────────── */}
         <section className="flex-1 flex flex-col min-w-0">
+          {/* Mode Switcher Tabs */}
+          <div className="flex items-center justify-between mb-2">
+            <div className="inline-flex p-1 bg-white border border-isy-line rounded-2xl shadow-xs">
+              <button
+                type="button"
+                onClick={() => setTryOnMode("camera")}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  tryOnMode === "camera"
+                    ? "bg-isy-green-deep text-white shadow-xs"
+                    : "text-isy-ink/60 hover:text-isy-green-deep"
+                }`}
+              >
+                <span>📹</span>
+                <span>Aktifkan Kamera</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!uploadedPhotoUrl) {
+                    fileInputRef.current?.click();
+                  } else {
+                    setTryOnMode("photo");
+                  }
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  tryOnMode === "photo"
+                    ? "bg-isy-green-deep text-white shadow-xs"
+                    : "text-isy-ink/60 hover:text-isy-green-deep"
+                }`}
+              >
+                <span>📁</span>
+                <span>Upload Foto</span>
+              </button>
+            </div>
+
+            {/* Re-pick photo button if already in photo mode */}
+            {tryOnMode === "photo" && uploadedPhotoUrl && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-xs font-bold text-isy-green-deep hover:text-isy-green-bright bg-white border border-isy-line px-3 py-1.5 rounded-xl transition-all shadow-xs"
+              >
+                Ganti Foto ↺
+              </button>
+            )}
+          </div>
+
+          {/* Viewport Frame */}
           <div
             ref={cameraContainerRef}
             className="relative w-full aspect-[3/4] sm:aspect-[4/3] lg:aspect-[16/11] bg-black rounded-3xl overflow-hidden shadow-2xl border border-isy-line/80 flex items-center justify-center group"
@@ -247,22 +373,66 @@ export default function TryOnExperience() {
               <div className="absolute inset-0 bg-white z-50 animate-out fade-out duration-300 pointer-events-none" />
             )}
 
-            {/* FaceTracker AR engine */}
-            <FaceTracker
-              ref={faceTrackerRef}
-              glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}?v=5` : ""}
-              fitWidthRatio={activeGlasses.fitWidthRatio || 1.45}
-              ipdScaleRef={((activeGlasses as any).ipdScaleRef ?? 1.0) * userScaleMultiplier}
-              numFaces={1}
-              beautyMode={beautyMode}
-              facingMode={cameraFacing}
-              renderMode="2d"
-              scanIntro={false}
-              showFaceGuide={false}
-              trackingEnabled={true}
-              onFaceCountChange={(count) => setFaceDetected(count > 0)}
-              className="w-full h-full object-cover"
-            />
+            {/* Mode 1: Live Camera Mode */}
+            {tryOnMode === "camera" && (
+              <FaceTracker
+                ref={faceTrackerRef}
+                glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}?v=5` : ""}
+                fitWidthRatio={effectiveFitWidthRatio}
+                ipdScaleRef={((activeGlasses as any).ipdScaleRef ?? 1.0) * manualScale}
+                manualOffsetX={manualOffsetX}
+                manualOffsetY={manualOffsetY}
+                manualScale={manualScale}
+                manualRotation={manualRotation}
+                numFaces={1}
+                beautyMode={beautyMode}
+                facingMode={cameraFacing}
+                renderMode="2d"
+                scanIntro={false}
+                showFaceGuide={false}
+                trackingEnabled={true}
+                onFaceCountChange={(count) => setFaceDetected(count > 0)}
+                className="w-full h-full object-cover"
+              />
+            )}
+
+            {/* Mode 2: Photo Upload Mode */}
+            {tryOnMode === "photo" && (
+              uploadedPhotoUrl ? (
+                <PhotoTryOnCanvas
+                  ref={photoCanvasRef}
+                  imageSrc={uploadedPhotoUrl}
+                  glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}?v=5` : ""}
+                  fitWidthRatio={effectiveFitWidthRatio}
+                  manualScale={manualScale}
+                  manualOffsetX={manualOffsetX}
+                  manualOffsetY={manualOffsetY}
+                  manualRotation={manualRotation}
+                  onFaceDetected={(detected) => setFaceDetected(detected)}
+                  onError={(err) => showToast(err)}
+                  className="w-full h-full"
+                />
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full h-full flex flex-col items-center justify-center text-white/80 p-6 text-center cursor-pointer hover:bg-white/5 transition-colors"
+                >
+                  <div className="h-16 w-16 rounded-full bg-white/10 flex items-center justify-center text-3xl mb-3 shadow-inner">
+                    📁
+                  </div>
+                  <h3 className="text-base font-bold text-white mb-1">Pilih Foto untuk Dicoba</h3>
+                  <p className="text-xs text-white/60 max-w-sm mb-4">
+                    Gunakan foto wajah tampak depan dengan pencahayaan jelas (format JPG, PNG, atau WebP).
+                  </p>
+                  <button
+                    type="button"
+                    className="px-5 py-2.5 rounded-full bg-isy-green-bright text-white text-xs font-black shadow-lg hover:bg-white hover:text-isy-green-deep transition-all active:scale-95"
+                  >
+                    Buka Galeri / Pilih Berkas
+                  </button>
+                </div>
+              )
+            )}
 
             {/* Top Bar Floating Controls */}
             <div className="absolute top-3 inset-x-3 z-30 flex items-center justify-between pointer-events-none">
@@ -273,34 +443,44 @@ export default function TryOnExperience() {
                     faceDetected ? "bg-isy-green-bright animate-ping" : "bg-amber-400"
                   }`}
                 />
-                <span>{faceDetected ? "Wajah Terdeteksi" : "Arahkan Wajah ke Kamera"}</span>
+                <span>
+                  {faceDetected
+                    ? "Wajah Terdeteksi"
+                    : tryOnMode === "camera"
+                    ? "Arahkan Wajah ke Kamera"
+                    : "Menunggu Wajah pada Foto"}
+                </span>
               </div>
 
               {/* Utility buttons */}
               <div className="pointer-events-auto flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setBeautyMode((prev) => !prev)}
-                  title="Filter AI Halus"
-                  className={`h-8 px-2.5 rounded-full text-xs font-bold backdrop-blur-md border transition-all active:scale-95 flex items-center gap-1 ${
-                    beautyMode
-                      ? "bg-isy-green-bright/90 text-white border-white/40 shadow-sm"
-                      : "bg-black/50 text-white/80 border-white/15 hover:bg-black/70"
-                  }`}
-                >
-                  <span>✨</span>
-                  <span className="hidden sm:inline">AI Halus</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleToggleCamera}
-                  title="Ganti Kamera Depan / Belakang"
-                  className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 text-white backdrop-blur-md border border-white/15 flex items-center justify-center transition-all active:scale-95 shadow-sm"
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                  </svg>
-                </button>
+                {tryOnMode === "camera" && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setBeautyMode((prev) => !prev)}
+                      title="Filter AI Halus"
+                      className={`h-8 px-2.5 rounded-full text-xs font-bold backdrop-blur-md border transition-all active:scale-95 flex items-center gap-1 ${
+                        beautyMode
+                          ? "bg-isy-green-bright/90 text-white border-white/40 shadow-sm"
+                          : "bg-black/50 text-white/80 border-white/15 hover:bg-black/70"
+                      }`}
+                    >
+                      <span>✨</span>
+                      <span className="hidden sm:inline">AI Halus</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleToggleCamera}
+                      title="Ganti Kamera Depan / Belakang"
+                      className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 text-white backdrop-blur-md border border-white/15 flex items-center justify-center transition-all active:scale-95 shadow-sm"
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                      </svg>
+                    </button>
+                  </>
+                )}
                 <button
                   type="button"
                   onClick={handleToggleFullscreen}
@@ -320,37 +500,97 @@ export default function TryOnExperience() {
               </div>
             </div>
 
-            {/* Bottom Floating Bar on Camera: Size Adjuster & Shutter */}
+            {/* Bottom Floating Bar on Viewport: Fitting Controls & Shutter */}
             <div className="absolute bottom-3 inset-x-3 z-30 flex flex-col items-center gap-2 pointer-events-none">
-              {/* Visual Scale Adjuster */}
-              <div className="pointer-events-auto flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 text-white shadow-lg">
-                <span className="text-[10px] font-bold text-white/70 uppercase tracking-wider hidden sm:inline">
-                  Ukuran Frame:
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setUserScaleMultiplier((prev) => Math.max(0.8, parseFloat((prev - 0.05).toFixed(2))))}
-                  className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-xs font-black transition-all active:scale-90"
-                  title="Kecilkan Frame"
-                >
-                  -
-                </button>
-                <span className="text-xs font-black text-isy-green-bright min-w-[34px] text-center">
-                  {Math.round(userScaleMultiplier * 100)}%
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setUserScaleMultiplier((prev) => Math.min(1.3, parseFloat((prev + 0.05).toFixed(2))))}
-                  className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-xs font-black transition-all active:scale-90"
-                  title="Besarkan Frame"
-                >
-                  +
-                </button>
-                {userScaleMultiplier !== 1.0 && (
+              {/* Manual Adjustment Floating Toolbar */}
+              <div className="pointer-events-auto flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 text-white shadow-xl max-w-full overflow-x-auto scrollbar-none">
+                {/* Scale buttons */}
+                <div className="flex items-center gap-1 pr-1 border-r border-white/20">
+                  <span className="text-[10px] font-bold text-white/70 hidden sm:inline">Ukuran:</span>
                   <button
                     type="button"
-                    onClick={() => setUserScaleMultiplier(1.0)}
-                    className="text-[10px] font-bold text-white/50 hover:text-white underline ml-1"
+                    onClick={() => setManualScale((prev) => Math.max(0.7, parseFloat((prev - 0.05).toFixed(2))))}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-xs font-black transition-all active:scale-90"
+                    title="Kecilkan Frame"
+                  >
+                    -
+                  </button>
+                  <span className="text-xs font-black text-isy-green-bright min-w-[34px] text-center">
+                    {Math.round(manualScale * 100)}%
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setManualScale((prev) => Math.min(1.4, parseFloat((prev + 0.05).toFixed(2))))}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-xs font-black transition-all active:scale-90"
+                    title="Besarkan Frame"
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Position Adjuster Toggle / Mini buttons */}
+                <div className="flex items-center gap-1 px-1">
+                  <button
+                    type="button"
+                    onClick={() => setManualOffsetY((prev) => prev + 4)}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-[11px] font-bold transition-all active:scale-90"
+                    title="Geser Atas"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setManualOffsetY((prev) => prev - 4)}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-[11px] font-bold transition-all active:scale-90"
+                    title="Geser Bawah"
+                  >
+                    ↓
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setManualOffsetX((prev) => prev - 4)}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-[11px] font-bold transition-all active:scale-90"
+                    title="Geser Kiri"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setManualOffsetX((prev) => prev + 4)}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-[11px] font-bold transition-all active:scale-90"
+                    title="Geser Kanan"
+                  >
+                    →
+                  </button>
+                </div>
+
+                {/* Rotation buttons */}
+                <div className="flex items-center gap-1 pl-1 border-l border-white/20">
+                  <button
+                    type="button"
+                    onClick={() => setManualRotation((prev) => prev - 0.03)}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-[10px] font-bold transition-all active:scale-90"
+                    title="Putar Kiri"
+                  >
+                    ↺
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setManualRotation((prev) => prev + 0.03)}
+                    className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-[10px] font-bold transition-all active:scale-90"
+                    title="Putar Kanan"
+                  >
+                    ↻
+                  </button>
+                </div>
+
+                {/* Reset button */}
+                {(manualScale !== 1.0 || manualOffsetX !== 0 || manualOffsetY !== 0 || manualRotation !== 0) && (
+                  <button
+                    type="button"
+                    onClick={handleResetFitting}
+                    className="text-[10px] font-extrabold text-amber-300 hover:text-white underline ml-1 pl-1 border-l border-white/20"
+                    title="Kembalikan ke posisi awal"
                   >
                     Reset
                   </button>
@@ -378,9 +618,9 @@ export default function TryOnExperience() {
               <div className="absolute top-14 left-3 z-40 bg-black/85 text-[10px] text-emerald-300 font-mono p-2 rounded-lg border border-emerald-500/30">
                 <p>DEBUG AR MODE</p>
                 <p>Frame: {activeGlasses.id}</p>
-                <p>File: {activeGlasses.file}</p>
-                <p>Scale: {userScaleMultiplier}x</p>
-                <p>Facing: {cameraFacing}</p>
+                <p>Scale: {manualScale.toFixed(2)}x</p>
+                <p>Offset: ({manualOffsetX}, {manualOffsetY})</p>
+                <p>Rot: {manualRotation.toFixed(2)} rad</p>
               </div>
             )}
           </div>
@@ -388,7 +628,7 @@ export default function TryOnExperience() {
           {/* Subtitle notice below camera */}
           <div className="mt-2 text-center text-[11px] text-isy-ink/50 flex items-center justify-center gap-1.5">
             <span>💡</span>
-            <span>Ukuran visual dapat diatur via tombol (- / +). Bukan acuan ukuran fisik frame dalam milimeter.</span>
+            <span>Sesuaikan ukuran (-/+) dan posisi panah (↑↓←→) jika ingin menyesuaikan kacamata secara manual.</span>
           </div>
         </section>
 
@@ -409,6 +649,11 @@ export default function TryOnExperience() {
                   )}
                 </div>
                 <h2 className="text-lg font-black text-isy-ink leading-snug">{activeGlasses.name}</h2>
+                {activeGlasses.material && (
+                  <p className="text-[11px] font-medium text-isy-ink/60 mt-0.5">
+                    Material: <span className="font-bold text-isy-ink/80">{activeGlasses.material}</span>
+                  </p>
+                )}
               </div>
               <div
                 className="h-6 w-6 rounded-full border border-black/15 shrink-0 shadow-xs"
@@ -523,6 +768,7 @@ export default function TryOnExperience() {
                     </div>
                     <h3 className="text-sm font-black text-isy-ink truncate">{g.name}</h3>
                     <p className="text-[11px] text-isy-ink/50 truncate">
+                      {g.material ? `${g.material} • ` : ""}
                       {g.recommendedFor?.length ? `Cocok: ${g.recommendedFor.slice(0, 2).join(", ")}` : "Universal fit"}
                     </p>
                   </div>

@@ -48,6 +48,10 @@ interface Props {
   /** Per-model frame-width ÷ IPD calibration ratio (from manifest.ipdScaleRef). */
   ipdScaleRef?: number;
   maxFaces?: number;
+  manualOffsetX?: number;
+  manualOffsetY?: number;
+  manualScale?: number;
+  manualRotation?: number;
 }
 
 /** EMA states for one face slot. */
@@ -88,6 +92,10 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
       fitWidthRatio,
       ipdScaleRef = 1.5,
       maxFaces = 4,
+      manualOffsetX = 0,
+      manualOffsetY = 0,
+      manualScale = 1.0,
+      manualRotation = 0,
     },
     ref
   ) {
@@ -285,10 +293,10 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
           }
 
           // ── Apply EMA smoothing (all in canvas-pixel / radian space) ─
-          const smoothX     = applyEMA(slot.x,     rawSceneX,   alpha);
-          const smoothY     = applyEMA(slot.y,      rawSceneY,   alpha);
-          const smoothScale = applyEMA(slot.scale,  rawScale,    alpha);
-          const smoothRoll  = applyEMA(slot.roll,   anchor.roll, alpha);
+          const smoothX     = applyEMA(slot.x,     rawSceneX,   alpha) + manualOffsetX;
+          const smoothY     = applyEMA(slot.y,      rawSceneY,   alpha) + manualOffsetY;
+          const smoothScale = applyEMA(slot.scale,  rawScale,    alpha) * manualScale;
+          const smoothRoll  = applyEMA(slot.roll,   anchor.roll, alpha) + manualRotation;
 
           // ── Apply to mesh ────────────────────────────────────────────
           mesh.position.set(smoothX, smoothY, 0);

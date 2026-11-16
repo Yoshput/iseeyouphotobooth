@@ -85,19 +85,21 @@
   },
   {
     "id": "cateye-pastel",
-    "name": "Semi Kotak Plastik Pastel",
+    "name": "Cateye Pastel",
     "file": "cateye-pastel.png",
     "fitWidthRatio": 1.45,
-    "ipdScaleRef": 1.01,
-    "style": "Semi-Square",
+    "ipdScaleRef": 1.0,
+    "style": "Soft cat-eye",
+    "material": "Translucent acetate",
     "recommendedFor": [
       "Heart",
       "Oval",
       "Round",
       "Diamond"
     ],
-    "color": "#C4956A",
-    "lensType": "open"
+    "color": "#C8B8A2",
+    "lensType": "open",
+    "isRealPhoto": true
   },
   {
     "id": "cateye-frame",
@@ -293,36 +295,20 @@
     "isRealPhoto": true
   },
   {
-    "id": "cateye-pastel-real",
-    "name": "Cat-Eye Pastel Real",
-    "file": "cateye-pastel-real.png",
-    "fitWidthRatio": 1.44,
-    "ipdScaleRef": 1,
-    "style": "Cat-Eye",
-    "recommendedFor": [
-      "Heart",
-      "Oval",
-      "Round",
-      "Diamond"
-    ],
-    "color": "#C8B8A2",
-    "lensType": "open",
-    "isRealPhoto": true
-  },
-  {
-    "id": "hexagonal-real",
-    "name": "Hexagonal Real",
-    "file": "hexagonal-real.png",
+    "id": "hexagonal-rose-gold",
+    "name": "Hexagonal Rose Gold",
+    "file": "hexagonal-rose-gold.png",
     "fitWidthRatio": 1.48,
-    "ipdScaleRef": 1.03,
-    "style": "Hexagonal",
+    "ipdScaleRef": 1.0,
+    "style": "Rounded hexagonal",
+    "material": "Metal",
     "recommendedFor": [
       "Square",
       "Oblong",
       "Heart",
       "Diamond"
     ],
-    "color": "#E8C5C8",
+    "color": "#B76E79",
     "lensType": "open",
     "isRealPhoto": true
   },

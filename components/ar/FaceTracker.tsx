@@ -75,6 +75,10 @@ interface Props {
   onScanIntroComplete?: () => void;
   onFaceCountChange?: (count: number) => void;
   onLandmarksChange?: (landmarks: Array<{ x: number; y: number; z: number }> | null) => void;
+  manualOffsetX?: number;
+  manualOffsetY?: number;
+  manualScale?: number;
+  manualRotation?: number;
 }
 
 const RING_COLOR = "#2FA84F";
@@ -152,6 +156,10 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
       onScanIntroComplete,
       onFaceCountChange,
       onLandmarksChange,
+      manualOffsetX = 0,
+      manualOffsetY = 0,
+      manualScale = 1.0,
+      manualRotation = 0,
     },
     ref
   ) {
@@ -655,6 +663,10 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
                   fitWidthRatio={fitWidthRatio}
                   ipdScaleRef={ipdScaleRef}
                   maxFaces={numFaces}
+                  manualOffsetX={manualOffsetX}
+                  manualOffsetY={manualOffsetY}
+                  manualScale={manualScale}
+                  manualRotation={manualRotation}
                 />
               ) : null
             )}
