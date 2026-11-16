@@ -165,16 +165,18 @@ All new entries appended AFTER existing 10 entries. See `manifest.json` for full
 - [x] Process 9 real product photos → transparent PNG
 - [x] Add 9 entries to manifest.json
 
-### Phase 2: Try-On Page UX (Next Sprint)
+### Phase 2: Try-On Page UX (COMPLETED ✅)
 Priority features (inspired by Heykama try-on UX):
-- [ ] Camera-centered layout (full viewport)
-- [ ] Glasses thumbnail strip at bottom (horizontal scroll)
-- [ ] Size slider (`ipdScaleRef` multiplier at runtime)
-- [ ] Fullscreen button
-- [ ] Camera flip button (front/back)
-- [ ] Capture + download single photo
-- [ ] Responsive: mobile portrait + desktop landscape
-- [ ] Face shape quiz link (→ `/quiz-frame`)
+- [x] Dedicated route at `/try-on` using shared `FaceTracker` engine
+- [x] Camera-centered layout (responsive mobile & desktop)
+- [x] Glasses thumbnail carousel with style category filters (Cat-Eye, Kotak, Oval, Hexagonal, Sunglasses, Foto Asli)
+- [x] Visual size slider (`userScaleMultiplier` from 80% to 130% with reset)
+- [x] Fullscreen button & Camera switch button (front / back)
+- [x] Single photo capture + crystal-clear JPEG preview modal
+- [x] Instant local download + direct WhatsApp stock inquiry button
+- [x] Real-time telemetry dispatch (`trackTryOn` & `trackPhotoShare`)
+- [x] Cross-promotion pills to `/photobooth` and `/quiz`
+- [x] Developer calibration debug mode (?debugAR=1)
 
 ### Phase 3: AI Frame Recommendation (Future)
 - [ ] Face shape detection → auto-filter `recommendedFor`
