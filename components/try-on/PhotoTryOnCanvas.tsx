@@ -180,16 +180,16 @@ const PhotoTryOnCanvas = forwardRef<PhotoTryOnHandle, PhotoTryOnCanvasProps>(
     }, [draw]);
 
     return (
-      <div className={`relative w-full h-full flex items-center justify-center bg-black/90 overflow-hidden ${className}`}>
+      <div className={`relative w-full h-full flex items-center justify-center bg-[#18251F] overflow-hidden ${className}`}>
         {isLoading && (
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm text-white">
-            <div className="h-8 w-8 rounded-full border-2 border-white/20 border-t-isy-green-bright animate-spin mb-3" />
-            <p className="text-xs font-bold">Mendeteksi Wajah pada Foto...</p>
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#18251F]/70 backdrop-blur-sm text-white">
+            <div className="h-7 w-7 rounded-full border-2 border-white/20 border-t-white animate-spin mb-2.5" />
+            <p className="text-xs font-medium text-white/90">Mendeteksi wajah pada foto...</p>
           </div>
         )}
         <canvas
           ref={canvasRef}
-          className="max-h-full max-w-full object-contain shadow-2xl rounded-xl"
+          className="max-h-full max-w-full object-contain shadow-lg rounded-xl"
         />
       </div>
     );
