@@ -330,8 +330,8 @@
     "id": "clubmaster-real",
     "name": "Kotak Clubmaster Real",
     "file": "clubmaster-real.png",
-    "fitWidthRatio": 1.74,
-    "ipdScaleRef": 1.02,
+    "fitWidthRatio": 1.46,
+    "ipdScaleRef": 1.0,
     "style": "Browline",
     "recommendedFor": [
       "Oval",

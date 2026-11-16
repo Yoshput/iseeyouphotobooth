@@ -37,7 +37,10 @@ interface GlassesMeta {
   excludeFromAiMatch?: boolean;
 }
 
-const manifest = manifestRaw as GlassesMeta[];
+// Only show the 9 new real product photo glasses (+ Tanpa Kacamata) as requested
+const tryOnManifest = (manifestRaw as GlassesMeta[]).filter(
+  (g) => g.id === "none" || g.isRealPhoto === true
+);
 
 export default function TryOnExperience() {
   const searchParams = useSearchParams();
@@ -46,10 +49,10 @@ export default function TryOnExperience() {
   const faceTrackerRef = useRef<FaceTrackerHandle>(null);
   const cameraContainerRef = useRef<HTMLDivElement>(null);
 
-  // Default to first real photo asset if available, else first non-"none" item
+  // Default to first real photo asset (index 1 if none is index 0)
   const initialIndex = useMemo(() => {
-    const realIdx = manifest.findIndex((g) => g.isRealPhoto);
-    return realIdx >= 0 ? realIdx : manifest.length > 1 ? 1 : 0;
+    const realIdx = tryOnManifest.findIndex((g) => g.isRealPhoto);
+    return realIdx >= 0 ? realIdx : 0;
   }, []);
 
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
@@ -63,7 +66,7 @@ export default function TryOnExperience() {
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const activeGlasses = manifest[selectedIndex] || manifest[0];
+  const activeGlasses = tryOnManifest[selectedIndex] || tryOnManifest[0];
 
   // Toast feedback helper
   const showToast = useCallback((msg: string) => {
@@ -73,24 +76,23 @@ export default function TryOnExperience() {
     }, 2400);
   }, []);
 
-  // Filter categories
+  // Filter categories for the 9 new real frames
   const categories = useMemo(() => {
-    const list = [
-      { id: "all", label: `Semua (${manifest.length})` },
-      { id: "real", label: `Foto Asli (${manifest.filter((g) => g.isRealPhoto).length})` },
+    const realCount = tryOnManifest.filter((g) => g.isRealPhoto).length;
+    return [
+      { id: "all", label: `Semua (${realCount})` },
       { id: "Cat-Eye", label: "Cat-Eye" },
       { id: "Square", label: "Kotak" },
       { id: "Oval", label: "Oval" },
       { id: "Hexagonal", label: "Hexagonal" },
       { id: "Sunglasses", label: "Sunglasses" },
     ];
-    return list;
   }, []);
 
   const filteredGlasses = useMemo(() => {
-    return manifest.filter((g) => {
+    return tryOnManifest.filter((g) => {
+      if (g.id === "none") return true; // keep Tanpa Kacamata accessible
       if (selectedCategory === "all") return true;
-      if (selectedCategory === "real") return g.isRealPhoto === true;
       if (selectedCategory === "Sunglasses") return g.style === "Sunglasses" || g.style === "Aviator";
       if (selectedCategory === "Square") return g.style === "Square" || g.style === "Semi-Square" || g.style === "Browline";
       return g.style === selectedCategory;
@@ -101,7 +103,7 @@ export default function TryOnExperience() {
   const handleSelectGlasses = useCallback(
     (index: number) => {
       setSelectedIndex(index);
-      const chosen = manifest[index];
+      const chosen = tryOnManifest[index];
       if (chosen && chosen.id !== "none") {
         trackTryOn(chosen.id, chosen.name);
       }
@@ -475,7 +477,7 @@ export default function TryOnExperience() {
           <div className="flex-1 max-h-[380px] lg:max-h-[460px] overflow-y-auto space-y-2 pr-1">
             {filteredGlasses.map((g) => {
               const isSelected = activeGlasses.id === g.id;
-              const globalIndex = manifest.findIndex((m) => m.id === g.id);
+              const globalIndex = tryOnManifest.findIndex((m) => m.id === g.id);
               return (
                 <button
                   key={g.id}
