@@ -16,6 +16,7 @@ import {
   Handshake,
   ExternalLink,
   X,
+  Megaphone,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -56,6 +57,12 @@ export default function AdminSidebar({
       href: "/admin/blog",
       icon: BookOpen,
       tourId: "sidebar-blog",
+    },
+    {
+      name: "Promo & Campaign",
+      href: "/admin/promosi",
+      icon: Megaphone,
+      tourId: "sidebar-promo",
     },
     {
       name: "Media Library",

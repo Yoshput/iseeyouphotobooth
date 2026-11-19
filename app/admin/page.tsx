@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import {
   Glasses,
   Eye,
@@ -15,6 +15,7 @@ import {
   Smartphone,
   Tablet,
   Globe,
+  Megaphone,
 } from "lucide-react";
 import {
   getFrames,
@@ -23,18 +24,21 @@ import {
   getMediaFiles,
   getAuditLogs,
   getSponsorships,
+  getPromos,
 } from "@/lib/db/repository";
+import { isPromoActive } from "@/lib/promo";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardOverview() {
-  const [frames, softlens, blogPosts, mediaFiles, auditLogs, sponsorships] = await Promise.all([
+  const [frames, softlens, blogPosts, mediaFiles, auditLogs, sponsorships, promos] = await Promise.all([
     getFrames(),
     getSoftlens(),
     getBlogPosts(),
     getMediaFiles(),
     getAuditLogs({ limit: 10 }),
     getSponsorships(),
+    getPromos(),
   ]);
 
   const totalSponsor = sponsorships.length;
@@ -49,6 +53,11 @@ export default async function AdminDashboardOverview() {
   const publishedBlog = blogPosts.filter((b) => b.status === "published").length;
   const draftBlog = blogPosts.filter((b) => b.status === "draft").length;
   const totalMedia = mediaFiles.length;
+
+  const now = new Date();
+  const totalPromos = promos.length;
+  const activePromos = promos.filter((p) => isPromoActive(p, now)).length;
+  const draftPromos = promos.filter((p) => p.status === "draft").length;
 
   // Recent content items across modules
   const recentContent = [
@@ -78,11 +87,19 @@ export default async function AdminDashboardOverview() {
     })),
     ...sponsorships.map((s) => ({
       id: s.id,
-      title: `${s.instansi} • ${s.namaKegiatan}`,
+      title: `${s.instansi} â€¢ ${s.namaKegiatan}`,
       module: "Proposal Sponsor",
       moduleHref: "/admin/sponsor",
       updatedAt: s.createdAt,
       status: s.status,
+    })),
+    ...promos.map((p) => ({
+      id: p.id,
+      title: p.title,
+      module: "Promo & Campaign",
+      moduleHref: "/admin/promosi",
+      updatedAt: p.updatedAt,
+      status: isPromoActive(p, now) ? "Aktif" : p.status === "draft" ? "Draft" : "Berakhir",
     })),
   ]
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
@@ -90,7 +107,7 @@ export default async function AdminDashboardOverview() {
 
   return (
     <div className="flex flex-col h-full min-h-0 space-y-4">
-      {/* Welcome Banner (FIXED — Tidak Ikut Ter-scroll) */}
+      {/* Welcome Banner (FIXED â€” Tidak Ikut Ter-scroll) */}
       <div
         data-tour="dashboard-overview"
         className="flex-shrink-0 rounded-3xl border border-isy-line bg-white p-5 sm:p-6 shadow-xs"
@@ -135,6 +152,13 @@ export default async function AdminDashboardOverview() {
               <FileEdit className="h-4 w-4" />
               <span>Tulis Artikel</span>
             </Link>
+            <Link
+              href="/admin/promosi"
+              className="inline-flex items-center gap-2 rounded-xl bg-isy-emerald px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-isy-emerald-hover transition-colors"
+            >
+              <Megaphone className="h-4 w-4 text-isy-green-bright" />
+              <span>Kelola Promo</span>
+            </Link>
           </div>
         </div>
       </div>
@@ -144,7 +168,7 @@ export default async function AdminDashboardOverview() {
         {/* Real Statistics Metric Cards */}
         <div
           data-tour="dashboard-stats"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4"
         >
         {/* Metric 1: Frame */}
         <Link
@@ -263,6 +287,29 @@ export default async function AdminDashboardOverview() {
           </div>
           <p className="mt-2 text-[11px] text-isy-text-secondary flex items-center justify-between">
             <span>Foto & banner terkelola</span>
+            <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+          </p>
+        </Link>
+
+        {/* Metric 6: Promo & Campaign */}
+        <Link
+          href="/admin/promosi"
+          className="group rounded-2xl border border-isy-line bg-white p-5 shadow-xs hover:border-isy-emerald hover:shadow-md transition-all"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-isy-text-secondary">
+              Promo & Event
+            </span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-isy-mist text-isy-emerald group-hover:bg-isy-emerald group-hover:text-white transition-colors">
+              <Megaphone className="h-5 w-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline justify-between">
+            <div className="text-3xl font-extrabold text-isy-emerald">{activePromos}</div>
+            <div className="text-xs font-bold text-emerald-700">{totalPromos} Total</div>
+          </div>
+          <p className="mt-2 text-[11px] text-isy-text-secondary flex items-center justify-between">
+            <span>{draftPromos} Draft tersimpan</span>
             <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
           </p>
         </Link>

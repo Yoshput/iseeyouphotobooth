@@ -15,7 +15,12 @@ import {
   BlogPostItem,
   MediaFile,
   WebsiteSettings,
+  PromoItem,
+  PromoPopupSettings,
+  PromoCategory,
+  PromoStatus,
 } from "./types";
+import { isPromoActive, slugify, DEFAULT_PROMO_POPUP_SETTINGS } from "@/lib/promo";
 
 // =============================================================================
 // SEEDING HELPERS
@@ -250,6 +255,160 @@ export async function seedInitialDataIfNeeded() {
     }
 
     await writeStore("media", Array.from(mediaMap.values()));
+  }
+
+  // 7. Seed Initial Promos if none exists
+  const existingPromos = await readStore<PromoItem[]>("promos", []);
+  if (!existingPromos || existingPromos.length === 0) {
+    const seededPromos: PromoItem[] = [
+      {
+        id: "promo-undian-akhir-tahun-2026",
+        slug: "undian-akhir-tahun-2026",
+        title: "Undian Akhir Tahun 2026",
+        subtitle: "Ikuti Undiannya & Raih Kesempatan Bawa Pulang Hadiah Akhir Tahun!",
+        excerpt:
+          "Ikuti undian akhir tahun Optik I See You dan raih kesempatan bawa pulang TV Android, Tiket Hotel, Kompor, Magiccom, hingga Voucher Kacamata Rp250.000.",
+        description:
+          "Sambut kemeriahan akhir tahun bersama Optik I See You! Dapatkan kesempatan emas membawa pulang hadiah spektakuler akhir tahun:\n\n• TV Android\n• Tiket Hotel Liburan\n• Kompor Gas 2 Tungku\n• Magiccom Digital\n• Voucher Kacamata Rp250.000\n\nSetiap transaksi kacamata lengkap di 4 cabang resmi Optik I See You (Purwokerto, Purbalingga, Wonosobo, Cilacap) berhak mendapatkan kupon undian berhadiah istimewa ini.",
+        category: "special",
+        status: "published",
+        startAt: "2026-11-01T00:00:00+07:00",
+        endAt: "2026-12-31T23:59:59+07:00",
+        heroImageUrl: "/PROMO/undian-akhir-tahun.png",
+        heroImageAlt: "Poster Undian Akhir Tahun 2026 Optik I See You",
+        galleryImages: [
+          {
+            url: "/PROMO/undian-akhir-tahun.png",
+            alt: "Undian Akhir Tahun 2026 - TV Android, Tiket Hotel, Kompor, Magiccom, Voucher",
+          },
+          {
+            url: "/PROMO/lensa-antifog-blueray.png",
+            alt: "Promo Lensa Antifog Blueray Potongan Up to 300rb",
+          },
+          {
+            url: "/PROMO/novemblur-isy.png",
+            alt: "Promo NOvemBLUR Diskon Hingga 15% + 5% Member",
+          },
+        ],
+        detailLayout: "image-left",
+        collageLayout: "grid-3",
+        ctaLabel: "Ikuti Undian di Cabang",
+        ctaUrl:
+          "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20tertarik%20dengan%20Promo%20Undian%20Akhir%20Tahun%202026",
+        termsAndConditions:
+          "1. Periode promo berlangsung mulai 1 November hingga 31 Desember 2026.\n2. Berlaku untuk seluruh pelanggan di 4 cabang resmi (Purwokerto, Purbalingga, Wonosobo, Cilacap).\n3. Setiap transaksi pembelian kacamata lengkap (frame + lensa) berhak mendapatkan kupon undian.\n4. Hadiah undian mencakup TV Android, Tiket Hotel, Kompor Gas, Magiccom, dan Voucher Kacamata Rp250.000.\n5. Pengundian akan diumumkan secara transparan di Instagram resmi @iseeyou.glasses.\n6. Syarat dan ketentuan berlaku. Gambar hanya untuk ilustrasi.",
+        showOnHomepage: true,
+        showInPopup: true,
+        popupPriority: 10,
+        sortOrder: 1,
+        seoTitle: "Undian Akhir Tahun 2026 Berhadiah TV & Tiket Hotel | Optik I See You",
+        seoDescription:
+          "Ikuti Undian Akhir Tahun 2026 di Optik I See You. Raih kesempatan memenangkan TV Android, Tiket Hotel, Kompor, Magiccom, dan Voucher Rp250.000.",
+        createdAt: "2026-11-01T00:00:00+07:00",
+        updatedAt: "2026-11-19T10:00:00+07:00",
+        createdBy: "Owner Optik I See You",
+      },
+      {
+        id: "promo-novemblur-isy-2026",
+        slug: "promo-novemblur",
+        title: "Promo NOvemBLUR — Diskon Hingga 15%",
+        subtitle: "Diskon 15% Bawa Kacamata Lama | 10% Tanpa Kacamata Lama + Tambahan 5% Khusus Member",
+        excerpt:
+          "Promo NOvemBLUR 16-20 November 2026! Dapatkan diskon hingga 15% dengan membawa kacamata lama, 10% tanpa kacamata lama, dan tambahan 5% khusus member.",
+        description:
+          "Promo NOvemBLUR hadir kembali di Optik I See You mulai 16 hingga 20 November 2026! Saatnya ganti kacamata lama kamu dengan frame estetik dan lensa berkualitas tinggi:\n\n• Diskon 15% dengan membawa kacamata lama (Trade-in / Tukar Tambah)\n• Diskon 10% tanpa membawa kacamata lama\n• Tambahan Diskon 5% khusus Member Optik I See You\n\nJangan lewatkan promo terbatas ini di seluruh cabang resmi Optik I See You Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
+        category: "weekly",
+        status: "published",
+        startAt: "2026-11-16T00:00:00+07:00",
+        endAt: "2026-11-20T23:59:59+07:00",
+        heroImageUrl: "/PROMO/novemblur-isy.png",
+        heroImageAlt: "Poster Promo NOvemBLUR Optik I See You 16-20 November 2026",
+        galleryImages: [
+          {
+            url: "/PROMO/novemblur-isy.png",
+            alt: "Promo NOvemBLUR Diskon 15% dan 10%",
+          },
+        ],
+        detailLayout: "image-left",
+        collageLayout: "grid-2",
+        ctaLabel: "Ambil Promo NOvemBLUR",
+        ctaUrl:
+          "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20mau%20klaim%20Promo%20NOvemBLUR%20Diskon%20Kacamata",
+        termsAndConditions:
+          "1. Periode promo berlaku khusus pada 16 – 20 November 2026.\n2. Diskon 15% berlaku dengan membawa/menyerahkan kacamata lama (kondisi apapun).\n3. Diskon 10% berlaku untuk pembelian langsung tanpa membawa kacamata lama.\n4. Tambahan diskon 5% otomatis berlaku bagi pelanggan yang telah terdaftar sebagai Member Optik I See You.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, dan Cilacap.\n6. Syarat dan ketentuan berlaku.",
+        showOnHomepage: true,
+        showInPopup: false,
+        popupPriority: 8,
+        sortOrder: 2,
+        seoTitle: "Promo NOvemBLUR Diskon Kacamata Hingga 15% + 5% Member | Optik I See You",
+        seoDescription:
+          "Promo NOvemBLUR 16-20 November 2026 di Optik I See You: Diskon 15% bawa kacamata lama, 10% tanpa kacamata lama, dan tambahan 5% khusus member.",
+        createdAt: "2026-11-16T00:00:00+07:00",
+        updatedAt: "2026-11-19T10:00:00+07:00",
+        createdBy: "Owner Optik I See You",
+      },
+      {
+        id: "promo-lensa-antifog-blueray-2026",
+        slug: "promo-lensa-antifog-blueray",
+        title: "Promo Lensa Antifog Blueray — Potongan Up to 300rb",
+        subtitle: "Embun? Ada Antifog! Nikmati Penglihatan Jernih Bebas Embun & Proteksi Sinar Biru",
+        excerpt:
+          "Embun saat minum kopi atau pakai masker? Upgrade ke Lensa Antifog Blueray dengan potongan harga hingga Rp300.000 selama bulan November 2026.",
+        description:
+          "Embun mengganggu aktivitas harian kamu? Atasi dengan Lensa Antifog Blueray dari Optik I See You!\n\nPerbedaan nyata Lensa Biasa vs Lensa Antifog:\n• Lensa Biasa: Cepat berembun pekat saat terkena uap panas kopi, masker, atau perubahan suhu ruangan ber-AC.\n• Lensa Antifog: Lapisan hidrofobik mutakhir yang mencegah kondensasi tetesan air sehingga pandangan tetap jernih seketika.\n• Dilengkapi proteksi Blueray untuk menangkal radiasi sinar biru monitor komputer dan gadget.\n\nDapatkan POTONGAN UP TO 300rb khusus selama bulan November 2026 di seluruh cabang Optik I See You.",
+        category: "monthly",
+        status: "published",
+        startAt: "2026-11-01T00:00:00+07:00",
+        endAt: "2026-11-30T23:59:59+07:00",
+        heroImageUrl: "/PROMO/lensa-antifog-blueray.png",
+        heroImageAlt: "Poster Promo Lensa Antifog Blueray Potongan Up to 300rb",
+        galleryImages: [
+          {
+            url: "/PROMO/lensa-antifog-blueray.png",
+            alt: "Perbandingan Lensa Biasa vs Lensa Antifog",
+          },
+        ],
+        detailLayout: "image-left",
+        collageLayout: "grid-2",
+        ctaLabel: "Konsultasi Lensa Antifog",
+        ctaUrl:
+          "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20tertarik%20dengan%20Promo%20Lensa%20Antifog%20Potongan%20Up%20to%20300rb",
+        termsAndConditions:
+          "1. Periode promo berlaku selama bulan November 2026 (1 – 30 November 2026).\n2. Potongan harga hingga Rp300.000 berlaku untuk pemesanan paket lensa Antifog Blueray tertentu.\n3. Termasuk pemeriksaan refraksi mata digital gratis dan fitting kenyamanan kacamata.\n4. Pemotongan lensa diproses di lab optik CNC otomatis presisi tinggi.\n5. Berlaku di 4 cabang resmi Optik I See You (Purwokerto, Purbalingga, Wonosobo, Cilacap).\n6. Syarat dan ketentuan berlaku.",
+        showOnHomepage: true,
+        showInPopup: false,
+        popupPriority: 6,
+        sortOrder: 3,
+        seoTitle: "Promo Lensa Antifog Blueray Potongan Up to 300rb | Optik I See You",
+        seoDescription:
+          "Promo Lensa Antifog Blueray di Optik I See You selama November 2026: Potongan harga hingga Rp300.000, bebas embun dan anti radiasi layar gadget.",
+        createdAt: "2026-11-01T00:00:00+07:00",
+        updatedAt: "2026-11-19T10:00:00+07:00",
+        createdBy: "Owner Optik I See You",
+      },
+    ];
+
+    await writeStore("promos", seededPromos);
+
+    // Initial popup settings: enable popup and target Undian Akhir Tahun
+    const defaultPopupSettings: PromoPopupSettings = {
+      enabled: true,
+      featuredPromoId: "promo-undian-akhir-tahun-2026",
+      frequency: "once-per-session",
+      delayMs: 1500,
+      layout: "image-left",
+      updatedAt: new Date().toISOString(),
+      updatedBy: "Owner Optik I See You",
+    };
+    await writeStore("promo-settings", defaultPopupSettings);
+
+    await addAuditLog({
+      userEmail: "system",
+      action: "seed",
+      module: "promos",
+      targetId: "promo-undian-akhir-tahun-2026",
+      details: { message: "Seeded initial authentic campaign promos" },
+    });
   }
 }
 
@@ -757,4 +916,368 @@ export async function getSponsorships(): Promise<any[]> {
     return [];
   }
 }
+
+// =============================================================================
+// REPOSITORY METHODS: PROMOS & CAMPAIGNS
+// =============================================================================
+
+export async function getPromos(options?: {
+  category?: string;
+  status?: string;
+  search?: string;
+  onlyActive?: boolean;
+}): Promise<PromoItem[]> {
+  await seedInitialDataIfNeeded();
+  const promos = await readStore<PromoItem[]>("promos", []);
+  let filtered = [...promos];
+
+  if (options?.category && options.category !== "all") {
+    filtered = filtered.filter((p) => p.category === options.category);
+  }
+
+  if (options?.status && options.status !== "all") {
+    filtered = filtered.filter((p) => p.status === options.status);
+  }
+
+  if (options?.search && options.search.trim() !== "") {
+    const query = options.search.toLowerCase().trim();
+    filtered = filtered.filter(
+      (p) =>
+        p.title.toLowerCase().includes(query) ||
+        p.subtitle?.toLowerCase().includes(query) ||
+        p.excerpt.toLowerCase().includes(query) ||
+        p.slug.toLowerCase().includes(query)
+    );
+  }
+
+  if (options?.onlyActive) {
+    const now = new Date();
+    filtered = filtered.filter((p) => isPromoActive(p, now));
+  }
+
+  // Sort by sortOrder ascending, then startAt descending
+  return filtered.sort((a, b) => {
+    if (a.sortOrder !== b.sortOrder) {
+      return a.sortOrder - b.sortOrder;
+    }
+    return new Date(b.startAt).getTime() - new Date(a.startAt).getTime();
+  });
+}
+
+export async function getPromoById(id: string): Promise<PromoItem | null> {
+  await seedInitialDataIfNeeded();
+  const promos = await readStore<PromoItem[]>("promos", []);
+  return promos.find((p) => p.id === id) || null;
+}
+
+export async function getPromoBySlug(slug: string): Promise<PromoItem | null> {
+  await seedInitialDataIfNeeded();
+  const promos = await readStore<PromoItem[]>("promos", []);
+  return promos.find((p) => p.slug === slug) || null;
+}
+
+/**
+ * Public method: Returns ONLY published and currently active promos.
+ */
+export async function getPublicPromos(options?: {
+  category?: PromoCategory;
+  limit?: number;
+}): Promise<PromoItem[]> {
+  await seedInitialDataIfNeeded();
+  const promos = await readStore<PromoItem[]>("promos", []);
+  const now = new Date();
+
+  let active = promos.filter((p) => isPromoActive(p, now));
+
+  if (options?.category) {
+    active = active.filter((p) => p.category === options.category);
+  }
+
+  // Sort by sortOrder ascending, then startAt descending
+  active.sort((a, b) => {
+    if (a.sortOrder !== b.sortOrder) {
+      return a.sortOrder - b.sortOrder;
+    }
+    return new Date(b.startAt).getTime() - new Date(a.startAt).getTime();
+  });
+
+  if (options?.limit && options.limit > 0) {
+    return active.slice(0, options.limit);
+  }
+
+  return active;
+}
+
+/**
+ * Public method for Homepage: Returns active promos with showOnHomepage === true.
+ */
+export async function getHomepagePromos(limit = 3): Promise<PromoItem[]> {
+  const active = await getPublicPromos();
+  const homepagePromos = active.filter((p) => p.showOnHomepage);
+  return homepagePromos.slice(0, limit);
+}
+
+export async function getPromoPopupSettings(): Promise<PromoPopupSettings> {
+  await seedInitialDataIfNeeded();
+  return await readStore<PromoPopupSettings>("promo-settings", DEFAULT_PROMO_POPUP_SETTINGS);
+}
+
+export async function savePromoPopupSettings(
+  settings: Partial<PromoPopupSettings>,
+  adminUser?: { email: string; name?: string; id?: string }
+): Promise<PromoPopupSettings> {
+  const current = await getPromoPopupSettings();
+  const updated: PromoPopupSettings = {
+    ...current,
+    ...settings,
+    updatedAt: new Date().toISOString(),
+    updatedBy: adminUser?.name || adminUser?.email || "Admin",
+  };
+
+  await writeStore("promo-settings", updated);
+
+  if (adminUser) {
+    await addAuditLog({
+      userId: adminUser.id,
+      userName: adminUser.name,
+      userEmail: adminUser.email,
+      action: "update",
+      module: "promos",
+      targetId: "popup-settings",
+      details: {
+        enabled: updated.enabled,
+        featuredPromoId: updated.featuredPromoId,
+        frequency: updated.frequency,
+      },
+    });
+  }
+
+  return updated;
+}
+
+/**
+ * Public method: Returns the featured promo for popup display along with settings.
+ */
+export async function getFeaturedPopupPromo(): Promise<{
+  promo: PromoItem | null;
+  settings: PromoPopupSettings;
+}> {
+  const settings = await getPromoPopupSettings();
+
+  if (!settings.enabled) {
+    return { promo: null, settings };
+  }
+
+  const now = new Date();
+  const promos = await readStore<PromoItem[]>("promos", []);
+
+  // 1. If a specific featuredPromoId is set and still active
+  if (settings.featuredPromoId) {
+    const specific = promos.find((p) => p.id === settings.featuredPromoId);
+    if (specific && isPromoActive(specific, now)) {
+      return { promo: specific, settings };
+    }
+  }
+
+  // 2. Otherwise pick from active promos where showInPopup is true
+  const candidates = promos.filter((p) => p.showInPopup && isPromoActive(p, now));
+  if (candidates.length === 0) {
+    return { promo: null, settings };
+  }
+
+  // Sort by popupPriority descending, then sortOrder ascending
+  candidates.sort((a, b) => {
+    if (b.popupPriority !== a.popupPriority) {
+      return b.popupPriority - a.popupPriority;
+    }
+    return a.sortOrder - b.sortOrder;
+  });
+
+  return { promo: candidates[0], settings };
+}
+
+export async function savePromo(
+  data: Partial<PromoItem> & { title: string },
+  adminUser: { email: string; name?: string; id?: string }
+): Promise<PromoItem> {
+  const promos = await readStore<PromoItem[]>("promos", []);
+  const nowIso = new Date().toISOString();
+
+  // Validate title
+  const title = String(data.title || "").trim();
+  if (!title) {
+    throw new Error("Judul promo wajib diisi.");
+  }
+
+  // Validate dates
+  const startAt = data.startAt ? new Date(data.startAt).toISOString() : nowIso;
+  let endAt: string | undefined = undefined;
+  if (data.endAt && data.endAt.trim() !== "") {
+    const endTimestamp = new Date(data.endAt).getTime();
+    const startTimestamp = new Date(startAt).getTime();
+    if (isNaN(endTimestamp)) {
+      throw new Error("Format tanggal berakhir tidak valid.");
+    }
+    if (endTimestamp <= startTimestamp) {
+      throw new Error("Tanggal berakhir promo harus lebih lanjut daripada tanggal mulai.");
+    }
+    endAt = new Date(data.endAt).toISOString();
+  }
+
+  // Validate hero image if publishing
+  const status: PromoStatus = data.status || "draft";
+  const heroImageUrl = String(data.heroImageUrl || "").trim();
+  if (status === "published" && !heroImageUrl) {
+    throw new Error("Promo yang diterbitkan wajib memiliki gambar utama.");
+  }
+
+  // Determine slug
+  let baseSlug = slugify(data.slug || title);
+  if (!baseSlug) {
+    baseSlug = `promo-${Date.now()}`;
+  }
+
+  const existingIndex = data.id ? promos.findIndex((p) => p.id === data.id) : -1;
+  const isNew = existingIndex === -1;
+  const promoId = isNew ? `promo-${Date.now()}-${Math.floor(100 + Math.random() * 900)}` : data.id!;
+
+  // Ensure slug uniqueness against all OTHER promos
+  let finalSlug = baseSlug;
+  let counter = 1;
+  while (promos.some((p) => p.slug === finalSlug && p.id !== promoId)) {
+    counter++;
+    finalSlug = `${baseSlug}-${counter}`;
+  }
+
+  const existingPromo = !isNew ? promos[existingIndex] : null;
+
+  const promoItem: PromoItem = {
+    id: promoId,
+    slug: finalSlug,
+    title,
+    subtitle: data.subtitle ? String(data.subtitle).trim() : undefined,
+    excerpt: String(data.excerpt || "").trim(),
+    description: String(data.description || "").trim(),
+    category: (data.category as PromoCategory) || "special",
+    status,
+    startAt,
+    endAt,
+    heroMediaId: data.heroMediaId,
+    heroImageUrl,
+    heroImageAlt: data.heroImageAlt ? String(data.heroImageAlt).trim() : title,
+    galleryMediaIds: Array.isArray(data.galleryMediaIds) ? data.galleryMediaIds : [],
+    galleryImages: Array.isArray(data.galleryImages) ? data.galleryImages : [],
+    detailLayout: data.detailLayout === "image-right" ? "image-right" : "image-left",
+    collageLayout: data.collageLayout || "grid-2",
+    ctaLabel: data.ctaLabel ? String(data.ctaLabel).trim() : undefined,
+    ctaUrl: data.ctaUrl ? String(data.ctaUrl).trim() : undefined,
+    termsAndConditions: data.termsAndConditions ? String(data.termsAndConditions).trim() : undefined,
+    showOnHomepage: Boolean(data.showOnHomepage),
+    showInPopup: Boolean(data.showInPopup),
+    popupPriority: typeof data.popupPriority === "number" ? data.popupPriority : 0,
+    sortOrder: typeof data.sortOrder === "number" ? data.sortOrder : (existingPromo?.sortOrder ?? promos.length + 1),
+    seoTitle: data.seoTitle ? String(data.seoTitle).trim() : title,
+    seoDescription: data.seoDescription ? String(data.seoDescription).trim() : data.excerpt,
+    createdAt: existingPromo?.createdAt || nowIso,
+    updatedAt: nowIso,
+    createdBy: existingPromo?.createdBy || adminUser.name || adminUser.email,
+    updatedBy: adminUser.name || adminUser.email,
+  };
+
+  if (isNew) {
+    promos.unshift(promoItem);
+  } else {
+    promos[existingIndex] = promoItem;
+  }
+
+  await writeStore("promos", promos);
+
+  await addAuditLog({
+    userId: adminUser.id,
+    userName: adminUser.name,
+    userEmail: adminUser.email,
+    action: isNew ? "create" : "update",
+    module: "promos",
+    targetId: promoItem.id,
+    details: {
+      title: promoItem.title,
+      slug: promoItem.slug,
+      category: promoItem.category,
+      status: promoItem.status,
+    },
+  });
+
+  return promoItem;
+}
+
+export async function deletePromo(
+  id: string,
+  adminUser: { email: string; name?: string; id?: string }
+): Promise<boolean> {
+  const promos = await readStore<PromoItem[]>("promos", []);
+  const target = promos.find((p) => p.id === id);
+  if (!target) return false;
+
+  const filtered = promos.filter((p) => p.id !== id);
+  await writeStore("promos", filtered);
+
+  // If this promo was the featured promo in popup settings, reset it
+  const settings = await getPromoPopupSettings();
+  if (settings.featuredPromoId === id) {
+    await savePromoPopupSettings({ ...settings, featuredPromoId: undefined });
+  }
+
+  await addAuditLog({
+    userId: adminUser.id,
+    userName: adminUser.name,
+    userEmail: adminUser.email,
+    action: "delete",
+    module: "promos",
+    targetId: target.id,
+    details: {
+      title: target.title,
+      slug: target.slug,
+    },
+  });
+
+  return true;
+}
+
+export async function updatePromoStatus(
+  id: string,
+  status: PromoStatus,
+  adminUser: { email: string; name?: string; id?: string }
+): Promise<PromoItem | null> {
+  const promos = await readStore<PromoItem[]>("promos", []);
+  const targetIndex = promos.findIndex((p) => p.id === id);
+  if (targetIndex === -1) return null;
+
+  const target = promos[targetIndex];
+  if (status === "published" && !target.heroImageUrl) {
+    throw new Error("Promo tidak dapat diterbitkan tanpa gambar utama.");
+  }
+
+  target.status = status;
+  target.updatedAt = new Date().toISOString();
+  target.updatedBy = adminUser.name || adminUser.email;
+  promos[targetIndex] = target;
+
+  await writeStore("promos", promos);
+
+  await addAuditLog({
+    userId: adminUser.id,
+    userName: adminUser.name,
+    userEmail: adminUser.email,
+    action: status === "published" ? "publish" : status === "archived" ? "archive" : "update",
+    module: "promos",
+    targetId: target.id,
+    details: {
+      title: target.title,
+      status,
+    },
+  });
+
+  return target;
+}
+
 

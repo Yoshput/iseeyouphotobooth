@@ -66,6 +66,8 @@ export async function writeStore<T>(collectionName: string, data: T): Promise<vo
   const r2Key = `db/${collectionName}.json`;
   const localFile = path.join(STORE_DIR, `${collectionName}.json`);
 
+  let r2Error: Error | null = null;
+
   // 1. Save to Cloudflare R2
   if (isR2Configured()) {
     try {
@@ -78,17 +80,30 @@ export async function writeStore<T>(collectionName: string, data: T): Promise<vo
       });
       await client.send(cmd);
     } catch (r2Err: any) {
+      r2Error = r2Err instanceof Error ? r2Err : new Error(String(r2Err));
       console.error(`R2 store write failed for ${collectionName}:`, r2Err.message);
     }
   }
 
   // 2. Save to local filesystem
+  let localSaved = false;
   try {
     if (!fs.existsSync(STORE_DIR)) {
       fs.mkdirSync(STORE_DIR, { recursive: true });
     }
     fs.writeFileSync(localFile, jsonContent, "utf-8");
-  } catch {
+    localSaved = true;
+  } catch (fsErr: any) {
     // Expected on read-only environments
+    if (!isR2Configured()) {
+      throw new Error(`Gagal menulis penyimpanan lokal untuk ${collectionName}: ${fsErr?.message || fsErr}`);
+    }
+  }
+
+  // Reject silent failure in production if R2 is configured but failed to write
+  if (isR2Configured() && r2Error) {
+    if (process.env.NODE_ENV === "production" || !localSaved) {
+      throw new Error(`Gagal menyimpan data permanen ke Cloudflare R2 (${collectionName}): ${r2Error.message}`);
+    }
   }
 }

@@ -64,6 +64,7 @@ export default function Navbar() {
   ];
 
   const navLinks = [
+    { href: "/promo", label: "Promo" },
     { href: "/photobooth", label: "Photobooth" },
     { href: "/cabang", label: "Cabang" },
     { href: "/home-service", label: "Home Service" },

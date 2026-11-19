@@ -1,0 +1,158 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Menu, X, ArrowLeft, MessageCircle } from "lucide-react";
+import { konsultasiWhatsappUrl, BRANCHES } from "@/lib/branches";
+
+interface PromoMicrositeHeaderProps {
+  showBackToAll?: boolean;
+}
+
+export default function PromoMicrositeHeader({
+  showBackToAll = false,
+}: PromoMicrositeHeaderProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-[#E3E7DF] shadow-xs">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+        {/* Left: Brand Identity */}
+        <div className="flex items-center gap-4">
+          {showBackToAll && (
+            <Link
+              href="/promo"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-[#E3E7DF] bg-[#FAF8F3] px-3 py-1.5 text-xs font-bold text-[#124734] hover:bg-white transition-colors"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Semua Promo</span>
+            </Link>
+          )}
+
+          <Link href="/promo" className="flex items-center gap-2.5 group">
+            <Image
+              src="/brand-logo-green.png"
+              alt="Logo Optik I See You"
+              width={140}
+              height={36}
+              className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-102"
+              priority
+            />
+            <span className="rounded-full bg-[#124734] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-2xs">
+              Promo
+            </span>
+          </Link>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-[#124734]">
+          <Link
+            href="/promo"
+            className="hover:text-[#2FA84F] transition-colors"
+          >
+            Daftar Promo
+          </Link>
+          <a
+            href="https://optikiseeyou.com"
+            className="hover:text-[#2FA84F] transition-colors"
+          >
+            Website Utama
+          </a>
+          <a
+            href="https://optikiseeyou.com/katalog"
+            className="hover:text-[#2FA84F] transition-colors"
+          >
+            Katalog Frame
+          </a>
+          <a
+            href="https://optikiseeyou.com/softlens"
+            className="hover:text-[#2FA84F] transition-colors"
+          >
+            Softlens
+          </a>
+          <a
+            href="https://optikiseeyou.com/cabang"
+            className="hover:text-[#2FA84F] transition-colors"
+          >
+            4 Cabang
+          </a>
+        </nav>
+
+        {/* Right CTA */}
+        <div className="hidden sm:flex items-center gap-3">
+          <a
+            href={konsultasiWhatsappUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#208c49] to-[#124734] px-4 py-2 text-xs font-bold text-white shadow-sm hover:opacity-95 transition-all"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            <span>Tanya Promo ke CS</span>
+          </a>
+        </div>
+
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Buka navigasi"
+          className="md:hidden p-2 rounded-xl text-[#124734] hover:bg-slate-100"
+        >
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-[#E3E7DF] bg-white px-4 py-4 space-y-3 animate-in slide-in-from-top-2 duration-150">
+          <div className="flex flex-col space-y-2.5 text-xs font-bold text-[#124734]">
+            <Link
+              href="/promo"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1.5 hover:text-[#2FA84F]"
+            >
+              Semua Promo & Campaign
+            </Link>
+            <a
+              href="https://optikiseeyou.com"
+              className="py-1.5 hover:text-[#2FA84F]"
+            >
+              Kembali ke Website Utama
+            </a>
+            <a
+              href="https://optikiseeyou.com/katalog"
+              className="py-1.5 hover:text-[#2FA84F]"
+            >
+              Katalog Frame Kacamata
+            </a>
+            <a
+              href="https://optikiseeyou.com/softlens"
+              className="py-1.5 hover:text-[#2FA84F]"
+            >
+              Katalog Softlens
+            </a>
+            <a
+              href="https://optikiseeyou.com/cabang"
+              className="py-1.5 hover:text-[#2FA84F]"
+            >
+              Info 4 Cabang Resmi
+            </a>
+          </div>
+
+          <div className="pt-2 border-t border-slate-100">
+            <a
+              href={konsultasiWhatsappUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#208c49] to-[#124734] py-3 text-xs font-bold text-white shadow-sm"
+            >
+              <MessageCircle className="h-4 w-4" />
+              <span>Konsultasi WhatsApp Cabang</span>
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

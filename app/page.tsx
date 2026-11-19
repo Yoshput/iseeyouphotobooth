@@ -25,6 +25,8 @@ import BlogShowcaseSection from "@/components/ui/BlogShowcaseSection";
 import LocalFaqSection from "@/components/ui/LocalFaqSection";
 import Navbar from "@/components/ui/Navbar";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
+import PromoSection from "@/components/landing/PromoSection";
+import FeaturedPromoPopup from "@/components/ui/FeaturedPromoPopup";
 import Link from "next/link";
 import { ScanFace, Glasses, Camera, QrCode, Eye } from "lucide-react";
 import { CATALOG_COLLECTIONS } from "@/lib/catalog";
@@ -336,6 +338,9 @@ export default function LandingPage() {
       {/* ═══ KATALOG BERJALAN: FEED RSM MARQUEE ═══ */}
       <RunningCatalogFeed />
 
+      {/* ═══ PROMO & PENAWARAN SECTION ═══ */}
+      <PromoSection />
+
       {/* ═══ CINEMATIC VIDEO SHOWCASE ═══ */}
       <LandingVideoShowcase />
 
@@ -644,6 +649,9 @@ export default function LandingPage() {
         isOpen={isBranchWAModalOpen}
         onClose={() => setIsBranchWAModalOpen(false)}
       />
+
+      {/* ═══ FEATURED PROMO POPUP ═══ */}
+      <FeaturedPromoPopup />
     </main>
   );
 }

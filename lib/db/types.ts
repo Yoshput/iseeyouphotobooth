@@ -31,7 +31,7 @@ export interface AuditLog {
   userName?: string;
   userEmail: string;
   action: string; // "create", "update", "delete", "publish", "unpublish", "login_success", "login_failed", "seed", etc.
-  module: "frames" | "softlens" | "blog" | "media" | "settings" | "auth" | "users";
+  module: "frames" | "softlens" | "blog" | "media" | "settings" | "auth" | "users" | "promos";
   targetId?: string;
   details?: Record<string, any>;
   ipAddress?: string;
@@ -166,4 +166,59 @@ export interface WebsiteSettings {
   instagramUrl: string;
   shopeeUrl: string;
   updatedAt: string;
+}
+
+export type PromoCategory = "weekly" | "monthly" | "special";
+export type PromoStatus = "draft" | "published" | "archived";
+export type PromoDetailLayout = "image-left" | "image-right";
+export type PromoCollageLayout = "grid-2" | "grid-3" | "masonry" | "carousel" | "split-hero";
+
+export interface PromoGalleryItem {
+  id?: string;
+  url: string;
+  alt?: string;
+  caption?: string;
+}
+
+export interface PromoItem {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle?: string;
+  excerpt: string;
+  description: string;
+  category: PromoCategory;
+  status: PromoStatus;
+  startAt: string; // ISO 8601
+  endAt?: string;   // ISO 8601
+  heroMediaId?: string;
+  heroImageUrl: string;
+  heroImageAlt?: string;
+  galleryMediaIds?: string[];
+  galleryImages?: PromoGalleryItem[];
+  detailLayout: PromoDetailLayout;
+  collageLayout: PromoCollageLayout;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  termsAndConditions?: string;
+  showOnHomepage: boolean;
+  showInPopup: boolean;
+  popupPriority: number;
+  sortOrder: number;
+  seoTitle?: string;
+  seoDescription?: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy?: string;
+  updatedBy?: string;
+}
+
+export interface PromoPopupSettings {
+  enabled: boolean;
+  featuredPromoId?: string;
+  frequency: "once-per-session" | "once-per-day" | "always";
+  delayMs: number;
+  layout: PromoDetailLayout;
+  updatedAt: string;
+  updatedBy?: string;
 }
