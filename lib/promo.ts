@@ -142,3 +142,12 @@ export function getPromoSubdomainUrl(slug?: string): string {
 
   return slug ? `/promo/${slug}` : "/promo";
 }
+
+/**
+ * Unifies brand text so "Optik I See You" is never awkwardly broken across multiple lines.
+ * Uses non-breaking spaces so all 4 words remain strictly on the same line.
+ */
+export function formatBrandText(text?: string | null): string {
+  if (!text) return "";
+  return text.replace(/Optik\s+I\s+See\s+You/gi, "Optik\u00A0I\u00A0See\u00A0You");
+}

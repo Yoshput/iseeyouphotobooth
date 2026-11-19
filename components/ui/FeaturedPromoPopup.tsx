@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { X, Tag } from "lucide-react";
 import { PromoItem, PromoPopupSettings } from "@/lib/db/types";
-import { getPromoSubdomainUrl } from "@/lib/promo";
+import { getPromoSubdomainUrl, formatBrandText } from "@/lib/promo";
 
 const SESSION_STORAGE_KEY = "isy_featured_promo_dismissed";
 const LOCAL_STORAGE_KEY = "isy_featured_promo_dismissed_at";
@@ -241,17 +241,24 @@ export default function FeaturedPromoPopup() {
             } order-2`}
           >
             <div className="space-y-3 sm:space-y-4">
+              {/* Brand Eyebrow Tag (Unified & Prominent at Beginning) */}
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.16em] text-[#124734] bg-[#124734]/8 px-2.5 py-1 rounded-md whitespace-nowrap">
+                  Optik I See You
+                </span>
+              </div>
+
               {/* Campaign Title */}
               <h2
                 id="featured-promo-popup-title"
                 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#124734] leading-tight tracking-tight"
               >
-                {promo.title}
+                {formatBrandText(promo.title)}
               </h2>
 
               {/* Campaign Excerpt / Description */}
               <p className="text-xs sm:text-sm lg:text-base text-slate-600 leading-relaxed font-normal">
-                {promo.excerpt || promo.description}
+                {formatBrandText(promo.excerpt || promo.description)}
               </p>
 
               {/* Bold CTA Button (Optik Melawai Style) */}

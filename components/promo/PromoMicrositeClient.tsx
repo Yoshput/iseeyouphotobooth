@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { PromoItem } from "@/lib/db/types";
 import { BRANCHES, KONSULTASI_WA_NUMBER } from "@/lib/branches";
-import { formatPromoPeriod } from "@/lib/promo";
+import { formatPromoPeriod, formatBrandText } from "@/lib/promo";
 
 interface PromoMicrositeClientProps {
   initialPromos: PromoItem[];
@@ -113,10 +113,10 @@ export default function PromoMicrositeClient({
               {/* Title & Subtitle */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                  {orderedPromos[0].title}
+                  {formatBrandText(orderedPromos[0].title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-emerald-200">
-                  {orderedPromos[0].subtitle || "Gebyar Hadiah & Promo Spesial Akhir Tahun"}
+                  {formatBrandText(orderedPromos[0].subtitle || "Gebyar Hadiah & Promo Spesial Akhir Tahun")}
                 </p>
               </div>
 
@@ -282,10 +282,10 @@ export default function PromoMicrositeClient({
               {/* Title & Subtitle */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
-                  {orderedPromos[1].title}
+                  {formatBrandText(orderedPromos[1].title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-slate-700">
-                  {orderedPromos[1].subtitle || "Saatnya Ganti Kacamata Lama Kamu!"}
+                  {formatBrandText(orderedPromos[1].subtitle || "Saatnya Ganti Kacamata Lama Kamu!")}
                 </p>
               </div>
 
@@ -432,11 +432,13 @@ export default function PromoMicrositeClient({
               {/* Title & Subtitle */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
-                  {orderedPromos[2].title}
+                  {formatBrandText(orderedPromos[2].title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-slate-700">
-                  {orderedPromos[2].subtitle ||
-                    "Embun? Ada Antifog! Nikmati Penglihatan Jernih Bebas Embun & Proteksi Sinar Biru"}
+                  {formatBrandText(
+                    orderedPromos[2].subtitle ||
+                      "Embun? Ada Antifog! Nikmati Penglihatan Jernih Bebas Embun & Proteksi Sinar Biru"
+                  )}
                 </p>
               </div>
 
