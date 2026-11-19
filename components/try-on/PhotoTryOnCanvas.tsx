@@ -18,6 +18,7 @@ interface PhotoTryOnCanvasProps {
   manualOffsetY?: number;
   manualRotation?: number;
   onFaceDetected?: (detected: boolean, count: number) => void;
+  onLandmarksDetected?: (landmarks: NormalizedLandmark[]) => void;
   onError?: (msg: string) => void;
   className?: string;
 }
@@ -33,6 +34,7 @@ const PhotoTryOnCanvas = forwardRef<PhotoTryOnHandle, PhotoTryOnCanvasProps>(
       manualOffsetY = 0,
       manualRotation = 0,
       onFaceDetected,
+      onLandmarksDetected,
       onError,
       className = "",
     },
@@ -81,6 +83,7 @@ const PhotoTryOnCanvas = forwardRef<PhotoTryOnHandle, PhotoTryOnCanvasProps>(
           } else {
             setFaceLandmarks(faces[0]);
             onFaceDetected?.(true, faces.length);
+            onLandmarksDetected?.(faces[0]);
           }
         } catch (err) {
           console.error("Gagal mendeteksi wajah pada foto:", err);

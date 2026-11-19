@@ -31,48 +31,64 @@ function dist(a: Landmark, b: Landmark): number {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
-const SHAPE_META: Record<FaceShape, { id: string; label: string; glasses: string; style: string; tip: string }> = {
-  Oval: {
-    id: "oval",
-    label: "Oval",
-    glasses: "clubmaster-frame",
-    style: "Clubmaster / Browline Frame",
-    tip: "Wajah oval cocok untuk hampir semua frame. Clubmaster menonjolkan struktur wajah!",
-  },
-  Round: {
-    id: "round",
-    label: "Round",
-    glasses: "square-frame",
-    style: "Kotak / Rectangle Frame",
-    tip: "Frame kotak menciptakan kontras dan memberikan kesan tegas di wajah bulat.",
-  },
-  Square: {
-    id: "square",
-    label: "Square",
-    glasses: "round-frame",
-    style: "Oval Kecil Frame",
-    tip: "Frame oval kecil melembutkan rahang tegas dan memberikan keseimbangan.",
-  },
-  Heart: {
-    id: "heart",
-    label: "Heart",
-    glasses: "cateye-pastel-v2",
-    style: "Cat-Eye Pastel Frame",
-    tip: "Cat-eye menyeimbangkan dagu lancip dan menonjolkan tulang pipi.",
-  },
+const SHAPE_META: Record<
+  FaceShape,
+  {
+    id: string;
+    label: string;
+    glasses: string;
+    style: string;
+    tip: string;
+    matchFrameIds: string[];
+  }
+> = {
   Diamond: {
     id: "diamond",
     label: "Diamond",
-    glasses: "cateye-frame",
-    style: "Cat-Eye / Semi-Kotak Frame",
-    tip: "Cat-eye atau semi-kotak memperlebar tampilan dan melembutkan tulang pipi tinggi.",
+    glasses: "hexagonal-rose-gold",
+    style: "Hexagonal & Cat-Eye",
+    tip: "Wajah Diamond memiliki tulang pipi tegas dengan dahi dan dagu lebih ramping. Frame Hexagonal atau Cat-Eye menyeimbangkan garis wajah dengan sangat ideal!",
+    matchFrameIds: ["hexagonal-rose-gold", "cateye-pastel", "cateye-lebar-real", "semi-kotak-real", "clubmaster-real"],
+  },
+  Oval: {
+    id: "oval",
+    label: "Oval",
+    glasses: "clubmaster-real",
+    style: "Clubmaster & Browline",
+    tip: "Wajah oval memiliki proporsi alami yang seimbang. Hampir semua frame cocok, terutama Clubmaster atau Cat-Eye yang menonjolkan struktur wajah!",
+    matchFrameIds: ["clubmaster-real", "cateye-pastel", "cateye-lebar-real", "square-plastik-real", "semi-kotak-real"],
+  },
+  Round: {
+    id: "round",
+    label: "Round (Bulat)",
+    glasses: "square-plastik-real",
+    style: "Kotak / Rectangular",
+    tip: "Frame bersudut tegas seperti model Kotak menciptakan kontras dimensi tegas yang mempertegas garis wajah bulat.",
+    matchFrameIds: ["square-plastik-real", "clubmaster-real", "semi-kotak-real", "cateye-pastel"],
+  },
+  Square: {
+    id: "square",
+    label: "Square (Kotak)",
+    glasses: "oval-kecil-real",
+    style: "Oval & Hexagonal Halus",
+    tip: "Frame oval atau rounded hexagonal melembutkan garis rahang yang tegas dan memberikan keseimbangan visual harmonis.",
+    matchFrameIds: ["oval-kecil-real", "hexagonal-rose-gold", "clubmaster-real"],
+  },
+  Heart: {
+    id: "heart",
+    label: "Heart (Hati)",
+    glasses: "cateye-pastel",
+    style: "Soft Cat-Eye & Semi-Kotak",
+    tip: "Cat-eye pastel atau semi-kotak menyeimbangkan dagu lancip dengan dahi yang lebih lebar, menonjolkan tulang pipi dengan anggun.",
+    matchFrameIds: ["cateye-pastel", "cateye-lebar-real", "semi-kotak-real", "hexagonal-rose-gold"],
   },
   Oblong: {
     id: "oblong",
-    label: "Oblong",
-    glasses: "clubmaster-frame",
-    style: "Clubmaster / Browline Frame",
-    tip: "Frame lebar dan penuh membuat wajah panjang terlihat lebih proporsional.",
+    label: "Oblong (Panjang)",
+    glasses: "clubmaster-real",
+    style: "Clubmaster & Frame Lebar",
+    tip: "Frame lebar dan berkarakter seperti Clubmaster membuat wajah panjang terlihat lebih proporsional.",
+    matchFrameIds: ["clubmaster-real", "hexagonal-rose-gold", "square-plastik-real", "oval-kecil-real"],
   },
 };
 
@@ -89,8 +105,8 @@ export function detectFaceShape(landmarks: Landmark[]): FaceShapeResult {
     return {
       shape: "Oval",
       shapeId: "oval",
-      recommendedGlassesId: "oval-pastel",
-      recommendedStyle: "Oval / Pastel Frame",
+      recommendedGlassesId: "clubmaster-real",
+      recommendedStyle: "Clubmaster / Browline Frame",
       confidence: 0,
     };
   }
@@ -107,27 +123,24 @@ export function detectFaceShape(landmarks: Landmark[]): FaceShapeResult {
   let shape: FaceShape;
   let confidence: number;
 
-  if (lengthRatio > 1.75) {
+  if (lengthRatio > 1.62) {
     shape = "Oblong";
-    confidence = Math.min((lengthRatio - 1.75) / 0.3 + 0.6, 1);
-  } else if (lengthRatio > 1.45) {
-    shape = "Oval";
-    confidence = Math.min((lengthRatio - 1.45) / 0.3 + 0.6, 1);
-  } else if (lengthRatio < 1.15) {
-    shape = "Round";
-    confidence = Math.min((1.15 - lengthRatio) / 0.15 + 0.6, 1);
-  } else if (jawRatio > 0.85 && foreheadRatio > 0.85) {
+    confidence = Math.min((lengthRatio - 1.62) / 0.3 + 0.65, 1);
+  } else if (jawRatio >= 0.84 && foreheadRatio >= 0.84 && lengthRatio < 1.35) {
     shape = "Square";
-    confidence = Math.min(jawRatio * 0.6 + 0.3, 1);
-  } else if (foreheadRatio > 0.9 && jawRatio < 0.75) {
+    confidence = Math.min(jawRatio * 0.6 + 0.35, 1);
+  } else if (lengthRatio < 1.22 && jawRatio > 0.78) {
+    shape = "Round";
+    confidence = Math.min((1.22 - lengthRatio) / 0.15 + 0.65, 1);
+  } else if (foreheadRatio >= 0.86 && (foreheadRatio - jawRatio) > 0.13) {
     shape = "Heart";
-    confidence = Math.min((foreheadRatio - jawRatio) / 0.2 + 0.5, 1);
-  } else if (foreheadRatio < 0.85 && jawRatio < 0.8 && lengthRatio > 1.2) {
+    confidence = Math.min((foreheadRatio - jawRatio) / 0.2 + 0.55, 1);
+  } else if (foreheadRatio < 0.83 && jawRatio < 0.79 && lengthRatio >= 1.18) {
     shape = "Diamond";
-    confidence = Math.min((0.85 - foreheadRatio) / 0.15 + 0.5, 1);
+    confidence = Math.min((0.83 - foreheadRatio) / 0.15 + 0.65, 1);
   } else {
     shape = "Oval";
-    confidence = 0.5;
+    confidence = 0.6;
   }
 
   const meta = SHAPE_META[shape];

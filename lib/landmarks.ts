@@ -64,10 +64,10 @@ export const GLASSES_SCALE_MAX = 700;  // face very close, still sane
  *  - Nose pad should rest on the nose bridge (lm[168] → lm[6] level).
  *
  * ipdNorm ≈ 0.215 at normal distance.
- * offsetNorm = ipdNorm × 0.22 ≈ 0.047 → ~5% of frame width downward.
- * This keeps glasses correctly on the nose at all face distances.
+ * offsetNorm = ipdNorm × 0.18 ≈ 0.039 → keeps glasses resting on the nose bridge
+ * with optical center at pupil level and top rim sitting below the eyebrows.
  */
-export const Y_OFFSET_FACTOR = 0.02;
+export const Y_OFFSET_FACTOR = 0.18;
 
 // ---------------------------------------------------------------------------
 // GlassesAnchor
