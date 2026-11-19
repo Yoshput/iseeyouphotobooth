@@ -12,10 +12,12 @@ const LOCAL_STORAGE_KEY = "isy_featured_promo_dismissed_at";
 export default function FeaturedPromoPopup() {
   const [promo, setPromo] = useState<PromoItem | null>(null);
   const [settings, setSettings] = useState<PromoPopupSettings | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [hasDismissed, setHasDismissed] = useState(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const animFrameRef = useRef<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -69,11 +71,17 @@ export default function FeaturedPromoPopup() {
         setPromo(candidatePromo);
         setSettings(currentSettings);
 
-        // Optik Melawai style instant popup: trigger almost immediately (100-150ms for smooth hydration)
+        // Optik Melawai style swift entrance: mount and animate in smoothly
         const delay = Math.min(currentSettings.delayMs ?? 100, 150);
         timerRef.current = setTimeout(() => {
           if (isMounted) {
-            setIsOpen(true);
+            setIsRendered(true);
+            // Frame-synced trigger for buttery smooth CSS entrance animation
+            animFrameRef.current = requestAnimationFrame(() => {
+              animFrameRef.current = requestAnimationFrame(() => {
+                setIsVisible(true);
+              });
+            });
           }
         }, delay);
       } catch (err) {
@@ -86,12 +94,13 @@ export default function FeaturedPromoPopup() {
     return () => {
       isMounted = false;
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
   }, []);
 
   // Keyboard navigation: Escape key closes modal
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isRendered || !isVisible) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -103,16 +112,22 @@ export default function FeaturedPromoPopup() {
     // Focus close button on open
     setTimeout(() => {
       closeButtonRef.current?.focus();
-    }, 100);
+    }, 120);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isRendered, isVisible]);
 
   const handleClose = () => {
-    setIsOpen(false);
-    setHasDismissed(true);
+    // 1. Play smooth exit animation (scale down & fade out)
+    setIsVisible(false);
+
+    // 2. Unmount after transition finishes
+    setTimeout(() => {
+      setIsRendered(false);
+      setHasDismissed(true);
+    }, 250);
 
     if (settings) {
       const freq = settings.frequency || "once-per-session";
@@ -126,7 +141,7 @@ export default function FeaturedPromoPopup() {
     }
   };
 
-  if (!isOpen || !promo || hasDismissed) {
+  if (!isRendered || !promo || hasDismissed) {
     return null;
   }
 
@@ -137,7 +152,9 @@ export default function FeaturedPromoPopup() {
       role="dialog"
       aria-modal="true"
       aria-labelledby="featured-promo-popup-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/75 backdrop-blur-xs animate-in fade-in duration-300"
+      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/75 backdrop-blur-xs transition-opacity duration-300 ease-out ${
+        isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
       onClick={(e) => {
         // Close on backdrop click
         if (e.target === e.currentTarget) {
@@ -145,7 +162,16 @@ export default function FeaturedPromoPopup() {
         }
       }}
     >
-      <div className="relative w-full max-w-lg sm:max-w-4xl lg:max-w-5xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transition-all scale-100 animate-in zoom-in-95 duration-200">
+      <div
+        style={{
+          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+        className={`relative w-full max-w-lg sm:max-w-4xl lg:max-w-5xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all duration-350 ${
+          isVisible
+            ? "opacity-100 scale-100 translate-y-0"
+            : "opacity-0 scale-92 translate-y-6"
+        }`}
+      >
         {/* Optik Melawai Style Crisp Circular Close Button */}
         <button
           ref={closeButtonRef}
