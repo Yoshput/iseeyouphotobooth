@@ -121,6 +121,8 @@ export default function FeaturedPromoPopup() {
     return null;
   }
 
+  const isImageRight = settings?.layout === "image-right";
+
   return (
     <div
       role="dialog"
@@ -148,17 +150,47 @@ export default function FeaturedPromoPopup() {
 
         {/* 2-Column Grand Editorial Spread (Inspired by Optik Melawai) */}
         <div className="grid grid-cols-1 md:grid-cols-12 items-stretch min-h-[420px] sm:min-h-[480px] lg:min-h-[520px]">
-          {/* Left Column: Full-Bleed Grand Poster Visual */}
-          <div className="relative aspect-[4/5] md:aspect-auto md:col-span-7 w-full h-full min-h-[260px] sm:min-h-[420px] bg-[#FAF8F5] overflow-hidden">
+          {/* Poster Visual Column (Full 100% Uncropped with Ambient Blurred Space) */}
+          <div
+            className={`relative aspect-[4/3] sm:aspect-[4/5] md:aspect-auto md:col-span-7 w-full h-full min-h-[300px] sm:min-h-[440px] lg:min-h-[520px] bg-[#FAF8F5] overflow-hidden flex items-center justify-center ${
+              isImageRight ? "md:order-2" : "md:order-1"
+            } order-1`}
+          >
             {promo.heroImageUrl ? (
-              <Image
-                src={promo.heroImageUrl}
-                alt={promo.heroImageAlt || promo.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 600px"
-                className="object-cover object-center"
-                priority
-              />
+              <a
+                href={getPromoSubdomainUrl(promo.slug)}
+                onClick={handleClose}
+                className="relative w-full h-full flex items-center justify-center group cursor-pointer"
+                title={`Lihat detail ${promo.title}`}
+              >
+                {/* Layer 1: Atmospheric Blurred Aura of the Poster (Fills Margins with Rich Ambient Tone) */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+                  <Image
+                    src={promo.heroImageUrl}
+                    alt=""
+                    fill
+                    aria-hidden="true"
+                    sizes="(max-width: 768px) 100vw, 600px"
+                    className="object-cover object-center scale-125 blur-2xl opacity-40 brightness-95"
+                  />
+                  {/* Subtle warm wash over the blur */}
+                  <div className="absolute inset-0 bg-[#FAF8F5]/40 backdrop-blur-[2px]" />
+                </div>
+
+                {/* Layer 2: 100% Full Uncropped Hero Poster */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center p-3.5 sm:p-5 lg:p-7">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={promo.heroImageUrl}
+                      alt={promo.heroImageAlt || promo.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 600px"
+                      className="object-contain object-center drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.015]"
+                      priority
+                    />
+                  </div>
+                </div>
+              </a>
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-slate-300">
                 <Tag className="h-12 w-12 stroke-[1.5]" />
@@ -168,7 +200,11 @@ export default function FeaturedPromoPopup() {
           </div>
 
           {/* Right Column: Editorial Narrative & Bold Action */}
-          <div className="md:col-span-5 p-6 sm:p-8 lg:p-12 flex flex-col justify-center bg-white">
+          <div
+            className={`md:col-span-5 p-6 sm:p-8 lg:p-12 flex flex-col justify-center bg-white z-10 ${
+              isImageRight ? "md:order-1" : "md:order-2"
+            } order-2`}
+          >
             <div className="space-y-3 sm:space-y-4">
               {/* Campaign Title */}
               <h2
