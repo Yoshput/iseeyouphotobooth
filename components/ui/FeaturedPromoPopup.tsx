@@ -2,10 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { X, Clock, ArrowRight, Tag, Sparkles } from "lucide-react";
+import { X, Tag } from "lucide-react";
 import { PromoItem, PromoPopupSettings } from "@/lib/db/types";
-import { formatPromoPeriod, getCategoryLabel, getPromoSubdomainUrl } from "@/lib/promo";
+import { getPromoSubdomainUrl } from "@/lib/promo";
 
 const SESSION_STORAGE_KEY = "isy_featured_promo_dismissed";
 const LOCAL_STORAGE_KEY = "isy_featured_promo_dismissed_at";
@@ -122,16 +121,12 @@ export default function FeaturedPromoPopup() {
     return null;
   }
 
-  const period = formatPromoPeriod(promo.startAt, promo.endAt);
-  const categoryLabel = getCategoryLabel(promo.category);
-  const layout = settings?.layout || promo.detailLayout || "image-left";
-
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="featured-promo-popup-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/75 backdrop-blur-xs animate-in fade-in duration-300"
       onClick={(e) => {
         // Close on backdrop click
         if (e.target === e.currentTarget) {
@@ -139,107 +134,65 @@ export default function FeaturedPromoPopup() {
         }
       }}
     >
-      <div className="relative w-full max-w-xl sm:max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#E3E7DF] overflow-hidden transition-all scale-100 animate-in zoom-in-95 duration-200">
-        {/* Accessible Close Button */}
+      <div className="relative w-full max-w-lg sm:max-w-4xl lg:max-w-5xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transition-all scale-100 animate-in zoom-in-95 duration-200">
+        {/* Optik Melawai Style Crisp Circular Close Button */}
         <button
           ref={closeButtonRef}
           type="button"
           onClick={handleClose}
           aria-label="Tutup jendela promo"
-          className="absolute top-3.5 right-3.5 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2FA84F]"
+          className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white text-slate-800 hover:bg-slate-100 hover:text-black transition-all shadow-lg border border-slate-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#124734]"
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.5]" />
         </button>
 
-        {/* 2-Column Desktop, 1-Column Mobile Layout */}
-        <div
-          className={`grid grid-cols-1 ${
-            layout === "image-right" ? "sm:grid-cols-12" : "sm:grid-cols-12"
-          } items-center`}
-        >
-          {/* Image Side */}
-          <div
-            className={`relative aspect-4/3 sm:aspect-auto sm:h-full min-h-[220px] sm:min-h-[320px] w-full bg-slate-100 ${
-              layout === "image-right"
-                ? "sm:col-span-6 sm:order-2"
-                : "sm:col-span-6 sm:order-1"
-            }`}
-          >
+        {/* 2-Column Grand Editorial Spread (Inspired by Optik Melawai) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 items-stretch min-h-[420px] sm:min-h-[480px] lg:min-h-[520px]">
+          {/* Left Column: Full-Bleed Grand Poster Visual */}
+          <div className="relative aspect-[4/5] md:aspect-auto md:col-span-7 w-full h-full min-h-[260px] sm:min-h-[420px] bg-[#FAF8F5] overflow-hidden">
             {promo.heroImageUrl ? (
               <Image
                 src={promo.heroImageUrl}
                 alt={promo.heroImageAlt || promo.title}
                 fill
-                sizes="(max-width: 640px) 100vw, 360px"
-                className="object-contain sm:object-cover sm:object-top bg-[#F8F5ED]"
+                sizes="(max-width: 768px) 100vw, 600px"
+                className="object-cover object-center"
                 priority
               />
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-slate-300">
-                <Tag className="h-10 w-10 stroke-[1.5]" />
-                <span className="text-[11px] mt-1">Optik I See You</span>
+                <Tag className="h-12 w-12 stroke-[1.5]" />
+                <span className="text-xs mt-2 font-medium">Optik I See You</span>
               </div>
             )}
-
-            <div className="absolute top-3.5 left-3.5 z-10">
-              <span className="rounded-full bg-[#124734]/95 backdrop-blur-xs px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-xs">
-                {categoryLabel}
-              </span>
-            </div>
           </div>
 
-          {/* Content Side */}
-          <div
-            className={`p-6 sm:p-7 space-y-3.5 ${
-              layout === "image-right"
-                ? "sm:col-span-6 sm:order-1"
-                : "sm:col-span-6 sm:order-2"
-            }`}
-          >
-            {/* Period */}
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              <Clock className="h-3 w-3 text-[#2FA84F]" />
-              <span>{period}</span>
-            </div>
-
-            {/* Title & Subtitle */}
-            <div className="space-y-1">
+          {/* Right Column: Editorial Narrative & Bold Action */}
+          <div className="md:col-span-5 p-6 sm:p-8 lg:p-12 flex flex-col justify-center bg-white">
+            <div className="space-y-3 sm:space-y-4">
+              {/* Campaign Title */}
               <h2
                 id="featured-promo-popup-title"
-                className="text-lg sm:text-xl font-black text-[#124734] leading-snug tracking-tight"
+                className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#124734] leading-tight tracking-tight"
               >
                 {promo.title}
               </h2>
-              {promo.subtitle && (
-                <p className="text-xs font-bold text-[#2FA84F]">
-                  {promo.subtitle}
-                </p>
-              )}
-            </div>
 
-            {/* Excerpt */}
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3 font-normal">
-              {promo.excerpt || promo.description}
-            </p>
+              {/* Campaign Excerpt / Description */}
+              <p className="text-xs sm:text-sm lg:text-base text-slate-600 leading-relaxed font-normal">
+                {promo.excerpt || promo.description}
+              </p>
 
-            {/* CTA Buttons */}
-            <div className="pt-2 space-y-2">
-              <a
-                href={getPromoSubdomainUrl(promo.slug)}
-                onClick={handleClose}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] py-3 px-5 text-xs font-black uppercase tracking-wider text-white shadow-md shadow-[#208c49]/25 hover:scale-102 hover:shadow-lg active:scale-98 transition-all"
-              >
-                <span>{promo.ctaLabel || "Lihat Promo Ini"}</span>
-                <ArrowRight className="h-4 w-4" />
-              </a>
-
-              <button
-                type="button"
-                onClick={handleClose}
-                className="w-full text-center text-[11px] font-medium text-slate-400 hover:text-slate-600 transition-colors py-1 cursor-pointer"
-              >
-                Nanti Saja
-              </button>
+              {/* Bold CTA Button (Optik Melawai Style) */}
+              <div className="pt-2 sm:pt-4">
+                <a
+                  href={getPromoSubdomainUrl(promo.slug)}
+                  onClick={handleClose}
+                  className="inline-flex items-center justify-center rounded-xl bg-[#124734] hover:bg-[#0B3B2A] text-white py-3.5 px-8 text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-98 text-center"
+                >
+                  <span>SELENGKAPNYA</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
