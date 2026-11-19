@@ -151,8 +151,12 @@ const PhotoTryOnCanvas = forwardRef<PhotoTryOnHandle, PhotoTryOnCanvasProps>(
         const anchor = computeGlassesAnchor(faceLandmarks, imgW, imgH);
 
         // Calculate size in pixels
+        const templePx = anchor.templeWidthNorm * imgW;
         const ipdPx = anchor.ipdNorm * imgW;
-        const glassesWidthPx = ipdPx * fitWidthRatio * manualScale;
+        const targetWidthPx = anchor.templeWidthNorm > 0
+          ? templePx * 1.035 * (fitWidthRatio ? fitWidthRatio / 1.72 : 1.0)
+          : ipdPx * fitWidthRatio;
+        const glassesWidthPx = targetWidthPx * manualScale;
         const aspect = glassesImg.naturalHeight / glassesImg.naturalWidth;
         const glassesHeightPx = glassesWidthPx * aspect;
 
@@ -166,6 +170,14 @@ const PhotoTryOnCanvas = forwardRef<PhotoTryOnHandle, PhotoTryOnCanvasProps>(
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(rotationRad);
+
+        // 3D-like yaw perspective on 2D photo canvas
+        if (Math.abs(anchor.yaw) > 0.02) {
+          const cosYaw = Math.cos(anchor.yaw * 0.75);
+          const skewY = Math.sin(anchor.yaw * 0.35) * 0.15;
+          ctx.transform(cosYaw, skewY, 0, 1, 0, 0);
+        }
+
         ctx.drawImage(
           glassesImg,
           -glassesWidthPx / 2,

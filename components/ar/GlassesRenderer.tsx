@@ -60,6 +60,8 @@ interface FaceEMASlot {
   y:     EMAState;
   scale: EMAState;
   roll:  EMAState;
+  yaw:   EMAState;
+  pitch: EMAState;
 }
 
 function makeFaceSlot(): FaceEMASlot {
@@ -68,6 +70,8 @@ function makeFaceSlot(): FaceEMASlot {
     y:     { value: 0, initialized: false },
     scale: { value: 0, initialized: false },
     roll:  { value: 0, initialized: false },
+    yaw:   { value: 0, initialized: false },
+    pitch: { value: 0, initialized: false },
   };
 }
 
@@ -119,9 +123,9 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
       const scene = new THREE.Scene();
 
       const camera = new THREE.OrthographicCamera(
-        -width / 2, width / 2, height / 2, -height / 2, 0.1, 20
+        -width / 2, width / 2, height / 2, -height / 2, -1000, 1000
       );
-      camera.position.z = 10;
+      camera.position.z = 500;
 
       const isMobile =
         typeof window !== "undefined" &&
@@ -185,7 +189,7 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
           transparent: true,
           roughness: 0.35,
           metalness: 0.15,
-          side: THREE.FrontSide,
+          side: THREE.DoubleSide,
         });
         const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
         mesh.visible = false;
@@ -287,13 +291,15 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
           const rawSceneX = centerContainerPx.x - width / 2;
           const rawSceneY = -(centerContainerPx.y - height / 2);
 
-          // ── IPD-based scale (authoritative formula) ─────────────────
-          // Formula: glassesWidthPx = ipdPx × ipdScaleRef × fitWidthRatio
-          //  - ipdPx: outer eye span converted to canvas CSS pixels
-          //  - fitWidthRatio: base model fit ratio from manifest (e.g. 1.42 - 1.48)
-          //  - ipdScaleRef: per-model fine-tuning calibration multiplier (default ~1.0)
+          // ── Outer-temple / IPD-based scale (authoritative formula) ───
+          // Matches frame width to outer cheekbone/temple landmarks (#234 & #454) with ~1.03x–1.05x span,
+          // with seamless fallback to IPD if temple landmarks are unavailable.
+          const templePx = anchor.templeWidthNorm * videoWidth * transform.scale;
           const ipdPx    = anchor.ipdNorm * videoWidth * transform.scale;
-          const rawScale = clampScale(ipdPx * ipdScaleRef * fitWidthRatio);
+          const targetWidthPx = anchor.templeWidthNorm > 0
+            ? templePx * 1.035 * (ipdScaleRef || 1.0) * (fitWidthRatio ? fitWidthRatio / 1.72 : 1.0)
+            : ipdPx * ipdScaleRef * fitWidthRatio;
+          const rawScale = clampScale(targetWidthPx);
 
           // ── Debug logging (SCALE_DEBUG = true logs every 60 frames) ─
           if (SCALE_DEBUG && i === 0) {
@@ -302,6 +308,7 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
               console.log(
                 `[GlassesRenderer Debug]\n` +
                 `  ipdNorm        : ${anchor.ipdNorm.toFixed(4)}\n` +
+                `  templeWidthNorm: ${anchor.templeWidthNorm.toFixed(4)}\n` +
                 `  videoWidth     : ${videoWidth}px\n` +
                 `  coverScale     : ${transform.scale.toFixed(4)}\n` +
                 `  ipdPx          : ${ipdPx.toFixed(2)}px\n` +
@@ -316,19 +323,20 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
 
           // ── Apply EMA smoothing (all in canvas-pixel / radian space) ─
           const smoothX     = applyEMA(slot.x,     rawSceneX,   alpha) + manualOffsetX;
-          const smoothY     = applyEMA(slot.y,      rawSceneY,   alpha) + manualOffsetY;
-          const smoothScale = applyEMA(slot.scale,  rawScale,    alpha) * manualScale;
-          const smoothRoll  = applyEMA(slot.roll,   anchor.roll, alpha) + manualRotation;
+          const smoothY     = applyEMA(slot.y,     rawSceneY,   alpha) + manualOffsetY;
+          const smoothScale = applyEMA(slot.scale, rawScale,    alpha) * manualScale;
+          const smoothRoll  = applyEMA(slot.roll,  anchor.roll, alpha) + manualRotation;
+          const smoothYaw   = applyEMA(slot.yaw,   anchor.yaw,  alpha);
+          const smoothPitch = applyEMA(slot.pitch, anchor.pitch, alpha);
 
           // ── Apply to mesh ────────────────────────────────────────────
           mesh.position.set(smoothX, smoothY, 0);
 
           mesh.rotation.z = -smoothRoll;
-          // Subtle X-rotation from roll creates a 3D depth illusion
-          mesh.rotation.x = smoothRoll * 0.18;
-          // Slight Y-rotation based on horizontal off-center position
-          const xNorm = (anchor.centerNormalized.x - 0.5) * 2; // -1 to +1
-          mesh.rotation.y = -xNorm * 0.12;
+          // Synchronized 3D-like yaw perspective foreshortening
+          mesh.rotation.y = smoothYaw * 0.85;
+          // Natural vertical pitch tilt
+          mesh.rotation.x = smoothPitch * 0.45;
 
           const aspect = aspectRef.current;
           mesh.scale.set(smoothScale, smoothScale * aspect, 1);

@@ -648,6 +648,10 @@ const FaceTracker = forwardRef<FaceTrackerHandle, Props>(
                   pivotOffset={pivotOffset}
                   rotationOffsetDeg={rotationOffsetDeg}
                   templeFadeStart={templeFadeStart}
+                  manualOffsetX={manualOffsetX}
+                  manualOffsetY={manualOffsetY}
+                  manualScale={manualScale}
+                  manualRotation={manualRotation}
                 />
               ) : null
             ) : (

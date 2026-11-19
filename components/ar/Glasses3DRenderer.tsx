@@ -54,6 +54,10 @@ interface Props {
   pivotOffset?: { x: number; y: number; z: number };
   rotationOffsetDeg?: { x: number; y: number; z: number };
   templeFadeStart?: number;
+  manualOffsetX?: number;
+  manualOffsetY?: number;
+  manualScale?: number;
+  manualRotation?: number;
 }
 
 interface Face3DEMASlot {
@@ -136,6 +140,7 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
       fitWidthRatio = 1.45, ipdScaleRef = 1.0, yOffsetRatio = 0,
       maxFaces = 4,
       pivotOffset, rotationOffsetDeg, templeFadeStart = 0.65,
+      manualOffsetX = 0, manualOffsetY = 0, manualScale = 1.0, manualRotation = 0,
     },
     ref
   ) {
@@ -384,9 +389,9 @@ const Glasses3DRenderer = forwardRef<GlassesRendererHandle, Props>(
           const rawSceneY = -(ccp.y - height / 2) + (yOffsetRatio || 0) * rawScale;
 
           // C. EMA position & scale
-          const smoothX     = applyEMA(slot.x,    rawSceneX, alpha);
-          const smoothY     = applyEMA(slot.y,     rawSceneY, alpha);
-          const smoothScale = applyEMA(slot.scale, rawScale,  alpha);
+          const smoothX     = applyEMA(slot.x,     rawSceneX, alpha) + manualOffsetX;
+          const smoothY     = applyEMA(slot.y,     rawSceneY, alpha) + manualOffsetY;
+          const smoothScale = applyEMA(slot.scale, rawScale,  alpha) * manualScale;
 
           // D. Rotation: Euler Z-depth -> Quaternion -> SLERP
           const { pitch: rp, yaw: ry, roll: rr } = computePoseEuler(landmarks, videoWidth, videoHeight);
