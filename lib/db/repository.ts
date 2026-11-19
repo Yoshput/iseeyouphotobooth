@@ -411,7 +411,7 @@ export async function seedInitialDataIfNeeded() {
       enabled: true,
       featuredPromoId: "promo-undian-akhir-tahun-2026",
       frequency: "once-per-session",
-      delayMs: 1500,
+      delayMs: 150,
       layout: "image-left",
       updatedAt: new Date().toISOString(),
       updatedBy: "Owner Optik I See You",

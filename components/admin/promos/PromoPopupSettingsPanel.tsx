@@ -215,19 +215,19 @@ export default function PromoPopupSettingsPanel({
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
-                    min={500}
+                    min={0}
                     max={10000}
-                    step={100}
+                    step={50}
                     value={delayMs}
-                    onChange={(e) => setDelayMs(Number(e.target.value) || 1500)}
+                    onChange={(e) => setDelayMs(Math.max(0, Number(e.target.value) || 0))}
                     className="w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs text-slate-800 focus:border-[#124734] focus:outline-none"
                   />
                   <span className="text-xs text-slate-500 whitespace-nowrap">
-                    ({(delayMs / 1000).toFixed(1)} detik)
+                    ({(delayMs / 1000).toFixed(2)} detik)
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Standar rekomendasi: 1500 ms (1,5 detik) agar konten hero dimuat terlebih dahulu.
+                  Standar cepat instan (ala Optik Melawai): 100 - 200 ms agar langsung tampil seketika saat halaman terbuka.
                 </p>
               </div>
 

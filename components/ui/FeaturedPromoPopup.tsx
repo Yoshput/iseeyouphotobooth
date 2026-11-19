@@ -21,6 +21,21 @@ export default function FeaturedPromoPopup() {
   useEffect(() => {
     let isMounted = true;
 
+    // Fast-path synchronous check: do not fetch if user already dismissed in this session/day
+    try {
+      if (sessionStorage.getItem(SESSION_STORAGE_KEY) === "true") {
+        return;
+      }
+      const lastDismissedAt = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (lastDismissedAt) {
+        const dismissedTime = parseInt(lastDismissedAt, 10);
+        const oneDayMs = 24 * 60 * 60 * 1000;
+        if (Date.now() - dismissedTime < oneDayMs) {
+          return;
+        }
+      }
+    } catch {}
+
     async function checkAndFetchPopup() {
       try {
         const res = await fetch("/api/promos/popup");
@@ -35,24 +50,18 @@ export default function FeaturedPromoPopup() {
           return;
         }
 
-        // Check frequency dismissal rules
+        // Secondary check based on frequency config
         const freq = currentSettings.frequency || "once-per-session";
-
         if (freq === "once-per-session") {
           try {
-            if (sessionStorage.getItem(SESSION_STORAGE_KEY) === "true") {
-              return;
-            }
+            if (sessionStorage.getItem(SESSION_STORAGE_KEY) === "true") return;
           } catch {}
         } else if (freq === "once-per-day") {
           try {
             const lastDismissedAt = localStorage.getItem(LOCAL_STORAGE_KEY);
             if (lastDismissedAt) {
               const dismissedTime = parseInt(lastDismissedAt, 10);
-              const oneDayMs = 24 * 60 * 60 * 1000;
-              if (Date.now() - dismissedTime < oneDayMs) {
-                return;
-              }
+              if (Date.now() - dismissedTime < 24 * 60 * 60 * 1000) return;
             }
           } catch {}
         }
@@ -60,8 +69,8 @@ export default function FeaturedPromoPopup() {
         setPromo(candidatePromo);
         setSettings(currentSettings);
 
-        // Schedule popup appearance after delay
-        const delay = currentSettings.delayMs ?? 1500;
+        // Optik Melawai style instant popup: trigger almost immediately (100-150ms for smooth hydration)
+        const delay = Math.min(currentSettings.delayMs ?? 100, 150);
         timerRef.current = setTimeout(() => {
           if (isMounted) {
             setIsOpen(true);

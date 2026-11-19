@@ -6,7 +6,14 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const result = await getFeaturedPopupPromo();
-    return NextResponse.json({ success: true, data: result });
+    return NextResponse.json(
+      { success: true, data: result },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+        },
+      }
+    );
   } catch (err: any) {
     console.error("Error in GET /api/promos/popup:", err);
     return NextResponse.json(
