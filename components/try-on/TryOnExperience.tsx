@@ -517,7 +517,7 @@ export default function TryOnExperience() {
                 ref={faceTrackerRef}
                 glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}?v=5` : ""}
                 fitWidthRatio={effectiveFitWidthRatio}
-                ipdScaleRef={((activeGlasses as any).ipdScaleRef ?? 1.0) * manualScale}
+                ipdScaleRef={(activeGlasses as any).ipdScaleRef ?? 1.0}
                 manualOffsetX={effectiveOffsetX}
                 manualOffsetY={effectiveOffsetY}
                 manualScale={manualScale}

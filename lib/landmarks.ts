@@ -52,22 +52,16 @@ export const GLASSES_SCALE_MIN = 50;   // face at edge, still meaningful
 export const GLASSES_SCALE_MAX = 700;  // face very close, still sane
 
 /**
- * Y_OFFSET_FACTOR: How far below the nose-bridge anchor the glasses sit.
+ * Y_OFFSET_FACTOR: Proportional vertical offset relative to outer-eye distance (ipdNorm).
  *
- * MediaPipe lm[168] is the nasal bone (between brows, above nose tip).
- * For glasses to sit ON the nose (not float above eyebrows), we need to
- * push DOWN by ~25-30% of the inter-eye span.
- *
- * Calibration basis (Transitions virtual try-on reference):
- *  - Glasses rim top should align with the lower edge of the eyebrows.
- *  - Glasses optical center should be at the pupil level.
- *  - Nose pad should rest on the nose bridge (lm[168] → lm[6] level).
- *
- * ipdNorm ≈ 0.215 at normal distance.
- * offsetNorm = ipdNorm × 0.18 ≈ 0.039 → keeps glasses resting on the nose bridge
- * with optical center at pupil level and top rim sitting below the eyebrows.
+ * MediaPipe lm[168] is the nasion (nasal bone between brows and inner eye corners).
+ * At Y_OFFSET_FACTOR = 0.0, the glasses quad center aligns directly with the
+ * nasion/pupillary eye line. This ensures:
+ *  - Glasses browline sits naturally right below the lower curve of the eyebrows.
+ *  - Optical center of the lenses sits at pupil level (textbook optical fitting).
+ *  - Glasses bridge rests securely on the nasal bone without sagging down the nose.
  */
-export const Y_OFFSET_FACTOR = 0.18;
+export const Y_OFFSET_FACTOR = 0.0;
 
 // ---------------------------------------------------------------------------
 // GlassesAnchor
