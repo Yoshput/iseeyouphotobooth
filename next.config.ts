@@ -8,6 +8,7 @@ import type { NextConfig } from "next";
 const cspHeader = `
   default-src 'self' https://optikiseeyou.com;
   script-src 'self' 'unsafe-inline' 'unsafe-eval'
+    https://static.cloudflareinsights.com
     https://cdn.jsdelivr.net
     https://www.googletagmanager.com
     https://*.googletagmanager.com
@@ -44,7 +45,7 @@ const cspHeader = `
     https://www.googleadservices.com
     https://*.googleadservices.com;
   font-src 'self' https://fonts.gstatic.com data:;
-  connect-src 'self' https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com https://cdn.jsdelivr.net https://*.peerjs.com wss://*.peerjs.com https://fonts.googleapis.com https://fonts.gstatic.com https://storage.googleapis.com data: blob:
+  connect-src 'self' https://*.r2.dev https://*.cloudflarestorage.com https://res.cloudinary.com https://cdn.jsdelivr.net https://*.peerjs.com wss://*.peerjs.com https://fonts.googleapis.com https://fonts.gstatic.com https://storage.googleapis.com https://cloudflareinsights.com https://*.cloudflareinsights.com https://*.supabase.co data: blob:
     https://www.google-analytics.com
     https://*.google-analytics.com
     https://analytics.google.com

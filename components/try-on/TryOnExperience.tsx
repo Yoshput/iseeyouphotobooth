@@ -42,15 +42,29 @@ import {
   X,
   Compass,
   LayoutGrid,
+  Box,
+  Layers,
+  Scale,
+  MapPin,
+  ExternalLink,
+  Info,
 } from "lucide-react";
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
 import FaceTracker, { type FaceTrackerHandle } from "@/components/ar/FaceTracker";
 import PhotoTryOnCanvas, { type PhotoTryOnHandle } from "./PhotoTryOnCanvas";
 import manifestRaw from "@/public/glasses/manifest.json";
 import { getFrameCalibration } from "@/lib/tryOnCalibration";
-import { detectFaceShape, type FaceShape, type FaceShapeResult, SHAPE_META } from "@/lib/faceShape";
+import {
+  detectFaceShape,
+  calculateFrameMatch,
+  FaceShapeStabilizer,
+  type FaceShape,
+  type FaceShapeResult,
+  type FrameMatchDetail,
+  SHAPE_META,
+} from "@/lib/faceShape";
 import { trackTryOn, trackPhotoShare } from "@/lib/telemetry";
-import { CS_WHATSAPP_NUMBER } from "@/lib/branches";
+import { BRANCHES, CS_WHATSAPP_NUMBER, type Branch } from "@/lib/branches";
 
 interface GlassesMeta {
   id: string;
@@ -66,6 +80,59 @@ interface GlassesMeta {
   isRealPhoto?: boolean;
   excludeFromAiMatch?: boolean;
 }
+
+interface Model3DMeta {
+  glbFile: string;
+  fitWidthRatio: number;
+  name: string;
+  style?: string;
+}
+
+// Verified 3D GLB mapping on Cloudflare R2 for Hybrid 2D/3D Try-On
+const FRAME_3D_MAP: Record<string, Model3DMeta> = {
+  "clubmaster-real": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses1/glasses01.glb",
+    fitWidthRatio: 3.32,
+    name: "Clubmaster 3D",
+    style: "Browline",
+  },
+  "cateye-pastel": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+    fitWidthRatio: 2.8,
+    name: "Cat-Eye 3D",
+    style: "Cat-Eye",
+  },
+  "cateye-lebar-real": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/sunglasses_v2.glb",
+    fitWidthRatio: 2.8,
+    name: "Cat-Eye 3D",
+    style: "Cat-Eye",
+  },
+  "square-plastik-real": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_kotak_frame_coklat.glb",
+    fitWidthRatio: 2.8,
+    name: "Kotak 3D",
+    style: "Square",
+  },
+  "oval-kecil-real": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/metal_round_glasses.glb",
+    fitWidthRatio: 2.8,
+    name: "Oval Metal 3D",
+    style: "Oval",
+  },
+  "hexagonal-rose-gold": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/glasses_transparan.glb",
+    fitWidthRatio: 2.8,
+    name: "Hexagonal 3D",
+    style: "Hexagonal",
+  },
+  "aviator-real": {
+    glbFile: "https://pub-07b182ccb29d4da0be42051ce2b54afa.r2.dev/static/models3D/cyberpunk_johnny_silverhand_glasses.glb",
+    fitWidthRatio: 2.8,
+    name: "Aviator 3D",
+    style: "Aviator",
+  },
+};
 
 // Strictly include the real product photo frames (+ Tanpa Kacamata)
 const tryOnManifest = (manifestRaw as GlassesMeta[]).filter(
@@ -109,8 +176,27 @@ export default function TryOnExperience() {
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Hybrid 2D / 3D Virtual Try-On
+  const [renderMode, setRenderMode] = useState<"2d" | "3d">("2d");
+
+  // Frame Comparison State
+  const [isComparing, setIsComparing] = useState<boolean>(false);
+  const [compareTargetIndex, setCompareTargetIndex] = useState<number>(() => {
+    const nextIdx = (initialIndex + 1) % tryOnManifest.length;
+    return nextIdx;
+  });
+
+  // Selected Branch for WhatsApp Consultation
+  const [selectedBranchId, setSelectedBranchId] = useState<string>("purwokerto");
+  const selectedBranch = useMemo(
+    () => BRANCHES.find((b) => b.id === selectedBranchId) || BRANCHES[0],
+    [selectedBranchId]
+  );
+
   const activeGlasses = tryOnManifest[selectedIndex] || tryOnManifest[0];
   const activeCalibration = useMemo(() => getFrameCalibration(activeGlasses.id), [activeGlasses.id]);
+  const active3DMeta = FRAME_3D_MAP[activeGlasses.id];
+  const has3DSupport = Boolean(active3DMeta);
 
   // Combined scale factor & fine-tuned offsets
   const effectiveFitWidthRatio = (activeGlasses.fitWidthRatio || 1.45) * activeCalibration.scaleMultiplier;
@@ -121,11 +207,24 @@ export default function TryOnExperience() {
   const [detectedFaceShape, setDetectedFaceShape] = useState<FaceShape | null>(null);
   const [manualFaceShape, setManualFaceShape] = useState<FaceShape | null>(null);
   const [faceShapeResult, setFaceShapeResult] = useState<FaceShapeResult | null>(null);
-  const recentDetectionsRef = useRef<FaceShape[]>([]);
+  const stabilizerRef = useRef(new FaceShapeStabilizer(14));
   const hasAutoNotifiedRef = useRef<boolean>(false);
 
   // Active shape is user's manual choice or AI detected shape
   const activeFaceShape: FaceShape | null = manualFaceShape || detectedFaceShape;
+
+  // Active frame AI compatibility score & reasons
+  const activeMatch = useMemo<FrameMatchDetail | null>(() => {
+    if (!activeFaceShape || activeGlasses.id === "none") return null;
+    return calculateFrameMatch(activeFaceShape, activeGlasses);
+  }, [activeFaceShape, activeGlasses]);
+
+  // Comparison target frame & score
+  const compareTargetGlasses = tryOnManifest[compareTargetIndex] || tryOnManifest[0];
+  const compareMatch = useMemo<FrameMatchDetail | null>(() => {
+    if (!activeFaceShape || compareTargetGlasses.id === "none") return null;
+    return calculateFrameMatch(activeFaceShape, compareTargetGlasses);
+  }, [activeFaceShape, compareTargetGlasses]);
 
   // Toast feedback helper
   const showToast = useCallback((msg: string) => {
@@ -135,41 +234,24 @@ export default function TryOnExperience() {
     }, 2800);
   }, []);
 
-  // Live camera landmarks handler
+  // Live camera landmarks handler with temporal stabilizer
   const handleLiveLandmarks = useCallback(
     (lm: Array<{ x: number; y: number; z: number }> | null) => {
       if (!lm || lm.length < 468) return;
       const res = detectFaceShape(lm);
-      recentDetectionsRef.current.push(res.shape);
-      if (recentDetectionsRef.current.length > 15) {
-        recentDetectionsRef.current.shift();
-      }
-      // Compute mode shape
-      const freq: Record<string, number> = {};
-      for (const s of recentDetectionsRef.current) {
-        freq[s] = (freq[s] || 0) + 1;
-      }
-      let modeShape = res.shape;
-      let maxFreq = 0;
-      for (const [s, count] of Object.entries(freq)) {
-        if (count > maxFreq) {
-          maxFreq = count;
-          modeShape = s as FaceShape;
-        }
-      }
-      if (maxFreq >= 8) {
-        setDetectedFaceShape((prev) => {
-          if (prev !== modeShape) {
-            setFaceShapeResult(res);
-            if (!hasAutoNotifiedRef.current) {
-              hasAutoNotifiedRef.current = true;
-              showToast(`Wajah terdeteksi: ${modeShape} (Rekomendasi aktif)`);
-            }
-            return modeShape;
+      const stableShape = stabilizerRef.current.push(res.shape);
+
+      setDetectedFaceShape((prev) => {
+        if (prev !== stableShape) {
+          setFaceShapeResult({ ...res, shape: stableShape });
+          if (!hasAutoNotifiedRef.current) {
+            hasAutoNotifiedRef.current = true;
+            showToast(`Wajah terdeteksi: ${stableShape} (Rekomendasi aktif)`);
           }
-          return prev;
-        });
-      }
+          return stableShape;
+        }
+        return prev;
+      });
     },
     [showToast]
   );
@@ -368,12 +450,15 @@ export default function TryOnExperience() {
     showToast("Foto tersimpan di perangkat Anda");
   }, [capturedPhoto, activeGlasses, showToast]);
 
-  // WhatsApp consultation link
+  // Branch-specific WhatsApp consultation link with authentic routing
   const whatsappUrl = useMemo(() => {
     const frameName = activeGlasses.name;
-    const msg = `Halo Optik I See You, saya baru saja mencoba frame "${frameName}" di Virtual Try-On website. Apakah model ini tersedia di cabang Purwokerto / Purbalingga / Wonosobo / Cilacap? Terima kasih.`;
-    return `https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-  }, [activeGlasses]);
+    const branchName = selectedBranch.name;
+    const shapeNote = activeFaceShape ? ` (Rekomendasi Wajah: ${activeFaceShape})` : "";
+    const msg = `Halo ${branchName}, saya baru saja mencoba frame "${frameName}"${shapeNote} di Virtual Try-On website Optik I See You. Apakah model ini tersedia di cabang ${selectedBranch.city}? Terima kasih.`;
+    const targetPhone = selectedBranch.waNumber || CS_WHATSAPP_NUMBER;
+    return `https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`;
+  }, [activeGlasses, selectedBranch, activeFaceShape]);
 
   const handleOpenWhatsApp = useCallback(() => {
     trackPhotoShare(activeGlasses.id);
@@ -454,7 +539,7 @@ export default function TryOnExperience() {
         {/* ── LEFT: CAMERA / PHOTO TRY-ON VIEWPORT ───────────────────────── */}
         <section className="flex-1 flex flex-col min-w-0">
           {/* Mode Switcher Tabs */}
-          <div className="flex items-center justify-between mb-2.5">
+          <div className="flex items-center justify-between gap-2 mb-2.5 flex-wrap">
             <div className="inline-flex p-1 bg-[#F7F8F5] border border-[#E5E9E4] rounded-xl">
               <button
                 type="button"
@@ -488,6 +573,44 @@ export default function TryOnExperience() {
               </button>
             </div>
 
+            {/* Hybrid 2D / 3D Dimension Toggle (When in Camera mode and frame has 3D asset) */}
+            {tryOnMode === "camera" && (
+              <div className="inline-flex p-1 bg-[#F7F8F5] border border-[#E5E9E4] rounded-xl text-xs font-medium">
+                <button
+                  type="button"
+                  onClick={() => setRenderMode("2d")}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all ${
+                    renderMode === "2d"
+                      ? "bg-white text-[#104D37] shadow-xs border border-[#E5E9E4] font-bold"
+                      : "text-[#68756D] hover:text-[#18251F]"
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>2D Real</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!has3DSupport) {
+                      showToast(`Model 3D interaktif sedang disiapkan untuk ${activeGlasses.name}. Menampilkan simulasi 3D AR.`);
+                    }
+                    setRenderMode("3d");
+                  }}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all ${
+                    renderMode === "3d"
+                      ? "bg-[#104D37] text-white shadow-xs font-bold"
+                      : "text-[#68756D] hover:text-[#18251F]"
+                  }`}
+                >
+                  <Box className="w-3.5 h-3.5" />
+                  <span>3D AR</span>
+                  {has3DSupport && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 ml-0.5 animate-pulse" />
+                  )}
+                </button>
+              </div>
+            )}
+
             {/* Re-pick photo button if in photo mode */}
             {tryOnMode === "photo" && uploadedPhotoUrl && (
               <button
@@ -516,7 +639,11 @@ export default function TryOnExperience() {
               <FaceTracker
                 ref={faceTrackerRef}
                 glassesSrc={activeGlasses.file ? `/glasses/${activeGlasses.file}?v=5` : ""}
-                fitWidthRatio={effectiveFitWidthRatio}
+                fitWidthRatio={
+                  renderMode === "3d" && active3DMeta
+                    ? active3DMeta.fitWidthRatio
+                    : effectiveFitWidthRatio
+                }
                 ipdScaleRef={(activeGlasses as any).ipdScaleRef ?? 1.0}
                 manualOffsetX={effectiveOffsetX}
                 manualOffsetY={effectiveOffsetY}
@@ -525,7 +652,8 @@ export default function TryOnExperience() {
                 numFaces={1}
                 beautyMode={beautyMode}
                 facingMode={cameraFacing}
-                renderMode="2d"
+                renderMode={renderMode === "3d" && active3DMeta ? "3d" : "2d"}
+                model3DSrc={renderMode === "3d" && active3DMeta ? active3DMeta.glbFile : undefined}
                 scanIntro={false}
                 showFaceGuide={false}
                 trackingEnabled={true}
@@ -841,6 +969,31 @@ export default function TryOnExperience() {
                 : "Arahkan wajah ke kamera atau pilih bentuk wajah di atas untuk melihat frame paling cocok."}
             </p>
 
+            {/* AI Compatibility Analysis for Current Frame */}
+            {activeMatch && (
+              <div className="rounded-xl bg-white p-3 border border-[#E5E9E4] space-y-1.5 shadow-2xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#104D37] flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-[#16835B]" />
+                    <span>Kecocokan Frame Aktif</span>
+                  </span>
+                  <span className="text-xs font-black text-[#16835B] bg-[#16835B]/10 px-2 py-0.5 rounded-md">
+                    {activeMatch.score}% Match
+                  </span>
+                </div>
+                {activeMatch.reasons.length > 0 && (
+                  <ul className="space-y-1 text-[11px] text-[#18251F] leading-snug">
+                    {activeMatch.reasons.slice(0, 2).map((reason, idx) => (
+                      <li key={idx} className="flex items-start gap-1.5">
+                        <span className="h-1 w-1 rounded-full bg-[#16835B] mt-1.5 shrink-0" />
+                        <span className="text-slate-600">{reason}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+
             {/* Quick Action Button to Immediately Apply Recommendation */}
             {activeFaceShape && (
               <div className="flex items-center gap-2 pt-1 border-t border-[#E5E9E4]/60">
@@ -874,7 +1027,7 @@ export default function TryOnExperience() {
           </div>
 
           {/* Active Product Info Card */}
-          <div className="bg-white rounded-2xl p-4 border border-[#E5E9E4] shadow-xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E5E9E4] shadow-xs space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
@@ -884,6 +1037,11 @@ export default function TryOnExperience() {
                   {activeGlasses.material && (
                     <span className="text-[11px] text-[#68756D]">
                       {activeGlasses.material}
+                    </span>
+                  )}
+                  {has3DSupport && (
+                    <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                      3D AR Ready
                     </span>
                   )}
                 </div>
@@ -900,7 +1058,7 @@ export default function TryOnExperience() {
 
             {/* Face Shape Compatibility */}
             {activeGlasses.recommendedFor && activeGlasses.recommendedFor.length > 0 && (
-              <div className="mt-3 pt-3 border-t border-[#E5E9E4]">
+              <div className="pt-2 border-t border-[#E5E9E4]">
                 <p className="text-[11px] text-[#68756D] mb-1.5">Bentuk wajah yang sesuai:</p>
                 <div className="flex flex-wrap gap-1">
                   {activeGlasses.recommendedFor.map((shape) => (
@@ -915,26 +1073,57 @@ export default function TryOnExperience() {
               </div>
             )}
 
-            {/* Quick Actions */}
-            <div className="mt-3.5 flex gap-2">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleOpenWhatsApp}
-                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#104D37] hover:bg-[#0B3B2A] text-white text-xs font-medium py-2.5 transition-all shadow-xs active:scale-95"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>Tanya Stok via WhatsApp</span>
-              </a>
-              <Link
-                href={`/katalog?frame=${encodeURIComponent(activeGlasses.id)}`}
-                className="inline-flex items-center justify-center gap-1 px-3 rounded-xl border border-[#E5E9E4] text-[#18251F] hover:bg-[#F7F8F5] text-xs font-medium py-2.5 transition-all"
-                title="Lihat Detail di Katalog"
-              >
-                <span>Katalog</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
+            {/* Branch Selection & WhatsApp Stock Inquiry */}
+            <div className="pt-2 border-t border-[#E5E9E4] space-y-2">
+              <div className="flex items-center justify-between text-[11px] text-[#68756D]">
+                <span className="flex items-center gap-1 font-medium">
+                  <MapPin className="w-3 h-3 text-[#104D37]" />
+                  <span>Cabang Tujuan:</span>
+                </span>
+                <select
+                  value={selectedBranchId}
+                  onChange={(e) => setSelectedBranchId(e.target.value)}
+                  className="bg-[#F7F8F5] border border-[#E5E9E4] rounded-lg px-2 py-0.5 text-[11px] font-semibold text-[#104D37] cursor-pointer focus:outline-hidden"
+                  aria-label="Pilih Cabang Optik I See You"
+                >
+                  {BRANCHES.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.city}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex gap-2">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleOpenWhatsApp}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#104D37] hover:bg-[#0B3B2A] text-white text-xs font-semibold py-2.5 transition-all shadow-xs active:scale-95"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>Tanya Stok ({selectedBranch.city})</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setIsComparing(true)}
+                  className="inline-flex items-center justify-center gap-1 px-3 rounded-xl border border-[#104D37]/30 bg-white hover:bg-[#FAF8F5] text-[#104D37] text-xs font-semibold py-2.5 transition-all shadow-2xs"
+                  title="Bandingkan spesifikasi frame ini dengan model lain"
+                >
+                  <Scale className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Bandingkan</span>
+                </button>
+
+                <Link
+                  href={`/katalog?frame=${encodeURIComponent(activeGlasses.id)}`}
+                  className="inline-flex items-center justify-center gap-1 px-2.5 rounded-xl border border-[#E5E9E4] text-[#18251F] hover:bg-[#F7F8F5] text-xs font-medium py-2.5 transition-all"
+                  title="Lihat Detail di Katalog"
+                >
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -1113,6 +1302,212 @@ export default function TryOnExperience() {
               >
                 <ArrowLeft className="w-3 h-3" />
                 <span>Coba Frame Lain</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ══ COMPARE 2 FRAMES MODAL (A vs B) ════════════════════════════════ */}
+      {isComparing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="relative w-full max-w-2xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-[#E5E9E4] flex flex-col max-h-[92vh]">
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E5E9E4] bg-[#FAF8F5]">
+              <div className="flex items-center gap-2">
+                <div className="h-7 w-7 rounded-lg bg-[#104D37] text-white flex items-center justify-center">
+                  <Scale className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-[#18251F]">
+                    Bandingkan 2 Frame Kacamata
+                  </h3>
+                  <p className="text-[11px] text-[#68756D]">
+                    Perbandingan visual, bentuk, spesifikasi, dan skor kecocokan wajah
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsComparing(false)}
+                className="h-8 w-8 rounded-xl bg-white hover:bg-[#E5E9E4] text-[#68756D] flex items-center justify-center transition-colors border border-[#E5E9E4]"
+                aria-label="Tutup Perbandingan"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Comparison Body: Grid 2 Columns */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
+                {/* Column A: Active Frame */}
+                <div className="flex flex-col gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#104D37]/5 border-2 border-[#104D37]/30">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#104D37] bg-white px-2 py-0.5 rounded-md border border-[#104D37]/20">
+                      Frame A (Aktif)
+                    </span>
+                    {activeMatch && (
+                      <span className="text-[11px] font-bold text-[#16835B]">
+                        {activeMatch.score}% Cocok
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative aspect-[4/3] w-full rounded-xl bg-white border border-[#E5E9E4] p-2 flex items-center justify-center overflow-hidden">
+                    {activeGlasses.file ? (
+                      <Image
+                        src={`/glasses/${activeGlasses.file}?v=5`}
+                        alt={activeGlasses.name}
+                        fill
+                        className="object-contain p-2"
+                      />
+                    ) : (
+                      <span className="text-xs text-slate-400">Polos</span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-[#18251F] leading-tight">
+                      {activeGlasses.name}
+                    </h4>
+                    <p className="text-[11px] text-[#68756D] mt-0.5">
+                      Gaya: <strong className="text-[#18251F]">{activeGlasses.style || "-"}</strong>
+                    </p>
+                    <p className="text-[11px] text-[#68756D]">
+                      Material: <strong className="text-[#18251F]">{activeGlasses.material || "High-Grade Polymer"}</strong>
+                    </p>
+                  </div>
+
+                  {/* Compatibility Details */}
+                  {activeMatch && (
+                    <div className="rounded-xl bg-white p-2.5 border border-[#E5E9E4] space-y-1 text-[10.5px]">
+                      <p className="font-semibold text-[#104D37]">Alasan Kecocokan:</p>
+                      <p className="text-[#68756D] leading-relaxed">
+                        {activeMatch.reasons[0] || "Proporsional untuk bentuk wajah Anda."}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Column B: Comparison Target Frame */}
+                <div className="flex flex-col gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#F7F8F5] border border-[#E5E9E4]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-600 bg-white px-2 py-0.5 rounded-md border border-[#E5E9E4]">
+                      Frame B
+                    </span>
+                    {compareMatch && (
+                      <span className="text-[11px] font-bold text-[#16835B]">
+                        {compareMatch.score}% Cocok
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Target Selector Dropdown */}
+                  <select
+                    value={compareTargetIndex}
+                    onChange={(e) => setCompareTargetIndex(Number(e.target.value))}
+                    className="w-full bg-white border border-[#E5E9E4] rounded-lg px-2 py-1 text-xs font-semibold text-[#18251F] focus:outline-hidden"
+                    aria-label="Pilih Frame Pembanding"
+                  >
+                    {tryOnManifest.map((g, idx) => (
+                      <option key={g.id} value={idx}>
+                        {g.name} ({g.style || "Frame"})
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="relative aspect-[4/3] w-full rounded-xl bg-white border border-[#E5E9E4] p-2 flex items-center justify-center overflow-hidden">
+                    {compareTargetGlasses.file ? (
+                      <Image
+                        src={`/glasses/${compareTargetGlasses.file}?v=5`}
+                        alt={compareTargetGlasses.name}
+                        fill
+                        className="object-contain p-2"
+                      />
+                    ) : (
+                      <span className="text-xs text-slate-400">Polos</span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-[#18251F] leading-tight">
+                      {compareTargetGlasses.name}
+                    </h4>
+                    <p className="text-[11px] text-[#68756D] mt-0.5">
+                      Gaya: <strong className="text-[#18251F]">{compareTargetGlasses.style || "-"}</strong>
+                    </p>
+                    <p className="text-[11px] text-[#68756D]">
+                      Material: <strong className="text-[#18251F]">{compareTargetGlasses.material || "High-Grade Polymer"}</strong>
+                    </p>
+                  </div>
+
+                  {/* Compatibility Details */}
+                  {compareMatch && (
+                    <div className="rounded-xl bg-white p-2.5 border border-[#E5E9E4] space-y-1 text-[10.5px]">
+                      <p className="font-semibold text-[#104D37]">Alasan Kecocokan:</p>
+                      <p className="text-[#68756D] leading-relaxed">
+                        {compareMatch.reasons[0] || "Proporsional untuk bentuk wajah Anda."}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Action to switch to Frame B */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedIndex(compareTargetIndex);
+                      setIsComparing(false);
+                      showToast(`Sekarang mencoba ${compareTargetGlasses.name}`);
+                    }}
+                    className="w-full mt-auto py-2 px-3 rounded-xl bg-[#104D37] hover:bg-[#0B3B2A] text-white text-xs font-semibold shadow-xs transition-all active:scale-95 text-center cursor-pointer"
+                  >
+                    Coba Frame B Ini Sekarang
+                  </button>
+                </div>
+              </div>
+
+              {/* Verified Dimension Table */}
+              <div className="rounded-2xl border border-[#E5E9E4] bg-white p-4 space-y-3">
+                <h5 className="text-xs font-bold text-[#18251F] uppercase tracking-wider">
+                  Perbandingan Dimensi & Spesifikasi Fisik
+                </h5>
+                <div className="grid grid-cols-3 gap-2 text-xs border-b border-[#E5E9E4] pb-2 font-semibold text-slate-500">
+                  <span>Parameter</span>
+                  <span className="text-[#104D37]">{activeGlasses.name}</span>
+                  <span className="text-slate-700">{compareTargetGlasses.name}</span>
+                </div>
+                <div className="space-y-2 text-xs">
+                  <div className="grid grid-cols-3 gap-2 text-slate-600">
+                    <span className="font-medium text-slate-800">Bentuk Frame</span>
+                    <span>{activeGlasses.style || "Standar"}</span>
+                    <span>{compareTargetGlasses.style || "Standar"}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-600">
+                    <span className="font-medium text-slate-800">Lebar Fit Rasio</span>
+                    <span>{activeGlasses.fitWidthRatio?.toFixed(2) || "1.48"}x IPD</span>
+                    <span>{compareTargetGlasses.fitWidthRatio?.toFixed(2) || "1.48"}x IPD</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-600">
+                    <span className="font-medium text-slate-800">Bentuk Wajah Ideal</span>
+                    <span className="text-[11px]">{activeGlasses.recommendedFor?.slice(0, 3).join(", ") || "Semua"}</span>
+                    <span className="text-[11px]">{compareTargetGlasses.recommendedFor?.slice(0, 3).join(", ") || "Semua"}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-600">
+                    <span className="font-medium text-slate-800">Dukungan 3D AR</span>
+                    <span>{FRAME_3D_MAP[activeGlasses.id] ? "Tersedia (GLB)" : "2D Real"}</span>
+                    <span>{FRAME_3D_MAP[compareTargetGlasses.id] ? "Tersedia (GLB)" : "2D Real"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-3.5 bg-[#FAF8F5] border-t border-[#E5E9E4] flex justify-end">
+              <button
+                type="button"
+                onClick={() => setIsComparing(false)}
+                className="px-5 py-2 rounded-xl bg-white border border-[#E5E9E4] text-xs font-semibold text-[#18251F] hover:bg-[#F7F8F5] transition-colors"
+              >
+                Selesai
               </button>
             </div>
           </div>

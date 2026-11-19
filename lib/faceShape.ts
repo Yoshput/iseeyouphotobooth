@@ -169,6 +169,157 @@ export interface GlassesManifestEntry {
 
 export interface RankedGlasses extends GlassesManifestEntry {
   matchScore: number; // 0-100
+  matchReasons?: string[];
+  isRecommended?: boolean;
+}
+
+export interface FrameMatchDetail {
+  score: number; // 0 - 100
+  isRecommended: boolean;
+  reasons: string[];
+  contrastScore: number;
+  proportionScore: number;
+  styleScore: number;
+  colorScore: number;
+}
+
+/**
+ * Calculates a transparent, multi-criteria compatibility score (0-100)
+ * between a face shape and a specific glasses model with natural Indonesian explanations.
+ */
+export function calculateFrameMatch(
+  shape: FaceShape,
+  frame: GlassesManifestEntry
+): FrameMatchDetail {
+  if (frame.id === "none" || frame.excludeFromAiMatch || frame.lensType === "tinted") {
+    return {
+      score: 0,
+      isRecommended: false,
+      reasons: ["Frame netral atau kacamata hitam tidak diikutsertakan dalam kalkulasi AI Match."],
+      contrastScore: 0,
+      proportionScore: 0,
+      styleScore: 0,
+      colorScore: 0,
+    };
+  }
+
+  const isExplicitlyRecommended = frame.recommendedFor.includes(shape);
+  const reasons: string[] = [];
+
+  // 1. Contrast Score (max 40 pts)
+  let contrastScore = 20;
+  if (isExplicitlyRecommended) {
+    contrastScore = 40;
+    switch (shape) {
+      case "Round":
+        reasons.push("Bentuk bersudut tegas menciptakan kontras visual yang mempertegas struktur wajah bulat.");
+        break;
+      case "Square":
+        reasons.push("Lengkungan halus frame melembutkan sudut rahang tegas untuk tampilan lebih harmonis.");
+        break;
+      case "Heart":
+        reasons.push("Desain frame menyeimbangkan proporsi dahi lebar dan dagu lancip secara elegan.");
+        break;
+      case "Oblong":
+        reasons.push("Proporsi frame lebar dan berkarakter membagi dimensi wajah panjang agar tampak lebih proporsional.");
+        break;
+      case "Diamond":
+        reasons.push("Kontur geometris menonjolkan keindahan tulang pipi tanpa menambah kesan lebar di pelipis.");
+        break;
+      case "Oval":
+        reasons.push("Proporsi alami wajah oval sangat harmonis dengan struktur garis frame ini.");
+        break;
+    }
+  } else if (shape === "Oval") {
+    contrastScore = 36;
+    reasons.push("Struktur wajah oval fleksibel dan serasi dengan siluet frame ini.");
+  } else if (frame.recommendedFor.length >= 4) {
+    contrastScore = 28;
+    reasons.push("Siluet serbaguna yang cukup adaptif dengan kontur wajah kamu.");
+  } else {
+    contrastScore = 15;
+  }
+
+  // 2. Proportion & Width Balance (max 30 pts)
+  let proportionScore = 25;
+  const ratio = frame.fitWidthRatio || 1.45;
+  if (ratio >= 1.44 && ratio <= 1.52) {
+    proportionScore = 30;
+    reasons.push("Lebar frame proporsional membingkai pelipis tanpa menekan sisi samping wajah.");
+  } else if (ratio > 1.52) {
+    proportionScore = 26;
+    reasons.push("Ukuran frame memberikan kesan bold dan stylish di wajah.");
+  } else {
+    proportionScore = 24;
+  }
+
+  // 3. Browline & Bridge Harmony (max 20 pts)
+  let styleScore = 18;
+  const lowerStyle = (frame.style || "").toLowerCase();
+  if (lowerStyle.includes("browline") || lowerStyle.includes("clubmaster")) {
+    styleScore = 20;
+    reasons.push("Garis atas frame mengikuti lengkung alami alis dan mempertegas area mata.");
+  } else if (lowerStyle.includes("cat-eye")) {
+    styleScore = 19;
+    reasons.push("Sudut atas yang sedikit terangkat memberikan efek mata lebih segar dan ekspresif.");
+  } else {
+    styleScore = 17;
+  }
+
+  // 4. Color & Material Balance (max 10 pts)
+  const colorScore = 9;
+
+  const totalScore = Math.min(100, Math.round(contrastScore + proportionScore + styleScore + colorScore));
+  const isRecommended = totalScore >= 75 || isExplicitlyRecommended;
+
+  return {
+    score: totalScore,
+    isRecommended,
+    reasons,
+    contrastScore,
+    proportionScore,
+    styleScore,
+    colorScore,
+  };
+}
+
+/**
+ * Rolling-window stabilizer to eliminate shape classification jitter across video frames.
+ */
+export class FaceShapeStabilizer {
+  private history: FaceShape[] = [];
+  private windowSize: number;
+
+  constructor(windowSize = 12) {
+    this.windowSize = windowSize;
+  }
+
+  push(shape: FaceShape): FaceShape {
+    this.history.push(shape);
+    if (this.history.length > this.windowSize) {
+      this.history.shift();
+    }
+
+    // Return the majority shape in the history window
+    const counts = new Map<FaceShape, number>();
+    for (const s of this.history) {
+      counts.set(s, (counts.get(s) || 0) + 1);
+    }
+
+    let bestShape: FaceShape = shape;
+    let maxCount = 0;
+    for (const [s, count] of counts.entries()) {
+      if (count > maxCount) {
+        maxCount = count;
+        bestShape = s;
+      }
+    }
+    return bestShape;
+  }
+
+  reset() {
+    this.history = [];
+  }
 }
 
 /**
@@ -185,13 +336,13 @@ export function rankGlassesForShape(
   const ranked = catalog
     .filter((g) => g.id !== "none" && !g.excludeFromAiMatch && g.lensType !== "tinted")
     .map((g) => {
-      let matchScore = 20;
-      if (g.recommendedFor.includes(shape)) {
-        matchScore = 100;
-      } else if (g.recommendedFor.length >= 4) {
-        matchScore = 55;
-      }
-      return { ...g, matchScore };
+      const match = calculateFrameMatch(shape, g);
+      return {
+        ...g,
+        matchScore: match.score,
+        matchReasons: match.reasons,
+        isRecommended: match.isRecommended,
+      };
     })
     .sort((a, b) => b.matchScore - a.matchScore);
 

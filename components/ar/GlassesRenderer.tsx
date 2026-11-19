@@ -140,6 +140,18 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.1;
 
+      // ── WebGL Context Loss / Restore Safety Listeners ────────────────
+      const canvas = canvasRef.current;
+      const handleContextLost = (e: Event) => {
+        e.preventDefault();
+        console.warn("[GlassesRenderer] WebGL context lost. Pausing rendering safely.");
+      };
+      const handleContextRestored = () => {
+        console.info("[GlassesRenderer] WebGL context restored.");
+      };
+      canvas.addEventListener("webglcontextlost", handleContextLost, false);
+      canvas.addEventListener("webglcontextrestored", handleContextRestored, false);
+
       // ── Lighting ──────────────────────────────────────────────────────
       const ambient = new THREE.AmbientLight(0xffffff, 0.85);
       scene.add(ambient);
@@ -190,12 +202,18 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
       meshesRef.current   = meshes;
 
       return () => {
-        renderer.dispose();
+        canvas.removeEventListener("webglcontextlost", handleContextLost);
+        canvas.removeEventListener("webglcontextrestored", handleContextRestored);
+
+        // Safe single disposal of shared texture to eliminate texImage3D / WebGL leaks
+        const sharedTexture = (meshes[0]?.material as THREE.MeshStandardMaterial)?.map;
+        sharedTexture?.dispose();
+
         meshes.forEach((m) => {
           m.geometry.dispose();
-          (m.material as THREE.MeshStandardMaterial).map?.dispose();
           (m.material as THREE.Material).dispose();
         });
+        renderer.dispose();
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [width, height, maxFaces]);
@@ -214,9 +232,13 @@ const GlassesRenderer = forwardRef<GlassesRendererHandle, Props>(
         }
       });
       newTexture.colorSpace = THREE.SRGBColorSpace;
+
+      // Dispose the old shared texture ONCE (not repeatedly in the loop)
+      const oldTexture = (meshesRef.current[0]?.material as THREE.MeshStandardMaterial)?.map;
+      oldTexture?.dispose();
+
       meshesRef.current.forEach((mesh) => {
         const mat = mesh.material as THREE.MeshStandardMaterial;
-        mat.map?.dispose();
         mat.map = newTexture;
         mat.needsUpdate = true;
       });

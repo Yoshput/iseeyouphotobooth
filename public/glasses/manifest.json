@@ -87,8 +87,8 @@
     "id": "cateye-pastel",
     "name": "Cateye Pastel",
     "file": "cateye-pastel.png",
-    "fitWidthRatio": 1.45,
-    "ipdScaleRef": 1.0,
+    "fitWidthRatio": 1.50,
+    "ipdScaleRef": 1.02,
     "style": "Soft cat-eye",
     "material": "Translucent acetate",
     "recommendedFor": [
@@ -280,7 +280,7 @@
     "id": "cateye-lebar-real",
     "name": "Cat-Eye Lebar Real",
     "file": "cateye-lebar-real.png",
-    "fitWidthRatio": 1.44,
+    "fitWidthRatio": 1.48,
     "ipdScaleRef": 1.02,
     "style": "Cat-Eye",
     "recommendedFor": [
@@ -298,8 +298,8 @@
     "id": "hexagonal-rose-gold",
     "name": "Hexagonal Rose Gold",
     "file": "hexagonal-rose-gold.png",
-    "fitWidthRatio": 1.48,
-    "ipdScaleRef": 1.0,
+    "fitWidthRatio": 1.50,
+    "ipdScaleRef": 1.02,
     "style": "Rounded hexagonal",
     "material": "Metal",
     "recommendedFor": [
@@ -316,8 +316,8 @@
     "id": "clubmaster-real",
     "name": "Kotak Clubmaster Real",
     "file": "clubmaster-real.png",
-    "fitWidthRatio": 1.46,
-    "ipdScaleRef": 1.0,
+    "fitWidthRatio": 1.50,
+    "ipdScaleRef": 1.02,
     "style": "Browline",
     "recommendedFor": [
       "Oval",
@@ -335,7 +335,7 @@
     "id": "square-plastik-real",
     "name": "Kotak Plastik Hitam Real",
     "file": "square-real.png",
-    "fitWidthRatio": 1.44,
+    "fitWidthRatio": 1.48,
     "ipdScaleRef": 1.02,
     "style": "Square",
     "recommendedFor": [
@@ -351,7 +351,7 @@
     "id": "oval-kecil-real",
     "name": "Oval Kecil Real",
     "file": "oval-kecil-real.png",
-    "fitWidthRatio": 1.46,
+    "fitWidthRatio": 1.48,
     "ipdScaleRef": 1.02,
     "style": "Oval",
     "recommendedFor": [
@@ -367,8 +367,8 @@
     "id": "semi-kotak-real",
     "name": "Semi Kotak Plastik Real",
     "file": "semi-kotak-real.png",
-    "fitWidthRatio": 1.45,
-    "ipdScaleRef": 1.01,
+    "fitWidthRatio": 1.48,
+    "ipdScaleRef": 1.02,
     "style": "Semi-Square",
     "recommendedFor": [
       "Heart",
