@@ -274,7 +274,7 @@ export async function seedInitialDataIfNeeded() {
         status: "published",
         startAt: "2026-11-01T00:00:00+07:00",
         endAt: "2026-12-31T23:59:59+07:00",
-        heroImageUrl: "/PROMO/undian-akhir-tahun.webp",
+        heroImageUrl: "/PROMO/undian-akhir-tahun-display.webp",
         heroImageAlt: "Poster Undian Akhir Tahun 2026 Optik I See You",
         galleryImages: [
           {
@@ -282,12 +282,12 @@ export async function seedInitialDataIfNeeded() {
             alt: "Undian Akhir Tahun 2026 - TV Android, Tiket Hotel, Kompor, Magiccom, Voucher",
           },
           {
-            url: "/PROMO/lensa-antifog-blueray.webp",
-            alt: "Promo Lensa Antifog Blueray Potongan Up to 300rb",
-          },
-          {
             url: "/PROMO/novemblur-isy.webp",
             alt: "Promo NOvemBLUR Diskon Hingga 15% + 5% Member",
+          },
+          {
+            url: "/PROMO/lensa-antifog-blueray.webp",
+            alt: "Promo Lensa Antifog Blueray Potongan Up to 300rb",
           },
         ],
         detailLayout: "image-left",
@@ -319,14 +319,22 @@ export async function seedInitialDataIfNeeded() {
           "Promo NOvemBLUR hadir kembali di Optik I See You mulai 16 hingga 20 November 2026! Saatnya ganti kacamata lama kamu dengan frame estetik dan lensa berkualitas tinggi:\n\n• Diskon 15% dengan membawa kacamata lama (Trade-in / Tukar Tambah)\n• Diskon 10% tanpa membawa kacamata lama\n• Tambahan Diskon 5% khusus Member Optik I See You\n\nJangan lewatkan promo terbatas ini di seluruh cabang resmi Optik I See You Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
         category: "weekly",
         status: "published",
-        startAt: "2026-11-16T00:00:00+07:00",
-        endAt: "2026-11-20T23:59:59+07:00",
-        heroImageUrl: "/PROMO/novemblur-isy.webp",
+        startAt: "2026-11-01T00:00:00+07:00",
+        endAt: "2026-11-30T23:59:59+07:00",
+        heroImageUrl: "/PROMO/novemblur-isy-display.webp",
         heroImageAlt: "Poster Promo NOvemBLUR Optik I See You 16-20 November 2026",
         galleryImages: [
           {
             url: "/PROMO/novemblur-isy.webp",
             alt: "Promo NOvemBLUR Diskon 15% dan 10%",
+          },
+          {
+            url: "/PROMO/undian-akhir-tahun.webp",
+            alt: "Undian Akhir Tahun 2026",
+          },
+          {
+            url: "/PROMO/lensa-antifog-blueray.webp",
+            alt: "Promo Lensa Antifog Blueray",
           },
         ],
         detailLayout: "image-left",
@@ -360,12 +368,20 @@ export async function seedInitialDataIfNeeded() {
         status: "published",
         startAt: "2026-11-01T00:00:00+07:00",
         endAt: "2026-11-30T23:59:59+07:00",
-        heroImageUrl: "/PROMO/lensa-antifog-blueray.webp",
+        heroImageUrl: "/PROMO/lensa-antifog-blueray-display.webp",
         heroImageAlt: "Poster Promo Lensa Antifog Blueray Potongan Up to 300rb",
         galleryImages: [
           {
             url: "/PROMO/lensa-antifog-blueray.webp",
-            alt: "Perbandingan Lensa Biasa vs Lensa Antifog",
+            alt: "Promo Lensa Antifog Blueray Potongan Up to 300rb",
+          },
+          {
+            url: "/PROMO/undian-akhir-tahun.webp",
+            alt: "Undian Akhir Tahun 2026",
+          },
+          {
+            url: "/PROMO/novemblur-isy.webp",
+            alt: "Promo NOvemBLUR Diskon Hingga 15%",
           },
         ],
         detailLayout: "image-left",

@@ -109,7 +109,7 @@ export default function PromoSection() {
                 key={n}
                 className="rounded-3xl border border-[#E3E7DF] bg-white p-5 space-y-4 animate-pulse"
               >
-                <div className="aspect-16/10 rounded-2xl bg-slate-200" />
+                <div className="aspect-[4/5] rounded-2xl bg-slate-200" />
                 <div className="h-4 w-24 bg-slate-200 rounded-md" />
                 <div className="h-6 w-3/4 bg-slate-200 rounded-md" />
                 <div className="h-10 bg-slate-100 rounded-2xl" />
@@ -150,14 +150,14 @@ export default function PromoSection() {
                 >
                   <div>
                     {/* Thumbnail */}
-                    <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-100">
+                    <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#FAF8F3] p-2.5">
                       {promo.heroImageUrl ? (
                         <Image
                           src={promo.heroImageUrl}
                           alt={promo.heroImageAlt || promo.title}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-103"
+                          className="object-contain transition-transform duration-500 group-hover:scale-102 rounded-2xl"
                         />
                       ) : (
                         <div className="flex flex-col items-center justify-center h-full text-slate-300">

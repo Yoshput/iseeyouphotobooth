@@ -159,20 +159,21 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
       <main className="flex-1 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-16 sm:space-y-20">
         {/* ═══ SECTION 1: HERO CAMPAIGN SHOWCASE (2-COLUMN EDITORIAL) ═══ */}
         <section id="tentang" className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 items-center">
-          {/* Column A: Poster Visual (4:5 Aspect Ratio, Crisp WebP) */}
+          {/* Column A: Poster Visual (Full Uncropped 4:5 Aspect Ratio, WebP) */}
           <div className="md:col-span-5 flex justify-center">
-            <div className="relative aspect-[4/5] w-full max-w-[420px] rounded-3xl overflow-hidden bg-white border border-[#E3E7DF] shadow-2xl">
+            <div className="relative w-full max-w-[420px] rounded-3xl overflow-hidden bg-white border border-[#E3E7DF] shadow-2xl p-2 sm:p-3">
               {promo.heroImageUrl ? (
                 <Image
                   src={promo.heroImageUrl}
                   alt={promo.heroImageAlt || promo.title}
-                  fill
+                  width={1200}
+                  height={1500}
                   priority
                   sizes="(max-width: 768px) 100vw, 420px"
-                  className="object-cover"
+                  className="w-full h-auto object-contain block rounded-2xl"
                 />
               ) : (
-                <div className="flex flex-col items-center justify-center h-full text-slate-300">
+                <div className="flex flex-col items-center justify-center h-full text-slate-300 py-16">
                   <span className="text-xs">Optik I See You</span>
                 </div>
               )}

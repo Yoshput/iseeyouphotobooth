@@ -171,7 +171,7 @@ export default function FeaturedPromoPopup() {
                 alt={promo.heroImageAlt || promo.title}
                 fill
                 sizes="(max-width: 640px) 100vw, 360px"
-                className="object-cover"
+                className="object-contain sm:object-cover sm:object-top bg-[#F8F5ED]"
                 priority
               />
             ) : (

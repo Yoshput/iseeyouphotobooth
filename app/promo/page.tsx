@@ -37,14 +37,6 @@ export default async function PromoMicrositePage() {
       {/* Header */}
       <PromoMicrositeHeader />
 
-      {/* Subtle Top Indicator */}
-      <div className="bg-[#F8F5ED] border-b border-[#E3E7DF] py-2.5 px-4 text-center">
-        <p className="text-[11px] sm:text-xs font-bold text-[#124734] flex items-center justify-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-[#2FA84F] animate-pulse" />
-          <span>Program Promosi & Undian Resmi Optik I See You — Berlaku di 4 Cabang</span>
-        </p>
-      </div>
-
       {/* Main Content Area: Stacked Editorial Spreads */}
       <main className="flex-1 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <PromoMicrositeClient

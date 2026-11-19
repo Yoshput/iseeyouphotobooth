@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   Calendar,
   MessageCircle,
-  CheckCircle2,
-  Gift,
   Tv,
   Hotel,
   Flame,
@@ -18,13 +16,13 @@ import {
   ChevronDown,
   ChevronUp,
   Maximize2,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
   X,
   MapPin,
   ExternalLink,
-  Sparkles,
   ArrowRight,
-  ShieldCheck,
-  Glasses,
 } from "lucide-react";
 import { PromoItem } from "@/lib/db/types";
 import { BRANCHES, KONSULTASI_WA_NUMBER } from "@/lib/branches";
@@ -37,14 +35,32 @@ interface PromoMicrositeClientProps {
 
 export default function PromoMicrositeClient({
   initialPromos,
-  featuredPromo,
 }: PromoMicrositeClientProps) {
-  // Lightbox zoom state for poster inspection
+  // Lightbox state with zoom level
   const [zoomedImage, setZoomedImage] = useState<{
     url: string;
     alt: string;
     title: string;
   } | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+
+  // Close lightbox on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setZoomedImage(null);
+        setZoomLevel(1);
+      }
+    };
+    if (zoomedImage) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "auto";
+    };
+  }, [zoomedImage]);
 
   // Accordion state for Syarat & Ketentuan per promo ID
   const [expandedTerms, setExpandedTerms] = useState<Record<string, boolean>>({});
@@ -86,14 +102,13 @@ export default function PromoMicrositeClient({
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Essential Editorial Details */}
-            <div className="lg:col-span-7 space-y-5">
-              {/* Period Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-emerald-300 border border-white/15">
-                <Calendar className="h-3.5 w-3.5 text-emerald-400" />
+            <div className="lg:col-span-7 space-y-5 order-2 lg:order-1">
+              {/* Period Date (Clean text, no artificial AI pill) */}
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-300">
+                <Calendar className="h-4 w-4 text-emerald-400 shrink-0" />
                 <span>
-                  {formatPromoPeriod(orderedPromos[0].startAt, orderedPromos[0].endAt)}
+                  Periode: {formatPromoPeriod(orderedPromos[0].startAt, orderedPromos[0].endAt)}
                 </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-[#2FA84F] animate-pulse" />
               </div>
 
               {/* Title & Subtitle */}
@@ -118,23 +133,23 @@ export default function PromoMicrositeClient({
                   Daftar Hadiah Undian:
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2 border border-white/10 text-xs font-bold text-white">
+                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2.5 border border-white/10 text-xs font-bold text-white">
                     <Tv className="h-4 w-4 text-emerald-300 shrink-0" />
                     <span>TV Android</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2 border border-white/10 text-xs font-bold text-white">
+                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2.5 border border-white/10 text-xs font-bold text-white">
                     <Hotel className="h-4 w-4 text-emerald-300 shrink-0" />
                     <span>Tiket Hotel Liburan</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2 border border-white/10 text-xs font-bold text-white">
+                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2.5 border border-white/10 text-xs font-bold text-white">
                     <Flame className="h-4 w-4 text-emerald-300 shrink-0" />
                     <span>Kompor Gas 2 Tungku</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2 border border-white/10 text-xs font-bold text-white">
+                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2.5 border border-white/10 text-xs font-bold text-white">
                     <CookingPot className="h-4 w-4 text-emerald-300 shrink-0" />
                     <span>Magiccom Digital</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2 border border-white/10 text-xs font-bold text-white col-span-2 sm:col-span-2">
+                  <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-xs px-3 py-2.5 border border-white/10 text-xs font-bold text-white col-span-2 sm:col-span-2">
                     <Ticket className="h-4 w-4 text-[#E5B54F] shrink-0" />
                     <span>Voucher Kacamata Rp 250.000</span>
                   </div>
@@ -194,32 +209,32 @@ export default function PromoMicrositeClient({
               )}
             </div>
 
-            {/* Right Column: Authentic High-Res Poster */}
-            <div className="lg:col-span-5 flex justify-center">
+            {/* Right Column: Authentic High-Res WebP Poster (Fail-safe natural height) */}
+            <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
               <div
-                onClick={() =>
+                onClick={() => {
+                  setZoomLevel(1);
                   setZoomedImage({
-                    url: orderedPromos[0].heroImageUrl || "/PROMO/undian-akhir-tahun.webp",
+                    url: "/PROMO/undian-akhir-tahun.webp",
                     alt: orderedPromos[0].title,
                     title: orderedPromos[0].title,
-                  })
-                }
-                className="group relative cursor-pointer overflow-hidden rounded-3xl bg-black/40 border-2 border-white/20 shadow-2xl transition-all duration-300 hover:scale-102 hover:border-emerald-400/50"
+                  });
+                }}
+                className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-black/30 border-2 border-white/20 shadow-2xl transition-all duration-300 hover:scale-102 hover:border-emerald-400/50"
               >
-                <div className="relative aspect-4/5 w-full max-w-[380px] sm:max-w-[420px]">
-                  <Image
-                    src={orderedPromos[0].heroImageUrl || "/PROMO/undian-akhir-tahun.webp"}
-                    alt={orderedPromos[0].heroImageAlt || orderedPromos[0].title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 420px"
-                    priority
-                    className="object-cover transition-transform duration-500 group-hover:scale-103"
-                  />
-                  {/* Subtle Zoom Pill */}
-                  <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-[11px] font-bold text-white opacity-80 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 className="h-3 w-3" />
-                    <span>Perbesar Poster</span>
-                  </div>
+                <Image
+                  src={orderedPromos[0].heroImageUrl || "/PROMO/undian-akhir-tahun-display.webp"}
+                  alt={orderedPromos[0].heroImageAlt || orderedPromos[0].title}
+                  width={1200}
+                  height={1500}
+                  priority
+                  sizes="(max-width: 768px) 100vw, 420px"
+                  className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
+                />
+                {/* Click to Zoom Pill */}
+                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-md px-3 py-1.5 text-[11px] font-bold text-white opacity-85 group-hover:opacity-100 transition-opacity shadow-md">
+                  <Maximize2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>Klik untuk Perbesar</span>
                 </div>
               </div>
             </div>
@@ -236,44 +251,41 @@ export default function PromoMicrositeClient({
           className="relative rounded-3xl bg-[#FAF8F3] border border-[#E3E7DF] p-6 sm:p-10 lg:p-12 shadow-lg overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: Authentic High-Res Poster */}
-            <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
+            {/* Left Column: Authentic High-Res Poster (Fail-safe natural height) */}
+            <div className="lg:col-span-5 flex justify-center order-1">
               <div
-                onClick={() =>
+                onClick={() => {
+                  setZoomLevel(1);
                   setZoomedImage({
-                    url: orderedPromos[1].heroImageUrl || "/PROMO/novemblur-isy.webp",
+                    url: "/PROMO/novemblur-isy.webp",
                     alt: orderedPromos[1].title,
                     title: orderedPromos[1].title,
-                  })
-                }
-                className="group relative cursor-pointer overflow-hidden rounded-3xl bg-white border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
+                  });
+                }}
+                className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-white border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
               >
-                <div className="relative aspect-4/5 w-full max-w-[380px] sm:max-w-[420px]">
-                  <Image
-                    src={orderedPromos[1].heroImageUrl || "/PROMO/novemblur-isy.webp"}
-                    alt={orderedPromos[1].heroImageAlt || orderedPromos[1].title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 420px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-103"
-                  />
-                  <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-[#124734]/80 backdrop-blur-md px-3 py-1 text-[11px] font-bold text-white opacity-80 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 className="h-3 w-3" />
-                    <span>Perbesar Poster</span>
-                  </div>
+                <Image
+                  src={orderedPromos[1].heroImageUrl || "/PROMO/novemblur-isy-display.webp"}
+                  alt={orderedPromos[1].heroImageAlt || orderedPromos[1].title}
+                  width={1200}
+                  height={1500}
+                  sizes="(max-width: 768px) 100vw, 420px"
+                  className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
+                />
+                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-[#124734]/85 backdrop-blur-md px-3 py-1.5 text-[11px] font-bold text-white opacity-85 group-hover:opacity-100 transition-opacity shadow-md">
+                  <Maximize2 className="h-3.5 w-3.5 text-[#2FA84F]" />
+                  <span>Klik untuk Perbesar</span>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Essential Editorial Details */}
-            <div className="lg:col-span-7 space-y-5 order-1 lg:order-2">
-              {/* Period Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#124734]/10 px-3.5 py-1.5 text-xs font-bold text-[#124734] border border-[#124734]/20">
-                <Calendar className="h-3.5 w-3.5 text-[#2FA84F]" />
+            <div className="lg:col-span-7 space-y-5 order-2">
+              {/* Period Date */}
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#124734]">
+                <Calendar className="h-4 w-4 text-[#2FA84F] shrink-0" />
                 <span>
-                  {formatPromoPeriod(orderedPromos[1].startAt, orderedPromos[1].endAt)}
-                </span>
-                <span className="rounded-full bg-[#2FA84F] px-2 py-0.2 text-[10px] font-extrabold text-white">
-                  Promo Terbatas
+                  Periode: {formatPromoPeriod(orderedPromos[1].startAt, orderedPromos[1].endAt)}
                 </span>
               </div>
 
@@ -399,7 +411,7 @@ export default function PromoMicrositeClient({
                   </p>
                   <div className="whitespace-pre-line leading-relaxed text-xs">
                     {orderedPromos[1].termsAndConditions ||
-                      "1. Periode promo khusus berlaku pada 16 – 20 November 2026.\n2. Diskon 15% berlaku dengan membawa/menyerahkan kacamata lama (kondisi apapun).\n3. Diskon 10% berlaku untuk pembelian langsung tanpa kacamata lama.\n4. Tambahan diskon 5% otomatis berlaku bagi Member Optik I See You.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, Cilacap."}
+                      "1. Periode promo khusus berlaku selama bulan November 2026.\n2. Diskon 15% berlaku dengan membawa/menyerahkan kacamata lama (kondisi apapun).\n3. Diskon 10% berlaku untuk pembelian langsung tanpa kacamata lama.\n4. Tambahan diskon 5% otomatis berlaku bagi Member Optik I See You.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, Cilacap."}
                   </div>
                 </div>
               )}
@@ -418,15 +430,12 @@ export default function PromoMicrositeClient({
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Essential Editorial Details */}
-            <div className="lg:col-span-7 space-y-5">
-              {/* Period Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 border border-emerald-200">
-                <Calendar className="h-3.5 w-3.5 text-[#2FA84F]" />
+            <div className="lg:col-span-7 space-y-5 order-2 lg:order-1">
+              {/* Period Date */}
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-800">
+                <Calendar className="h-4 w-4 text-[#2FA84F] shrink-0" />
                 <span>
-                  {formatPromoPeriod(orderedPromos[2].startAt, orderedPromos[2].endAt)}
-                </span>
-                <span className="rounded-full bg-emerald-700 px-2 py-0.2 text-[10px] font-extrabold text-white">
-                  Solusi Lensa Bebas Embun
+                  Periode: {formatPromoPeriod(orderedPromos[2].startAt, orderedPromos[2].endAt)}
                 </span>
               </div>
 
@@ -540,30 +549,30 @@ export default function PromoMicrositeClient({
               )}
             </div>
 
-            {/* Right Column: Authentic High-Res Poster */}
-            <div className="lg:col-span-5 flex justify-center">
+            {/* Right Column: Authentic High-Res Poster (Fail-safe natural height) */}
+            <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
               <div
-                onClick={() =>
+                onClick={() => {
+                  setZoomLevel(1);
                   setZoomedImage({
-                    url: orderedPromos[2].heroImageUrl || "/PROMO/lensa-antifog-blueray.webp",
+                    url: "/PROMO/lensa-antifog-blueray.webp",
                     alt: orderedPromos[2].title,
                     title: orderedPromos[2].title,
-                  })
-                }
-                className="group relative cursor-pointer overflow-hidden rounded-3xl bg-[#FAF8F3] border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
+                  });
+                }}
+                className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-[#FAF8F3] border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
               >
-                <div className="relative aspect-4/5 w-full max-w-[380px] sm:max-w-[420px]">
-                  <Image
-                    src={orderedPromos[2].heroImageUrl || "/PROMO/lensa-antifog-blueray.webp"}
-                    alt={orderedPromos[2].heroImageAlt || orderedPromos[2].title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 420px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-103"
-                  />
-                  <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-[#124734]/80 backdrop-blur-md px-3 py-1 text-[11px] font-bold text-white opacity-80 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 className="h-3 w-3" />
-                    <span>Perbesar Poster</span>
-                  </div>
+                <Image
+                  src={orderedPromos[2].heroImageUrl || "/PROMO/lensa-antifog-blueray-display.webp"}
+                  alt={orderedPromos[2].heroImageAlt || orderedPromos[2].title}
+                  width={1200}
+                  height={1500}
+                  sizes="(max-width: 768px) 100vw, 420px"
+                  className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
+                />
+                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-[#124734]/85 backdrop-blur-md px-3 py-1.5 text-[11px] font-bold text-white opacity-85 group-hover:opacity-100 transition-opacity shadow-md">
+                  <Maximize2 className="h-3.5 w-3.5 text-[#2FA84F]" />
+                  <span>Klik untuk Perbesar</span>
                 </div>
               </div>
             </div>
@@ -640,46 +649,102 @@ export default function PromoMicrositeClient({
       </section>
 
       {/* =========================================================================
-          LIGHTBOX MODAL FOR POSTER INSPECTION
+          INTERACTIVE LIGHTBOX MODAL WITH ZOOM & PAN CONTROLS
           ========================================================================= */}
       {zoomedImage && (
         <div
           role="dialog"
           aria-modal="true"
-          onClick={() => setZoomedImage(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-8 animate-in fade-in duration-200"
+          onClick={() => {
+            setZoomedImage(null);
+            setZoomLevel(1);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-3 sm:p-6 animate-in fade-in duration-200"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-h-[90vh] max-w-2xl w-full rounded-3xl bg-[#124734] border border-white/20 p-2 sm:p-4 shadow-2xl flex flex-col items-center"
+            className="relative max-h-[95vh] max-w-4xl w-full rounded-3xl bg-[#0D2F1D] border border-white/20 p-3 sm:p-5 shadow-2xl flex flex-col items-center overflow-hidden"
           >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/90 transition-colors"
-              aria-label="Tutup preview"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            {/* Header Toolbar */}
+            <div className="w-full flex items-center justify-between pb-3 px-1 border-b border-white/10 text-white">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-xs sm:text-sm">{zoomedImage.title}</span>
+                <span className="text-[10px] text-emerald-300 font-semibold bg-white/10 px-2 py-0.5 rounded-md">
+                  WebP HD • Zoom {zoomLevel.toFixed(1)}x
+                </span>
+              </div>
 
-            <div className="relative aspect-4/5 w-full max-h-[80vh] overflow-hidden rounded-2xl">
-              <Image
-                src={zoomedImage.url}
-                alt={zoomedImage.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 800px"
-                className="object-contain"
-              />
+              {/* Action Buttons: Zoom & Close */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel((z) => Math.min(2.5, z + 0.25))}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Perbesar (+)"
+                  aria-label="Perbesar gambar"
+                >
+                  <ZoomIn className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel((z) => Math.max(1, z - 0.25))}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Perkecil (-)"
+                  aria-label="Perkecil gambar"
+                >
+                  <ZoomOut className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel(1)}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Reset Ukuran (1x)"
+                  aria-label="Reset zoom"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setZoomedImage(null);
+                    setZoomLevel(1);
+                  }}
+                  className="p-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white transition-colors ml-2"
+                  title="Tutup (Esc)"
+                  aria-label="Tutup preview"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
-            <div className="w-full pt-3 px-2 flex items-center justify-between text-white text-xs">
-              <span className="font-bold">{zoomedImage.title}</span>
+            {/* Poster Canvas Viewport */}
+            <div className="relative w-full max-h-[80vh] overflow-auto flex items-center justify-center p-2 rounded-2xl bg-black/40 my-2 admin-scrollbar">
+              <div
+                style={{ transform: `scale(${zoomLevel})`, transformOrigin: "center center" }}
+                className="transition-transform duration-200 w-full max-w-lg flex items-center justify-center cursor-zoom-in"
+                onClick={() => setZoomLevel((z) => (z >= 2 ? 1 : z + 0.5))}
+              >
+                <Image
+                  src={zoomedImage.url}
+                  alt={zoomedImage.alt}
+                  width={2160}
+                  height={2700}
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 800px"
+                  className="w-full h-auto max-h-[75vh] object-contain rounded-xl select-none"
+                />
+              </div>
+            </div>
+
+            {/* Bottom info */}
+            <div className="w-full pt-1 px-1 flex items-center justify-between text-white/70 text-[11px]">
+              <span>Ketuk gambar atau gunakan tombol zoom untuk memperbesar detail teks dan voucher</span>
               <a
                 href={zoomedImage.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-300 hover:underline inline-flex items-center gap-1"
+                className="text-emerald-300 hover:underline inline-flex items-center gap-1 font-semibold"
               >
                 <span>Buka Berkas Asli</span>
                 <ExternalLink className="h-3 w-3" />
