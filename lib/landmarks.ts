@@ -55,13 +55,12 @@ export const GLASSES_SCALE_MAX = 700;  // face very close, still sane
  * Y_OFFSET_FACTOR: Proportional vertical offset relative to outer-eye distance (ipdNorm).
  *
  * MediaPipe lm[168] is the nasion (nasal bone between brows and inner eye corners).
- * At Y_OFFSET_FACTOR = 0.0, the glasses quad center aligns directly with the
- * nasion/pupillary eye line. This ensures:
- *  - Glasses browline sits naturally right below the lower curve of the eyebrows.
- *  - Optical center of the lenses sits at pupil level (textbook optical fitting).
- *  - Glasses bridge rests securely on the nasal bone without sagging down the nose.
+ * Shifting the anchor upward with a negative offset (Y_OFFSET_FACTOR = -0.05) ensures:
+ *  - Glasses browline sits flush right underneath the natural curve of the eyebrows.
+ *  - Glasses bridge rests at the inner canthi / nasal bone level.
+ *  - Pupils look through the upper-middle optical center of each lens (matching authentic physical glasses).
  */
-export const Y_OFFSET_FACTOR = 0.0;
+export const Y_OFFSET_FACTOR = -0.05;
 
 // ---------------------------------------------------------------------------
 // GlassesAnchor
