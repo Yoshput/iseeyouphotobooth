@@ -7,16 +7,16 @@ import PromoMicrositeClient from "@/components/promo/PromoMicrositeClient";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Promo & Penawaran Eksklusif | Optik I See You",
+  title: "Promo & Undian Resmi | Optik I See You",
   description:
-    "Jelajahi promo mingguan, promo bulanan, dan penawaran spesial kacamata, frame titanium, lensa resep, serta softlens resmi di seluruh cabang Optik I See You.",
+    "Portal promosi resmi Optik I See You: Undian Akhir Tahun 2026, Promo NOvemBLUR Diskon Hingga 15%, dan Promo Lensa Antifog Blueray di 4 cabang resmi.",
   alternates: {
     canonical: "https://promo.optikiseeyou.com/",
   },
   openGraph: {
-    title: "Promo & Penawaran Eksklusif | Optik I See You",
+    title: "Promo & Undian Resmi | Optik I See You",
     description:
-      "Temukan diskon kacamata, paket lensa hemat, dan program promo spesial di Optik I See You Purwokerto, Wonosobo, Cilacap, dan Purbalingga.",
+      "Temukan program Undian Akhir Tahun berhadiah TV Android & Tiket Hotel, diskon kacamata NOvemBLUR, dan potongan lensa Antifog di 4 cabang Optik I See You.",
     url: "https://promo.optikiseeyou.com/",
     siteName: "Optik I See You",
     locale: "id_ID",
@@ -37,21 +37,16 @@ export default async function PromoMicrositePage() {
       {/* Header */}
       <PromoMicrositeHeader />
 
-      {/* Hero Section */}
-      <section className="relative px-6 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-8 sm:pb-12 border-b border-[#E3E7DF] bg-[#F8F5ED]">
-        <div className="mx-auto max-w-6xl text-center space-y-3">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#124734] tracking-tight">
-            Promo & Penawaran Eksklusif
-          </h1>
+      {/* Subtle Top Indicator */}
+      <div className="bg-[#F8F5ED] border-b border-[#E3E7DF] py-2.5 px-4 text-center">
+        <p className="text-[11px] sm:text-xs font-bold text-[#124734] flex items-center justify-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[#2FA84F] animate-pulse" />
+          <span>Program Promosi & Undian Resmi Optik I See You — Berlaku di 4 Cabang</span>
+        </p>
+      </div>
 
-          <p className="mx-auto max-w-2xl text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal">
-            Dapatkan penawaran terbaik untuk frame kacamata estetik, lensa resep berteknologi tinggi, dan softlens resmi di 4 cabang Optik I See You.
-          </p>
-        </div>
-      </section>
-
-      {/* Main Content Area */}
-      <main className="flex-1 mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-12 py-10 sm:py-14">
+      {/* Main Content Area: Stacked Editorial Spreads */}
+      <main className="flex-1 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <PromoMicrositeClient
           initialPromos={promos}
           featuredPromo={featuredPromo}
