@@ -99,16 +99,15 @@ export default function PromoMicrositeClient({
           <div className="relative rounded-3xl bg-gradient-to-r from-[#124734] to-[#0D2F1D] text-white p-6 sm:p-10 shadow-xl overflow-hidden">
             <div className="pointer-events-none absolute -right-12 -bottom-12 h-64 w-64 rounded-full bg-[#2FA84F]/20 blur-3xl" />
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div className="md:col-span-8 space-y-3">
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-[#2FA84F]/30 border border-[#2FA84F]/40 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-emerald-200">
-                  <Sparkles className="h-3 w-3 text-[#2FA84F]" />
-                  <span>Promo Unggulan Pekan Ini</span>
-                </div>
+              <div className="md:col-span-8 space-y-2.5">
+                <p className="text-[11px] font-black uppercase tracking-widest text-emerald-300">
+                  Program Unggulan
+                </p>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight">
                   {featuredPromo.title}
                 </h2>
                 {featuredPromo.subtitle && (
-                  <p className="text-sm font-semibold text-emerald-300">
+                  <p className="text-sm font-semibold text-emerald-200">
                     {featuredPromo.subtitle}
                   </p>
                 )}
@@ -119,7 +118,7 @@ export default function PromoMicrositeClient({
 
               <div className="md:col-span-4 flex md:justify-end">
                 <a
-                  href={`/promo/${featuredPromo.slug}`}
+                  href={`/${featuredPromo.slug}`}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-xs font-black uppercase tracking-wider text-[#124734] shadow-lg hover:bg-[#FAF8F3] hover:scale-102 active:scale-98 transition-all"
                 >
                   <span>{featuredPromo.ctaLabel || "Lihat Promo Unggulan"}</span>

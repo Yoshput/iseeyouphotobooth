@@ -73,7 +73,7 @@ export default function PromoCard({ promo, featured = false }: PromoCardProps) {
       {/* Card Footer / CTA */}
       <div className="p-5 sm:p-6 pt-0">
         <Link
-          href={`/promo/${promo.slug}`}
+          href={`/${promo.slug}`}
           className="w-full inline-flex items-center justify-between rounded-2xl border border-[#E3E7DF] bg-[#F8F5ED] px-4 py-3 text-xs font-bold text-[#124734] group-hover:border-[#124734] group-hover:bg-[#124734] group-hover:text-white transition-all duration-300"
         >
           <span>{promo.ctaLabel || "Lihat Detail Promo"}</span>

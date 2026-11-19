@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, Clock, ArrowRight, Tag, Sparkles } from "lucide-react";
 import { PromoItem, PromoPopupSettings } from "@/lib/db/types";
-import { formatPromoPeriod, getCategoryLabel } from "@/lib/promo";
+import { formatPromoPeriod, getCategoryLabel, getPromoSubdomainUrl } from "@/lib/promo";
 
 const SESSION_STORAGE_KEY = "isy_featured_promo_dismissed";
 const LOCAL_STORAGE_KEY = "isy_featured_promo_dismissed_at";
@@ -224,14 +224,14 @@ export default function FeaturedPromoPopup() {
 
             {/* CTA Buttons */}
             <div className="pt-2 space-y-2">
-              <Link
-                href={`/promo/${promo.slug}`}
+              <a
+                href={getPromoSubdomainUrl(promo.slug)}
                 onClick={handleClose}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] py-3 px-5 text-xs font-black uppercase tracking-wider text-white shadow-md shadow-[#208c49]/25 hover:scale-102 hover:shadow-lg active:scale-98 transition-all"
               >
                 <span>{promo.ctaLabel || "Lihat Promo Ini"}</span>
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </a>
 
               <button
                 type="button"

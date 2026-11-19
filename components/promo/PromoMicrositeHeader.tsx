@@ -22,7 +22,7 @@ export default function PromoMicrositeHeader({
         <div className="flex items-center gap-4">
           {showBackToAll && (
             <Link
-              href="/promo"
+              href="/"
               className="inline-flex items-center gap-1.5 rounded-xl border border-[#E3E7DF] bg-[#FAF8F3] px-3 py-1.5 text-xs font-bold text-[#124734] hover:bg-white transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
@@ -30,25 +30,22 @@ export default function PromoMicrositeHeader({
             </Link>
           )}
 
-          <Link href="/promo" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <Image
-              src="/brand-logo-green.png"
-              alt="Logo Optik I See You"
-              width={140}
-              height={36}
-              className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-102"
+              src="/logo.webp"
+              alt="Optik I See You"
+              width={130}
+              height={45}
+              className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
-            <span className="rounded-full bg-[#124734] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-2xs">
-              Promo
-            </span>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-[#124734]">
           <Link
-            href="/promo"
+            href="/"
             className="hover:text-[#2FA84F] transition-colors"
           >
             Daftar Promo
@@ -108,11 +105,11 @@ export default function PromoMicrositeHeader({
         <div className="md:hidden border-t border-[#E3E7DF] bg-white px-4 py-4 space-y-3 animate-in slide-in-from-top-2 duration-150">
           <div className="flex flex-col space-y-2.5 text-xs font-bold text-[#124734]">
             <Link
-              href="/promo"
+              href="/"
               onClick={() => setMobileMenuOpen(false)}
               className="py-1.5 hover:text-[#2FA84F]"
             >
-              Semua Promo & Campaign
+              Daftar Promo & Campaign
             </Link>
             <a
               href="https://optikiseeyou.com"

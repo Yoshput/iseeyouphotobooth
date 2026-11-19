@@ -123,3 +123,22 @@ export function formatPromoPeriod(startAt: string, endAt?: string): string {
   const endFmt = formatPromoDate(endAt);
   return `${startFmt} – ${endFmt}`;
 }
+
+/**
+ * Returns the full URL to the promo microsite.
+ * In production or on optikiseeyou.com, points directly to https://promo.optikiseeyou.com
+ */
+export function getPromoSubdomainUrl(slug?: string): string {
+  const isProd =
+    process.env.NODE_ENV === "production" ||
+    (typeof window !== "undefined" &&
+      window.location.hostname.includes("optikiseeyou.com"));
+
+  if (isProd) {
+    return slug
+      ? `https://promo.optikiseeyou.com/${slug}`
+      : "https://promo.optikiseeyou.com";
+  }
+
+  return slug ? `/promo/${slug}` : "/promo";
+}

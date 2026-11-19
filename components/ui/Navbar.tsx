@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getPromoSubdomainUrl } from "@/lib/promo";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -64,7 +65,7 @@ export default function Navbar() {
   ];
 
   const navLinks = [
-    { href: "/promo", label: "Promo" },
+    { href: getPromoSubdomainUrl(), label: "Promo" },
     { href: "/photobooth", label: "Photobooth" },
     { href: "/cabang", label: "Cabang" },
     { href: "/home-service", label: "Home Service" },

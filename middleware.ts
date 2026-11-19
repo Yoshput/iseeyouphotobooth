@@ -46,13 +46,23 @@ export function middleware(req: NextRequest) {
       return NextResponse.next();
     }
 
-    // C. Internal rewrites to /promo namespace
+    // C. Clean URL normalization on promo subdomain:
+    // If accessing /promo or /promo/slug on subdomain, normalize to / or /slug
+    if (pathname === "/promo") {
+      return NextResponse.redirect(new URL("/", req.url), 307);
+    }
+    if (pathname.startsWith("/promo/")) {
+      const cleanSlug = pathname.replace(/^\/promo\//, "");
+      return NextResponse.redirect(new URL(`/${cleanSlug}`, req.url), 307);
+    }
+
+    // D. Internal rewrites to Next.js /promo page handler
     // promo.optikiseeyou.com/ -> rewrite to /promo
     if (pathname === "/") {
       return NextResponse.rewrite(new URL("/promo", req.url));
     }
 
-    // If pathname is not already prefixed with /promo, rewrite internally
+    // If pathname is not already prefixed with /promo, rewrite internally to /promo/[slug]
     if (!pathname.startsWith("/promo")) {
       return NextResponse.rewrite(new URL(`/promo${pathname}`, req.url));
     }
@@ -60,7 +70,22 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 3. Handle Main Domain: Admin Route Protection
+  // 3. Handle Main Domain: Redirect promo visits to the dedicated promo subdomain
+  if (!isPromoSubdomain && (pathname === "/promo" || pathname.startsWith("/promo/"))) {
+    const isMainProduction =
+      hostname === "optikiseeyou.com" ||
+      hostname === "www.optikiseeyou.com";
+
+    if (isMainProduction) {
+      const slug = pathname.replace(/^\/promo\/?/, "");
+      const targetUrl = slug
+        ? `https://promo.optikiseeyou.com/${slug}`
+        : "https://promo.optikiseeyou.com";
+      return NextResponse.redirect(targetUrl, 307);
+    }
+  }
+
+  // 4. Handle Main Domain: Admin Route Protection
   if (pathname.startsWith("/admin")) {
     // Allow login route
     if (pathname === "/admin/login" || pathname.startsWith("/admin/login/")) {

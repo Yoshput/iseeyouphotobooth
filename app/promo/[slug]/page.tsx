@@ -4,21 +4,30 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Calendar,
-  Clock,
-  ArrowLeft,
   ExternalLink,
   CheckCircle2,
-  Share2,
-  Tag,
+  MapPin,
+  Gift,
   Sparkles,
+  ShoppingBag,
+  ShieldCheck,
+  ChevronRight,
+  Tv,
+  Hotel,
+  Flame,
+  CookingPot,
+  Ticket,
+  Glasses,
+  Coffee,
+  Laptop,
 } from "lucide-react";
 import { getPromoBySlug, getPublicPromos } from "@/lib/db/repository";
 import {
   isPromoActive,
   formatPromoPeriod,
-  formatPromoDate,
   getCategoryLabel,
 } from "@/lib/promo";
+import { BRANCHES, konsultasiWhatsappUrl } from "@/lib/branches";
 import PromoMicrositeHeader from "@/components/promo/PromoMicrositeHeader";
 import PromoMicrositeFooter from "@/components/promo/PromoMicrositeFooter";
 import PromoGalleryCollage from "@/components/promo/PromoGalleryCollage";
@@ -88,6 +97,10 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
   const period = formatPromoPeriod(promo.startAt, promo.endAt);
   const categoryLabel = getCategoryLabel(promo.category);
 
+  const isUndian = promo.slug.includes("undian");
+  const isNovemblur = promo.slug.includes("novemblur");
+  const isAntifog = promo.slug.includes("antifog");
+
   // Schema.org Structured Data
   const jsonLd = {
     "@context": "https://schema.org",
@@ -115,109 +128,103 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
 
       <PromoMicrositeHeader showBackToAll={true} />
 
-      {/* Breadcrumbs */}
-      <div className="border-b border-[#E3E7DF] bg-white">
-        <div className="mx-auto max-w-6xl px-6 sm:px-8 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/promo" className="hover:text-[#124734] transition-colors">
-            Promo
-          </Link>
-          <span>/</span>
-          <span className="font-bold text-[#124734]">{categoryLabel}</span>
-          <span>/</span>
-          <span className="truncate max-w-[200px] sm:max-w-md text-slate-400">
-            {promo.title}
-          </span>
+      {/* Sub-Navigation Ribbon (Inspired by Optik Melawai) */}
+      <div className="sticky top-16 sm:top-20 z-30 border-b border-[#E3E7DF] bg-[#FAF8F3]/95 backdrop-blur-md">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-1 sm:gap-6 overflow-x-auto text-xs font-bold text-[#124734] admin-scrollbar">
+            <a href="#tentang" className="px-2.5 py-1 rounded-lg hover:bg-[#124734]/10 transition-colors shrink-0">
+              Tentang Promo
+            </a>
+            <a href="#hadiah" className="px-2.5 py-1 rounded-lg hover:bg-[#124734]/10 transition-colors shrink-0">
+              {isUndian ? "Daftar Hadiah" : "Penawaran & Diskon"}
+            </a>
+            <a href="#mekanisme" className="px-2.5 py-1 rounded-lg hover:bg-[#124734]/10 transition-colors shrink-0">
+              Mekanisme
+            </a>
+            <a href="#syarat" className="px-2.5 py-1 rounded-lg hover:bg-[#124734]/10 transition-colors shrink-0">
+              Syarat & Ketentuan
+            </a>
+            <a href="#cabang" className="px-2.5 py-1 rounded-lg hover:bg-[#124734]/10 transition-colors shrink-0">
+              Lokasi 4 Cabang
+            </a>
+          </div>
+
+          <div className="hidden md:flex items-center gap-2 text-xs text-slate-500">
+            <span>Kategori:</span>
+            <span className="font-bold text-[#124734]">{categoryLabel}</span>
+          </div>
         </div>
       </div>
 
-      <main className="flex-1 mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-12 py-10 sm:py-14 space-y-12">
-        {/* ═══ 2-COLUMN HERO EDITORIAL SECTION ═══ */}
-        <section
-          className={`grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center`}
-        >
-          {/* Column A: Hero Image */}
-          <div
-            className={`md:col-span-6 ${
-              promo.detailLayout === "image-right"
-                ? "md:order-2"
-                : "md:order-1"
-            }`}
-          >
-            <div className="relative aspect-4/3 w-full rounded-3xl overflow-hidden bg-white border border-[#E3E7DF] shadow-md">
+      <main className="flex-1 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-16 sm:space-y-20">
+        {/* ═══ SECTION 1: HERO CAMPAIGN SHOWCASE (2-COLUMN EDITORIAL) ═══ */}
+        <section id="tentang" className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 items-center">
+          {/* Column A: Poster Visual (4:5 Aspect Ratio, Crisp WebP) */}
+          <div className="md:col-span-5 flex justify-center">
+            <div className="relative aspect-[4/5] w-full max-w-[420px] rounded-3xl overflow-hidden bg-white border border-[#E3E7DF] shadow-2xl">
               {promo.heroImageUrl ? (
                 <Image
                   src={promo.heroImageUrl}
                   alt={promo.heroImageAlt || promo.title}
                   fill
                   priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 420px"
                   className="object-cover"
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-slate-300">
-                  <Tag className="h-10 w-10 mb-2 stroke-[1.5]" />
                   <span className="text-xs">Optik I See You</span>
                 </div>
               )}
-              <div className="absolute top-4 left-4 z-10">
-                <span className="rounded-full bg-[#124734] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-sm">
-                  {categoryLabel}
-                </span>
-              </div>
             </div>
           </div>
 
-          {/* Column B: Promo Details */}
-          <div
-            className={`md:col-span-6 space-y-5 ${
-              promo.detailLayout === "image-right"
-                ? "md:order-1"
-                : "md:order-2"
-            }`}
-          >
-            {/* Period Indicator */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold text-[#124734]">
-              <Calendar className="h-3.5 w-3.5 text-[#2FA84F]" />
-              <span>Periode: {period}</span>
-            </div>
-
-            {/* Title & Subtitle */}
+          {/* Column B: Editorial Narrative & Action */}
+          <div className="md:col-span-7 space-y-5">
             <div className="space-y-2">
+              <p className="text-xs font-bold uppercase tracking-widest text-[#2FA84F]">
+                Tentang Promo & Program
+              </p>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
                 {promo.title}
               </h1>
-
               {promo.subtitle && (
-                <p className="text-base font-semibold text-[#2FA84F]">
+                <p className="text-base sm:text-lg font-bold text-[#208c49]">
                   {promo.subtitle}
                 </p>
               )}
             </div>
 
-            {/* Description */}
-            <div className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal whitespace-pre-line">
+            {/* Clean Period Indicator (No AI shape border) */}
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-500">
+              <Calendar className="h-4 w-4 text-[#2FA84F] shrink-0" />
+              <span>Periode Promo: <strong className="text-slate-800">{period}</strong></span>
+            </div>
+
+            {/* Narrative Description */}
+            <div className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal whitespace-pre-line space-y-2">
               {promo.description || promo.excerpt}
             </div>
 
-            {/* Primary Action Button */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            {/* Action Buttons */}
+            <div className="pt-4 flex flex-wrap items-center gap-3">
               <a
                 href={
                   promo.ctaUrl ||
                   "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20tertarik%20dengan%20" +
                     encodeURIComponent(promo.title)
                 }
-                target={promo.ctaUrl?.startsWith("http") ? "_blank" : undefined}
-                rel={promo.ctaUrl?.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] py-3.5 px-6 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-[#208c49]/25 hover:scale-102 hover:shadow-xl active:scale-98 transition-all"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] py-3.5 px-7 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-[#208c49]/25 hover:scale-102 hover:shadow-xl active:scale-98 transition-all"
               >
-                <span>{promo.ctaLabel || "Ambil Promo Sekarang"}</span>
+                <span>{promo.ctaLabel || "Ambil Promo di Cabang"}</span>
                 <ExternalLink className="h-4 w-4" />
               </a>
 
               <Link
-                href="/promo"
-                className="inline-flex items-center gap-1.5 rounded-2xl border border-[#E3E7DF] bg-white px-4 py-3.5 text-xs font-bold text-[#124734] hover:bg-[#FAF8F3] transition-colors"
+                href="/"
+                className="inline-flex items-center gap-1.5 rounded-2xl border border-[#E3E7DF] bg-white px-5 py-3.5 text-xs sm:text-sm font-bold text-[#124734] hover:bg-[#FAF8F3] transition-colors"
               >
                 <span>Lihat Promo Lainnya</span>
                 <span>→</span>
@@ -226,7 +233,267 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
           </div>
         </section>
 
-        {/* ═══ COLLAGE GALLERY SECTION (IF MULTIPLE IMAGES) ═══ */}
+        {/* ═══ SECTION 2: HADIAH & PENAWARAN (Modeled on Optik Melawai) ═══ */}
+        <section id="hadiah" className="space-y-6 pt-4 border-t border-[#E3E7DF]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#2FA84F]">
+              {isUndian ? "Hadiah Menanti Anda" : "Rincian Penawaran"}
+            </p>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#124734]">
+              {isUndian
+                ? "Hadiah Spektakuler Undian Akhir Tahun"
+                : isNovemblur
+                ? "Skema Diskon Promo NOvemBLUR"
+                : "Keunggulan Lensa Antifog Blueray"}
+            </h2>
+          </div>
+
+          {/* Grand Highlight Showcase Card */}
+          {isUndian && (
+            <div className="rounded-3xl bg-gradient-to-br from-[#124734] to-[#0D2F1D] text-white p-6 sm:p-10 shadow-xl relative overflow-hidden">
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div className="md:col-span-8 space-y-3">
+                  <span className="text-[11px] font-black uppercase tracking-widest text-emerald-300">
+                    Hadiah Utama Paling Dinanti
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white">
+                    TV Android & Tiket Menginap Hotel
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/80 leading-relaxed max-w-xl">
+                    Nikmati hiburan maksimal di rumah dengan TV Android resolusi tinggi, serta pengalaman liburan berkesan bersama keluarga dengan voucher menginap di hotel pilihan.
+                  </p>
+                </div>
+                <div className="md:col-span-4 flex md:justify-end">
+                  <div className="flex gap-3">
+                    <div className="h-16 w-16 rounded-2xl bg-white/10 border border-white/20 flex flex-col items-center justify-center text-center p-2">
+                      <Tv className="h-6 w-6 text-emerald-300" />
+                      <span className="text-[9px] font-bold mt-1">TV Android</span>
+                    </div>
+                    <div className="h-16 w-16 rounded-2xl bg-white/10 border border-white/20 flex flex-col items-center justify-center text-center p-2">
+                      <Hotel className="h-6 w-6 text-emerald-300" />
+                      <span className="text-[9px] font-bold mt-1">Tiket Hotel</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isNovemblur && (
+            <div className="rounded-3xl bg-gradient-to-br from-[#124734] to-[#0D2F1D] text-white p-6 sm:p-10 shadow-xl">
+              <div className="space-y-3">
+                <span className="text-[11px] font-black uppercase tracking-widest text-emerald-300">
+                  Penawaran Tukar Tambah Terbesar
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-white">
+                  Diskon 15% — Cukup Bawa Kacamata Lama
+                </h3>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed max-w-2xl">
+                  Bawa kacamata lama Anda dalam kondisi apapun ke kasir cabang Optik I See You dan dapatkan potongan langsung 15% untuk paket frame dan lensa baru pilihan Anda.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {isAntifog && (
+            <div className="rounded-3xl bg-gradient-to-br from-[#124734] to-[#0D2F1D] text-white p-6 sm:p-10 shadow-xl">
+              <div className="space-y-3">
+                <span className="text-[11px] font-black uppercase tracking-widest text-emerald-300">
+                  Solusi Pandangan Jernih
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-white">
+                  Potongan Harga Up to Rp 300.000
+                </h3>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed max-w-2xl">
+                  Tingkatkan kenyamanan penglihatan dengan Lensa Antifog Blueray. Bebas embun saat minum kopi panas atau memakai masker, plus perlindungan maksimal dari sinar radiasi gawai.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* 4 Items Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {isUndian && (
+              <>
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Flame className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Kompor Gas 2 Tungku</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Perlengkapan memasak modern & efisien untuk mempercantik dapur rumah Anda.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <CookingPot className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Magiccom Digital</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Pemasak nasi digital serbaguna dengan teknologi pemanas merata.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Ticket className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Voucher Rp250.000</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Kupon belanja kacamata atau softlens untuk transaksi berikutnya.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Gift className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Merchandise Eksklusif</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Souvenir resmi Optik I See You untuk transaksi selama masa promo.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {isNovemblur && (
+              <>
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Glasses className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Diskon 10% Langsung</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Berlaku untuk pembelian kacamata lengkap tanpa membawa kacamata lama.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Tambahan 5% Member</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Potongan ekstra khusus pelanggan setia yang terdaftar sebagai Member.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <ShieldCheck className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Gratis Cek Mata Digital</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Pemeriksaan mata akurat bersama refraksionis optik berijazah resmi.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <ShoppingBag className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Koleksi 100+ Frame</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Bebas pilih frame titanium, cat-eye, bulat, dan model estetik terkini.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {isAntifog && (
+              <>
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Coffee className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Anti Embun Panas</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Pandangan tetap bening saat menyeruput kopi hangat, makan mie, atau memakai masker.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Laptop className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Proteksi Blueray</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Menyaring radiasi sinar biru berbahaya dari laptop, tablet, dan smartphone.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <ShieldCheck className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Lapisan Hydrophobic</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Permukaan licin anti-gores, anti-minyak, dan sangat mudah dibersihkan.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Lab CNC Presisi</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Pemotongan lensa kacamata dilakukan dengan mesin CNC otomatis berpresisi tinggi.
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+
+        {/* ═══ SECTION 3: MEKANISME & CARA MENGIKUTI ═══ */}
+        <section id="mekanisme" className="space-y-6 pt-4 border-t border-[#E3E7DF]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#2FA84F]">
+              Cara Ikutan
+            </p>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#124734]">
+              3 Langkah Mudah Mengikuti Promo
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-3xl border border-[#E3E7DF] bg-white p-6 space-y-3 shadow-xs">
+              <span className="text-2xl font-black text-[#2FA84F]">01</span>
+              <h3 className="text-base font-bold text-[#124734]">
+                Kunjungi Cabang Resmi
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Datang langsung ke salah satu dari 4 cabang Optik I See You terdekat di Purwokerto, Purbalingga, Wonosobo, atau Cilacap.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#E3E7DF] bg-white p-6 space-y-3 shadow-xs">
+              <span className="text-2xl font-black text-[#2FA84F]">02</span>
+              <h3 className="text-base font-bold text-[#124734]">
+                Periksa Mata & Pilih Kacamata
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Dapatkan pemeriksaan refraksi mata gratis secara akurat dan pilih koleksi frame yang sesuai dengan bentuk wajah Anda.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#E3E7DF] bg-white p-6 space-y-3 shadow-xs">
+              <span className="text-2xl font-black text-[#2FA84F]">03</span>
+              <h3 className="text-base font-bold text-[#124734]">
+                Klaim Benefit di Kasir
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {isUndian
+                  ? "Selesaikan transaksi kacamata lengkap dan Anda langsung menerima kupon undian fisik untuk diundi di akhir periode!"
+                  : "Dapatkan potongan harga diskon langsung saat menyelesaikan pembayaran di kasir cabang kami."}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 4: VISUAL CAMPAIGN & ASYMMETRICAL COLLAGE ═══ */}
         {promo.galleryImages && promo.galleryImages.length > 0 && (
           <section className="pt-4 border-t border-[#E3E7DF]">
             <PromoGalleryCollage
@@ -237,10 +504,10 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
           </section>
         )}
 
-        {/* ═══ TERMS AND CONDITIONS ═══ */}
+        {/* ═══ SECTION 5: SYARAT & KETENTUAN ═══ */}
         {promo.termsAndConditions && (
-          <section className="rounded-3xl border border-[#E3E7DF] bg-[#F8F5ED] p-6 sm:p-8 space-y-4 shadow-2xs">
-            <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold text-[#124734]">
+          <section id="syarat" className="rounded-3xl border border-[#E3E7DF] bg-[#F8F5ED] p-6 sm:p-10 space-y-4 shadow-2xs">
+            <div className="flex items-center gap-2 text-base sm:text-lg font-extrabold text-[#124734]">
               <CheckCircle2 className="h-5 w-5 text-[#2FA84F]" />
               <h2>Syarat dan Ketentuan Promo</h2>
             </div>
@@ -250,7 +517,47 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
           </section>
         )}
 
-        {/* ═══ RELATED ACTIVE PROMOS ═══ */}
+        {/* ═══ SECTION 6: LOKASI 4 CABANG RESMI ═══ */}
+        <section id="cabang" className="space-y-6 pt-4 border-t border-[#E3E7DF]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#2FA84F]">
+              Kunjungi Kami Langsung
+            </p>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#124734]">
+              Lokasi 4 Cabang Resmi Optik I See You
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {BRANCHES.map((b) => (
+              <div
+                key={b.id}
+                className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-3 shadow-xs hover:border-[#124734] transition-colors"
+              >
+                <div className="flex items-center gap-2 text-[#124734] font-bold text-sm">
+                  <MapPin className="h-4 w-4 text-[#2FA84F] shrink-0" />
+                  <span>Cabang {b.city}</span>
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed min-h-[48px]">
+                  {b.address}
+                </p>
+                <div className="pt-2 border-t border-slate-100">
+                  <a
+                    href={`https://wa.me/${b.waNumber || "6281390977209"}?text=Halo%20Optik%20I%20See%20You%20${b.city},%20saya%20ingin%20tanya%20tentang%20` + encodeURIComponent(promo.title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-[#124734] hover:text-[#2FA84F]"
+                  >
+                    <span>Hubungi Cabang</span>
+                    <ChevronRight className="h-3 w-3" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ═══ SECTION 7: PROMO LAINNYA ═══ */}
         {relatedPromos.length > 0 && (
           <section className="pt-8 border-t border-[#E3E7DF] space-y-6">
             <div className="flex items-center justify-between">
@@ -264,7 +571,7 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
               </div>
 
               <Link
-                href="/promo"
+                href="/"
                 className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#124734] hover:underline"
               >
                 <span>Semua Promo</span>

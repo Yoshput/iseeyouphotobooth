@@ -38,12 +38,8 @@ export default async function PromoMicrositePage() {
       <PromoMicrositeHeader />
 
       {/* Hero Section */}
-      <section className="relative px-6 sm:px-8 lg:px-12 pt-10 sm:pt-16 pb-8 sm:pb-12 border-b border-[#E3E7DF] bg-[#F8F5ED]">
+      <section className="relative px-6 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-8 sm:pb-12 border-b border-[#E3E7DF] bg-[#F8F5ED]">
         <div className="mx-auto max-w-6xl text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1 text-[11px] font-black uppercase tracking-[0.2em] text-[#124734] shadow-2xs">
-            Official Promo Center • Optik I See You
-          </div>
-
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#124734] tracking-tight">
             Promo & Penawaran Eksklusif
           </h1>

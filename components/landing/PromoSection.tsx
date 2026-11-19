@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Tag, Calendar, ArrowRight, Sparkles, Layers } from "lucide-react";
 import { PromoItem, PromoCategory } from "@/lib/db/types";
-import { formatPromoPeriod, getCategoryLabel, PROMO_CATEGORIES } from "@/lib/promo";
+import { formatPromoPeriod, getCategoryLabel, PROMO_CATEGORIES, getPromoSubdomainUrl } from "@/lib/promo";
 
 export default function PromoSection() {
   const [promos, setPromos] = useState<PromoItem[]>([]);
@@ -128,13 +128,13 @@ export default function PromoSection() {
               Saat ini belum ada promo aktif dalam kategori ini. Silakan kunjungi halaman promo microsite kami untuk melihat jadwal penawaran mendatang.
             </p>
             <div className="pt-2">
-              <Link
-                href="/promo"
+              <a
+                href={getPromoSubdomainUrl()}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[#124734] hover:underline"
               >
                 <span>Buka Promo Microsite</span>
                 <span>→</span>
-              </Link>
+              </a>
             </div>
           </div>
         ) : (
@@ -192,13 +192,13 @@ export default function PromoSection() {
 
                   {/* Card Footer */}
                   <div className="p-5 sm:p-6 pt-0">
-                    <Link
-                      href={`/promo/${promo.slug}`}
+                    <a
+                      href={getPromoSubdomainUrl(promo.slug)}
                       className="w-full inline-flex items-center justify-between rounded-2xl border border-[#E3E7DF] bg-[#F8F5ED] px-4 py-3 text-xs font-bold text-[#124734] group-hover:border-[#124734] group-hover:bg-[#124734] group-hover:text-white transition-all duration-300"
                     >
                       <span>Lihat Promo</span>
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               );

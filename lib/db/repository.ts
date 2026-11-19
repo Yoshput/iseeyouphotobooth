@@ -274,19 +274,19 @@ export async function seedInitialDataIfNeeded() {
         status: "published",
         startAt: "2026-11-01T00:00:00+07:00",
         endAt: "2026-12-31T23:59:59+07:00",
-        heroImageUrl: "/PROMO/undian-akhir-tahun.png",
+        heroImageUrl: "/PROMO/undian-akhir-tahun.webp",
         heroImageAlt: "Poster Undian Akhir Tahun 2026 Optik I See You",
         galleryImages: [
           {
-            url: "/PROMO/undian-akhir-tahun.png",
+            url: "/PROMO/undian-akhir-tahun.webp",
             alt: "Undian Akhir Tahun 2026 - TV Android, Tiket Hotel, Kompor, Magiccom, Voucher",
           },
           {
-            url: "/PROMO/lensa-antifog-blueray.png",
+            url: "/PROMO/lensa-antifog-blueray.webp",
             alt: "Promo Lensa Antifog Blueray Potongan Up to 300rb",
           },
           {
-            url: "/PROMO/novemblur-isy.png",
+            url: "/PROMO/novemblur-isy.webp",
             alt: "Promo NOvemBLUR Diskon Hingga 15% + 5% Member",
           },
         ],
@@ -321,11 +321,11 @@ export async function seedInitialDataIfNeeded() {
         status: "published",
         startAt: "2026-11-16T00:00:00+07:00",
         endAt: "2026-11-20T23:59:59+07:00",
-        heroImageUrl: "/PROMO/novemblur-isy.png",
+        heroImageUrl: "/PROMO/novemblur-isy.webp",
         heroImageAlt: "Poster Promo NOvemBLUR Optik I See You 16-20 November 2026",
         galleryImages: [
           {
-            url: "/PROMO/novemblur-isy.png",
+            url: "/PROMO/novemblur-isy.webp",
             alt: "Promo NOvemBLUR Diskon 15% dan 10%",
           },
         ],
@@ -360,11 +360,11 @@ export async function seedInitialDataIfNeeded() {
         status: "published",
         startAt: "2026-11-01T00:00:00+07:00",
         endAt: "2026-11-30T23:59:59+07:00",
-        heroImageUrl: "/PROMO/lensa-antifog-blueray.png",
+        heroImageUrl: "/PROMO/lensa-antifog-blueray.webp",
         heroImageAlt: "Poster Promo Lensa Antifog Blueray Potongan Up to 300rb",
         galleryImages: [
           {
-            url: "/PROMO/lensa-antifog-blueray.png",
+            url: "/PROMO/lensa-antifog-blueray.webp",
             alt: "Perbandingan Lensa Biasa vs Lensa Antifog",
           },
         ],
@@ -973,7 +973,16 @@ export async function getPromoById(id: string): Promise<PromoItem | null> {
 export async function getPromoBySlug(slug: string): Promise<PromoItem | null> {
   await seedInitialDataIfNeeded();
   const promos = await readStore<PromoItem[]>("promos", []);
-  return promos.find((p) => p.slug === slug) || null;
+  const normalized = (slug || "").trim().toLowerCase();
+  if (!normalized) return null;
+
+  return (
+    promos.find((p) => p.slug.toLowerCase() === normalized) ||
+    promos.find((p) => p.slug.toLowerCase() === `${normalized}-2026`) ||
+    promos.find((p) => normalized.startsWith(p.slug.toLowerCase())) ||
+    promos.find((p) => p.slug.toLowerCase().startsWith(normalized)) ||
+    null
+  );
 }
 
 /**
