@@ -15,7 +15,6 @@ import {
   Laptop,
   ChevronDown,
   ChevronUp,
-  Maximize2,
   ZoomIn,
   ZoomOut,
   RotateCcw,
@@ -231,11 +230,6 @@ export default function PromoMicrositeClient({
                   sizes="(max-width: 768px) 100vw, 420px"
                   className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
                 />
-                {/* Click to Zoom Pill */}
-                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-md px-3 py-1.5 text-[11px] font-bold text-white opacity-85 group-hover:opacity-100 transition-opacity shadow-md">
-                  <Maximize2 className="h-3.5 w-3.5 text-emerald-400" />
-                  <span>Klik untuk Perbesar</span>
-                </div>
               </div>
             </div>
           </div>
@@ -272,10 +266,6 @@ export default function PromoMicrositeClient({
                   sizes="(max-width: 768px) 100vw, 420px"
                   className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
                 />
-                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-[#124734]/85 backdrop-blur-md px-3 py-1.5 text-[11px] font-bold text-white opacity-85 group-hover:opacity-100 transition-opacity shadow-md">
-                  <Maximize2 className="h-3.5 w-3.5 text-[#2FA84F]" />
-                  <span>Klik untuk Perbesar</span>
-                </div>
               </div>
             </div>
 
@@ -570,10 +560,6 @@ export default function PromoMicrositeClient({
                   sizes="(max-width: 768px) 100vw, 420px"
                   className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
                 />
-                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-[#124734]/85 backdrop-blur-md px-3 py-1.5 text-[11px] font-bold text-white opacity-85 group-hover:opacity-100 transition-opacity shadow-md">
-                  <Maximize2 className="h-3.5 w-3.5 text-[#2FA84F]" />
-                  <span>Klik untuk Perbesar</span>
-                </div>
               </div>
             </div>
           </div>
