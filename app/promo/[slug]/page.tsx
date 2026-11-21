@@ -26,12 +26,14 @@ import {
   isPromoActive,
   formatPromoPeriod,
   getCategoryLabel,
+  formatBrandText,
 } from "@/lib/promo";
-import { BRANCHES, konsultasiWhatsappUrl } from "@/lib/branches";
+import { BRANCHES, branchWhatsappUrl, konsultasiWhatsappUrl } from "@/lib/branches";
 import PromoMicrositeHeader from "@/components/promo/PromoMicrositeHeader";
 import PromoMicrositeFooter from "@/components/promo/PromoMicrositeFooter";
 import PromoGalleryCollage from "@/components/promo/PromoGalleryCollage";
 import PromoCard from "@/components/promo/PromoCard";
+import PromoDetailActionButtons from "@/components/promo/PromoDetailActionButtons";
 
 export const dynamic = "force-dynamic";
 
@@ -187,11 +189,11 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
                 Tentang Promo & Program
               </p>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
-                {promo.title}
+                {formatBrandText(promo.title)}
               </h1>
               {promo.subtitle && (
                 <p className="text-base sm:text-lg font-bold text-[#208c49]">
-                  {promo.subtitle}
+                  {formatBrandText(promo.subtitle)}
                 </p>
               )}
             </div>
@@ -207,30 +209,12 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
               {promo.description || promo.excerpt}
             </div>
 
-            {/* Action Buttons */}
-            <div className="pt-4 flex flex-wrap items-center gap-3">
-              <a
-                href={
-                  promo.ctaUrl ||
-                  "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20tertarik%20dengan%20" +
-                    encodeURIComponent(promo.title)
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#208c49] via-[#1b703e] to-[#124734] py-3.5 px-7 text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-[#208c49]/25 hover:scale-102 hover:shadow-xl active:scale-98 transition-all"
-              >
-                <span>{promo.ctaLabel || "Ambil Promo di Cabang"}</span>
-                <ExternalLink className="h-4 w-4" />
-              </a>
-
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 rounded-2xl border border-[#E3E7DF] bg-white px-5 py-3.5 text-xs sm:text-sm font-bold text-[#124734] hover:bg-[#FAF8F3] transition-colors"
-              >
-                <span>Lihat Promo Lainnya</span>
-                <span>→</span>
-              </Link>
-            </div>
+            {/* Action Buttons with 4-Branch WhatsApp Modal */}
+            <PromoDetailActionButtons
+              promoTitle={promo.title}
+              ctaLabel={promo.ctaLabel}
+              ctaUrl={promo.ctaUrl}
+            />
           </div>
         </section>
 
@@ -544,7 +528,10 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
                 </p>
                 <div className="pt-2 border-t border-slate-100">
                   <a
-                    href={`https://wa.me/${b.waNumber || "6281390977209"}?text=Halo%20Optik%20I%20See%20You%20${b.city},%20saya%20ingin%20tanya%20tentang%20` + encodeURIComponent(promo.title)}
+                    href={branchWhatsappUrl(
+                      b,
+                      `Halo Optik I See You cabang ${b.city}, saya ingin tanya tentang ${promo.title}`
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-xs font-bold text-[#124734] hover:text-[#2FA84F]"

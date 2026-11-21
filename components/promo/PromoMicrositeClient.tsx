@@ -24,8 +24,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { PromoItem } from "@/lib/db/types";
-import { BRANCHES, KONSULTASI_WA_NUMBER } from "@/lib/branches";
+import { BRANCHES, KONSULTASI_WA_NUMBER, branchWhatsappUrl } from "@/lib/branches";
 import { formatPromoPeriod, formatBrandText } from "@/lib/promo";
+import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 
 interface PromoMicrositeClientProps {
   initialPromos: PromoItem[];
@@ -63,6 +64,8 @@ export default function PromoMicrositeClient({
 
   // Accordion state for Syarat & Ketentuan per promo ID
   const [expandedTerms, setExpandedTerms] = useState<Record<string, boolean>>({});
+  // 4-Branch WhatsApp modal state
+  const [activeBranchPromo, setActiveBranchPromo] = useState<PromoItem | null>(null);
 
   const toggleTerms = useCallback((id: string) => {
     setExpandedTerms((prev) => ({
@@ -157,20 +160,14 @@ export default function PromoMicrositeClient({
 
               {/* Direct CTAs */}
               <div className="pt-3 flex flex-wrap items-center gap-3">
-                <a
-                  href={
-                    orderedPromos[0].ctaUrl ||
-                    `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(
-                      `Halo Optik I See You, saya tertarik dengan Promo ${orderedPromos[0].title}`
-                    )}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#2FA84F] hover:bg-[#25873f] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2FA84F]/30 hover:scale-102 active:scale-98 transition-all"
+                <button
+                  type="button"
+                  onClick={() => setActiveBranchPromo(orderedPromos[0])}
+                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#2FA84F] hover:bg-[#25873f] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2FA84F]/30 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
                   <span>Klaim Undian di Cabang</span>
-                </a>
+                </button>
 
                 <button
                   type="button"
@@ -356,20 +353,14 @@ export default function PromoMicrositeClient({
 
               {/* Direct CTAs */}
               <div className="pt-3 flex flex-wrap items-center gap-3">
-                <a
-                  href={
-                    orderedPromos[1].ctaUrl ||
-                    `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(
-                      "Halo Optik I See You, saya mau klaim Promo NOvemBLUR Diskon Kacamata"
-                    )}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#124734] hover:bg-[#0D2F1D] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all"
+                <button
+                  type="button"
+                  onClick={() => setActiveBranchPromo(orderedPromos[1])}
+                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#124734] hover:bg-[#0D2F1D] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
                   <span>Ambil Promo NOvemBLUR</span>
-                </a>
+                </button>
 
                 <button
                   type="button"
@@ -490,20 +481,14 @@ export default function PromoMicrositeClient({
 
               {/* Direct CTAs */}
               <div className="pt-3 flex flex-wrap items-center gap-3">
-                <a
-                  href={
-                    orderedPromos[2].ctaUrl ||
-                    `https://wa.me/${KONSULTASI_WA_NUMBER}?text=${encodeURIComponent(
-                      "Halo Optik I See You, saya tertarik dengan Promo Lensa Antifog Potongan Up to 300rb"
-                    )}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#208c49] to-[#124734] hover:opacity-95 text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all"
+                <button
+                  type="button"
+                  onClick={() => setActiveBranchPromo(orderedPromos[2])}
+                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#208c49] to-[#124734] hover:opacity-95 text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
                   <span>Konsultasi Lensa Antifog</span>
-                </a>
+                </button>
 
                 <button
                   type="button"
@@ -610,7 +595,10 @@ export default function PromoMicrositeClient({
 
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                 <a
-                  href={`https://wa.me/${b.waNumber}?text=Halo%20Optik%20I%20See%20You%20${b.city},%20saya%20mau%20klaim%20promo`}
+                  href={branchWhatsappUrl(
+                    b,
+                    `Halo Optik I See You cabang ${b.city}, saya mau klaim promo di cabang.`
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1.5 text-[11px] font-bold text-[#124734] hover:bg-emerald-100 transition-colors"
@@ -741,6 +729,24 @@ export default function PromoMicrositeClient({
           </div>
         </div>
       )}
+      {/* =========================================================================
+          4-BRANCH WHATSAPP SELECTION MODAL (Matches Screenshot 2)
+          ========================================================================= */}
+      <BranchWhatsAppModal
+        isOpen={Boolean(activeBranchPromo)}
+        onClose={() => setActiveBranchPromo(null)}
+        title="Pilih WhatsApp Cabang Terdekat"
+        description={
+          activeBranchPromo
+            ? `Silakan hubungi admin cabang kota Anda untuk klaim ${activeBranchPromo.title}:`
+            : "Silakan hubungi admin cabang kota Anda:"
+        }
+        customMessage={(branch) =>
+          activeBranchPromo
+            ? `Halo Optik I See You cabang ${branch.city}, saya mau klaim ${activeBranchPromo.title}. Mohon info syarat dan ketentuannya ya!`
+            : `Halo Optik I See You cabang ${branch.city}, saya mau tanya info promo di toko.`
+        }
+      />
     </div>
   );
 }

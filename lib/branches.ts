@@ -137,10 +137,12 @@ export const KONSULTASI_WA_NUMBER = "62895415614261";
 export const PRICE_LIST_LENSA_URL = "https://drive.google.com/file/d/1ysBYYKikn5m5CEom-SLqmwJaHc6xeuvS/view";
 export const SHOPEE_STORE_URL = "https://shopee.co.id/iseeyou.id?entryPoint=ShopBySearch&searchKeyword=iseeyou.id";
 
-export function branchWhatsappUrl(branch: Branch) {
+export function branchWhatsappUrl(branch: Branch, customMessage?: string) {
   const num = branch.waNumber || branch.phone.replace(/[^0-9]/g, "");
   const formattedNum = num.startsWith("0") ? `62${num.slice(1)}` : num;
-  const message = `Halo Optik I See You cabang ${branch.city}, saya mau tanya lokasi dan produk yang ada di toko.`;
+  const message =
+    customMessage ||
+    `Halo Optik I See You cabang ${branch.city}, saya mau tanya lokasi dan produk yang ada di toko.`;
   return `https://wa.me/${formattedNum}?text=${encodeURIComponent(message)}`;
 }
 

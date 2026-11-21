@@ -292,9 +292,8 @@ export async function seedInitialDataIfNeeded() {
         ],
         detailLayout: "image-left",
         collageLayout: "grid-3",
-        ctaLabel: "Ikuti Undian di Cabang",
-        ctaUrl:
-          "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20tertarik%20dengan%20Promo%20Undian%20Akhir%20Tahun%202026",
+        ctaLabel: "KLAIM UNDIAN DI CABANG",
+        ctaUrl: "",
         termsAndConditions:
           "1. Periode promo berlangsung mulai 1 November hingga 31 Desember 2026.\n2. Berlaku untuk seluruh pelanggan di 4 cabang resmi (Purwokerto, Purbalingga, Wonosobo, Cilacap).\n3. Setiap transaksi pembelian kacamata lengkap (frame + lensa) berhak mendapatkan kupon undian.\n4. Hadiah undian mencakup TV Android, Tiket Hotel, Kompor Gas, Magiccom, dan Voucher Kacamata Rp250.000.\n5. Pengundian akan diumumkan secara transparan di Instagram resmi @iseeyou.glasses.\n6. Syarat dan ketentuan berlaku. Gambar hanya untuk ilustrasi.",
         showOnHomepage: true,
@@ -340,8 +339,7 @@ export async function seedInitialDataIfNeeded() {
         detailLayout: "image-left",
         collageLayout: "grid-2",
         ctaLabel: "Ambil Promo NOvemBLUR",
-        ctaUrl:
-          "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20mau%20klaim%20Promo%20NOvemBLUR%20Diskon%20Kacamata",
+        ctaUrl: "",
         termsAndConditions:
           "1. Periode promo berlaku khusus pada 16 – 20 November 2026.\n2. Diskon 15% berlaku dengan membawa/menyerahkan kacamata lama (kondisi apapun).\n3. Diskon 10% berlaku untuk pembelian langsung tanpa membawa kacamata lama.\n4. Tambahan diskon 5% otomatis berlaku bagi pelanggan yang telah terdaftar sebagai Member Optik I See You.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, dan Cilacap.\n6. Syarat dan ketentuan berlaku.",
         showOnHomepage: true,
@@ -387,8 +385,7 @@ export async function seedInitialDataIfNeeded() {
         detailLayout: "image-left",
         collageLayout: "grid-2",
         ctaLabel: "Konsultasi Lensa Antifog",
-        ctaUrl:
-          "https://wa.me/6281390977209?text=Halo%20Optik%20I%20See%20You,%20saya%20tertarik%20dengan%20Promo%20Lensa%20Antifog%20Potongan%20Up%20to%20300rb",
+        ctaUrl: "",
         termsAndConditions:
           "1. Periode promo berlaku selama bulan November 2026 (1 – 30 November 2026).\n2. Potongan harga hingga Rp300.000 berlaku untuk pemesanan paket lensa Antifog Blueray tertentu.\n3. Termasuk pemeriksaan refraksi mata digital gratis dan fitting kenyamanan kacamata.\n4. Pemotongan lensa diproses di lab optik CNC otomatis presisi tinggi.\n5. Berlaku di 4 cabang resmi Optik I See You (Purwokerto, Purbalingga, Wonosobo, Cilacap).\n6. Syarat dan ketentuan berlaku.",
         showOnHomepage: true,

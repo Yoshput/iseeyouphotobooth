@@ -863,16 +863,24 @@ export default function PromoFormModal({
 
                 {/* CTA URL */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    URL Tujuan Tombol Aksi
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-slate-700">
+                      URL Tujuan Tombol Aksi
+                    </label>
+                    <span className="text-[10px] text-emerald-700 font-semibold">
+                      (Kosongkan untuk popup WhatsApp 4 Cabang)
+                    </span>
+                  </div>
                   <input
                     type="text"
                     value={ctaUrl}
                     onChange={(e) => setCtaUrl(e.target.value)}
-                    placeholder="Contoh: https://wa.me/6281390977209, /katalog, /cabang, dll."
+                    placeholder="Kosongkan untuk otomatis membuka WhatsApp 4 Cabang, atau isi tautan eksternal"
                     className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:border-[#124734] focus:outline-none focus:ring-1 focus:ring-[#124734]"
                   />
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    Jika dikosongkan atau diisi tautan WhatsApp, pengunjung akan diarahkan memilih salah satu dari 4 cabang resmi Optik I See You.
+                  </p>
                 </div>
 
                 {/* Terms and Conditions */}

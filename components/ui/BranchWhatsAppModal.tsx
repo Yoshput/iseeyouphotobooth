@@ -16,9 +16,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { BRANCHES, type Branch, branchWhatsappUrl, mapsDirectionsUrl } from "@/lib/branches";
 
-interface BranchWhatsAppModalProps {
+export interface BranchWhatsAppModalProps {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
+  description?: string;
+  badgeLabel?: string;
+  customMessage?: string | ((branch: Branch) => string);
 }
 
 const CITY_ACCENT_COLORS: Record<string, { badgeBg: string; badgeText: string; borderHover: string }> = {
@@ -44,7 +48,14 @@ const CITY_ACCENT_COLORS: Record<string, { badgeBg: string; badgeText: string; b
   },
 };
 
-export default function BranchWhatsAppModal({ isOpen, onClose }: BranchWhatsAppModalProps) {
+export default function BranchWhatsAppModal({
+  isOpen,
+  onClose,
+  title,
+  description,
+  badgeLabel,
+  customMessage,
+}: BranchWhatsAppModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -103,14 +114,14 @@ export default function BranchWhatsAppModal({ isOpen, onClose }: BranchWhatsAppM
               <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 mb-1 border border-emerald-200">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700">
-                  Respon Cepat 4 Cabang
+                  {badgeLabel || "Respon Cepat 4 Cabang"}
                 </span>
               </div>
               <h2 id="branch-wa-modal-title" className="text-lg sm:text-xl font-black text-isy-green-deep">
-                Pilih WhatsApp Cabang Terdekat
+                {title || "Pilih WhatsApp Cabang Terdekat"}
               </h2>
               <p className="text-xs text-isy-ink/60 mt-0.5">
-                Silakan hubungi admin cabang kota Anda untuk tanya stok, lensa dan jadwal periksa:
+                {description || "Silakan hubungi admin cabang kota Anda untuk tanya stok, lensa dan jadwal periksa:"}
               </p>
             </div>
           </div>
@@ -184,7 +195,12 @@ export default function BranchWhatsAppModal({ isOpen, onClose }: BranchWhatsAppM
                     </a>
 
                     <a
-                      href={branchWhatsappUrl(branch)}
+                      href={branchWhatsappUrl(
+                        branch,
+                        typeof customMessage === "function"
+                          ? customMessage(branch)
+                          : customMessage
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => onClose()}

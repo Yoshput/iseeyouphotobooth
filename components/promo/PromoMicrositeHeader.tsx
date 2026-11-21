@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ArrowLeft, MessageCircle } from "lucide-react";
-import { konsultasiWhatsappUrl, BRANCHES } from "@/lib/branches";
+import { BRANCHES } from "@/lib/branches";
+import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 
 interface PromoMicrositeHeaderProps {
   showBackToAll?: boolean;
@@ -14,6 +15,7 @@ export default function PromoMicrositeHeader({
   showBackToAll = false,
 }: PromoMicrositeHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isBranchModalOpen, setIsBranchModalOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-[#E3E7DF] shadow-xs">
@@ -68,25 +70,25 @@ export default function PromoMicrositeHeader({
           >
             Softlens
           </a>
-          <a
-            href="https://optikiseeyou.com/cabang"
-            className="hover:text-[#2FA84F] transition-colors"
+          <button
+            type="button"
+            onClick={() => setIsBranchModalOpen(true)}
+            className="hover:text-[#2FA84F] transition-colors cursor-pointer"
           >
             4 Cabang
-          </a>
+          </button>
         </nav>
 
         {/* Right CTA */}
         <div className="hidden sm:flex items-center gap-3">
-          <a
-            href={konsultasiWhatsappUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#208c49] to-[#124734] px-4 py-2 text-xs font-bold text-white shadow-sm hover:opacity-95 transition-all"
+          <button
+            type="button"
+            onClick={() => setIsBranchModalOpen(true)}
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#208c49] to-[#124734] px-4 py-2 text-xs font-bold text-white shadow-sm hover:opacity-95 transition-all cursor-pointer"
           >
             <MessageCircle className="h-3.5 w-3.5" />
             <span>Tanya Promo ke CS</span>
-          </a>
+          </button>
         </div>
 
         {/* Mobile menu button */}
@@ -129,27 +131,44 @@ export default function PromoMicrositeHeader({
             >
               Katalog Softlens
             </a>
-            <a
-              href="https://optikiseeyou.com/cabang"
-              className="py-1.5 hover:text-[#2FA84F]"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsBranchModalOpen(true);
+              }}
+              className="py-1.5 text-left hover:text-[#2FA84F] cursor-pointer"
             >
               Info 4 Cabang Resmi
-            </a>
+            </button>
           </div>
 
           <div className="pt-2 border-t border-slate-100">
-            <a
-              href={konsultasiWhatsappUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#208c49] to-[#124734] py-3 text-xs font-bold text-white shadow-sm"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsBranchModalOpen(true);
+              }}
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#208c49] to-[#124734] py-3 text-xs font-bold text-white shadow-sm cursor-pointer"
             >
               <MessageCircle className="h-4 w-4" />
-              <span>Konsultasi WhatsApp Cabang</span>
-            </a>
+              <span>Pilih WhatsApp 4 Cabang</span>
+            </button>
           </div>
         </div>
       )}
+
+      {/* 4-Branch WhatsApp Modal */}
+      <BranchWhatsAppModal
+        isOpen={isBranchModalOpen}
+        onClose={() => setIsBranchModalOpen(false)}
+        title="Pilih WhatsApp Cabang Terdekat"
+        description="Silakan hubungi admin cabang kota Anda untuk tanya promo, kacamata, dan jadwal periksa mata:"
+        customMessage={(branch) =>
+          `Halo Optik I See You cabang ${branch.city}, saya ingin tanya info promo kacamata & periksa mata.`
+        }
+      />
     </header>
   );
 }
