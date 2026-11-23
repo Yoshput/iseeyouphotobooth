@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Tag, Calendar, ArrowRight, Layers } from "lucide-react";
 import { PromoItem, PromoCategory } from "@/lib/db/types";
-import { formatPromoPeriod, getCategoryLabel, PROMO_CATEGORIES, getPromoSubdomainUrl } from "@/lib/promo";
+import { formatPromoPeriod, getCategoryLabel, PROMO_CATEGORIES, getPromoSubdomainUrl, isPromoActive } from "@/lib/promo";
 
 export default function PromoSection() {
   const [promos, setPromos] = useState<PromoItem[]>([]);
@@ -16,10 +16,14 @@ export default function PromoSection() {
     let isMounted = true;
     async function fetchHomepagePromos() {
       try {
-        const res = await fetch("/api/promos?homepage=true&limit=6");
+        const res = await fetch("/api/promos?homepage=true&limit=6", {
+          cache: "no-store",
+        });
         const json = await res.json();
         if (isMounted && json.success && Array.isArray(json.data)) {
-          setPromos(json.data);
+          // Automatic auto-removal of expired promotions
+          const activeOnly = json.data.filter((p: PromoItem) => isPromoActive(p));
+          setPromos(activeOnly);
         }
       } catch (err) {
         console.warn("Failed to load homepage promos:", err);

@@ -282,8 +282,8 @@ export async function seedInitialDataIfNeeded() {
             alt: "Undian Akhir Tahun 2026 - TV Android, Tiket Hotel, Kompor, Magiccom, Voucher",
           },
           {
-            url: "/PROMO/novemblur-isy.webp",
-            alt: "Promo NOvemBLUR Diskon Hingga 15% + 5% Member",
+            url: "/PROMO/promo-hari-guru.webp",
+            alt: "Special Hari Guru Diskon Pelajar & Mahasiswa",
           },
           {
             url: "/PROMO/lensa-antifog-blueray.webp",
@@ -308,24 +308,26 @@ export async function seedInitialDataIfNeeded() {
         createdBy: "Owner Optik I See You",
       },
       {
-        id: "promo-novemblur-isy-2026",
-        slug: "promo-novemblur",
-        title: "Promo NOvemBLUR — Diskon Hingga 15%",
-        subtitle: "Diskon 15% Bawa Kacamata Lama | 10% Tanpa Kacamata Lama + Tambahan 5% Khusus Member",
+        id: "promo-hari-guru-2026",
+        slug: "promo-hari-guru",
+        title: "Special Hari Guru — Diskon Pelajar & Mahasiswa",
+        subtitle:
+          "Diskon 20% Frame 1 Fokus & 15% Frame 2 Fokus untuk Guru, Dosen, Pelajar & Mahasiswa",
         excerpt:
-          "Promo NOvemBLUR 16-20 November 2026! Dapatkan diskon hingga 15% dengan membawa kacamata lama, 10% tanpa kacamata lama, dan tambahan 5% khusus member.",
+          "Spesial Hari Guru! Dapatkan potongan diskon hingga 20% untuk frame kacamata 1 Fokus dan 15% untuk 2 Fokus bagi seluruh Guru, Pelajar, dan Mahasiswa.",
         description:
-          "Promo NOvemBLUR hadir kembali di Optik I See You mulai 16 hingga 20 November 2026! Saatnya ganti kacamata lama kamu dengan frame estetik dan lensa berkualitas tinggi:\n\n• Diskon 15% dengan membawa kacamata lama (Trade-in / Tukar Tambah)\n• Diskon 10% tanpa membawa kacamata lama\n• Tambahan Diskon 5% khusus Member Optik I See You\n\nJangan lewatkan promo terbatas ini di seluruh cabang resmi Optik I See You Purwokerto, Purbalingga, Wonosobo, dan Cilacap.",
+          "Dalam rangka memperingati Hari Guru Nasional, Optik I See You mempersembahkan apresiasi spesial berupa diskon frame kacamata untuk seluruh Pahlawan Tanpa Tanda Jasa, Dosen, Pelajar, dan Mahasiswa:\n\n• Potongan 20% Frame untuk pembelian paket lensa 1 Fokus (Single Vision)\n• Potongan 15% Frame untuk pembelian paket lensa 2 Fokus (Bifokal / Progresif)\n• Gratis Pemeriksaan Refraksi Mata Digital secara lengkap dan akurat\n\nCukup tunjukkan kartu identitas pelajar/mahasiswa atau kartu pengajar saat bertransaksi di kasir cabang resmi Optik I See You.",
         category: "weekly",
         status: "published",
-        startAt: "2026-11-01T00:00:00+07:00",
-        endAt: "2026-11-30T23:59:59+07:00",
-        heroImageUrl: "/PROMO/novemblur-isy-display.webp",
-        heroImageAlt: "Poster Promo NOvemBLUR Optik I See You 16-20 November 2026",
+        startAt: "2026-11-23T00:00:00+07:00",
+        endAt: "2026-11-26T23:59:59+07:00",
+        heroImageUrl: "/PROMO/promo-hari-guru-display.webp",
+        heroImageAlt:
+          "Poster Promo Special Hari Guru Diskon Pelajar dan Mahasiswa Optik I See You 23-26 November 2026",
         galleryImages: [
           {
-            url: "/PROMO/novemblur-isy.webp",
-            alt: "Promo NOvemBLUR Diskon 15% dan 10%",
+            url: "/PROMO/promo-hari-guru.webp",
+            alt: "Special Hari Guru Diskon Pelajar dan Mahasiswa 23-26 November 2026",
           },
           {
             url: "/PROMO/undian-akhir-tahun.webp",
@@ -333,24 +335,25 @@ export async function seedInitialDataIfNeeded() {
           },
           {
             url: "/PROMO/lensa-antifog-blueray.webp",
-            alt: "Promo Lensa Antifog Blueray",
+            alt: "Promo Lensa Antifog Blueray Potongan Up to 300rb",
           },
         ],
         detailLayout: "image-left",
         collageLayout: "grid-2",
-        ctaLabel: "Ambil Promo NOvemBLUR",
+        ctaLabel: "Klaim Promo Hari Guru",
         ctaUrl: "",
         termsAndConditions:
-          "1. Periode promo berlaku khusus pada 16 – 20 November 2026.\n2. Diskon 15% berlaku dengan membawa/menyerahkan kacamata lama (kondisi apapun).\n3. Diskon 10% berlaku untuk pembelian langsung tanpa membawa kacamata lama.\n4. Tambahan diskon 5% otomatis berlaku bagi pelanggan yang telah terdaftar sebagai Member Optik I See You.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, dan Cilacap.\n6. Syarat dan ketentuan berlaku.",
+          "1. Periode promo berlaku terbatas mulai 23 hingga 26 November 2026.\n2. Diskon 20% berlaku untuk pembelian frame kacamata dengan paket lensa 1 Fokus (Single Vision).\n3. Diskon 15% berlaku untuk pembelian frame kacamata dengan paket lensa 2 Fokus (Bifokal atau Progresif).\n4. Berlaku khusus untuk Guru, Dosen, Pelajar, dan Mahasiswa dengan menunjukkan kartu identitas/kartu pengajar/kartu pelajar yang masih aktif.\n5. Berlaku di seluruh 4 cabang resmi Optik I See You (Purwokerto, Purbalingga, Wonosobo, Cilacap).\n6. Termasuk fasilitas periksa mata gratis dan fitting kenyamanan kacamata.\n7. Syarat dan ketentuan berlaku.",
         showOnHomepage: true,
         showInPopup: false,
         popupPriority: 8,
         sortOrder: 2,
-        seoTitle: "Promo NOvemBLUR Diskon Kacamata Hingga 15% + 5% Member | Optik I See You",
+        seoTitle:
+          "Promo Hari Guru Diskon Pelajar & Mahasiswa Hingga 20% | Optik I See You",
         seoDescription:
-          "Promo NOvemBLUR 16-20 November 2026 di Optik I See You: Diskon 15% bawa kacamata lama, 10% tanpa kacamata lama, dan tambahan 5% khusus member.",
-        createdAt: "2026-11-16T00:00:00+07:00",
-        updatedAt: "2026-11-19T10:00:00+07:00",
+          "Promo Spesial Hari Guru di Optik I See You: Diskon 20% frame 1 fokus dan 15% frame 2 fokus khusus guru, dosen, pelajar, dan mahasiswa.",
+        createdAt: "2026-11-23T00:00:00+07:00",
+        updatedAt: "2026-11-23T12:00:00+07:00",
         createdBy: "Owner Optik I See You",
       },
       {
@@ -378,8 +381,8 @@ export async function seedInitialDataIfNeeded() {
             alt: "Undian Akhir Tahun 2026",
           },
           {
-            url: "/PROMO/novemblur-isy.webp",
-            alt: "Promo NOvemBLUR Diskon Hingga 15%",
+            url: "/PROMO/promo-hari-guru.webp",
+            alt: "Special Hari Guru Diskon Pelajar & Mahasiswa",
           },
         ],
         detailLayout: "image-left",

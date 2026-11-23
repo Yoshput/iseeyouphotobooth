@@ -100,6 +100,7 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
   const categoryLabel = getCategoryLabel(promo.category);
 
   const isUndian = promo.slug.includes("undian");
+  const isHariGuru = promo.slug.includes("guru");
   const isNovemblur = promo.slug.includes("novemblur");
   const isAntifog = promo.slug.includes("antifog");
 
@@ -227,6 +228,8 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#124734]">
               {isUndian
                 ? "Hadiah Spektakuler Undian Akhir Tahun"
+                : isHariGuru
+                ? "Diskon Spesial Hari Guru & Pelajar"
                 : isNovemblur
                 ? "Skema Diskon Promo NOvemBLUR"
                 : "Keunggulan Lensa Antifog Blueray"}
@@ -260,6 +263,22 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {isHariGuru && (
+            <div className="rounded-3xl bg-gradient-to-br from-[#124734] to-[#0D2F1D] text-white p-6 sm:p-10 shadow-xl">
+              <div className="space-y-3">
+                <span className="text-[11px] font-black uppercase tracking-widest text-emerald-300">
+                  Apresiasi Guru, Dosen, Pelajar & Mahasiswa
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-white">
+                  Potongan Hingga 20% Frame Kacamata
+                </h3>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed max-w-2xl">
+                  Nikmati diskon 20% untuk pembelian frame kacamata dengan paket lensa 1 Fokus dan diskon 15% untuk paket lensa 2 Fokus. Cukup tunjukkan kartu identitas pelajar atau kartu pengajar saat bertransaksi di kasir cabang Optik I See You.
+                </p>
               </div>
             </div>
           )}
@@ -342,7 +361,51 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
               </>
             )}
 
-            {isNovemblur && (
+            {isHariGuru && (
+              <>
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Glasses className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Diskon 20% Frame 1 Fokus</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Paket lensa Single Vision untuk membaca, komputer, dan aktivitas belajar harian.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <Gift className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Diskon 15% Frame 2 Fokus</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Solusi kacamata lensa bifokal atau progresif untuk penglihatan jauh dan dekat sekaligus.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <ShieldCheck className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Gratis Cek Mata Digital</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Pemeriksaan refraksi mata akurat dan konsultasi bersama refraksionis resmi.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">
+                    <ShoppingBag className="h-5 w-5 text-[#2FA84F]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-slate-900">Koleksi 100+ Frame</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Bebas pilih model frame estetik, ringan, dan nyaman untuk aktivitas mengajar & kuliah.
+                  </p>
+                </div>
+              </>
+            )}
+
+          {isNovemblur && (
               <>
                 <div className="rounded-2xl border border-[#E3E7DF] bg-white p-5 space-y-2 shadow-xs">
                   <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#124734] flex items-center justify-center">

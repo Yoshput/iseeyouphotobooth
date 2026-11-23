@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { PromoItem } from "@/lib/db/types";
 import { BRANCHES, KONSULTASI_WA_NUMBER, branchWhatsappUrl } from "@/lib/branches";
-import { formatPromoPeriod, formatBrandText } from "@/lib/promo";
+import { formatPromoPeriod, formatBrandText, isPromoActive } from "@/lib/promo";
 import BranchWhatsAppModal from "@/components/ui/BranchWhatsAppModal";
 
 interface PromoMicrositeClientProps {
@@ -74,19 +74,21 @@ export default function PromoMicrositeClient({
     }));
   }, []);
 
-  // Sort promos to match the exact order:
-  // 1. Undian Akhir Tahun 2026
-  // 2. Promo NOvemBLUR
-  // 3. Promo Lensa Antifog Blueray
-  const orderedPromos = [...initialPromos].sort((a, b) => {
-    const order = (slug: string) => {
-      if (slug.includes("undian")) return 1;
-      if (slug.includes("novemblur")) return 2;
-      if (slug.includes("lensa") || slug.includes("antifog")) return 3;
-      return 4;
-    };
-    return order(a.slug) - order(b.slug);
-  });
+  // Sort only currently active promos:
+  // 1. Undian Akhir Tahun 2026 (Special)
+  // 2. Special Hari Guru (Weekly)
+  // 3. Promo Lensa Antifog Blueray (Monthly)
+  const orderedPromos = [...initialPromos]
+    .filter((p) => isPromoActive(p))
+    .sort((a, b) => {
+      const order = (slug: string) => {
+        if (slug.includes("undian")) return 1;
+        if (slug.includes("guru") || slug.includes("mingguan")) return 2;
+        if (slug.includes("lensa") || slug.includes("antifog")) return 3;
+        return 4;
+      };
+      return order(a.slug) - order(b.slug);
+    });
 
   return (
     <div className="space-y-12 sm:space-y-16">
@@ -234,7 +236,7 @@ export default function PromoMicrositeClient({
       )}
 
       {/* =========================================================================
-          CAMPAIGN 2: PROMO NOVEMBLUR (Clean Warm Cream Alternating Spread)
+          CAMPAIGN 2: SPECIAL HARI GURU (Clean Warm Cream Alternating Spread)
           ========================================================================= */}
       {orderedPromos[1] && (
         <section
@@ -242,13 +244,13 @@ export default function PromoMicrositeClient({
           className="relative rounded-3xl bg-[#FAF8F3] border border-[#E3E7DF] p-6 sm:p-10 lg:p-12 shadow-lg overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: Authentic High-Res Poster (Fail-safe natural height) */}
+            {/* Left Column: Authentic High-Res Poster */}
             <div className="lg:col-span-5 flex justify-center order-1">
               <div
                 onClick={() => {
                   setZoomLevel(1);
                   setZoomedImage({
-                    url: "/PROMO/novemblur-isy.webp",
+                    url: orderedPromos[1].heroImageUrl || "/PROMO/promo-hari-guru.webp",
                     alt: orderedPromos[1].title,
                     title: orderedPromos[1].title,
                   });
@@ -256,7 +258,7 @@ export default function PromoMicrositeClient({
                 className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-white border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
               >
                 <Image
-                  src={orderedPromos[1].heroImageUrl || "/PROMO/novemblur-isy-display.webp"}
+                  src={orderedPromos[1].heroImageUrl || "/PROMO/promo-hari-guru-display.webp"}
                   alt={orderedPromos[1].heroImageAlt || orderedPromos[1].title}
                   width={1200}
                   height={1500}
@@ -282,14 +284,14 @@ export default function PromoMicrositeClient({
                   {formatBrandText(orderedPromos[1].title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-slate-700">
-                  {formatBrandText(orderedPromos[1].subtitle || "Saatnya Ganti Kacamata Lama Kamu!")}
+                  {formatBrandText(orderedPromos[1].subtitle || "Diskon 20% & 15% Frame untuk Guru, Dosen, Pelajar & Mahasiswa")}
                 </p>
               </div>
 
               {/* Narrative */}
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-xl">
                 {orderedPromos[1].excerpt ||
-                  "Promo spesial 5 hari untuk ganti kacamata lama kamu ke model estetik terbaru di Optik I See You. Bawa kacamata lama atau beli langsung dengan skema hemat pilihanmu."}
+                  "Spesial Hari Guru! Dapatkan potongan diskon hingga 20% untuk frame kacamata 1 Fokus dan 15% untuk 2 Fokus bagi seluruh Guru, Pelajar, dan Mahasiswa."}
               </p>
 
               {/* Discount Offer Highlights */}
@@ -301,33 +303,33 @@ export default function PromoMicrositeClient({
                   <div className="flex items-center justify-between rounded-2xl bg-white p-3.5 border border-[#E3E7DF] shadow-2xs">
                     <div className="flex items-center gap-3">
                       <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-[#124734] font-black text-sm">
-                        15%
+                        20%
                       </span>
                       <div>
                         <p className="text-xs font-bold text-[#124734]">
-                          Tukar Tambah Kacamata Lama
+                          Frame Paket Lensa 1 Fokus
                         </p>
                         <p className="text-[11px] text-slate-500">
-                          Bawa kacamata lama kamu dalam kondisi apapun
+                          Single Vision untuk membaca, komputer, dan gawai
                         </p>
                       </div>
                     </div>
                     <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl">
-                      Paling Hemat
+                      Paling Populer
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between rounded-2xl bg-white p-3.5 border border-[#E3E7DF] shadow-2xs">
                     <div className="flex items-center gap-3">
                       <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-[#124734] font-black text-sm">
-                        10%
+                        15%
                       </span>
                       <div>
                         <p className="text-xs font-bold text-[#124734]">
-                          Diskon Pembelian Langsung
+                          Frame Paket Lensa 2 Fokus
                         </p>
                         <p className="text-[11px] text-slate-500">
-                          Berlaku tanpa perlu membawa kacamata lama
+                          Solusi lensa bifokal / progresif jauh dan dekat
                         </p>
                       </div>
                     </div>
@@ -335,15 +337,15 @@ export default function PromoMicrositeClient({
 
                   <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-emerald-50 to-emerald-100/50 p-3.5 border border-emerald-200 shadow-2xs">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#124734] text-white font-black text-sm">
-                        +5%
+                      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#124734] text-white font-black text-xs">
+                        GRATIS
                       </span>
                       <div>
                         <p className="text-xs font-bold text-[#124734]">
-                          Tambahan Diskon Khusus Member
+                          Pemeriksaan Refraksi Digital
                         </p>
                         <p className="text-[11px] text-emerald-900">
-                          Otomatis ditambahkan untuk pelanggan setia terdaftar
+                          Cek mata komputer akurat bersama refraksionis resmi
                         </p>
                       </div>
                     </div>
@@ -359,7 +361,7 @@ export default function PromoMicrositeClient({
                   className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#124734] hover:bg-[#0D2F1D] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>Ambil Promo NOvemBLUR</span>
+                  <span>{orderedPromos[1].ctaLabel || "Klaim Promo Hari Guru"}</span>
                 </button>
 
                 <button
@@ -388,11 +390,11 @@ export default function PromoMicrositeClient({
               {expandedTerms[orderedPromos[1].id] && (
                 <div className="rounded-2xl bg-white border border-[#E3E7DF] p-4 sm:p-5 text-xs text-slate-600 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                   <p className="font-bold text-[#124734] text-[11px] uppercase tracking-wider">
-                    Ketentuan Promo NOvemBLUR:
+                    Ketentuan Promo Hari Guru:
                   </p>
                   <div className="whitespace-pre-line leading-relaxed text-xs">
                     {orderedPromos[1].termsAndConditions ||
-                      "1. Periode promo khusus berlaku selama bulan November 2026.\n2. Diskon 15% berlaku dengan membawa/menyerahkan kacamata lama (kondisi apapun).\n3. Diskon 10% berlaku untuk pembelian langsung tanpa kacamata lama.\n4. Tambahan diskon 5% otomatis berlaku bagi Member Optik I See You.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, Cilacap."}
+                      "1. Periode promo berlaku terbatas mulai 23 hingga 26 November 2026.\n2. Diskon 20% berlaku untuk pembelian frame kacamata dengan paket lensa 1 Fokus (Single Vision).\n3. Diskon 15% berlaku untuk pembelian frame kacamata dengan paket lensa 2 Fokus (Bifokal atau Progresif).\n4. Berlaku khusus untuk Guru, Dosen, Pelajar, dan Mahasiswa dengan menunjukkan kartu identitas aktif.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, Cilacap."}
                   </div>
                 </div>
               )}
