@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Tag, Calendar, ArrowRight, Sparkles, Layers } from "lucide-react";
+import { Tag, Calendar, ArrowRight, Layers } from "lucide-react";
 import { PromoItem, PromoCategory } from "@/lib/db/types";
 import { formatPromoPeriod, getCategoryLabel, PROMO_CATEGORIES, getPromoSubdomainUrl } from "@/lib/promo";
 
@@ -48,10 +48,6 @@ export default function PromoSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#124734] shadow-2xs">
-              <Sparkles className="h-3.5 w-3.5 text-[#2FA84F]" />
-              <span>Program & Penawaran Terkini</span>
-            </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#124734] tracking-tight">
               Promo Spesial Optik I See You
             </h2>

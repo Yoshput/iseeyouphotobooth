@@ -166,11 +166,11 @@ export default function LandingPage() {
           {/* ── LEFT: Editorial Typography & Stacked CTAs ── */}
           <div className="flex flex-col items-start text-left justify-center">
 
-            {/* Eyebrow badge */}
-            <div className="mb-4 animate-in fade-in duration-500 ease-out">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E3E7DF] bg-white px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#124734]">
+            {/* Eyebrow */}
+            <div className="mb-3 animate-in fade-in duration-500 ease-out">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#208c49]">
                 Optik I See You • For Every You
-              </span>
+              </p>
             </div>
 
             {/* Editorial Headline with vibrant 2-tone colors */}
