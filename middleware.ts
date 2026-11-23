@@ -62,8 +62,9 @@ export function middleware(req: NextRequest) {
       return NextResponse.rewrite(new URL("/promo", req.url));
     }
 
-    // If pathname is not already prefixed with /promo, rewrite internally to /promo/[slug]
-    if (!pathname.startsWith("/promo")) {
+    // Rewrite /slug to /promo/slug (e.g. /promo-lensa-antifog-blueray, /promo-hari-guru, /undian-akhir-tahun)
+    // Ensure we don't rewrite if pathname is already /promo or begins with /promo/
+    if (pathname !== "/promo" && !pathname.startsWith("/promo/")) {
       return NextResponse.rewrite(new URL(`/promo${pathname}`, req.url));
     }
 

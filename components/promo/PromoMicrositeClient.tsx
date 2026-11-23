@@ -90,14 +90,33 @@ export default function PromoMicrositeClient({
       return order(a.slug) - order(b.slug);
     });
 
+  // Dedicated promo campaigns resolved safely by slug keywords
+  const undianPromo = orderedPromos.find((p) => p.slug.includes("undian"));
+  const hariGuruPromo = orderedPromos.find((p) => p.slug.includes("guru"));
+  const antifogPromo = orderedPromos.find(
+    (p) => p.slug.includes("antifog") || p.slug.includes("lensa")
+  );
+  const otherPromos = orderedPromos.filter(
+    (p) => p !== undianPromo && p !== hariGuruPromo && p !== antifogPromo
+  );
+
   return (
     <div className="space-y-12 sm:space-y-16">
+      {/* Empty State when no promo is active */}
+      {orderedPromos.length === 0 && (
+        <div className="rounded-3xl border border-dashed border-[#E3E7DF] bg-white p-12 text-center space-y-4">
+          <p className="text-base font-bold text-[#124734]">Saat Ini Belum Ada Promo Aktif</p>
+          <p className="text-xs text-slate-500 max-w-md mx-auto">
+            Nantikan promo mingguan dan penawaran spesial berikutnya dari Optik I See You. Silakan kunjungi cabang resmi kami untuk konsultasi dan pemeriksaan refraksi gratis.
+          </p>
+        </div>
+      )}
       {/* =========================================================================
           CAMPAIGN 1: UNDIAN AKHIR TAHUN 2026 (Dark Forest Luxury Spread)
           ========================================================================= */}
-      {orderedPromos[0] && (
+      {undianPromo && (
         <section
-          id={orderedPromos[0].slug}
+          id={undianPromo.slug}
           className="relative rounded-3xl bg-gradient-to-br from-[#103E2E] via-[#0E3527] to-[#082218] text-white p-6 sm:p-10 lg:p-12 shadow-2xl overflow-hidden border border-emerald-800/40"
         >
           {/* Subtle Ambient Glow */}
@@ -111,23 +130,23 @@ export default function PromoMicrositeClient({
               <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-300">
                 <Calendar className="h-4 w-4 text-emerald-400 shrink-0" />
                 <span>
-                  Periode: {formatPromoPeriod(orderedPromos[0].startAt, orderedPromos[0].endAt)}
+                  Periode: {formatPromoPeriod(undianPromo.startAt, undianPromo.endAt)}
                 </span>
               </div>
 
               {/* Title & Subtitle */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                  {formatBrandText(orderedPromos[0].title)}
+                  {formatBrandText(undianPromo.title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-emerald-200">
-                  {formatBrandText(orderedPromos[0].subtitle || "Gebyar Hadiah & Promo Spesial Akhir Tahun")}
+                  {formatBrandText(undianPromo.subtitle || "Gebyar Hadiah & Promo Spesial Akhir Tahun")}
                 </p>
               </div>
 
               {/* Clean Narrative */}
               <p className="text-xs sm:text-sm text-white/85 leading-relaxed font-normal max-w-xl">
-                {orderedPromos[0].excerpt ||
+                {undianPromo.excerpt ||
                   "Sambut kemeriahan akhir tahun bersama Optik I See You! Setiap transaksi pembelian kacamata lengkap (frame + lensa) di seluruh cabang resmi berhak mendapatkan kupon undian berhadiah istimewa."}
               </p>
 
@@ -164,7 +183,7 @@ export default function PromoMicrositeClient({
               <div className="pt-3 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setActiveBranchPromo(orderedPromos[0])}
+                  onClick={() => setActiveBranchPromo(undianPromo)}
                   className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#2FA84F] hover:bg-[#25873f] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2FA84F]/30 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
@@ -173,11 +192,11 @@ export default function PromoMicrositeClient({
 
                 <button
                   type="button"
-                  onClick={() => toggleTerms(orderedPromos[0].id)}
+                  onClick={() => toggleTerms(undianPromo.id)}
                   className="inline-flex items-center gap-1.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white px-4 py-3.5 text-xs font-bold border border-white/15 transition-colors"
                 >
                   <span>Syarat & Ketentuan</span>
-                  {expandedTerms[orderedPromos[0].id] ? (
+                  {expandedTerms[undianPromo.id] ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
                     <ChevronDown className="h-4 w-4" />
@@ -185,7 +204,7 @@ export default function PromoMicrositeClient({
                 </button>
 
                 <Link
-                  href={`/${orderedPromos[0].slug}`}
+                  href={`/${undianPromo.slug}`}
                   className="inline-flex items-center gap-1 text-xs font-bold text-emerald-300 hover:text-white px-2 py-2 transition-colors ml-auto"
                 >
                   <span>Halaman Lengkap</span>
@@ -194,13 +213,13 @@ export default function PromoMicrositeClient({
               </div>
 
               {/* Collapsible Syarat & Ketentuan Accordion */}
-              {expandedTerms[orderedPromos[0].id] && (
+              {expandedTerms[undianPromo.id] && (
                 <div className="rounded-2xl bg-black/30 border border-white/15 p-4 sm:p-5 text-xs text-white/80 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                   <p className="font-bold text-white text-[11px] uppercase tracking-wider">
                     Ketentuan Mengikuti Undian:
                   </p>
                   <div className="whitespace-pre-line leading-relaxed text-xs">
-                    {orderedPromos[0].termsAndConditions ||
+                    {undianPromo.termsAndConditions ||
                       "1. Periode promo berlangsung mulai 1 November hingga 31 Desember 2026.\n2. Berlaku untuk seluruh pelanggan di 4 cabang resmi (Purwokerto, Purbalingga, Wonosobo, Cilacap).\n3. Setiap transaksi pembelian kacamata lengkap (frame + lensa) berhak mendapatkan kupon undian.\n4. Pengundian akan diumumkan secara terbuka di Instagram resmi @iseeyou.glasses."}
                   </div>
                 </div>
@@ -214,15 +233,15 @@ export default function PromoMicrositeClient({
                   setZoomLevel(1);
                   setZoomedImage({
                     url: "/PROMO/undian-akhir-tahun.webp",
-                    alt: orderedPromos[0].title,
-                    title: orderedPromos[0].title,
+                    alt: undianPromo.title,
+                    title: undianPromo.title,
                   });
                 }}
                 className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-black/30 border-2 border-white/20 shadow-2xl transition-all duration-300 hover:scale-102 hover:border-emerald-400/50"
               >
                 <Image
-                  src={orderedPromos[0].heroImageUrl || "/PROMO/undian-akhir-tahun-display.webp"}
-                  alt={orderedPromos[0].heroImageAlt || orderedPromos[0].title}
+                  src={undianPromo.heroImageUrl || "/PROMO/undian-akhir-tahun-display.webp"}
+                  alt={undianPromo.heroImageAlt || undianPromo.title}
                   width={1200}
                   height={1500}
                   priority
@@ -238,9 +257,9 @@ export default function PromoMicrositeClient({
       {/* =========================================================================
           CAMPAIGN 2: SPECIAL HARI GURU (Clean Warm Cream Alternating Spread)
           ========================================================================= */}
-      {orderedPromos[1] && (
+      {hariGuruPromo && (
         <section
-          id={orderedPromos[1].slug}
+          id={hariGuruPromo.slug}
           className="relative rounded-3xl bg-[#FAF8F3] border border-[#E3E7DF] p-6 sm:p-10 lg:p-12 shadow-lg overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -250,16 +269,16 @@ export default function PromoMicrositeClient({
                 onClick={() => {
                   setZoomLevel(1);
                   setZoomedImage({
-                    url: orderedPromos[1].heroImageUrl || "/PROMO/promo-hari-guru.webp",
-                    alt: orderedPromos[1].title,
-                    title: orderedPromos[1].title,
+                    url: hariGuruPromo.heroImageUrl || "/PROMO/promo-hari-guru.webp",
+                    alt: hariGuruPromo.title,
+                    title: hariGuruPromo.title,
                   });
                 }}
                 className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-white border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
               >
                 <Image
-                  src={orderedPromos[1].heroImageUrl || "/PROMO/promo-hari-guru-display.webp"}
-                  alt={orderedPromos[1].heroImageAlt || orderedPromos[1].title}
+                  src={hariGuruPromo.heroImageUrl || "/PROMO/promo-hari-guru-display.webp"}
+                  alt={hariGuruPromo.heroImageAlt || hariGuruPromo.title}
                   width={1200}
                   height={1500}
                   sizes="(max-width: 768px) 100vw, 420px"
@@ -274,23 +293,23 @@ export default function PromoMicrositeClient({
               <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#124734]">
                 <Calendar className="h-4 w-4 text-[#2FA84F] shrink-0" />
                 <span>
-                  Periode: {formatPromoPeriod(orderedPromos[1].startAt, orderedPromos[1].endAt)}
+                  Periode: {formatPromoPeriod(hariGuruPromo.startAt, hariGuruPromo.endAt)}
                 </span>
               </div>
 
               {/* Title & Subtitle */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
-                  {formatBrandText(orderedPromos[1].title)}
+                  {formatBrandText(hariGuruPromo.title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-slate-700">
-                  {formatBrandText(orderedPromos[1].subtitle || "Diskon 20% & 15% Frame untuk Guru, Dosen, Pelajar & Mahasiswa")}
+                  {formatBrandText(hariGuruPromo.subtitle || "Diskon 20% & 15% Frame untuk Guru, Dosen, Pelajar & Mahasiswa")}
                 </p>
               </div>
 
               {/* Narrative */}
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-xl">
-                {orderedPromos[1].excerpt ||
+                {hariGuruPromo.excerpt ||
                   "Spesial Hari Guru! Dapatkan potongan diskon hingga 20% untuk frame kacamata 1 Fokus dan 15% untuk 2 Fokus bagi seluruh Guru, Pelajar, dan Mahasiswa."}
               </p>
 
@@ -357,20 +376,20 @@ export default function PromoMicrositeClient({
               <div className="pt-3 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setActiveBranchPromo(orderedPromos[1])}
+                  onClick={() => setActiveBranchPromo(hariGuruPromo)}
                   className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#124734] hover:bg-[#0D2F1D] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>{orderedPromos[1].ctaLabel || "Klaim Promo Hari Guru"}</span>
+                  <span>{hariGuruPromo.ctaLabel || "Klaim Promo Hari Guru"}</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => toggleTerms(orderedPromos[1].id)}
+                  onClick={() => toggleTerms(hariGuruPromo.id)}
                   className="inline-flex items-center gap-1.5 rounded-2xl bg-white hover:bg-slate-50 text-[#124734] px-4 py-3.5 text-xs font-bold border border-[#E3E7DF] transition-colors"
                 >
                   <span>Syarat & Ketentuan</span>
-                  {expandedTerms[orderedPromos[1].id] ? (
+                  {expandedTerms[hariGuruPromo.id] ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
                     <ChevronDown className="h-4 w-4" />
@@ -378,7 +397,7 @@ export default function PromoMicrositeClient({
                 </button>
 
                 <Link
-                  href={`/${orderedPromos[1].slug}`}
+                  href={`/${hariGuruPromo.slug}`}
                   className="inline-flex items-center gap-1 text-xs font-bold text-[#124734] hover:text-[#2FA84F] px-2 py-2 transition-colors ml-auto"
                 >
                   <span>Halaman Lengkap</span>
@@ -387,13 +406,13 @@ export default function PromoMicrositeClient({
               </div>
 
               {/* Collapsible Syarat & Ketentuan Accordion */}
-              {expandedTerms[orderedPromos[1].id] && (
+              {expandedTerms[hariGuruPromo.id] && (
                 <div className="rounded-2xl bg-white border border-[#E3E7DF] p-4 sm:p-5 text-xs text-slate-600 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                   <p className="font-bold text-[#124734] text-[11px] uppercase tracking-wider">
                     Ketentuan Promo Hari Guru:
                   </p>
                   <div className="whitespace-pre-line leading-relaxed text-xs">
-                    {orderedPromos[1].termsAndConditions ||
+                    {hariGuruPromo.termsAndConditions ||
                       "1. Periode promo berlaku terbatas mulai 23 hingga 26 November 2026.\n2. Diskon 20% berlaku untuk pembelian frame kacamata dengan paket lensa 1 Fokus (Single Vision).\n3. Diskon 15% berlaku untuk pembelian frame kacamata dengan paket lensa 2 Fokus (Bifokal atau Progresif).\n4. Berlaku khusus untuk Guru, Dosen, Pelajar, dan Mahasiswa dengan menunjukkan kartu identitas aktif.\n5. Berlaku di 4 cabang resmi: Purwokerto, Purbalingga, Wonosobo, Cilacap."}
                   </div>
                 </div>
@@ -406,9 +425,9 @@ export default function PromoMicrositeClient({
       {/* =========================================================================
           CAMPAIGN 3: PROMO LENSA ANTIFOG BLUERAY (Modern Fresh Studio Spread)
           ========================================================================= */}
-      {orderedPromos[2] && (
+      {antifogPromo && (
         <section
-          id={orderedPromos[2].slug}
+          id={antifogPromo.slug}
           className="relative rounded-3xl bg-white border border-[#E3E7DF] p-6 sm:p-10 lg:p-12 shadow-lg overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -418,18 +437,18 @@ export default function PromoMicrositeClient({
               <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-800">
                 <Calendar className="h-4 w-4 text-[#2FA84F] shrink-0" />
                 <span>
-                  Periode: {formatPromoPeriod(orderedPromos[2].startAt, orderedPromos[2].endAt)}
+                  Periode: {formatPromoPeriod(antifogPromo.startAt, antifogPromo.endAt)}
                 </span>
               </div>
 
               {/* Title & Subtitle */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
-                  {formatBrandText(orderedPromos[2].title)}
+                  {formatBrandText(antifogPromo.title)}
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-slate-700">
                   {formatBrandText(
-                    orderedPromos[2].subtitle ||
+                    antifogPromo.subtitle ||
                       "Embun? Ada Antifog! Nikmati Penglihatan Jernih Bebas Embun & Proteksi Sinar Biru"
                   )}
                 </p>
@@ -437,7 +456,7 @@ export default function PromoMicrositeClient({
 
               {/* Narrative */}
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-xl">
-                {orderedPromos[2].excerpt ||
+                {antifogPromo.excerpt ||
                   "Embun saat minum kopi panas atau pakai masker mengganggu aktivitasmu? Upgrade ke Lensa Antifog Blueray berteknologi hidrofobik mutakhir dengan potongan harga spesial hingga Rp300.000 selama bulan November 2026."}
               </p>
 
@@ -485,20 +504,20 @@ export default function PromoMicrositeClient({
               <div className="pt-3 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setActiveBranchPromo(orderedPromos[2])}
+                  onClick={() => setActiveBranchPromo(antifogPromo)}
                   className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#208c49] to-[#124734] hover:opacity-95 text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg shadow-[#124734]/20 hover:scale-102 active:scale-98 transition-all cursor-pointer"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>Konsultasi Lensa Antifog</span>
+                  <span>{antifogPromo.ctaLabel || "Konsultasi Lensa Antifog"}</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => toggleTerms(orderedPromos[2].id)}
+                  onClick={() => toggleTerms(antifogPromo.id)}
                   className="inline-flex items-center gap-1.5 rounded-2xl bg-[#FAF8F3] hover:bg-slate-100 text-[#124734] px-4 py-3.5 text-xs font-bold border border-[#E3E7DF] transition-colors"
                 >
                   <span>Syarat & Ketentuan</span>
-                  {expandedTerms[orderedPromos[2].id] ? (
+                  {expandedTerms[antifogPromo.id] ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
                     <ChevronDown className="h-4 w-4" />
@@ -506,7 +525,7 @@ export default function PromoMicrositeClient({
                 </button>
 
                 <Link
-                  href={`/${orderedPromos[2].slug}`}
+                  href={`/${antifogPromo.slug}`}
                   className="inline-flex items-center gap-1 text-xs font-bold text-[#124734] hover:text-[#2FA84F] px-2 py-2 transition-colors ml-auto"
                 >
                   <span>Halaman Lengkap</span>
@@ -515,13 +534,13 @@ export default function PromoMicrositeClient({
               </div>
 
               {/* Collapsible Syarat & Ketentuan Accordion */}
-              {expandedTerms[orderedPromos[2].id] && (
+              {expandedTerms[antifogPromo.id] && (
                 <div className="rounded-2xl bg-[#FAF8F3] border border-[#E3E7DF] p-4 sm:p-5 text-xs text-slate-600 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                   <p className="font-bold text-[#124734] text-[11px] uppercase tracking-wider">
                     Ketentuan Lensa Antifog:
                   </p>
                   <div className="whitespace-pre-line leading-relaxed text-xs">
-                    {orderedPromos[2].termsAndConditions ||
+                    {antifogPromo.termsAndConditions ||
                       "1. Promo berlaku selama bulan November 2026.\n2. Berlaku untuk seluruh pembelian lensa Antifog Blueray di 4 cabang resmi.\n3. Potongan hingga Rp300.000 berlaku sesuai tipe lensa dan indeks resep yang dipilih.\n4. Refraksi mata gratis langsung dilakukan oleh refraksionis optik."}
                   </div>
                 </div>
@@ -535,15 +554,15 @@ export default function PromoMicrositeClient({
                   setZoomLevel(1);
                   setZoomedImage({
                     url: "/PROMO/lensa-antifog-blueray.webp",
-                    alt: orderedPromos[2].title,
-                    title: orderedPromos[2].title,
+                    alt: antifogPromo.title,
+                    title: antifogPromo.title,
                   });
                 }}
                 className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-[#FAF8F3] border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
               >
                 <Image
-                  src={orderedPromos[2].heroImageUrl || "/PROMO/lensa-antifog-blueray-display.webp"}
-                  alt={orderedPromos[2].heroImageAlt || orderedPromos[2].title}
+                  src={antifogPromo.heroImageUrl || "/PROMO/lensa-antifog-blueray-display.webp"}
+                  alt={antifogPromo.heroImageAlt || antifogPromo.title}
                   width={1200}
                   height={1500}
                   sizes="(max-width: 768px) 100vw, 420px"
@@ -554,6 +573,98 @@ export default function PromoMicrositeClient({
           </div>
         </section>
       )}
+
+      {/* =========================================================================
+          OTHER DYNAMIC PROMO CAMPAIGNS (Added or edited via Admin CMS)
+          ========================================================================= */}
+      {otherPromos.map((promo, idx) => (
+        <section
+          key={promo.id}
+          id={promo.slug}
+          className={`relative rounded-3xl ${
+            idx % 2 === 0 ? "bg-[#FAF8F3]" : "bg-white"
+          } border border-[#E3E7DF] p-6 sm:p-10 lg:p-12 shadow-lg overflow-hidden`}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7 space-y-5 order-2 lg:order-1">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-800">
+                <Calendar className="h-4 w-4 text-[#2FA84F] shrink-0" />
+                <span>Periode: {formatPromoPeriod(promo.startAt, promo.endAt)}</span>
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#124734] tracking-tight leading-tight">
+                  {formatBrandText(promo.title)}
+                </h2>
+                {promo.subtitle && (
+                  <p className="text-sm sm:text-base font-semibold text-slate-700">
+                    {formatBrandText(promo.subtitle)}
+                  </p>
+                )}
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-xl">
+                {promo.excerpt}
+              </p>
+              <div className="pt-3 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setActiveBranchPromo(promo)}
+                  className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-[#124734] hover:bg-[#0D2F1D] text-white px-6 py-3.5 text-xs font-black uppercase tracking-wider shadow-lg hover:scale-102 active:scale-98 transition-all cursor-pointer"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  <span>{promo.ctaLabel || "Klaim di Cabang"}</span>
+                </button>
+                {promo.termsAndConditions && (
+                  <button
+                    type="button"
+                    onClick={() => toggleTerms(promo.id)}
+                    className="inline-flex items-center gap-1.5 rounded-2xl bg-[#FAF8F3] hover:bg-slate-100 text-[#124734] px-4 py-3.5 text-xs font-bold border border-[#E3E7DF] transition-colors"
+                  >
+                    <span>Syarat & Ketentuan</span>
+                    {expandedTerms[promo.id] ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </button>
+                )}
+                <Link
+                  href={`/${promo.slug}`}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-[#124734] hover:text-[#2FA84F] px-2 py-2 transition-colors ml-auto"
+                >
+                  <span>Halaman Lengkap</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+              {expandedTerms[promo.id] && promo.termsAndConditions && (
+                <div className="rounded-2xl bg-white border border-[#E3E7DF] p-4 sm:p-5 text-xs text-slate-600 space-y-2 animate-in fade-in duration-200">
+                  <p className="font-bold text-[#124734] text-[11px] uppercase tracking-wider">Syarat & Ketentuan:</p>
+                  <div className="whitespace-pre-line leading-relaxed text-xs">{promo.termsAndConditions}</div>
+                </div>
+              )}
+            </div>
+            {promo.heroImageUrl && (
+              <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
+                <div
+                  onClick={() => {
+                    setZoomLevel(1);
+                    setZoomedImage({
+                      url: promo.heroImageUrl,
+                      alt: promo.title,
+                      title: promo.title,
+                    });
+                  }}
+                  className="group relative w-full max-w-[400px] cursor-pointer rounded-3xl overflow-hidden bg-[#FAF8F3] border-2 border-[#E3E7DF] shadow-xl transition-all duration-300 hover:scale-102 hover:border-[#124734]/40"
+                >
+                  <Image
+                    src={promo.heroImageUrl}
+                    alt={promo.heroImageAlt || promo.title}
+                    width={1200}
+                    height={1500}
+                    sizes="(max-width: 768px) 100vw, 420px"
+                    className="w-full h-auto object-contain block transition-transform duration-500 group-hover:scale-102"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      ))}
 
       {/* =========================================================================
           4 CABANG RESMI DIRECTORY SECTION (Direct store access)

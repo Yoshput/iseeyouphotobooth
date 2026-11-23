@@ -45,9 +45,16 @@ export async function generateMetadata({
   params,
 }: PromoDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const promo = await getPromoBySlug(slug);
+  let promo = await getPromoBySlug(slug);
 
-  if (!promo || !isPromoActive(promo)) {
+  if (!promo && (slug.includes("novemblur") || slug.includes("november"))) {
+    return {
+      title: "Promo NOvemBLUR (Telah Berakhir) | Optik I See You",
+      description: "Periode Promo NOvemBLUR di Optik I See You telah berakhir pada 20 November 2026.",
+    };
+  }
+
+  if (!promo) {
     return {
       title: "Promo Tidak Ditemukan | Optik I See You",
     };
@@ -87,11 +94,42 @@ export async function generateMetadata({
 
 export default async function PromoDetailPage({ params }: PromoDetailPageProps) {
   const { slug } = await params;
-  const promo = await getPromoBySlug(slug);
+  let promo = await getPromoBySlug(slug);
 
-  if (!promo || !isPromoActive(promo)) {
+  if (!promo && (slug.includes("novemblur") || slug.includes("november"))) {
+    // Graceful fallback for NOvemBLUR so visitors from cached links see that it has ended
+    promo = {
+      id: "promo-novemblur-isy-2026",
+      slug: "promo-novemblur-isy",
+      title: "Promo NOvemBLUR — Bebas Blur Setiap Hari",
+      subtitle: "Diskon 15% Bawa Kacamata Lama | 10% Tanpa Kacamata Lama + Tambahan 5% Khusus Member",
+      excerpt: "Promo mingguan NOvemBLUR telah berakhir pada 20 November 2026.",
+      description: "Promo NOvemBLUR berlaku khusus pada periode 16 – 20 November 2026 dan saat ini telah berakhir.",
+      category: "weekly",
+      status: "published",
+      startAt: "2026-11-16T00:00:00+07:00",
+      endAt: "2026-11-20T23:59:59+07:00",
+      heroImageUrl: "/PROMO/novemblur-isy-display.webp",
+      heroImageAlt: "Promo NOvemBLUR Optik I See You",
+      galleryImages: [],
+      detailLayout: "image-left",
+      collageLayout: "grid-2",
+      termsAndConditions: "Periode promo telah berakhir pada 20 November 2026.",
+      showOnHomepage: false,
+      showInPopup: false,
+      popupPriority: 0,
+      sortOrder: 99,
+      createdAt: "2026-11-16T00:00:00+07:00",
+      updatedAt: "2026-11-20T23:59:59+07:00",
+      createdBy: "Owner Optik I See You",
+    };
+  }
+
+  if (!promo) {
     notFound();
   }
+
+  const isExpired = !isPromoActive(promo);
 
   const allActive = await getPublicPromos({ limit: 4 });
   const relatedPromos = allActive.filter((p) => p.id !== promo.id).slice(0, 3);
@@ -130,6 +168,20 @@ export default async function PromoDetailPage({ params }: PromoDetailPageProps) 
       />
 
       <PromoMicrositeHeader showBackToAll={true} />
+
+      {/* Expired Promo Graceful Warning Banner */}
+      {isExpired && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20 py-3.5 px-4 text-center text-xs sm:text-sm font-semibold text-amber-900 flex flex-wrap items-center justify-center gap-2">
+          <span>⚠️ Periode promo ini telah berakhir pada {period}. Silakan lihat penawaran promo terbaru kami yang sedang aktif.</span>
+          <Link
+            href="/promo"
+            className="inline-flex items-center gap-1 rounded-xl bg-[#124734] px-3 py-1 text-xs font-bold text-white hover:bg-[#0D2F1D] transition-colors ml-1"
+          >
+            <span>Lihat Promo Aktif</span>
+            <span>→</span>
+          </Link>
+        </div>
+      )}
 
       {/* Sub-Navigation Ribbon (Inspired by Optik Melawai) */}
       <div className="sticky top-16 sm:top-20 z-30 border-b border-[#E3E7DF] bg-[#FAF8F3]/95 backdrop-blur-md">
